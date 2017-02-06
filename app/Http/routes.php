@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//后台相关路由
+Route::get('manage', 'Manage\Login@index');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
