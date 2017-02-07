@@ -50,18 +50,39 @@
 	});
 
 	function do_login(){
+		$('#notice').text("");
 		$('#notice').addClass('hidden');
+		if(!checkInput()){
+			return;
+		};
 		$.ajax({
+			async: false,
 			type: "POST",
 			url: "{{ $url['loginUrl'] }}",
 			data: $('#loginForm').serialize(),
 			dataType: "json",
 			success: function(re){
-				if(re.status == 'faild'){
+				if(re.status == 'succ'){
+					window.location.href = "{{ URL::route('dashBoard') }}";
+				}
+				else{
 					$('#notice').removeClass('hidden');
 					$('#notice').text(re.msg);
 				}
 			}
 		})
+	}
+
+	function checkInput(){
+		var l = $("input[name='loginName']").val();
+		var p = $("input[name='passWord']").val();
+		if(l == "" || p == ""){
+			$('#notice').removeClass('hidden');
+			$('#notice').text("登录账号或密码不能为空！");
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 </script>

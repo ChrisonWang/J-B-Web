@@ -18,7 +18,11 @@ Route::get('/', function () {
 //后台相关路由
 Route::get('manage', 'Manage\Login@index');
 
+//Route::get('manage/dashboard', 'Manage\Dashboard@index');
+
 Route::post('manage/login',['as'=>'loginUrl', 'uses'=>'Manage\Login@doLogin']);
+
+Route::get('manage/dashboard',['as'=>'dashBoard', 'uses'=>'Manage\Dashboard@index']);
 
 Route::post('manage/ajax/{action}','Manage\Login@ajaxRequest');
 

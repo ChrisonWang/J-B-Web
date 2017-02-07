@@ -34,18 +34,25 @@ class Login extends Controller
 
     public function doLogin(Request $request)
     {
+        //处理请求参数并验证用户是否存在
         $inputs = $request->input();
         $user = Manager::where('login_name',$inputs['loginName'])->select('login_name','password','disabled')->first();
+        $userInfo = $user['attributes'];
         if(is_null($user)){
-            json_response(['status'=>'faild', 'msg'=>'用户不存在！']);
-
+            json_response(['status'=>'faild', 'msg'=>'用户名或密码错误！']);
         }
-        elseif($user['attributes']['disabled'] == 'yes'){
+        elseif($userInfo['disabled'] == 'yes'){
             json_response(['status'=>'faild', 'msg'=>'账号被禁用，请联系管理员']);
         }
-        else{
 
+        //验证密码
+        if(!password_verify($inputs['passWord'],$userInfo['password'])){
+            json_response(['status'=>'faild', 'msg'=>'用户名或密码错误！']);
         }
+        else{
+            json_response(['status'=>'succ', 'msg'=>'登陆成功！']);
+        }
+
     }
 
     /**
