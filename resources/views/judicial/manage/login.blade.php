@@ -35,6 +35,9 @@
 	$(function(){
 		$("input[name='loginName']").blur(function(){
 			$.ajax({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
 				type: "POST",
 				url: "manage/ajax/checkUser",
 				data: 'loginName='+$(this).val(),
@@ -56,6 +59,9 @@
 			return;
 		};
 		$.ajax({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
 			async: false,
 			type: "POST",
 			url: "{{ $url['loginUrl'] }}",
@@ -70,7 +76,7 @@
 					$('#notice').text(re.msg);
 				}
 			}
-		})
+		});
 	}
 
 	function checkInput(){
