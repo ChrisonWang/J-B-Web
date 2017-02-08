@@ -71,6 +71,10 @@ class Login extends Controller
         exit;
     }
 
+    /**
+     * ajax检查输入的用户名是否存在
+     * @param $loginName
+     */
     private function _ajax_checkUser($loginName){
         $user = Manager::where('login_name',$loginName)->select('login_name','disabled')->first();
         if(is_null($user)){
@@ -83,6 +87,18 @@ class Login extends Controller
         else{
             json_response(['status'=>'succ']);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        if(!isset($_COOKIE['s']) || empty($_COOKIE['s'])){
+            return redirect('manage');
+        }
+        $login_name = $_COOKIE['s'];
+        $request->session()->forget($login_name);
+        setcookie('s','',time()-3600);
+
+        return redirect('manage');
     }
 
 }

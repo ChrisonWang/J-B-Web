@@ -19,6 +19,8 @@ Route::group(['middleware' => ['web']], function () {
 //后台相关路由
     Route::get('manage', 'Manage\Login@index');
 
+    Route::get('manage/logout', 'Manage\Login@logout');
+
     Route::post('manage/login',['as'=>'loginUrl', 'uses'=>'Manage\Login@doLogin']);
 
     Route::get('manage/dashboard',['as'=>'dashBoard', 'uses'=>'Manage\Dashboard@index']);
