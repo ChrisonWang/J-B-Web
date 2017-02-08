@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manage;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 
 use App\Http\Requests;
@@ -23,7 +24,6 @@ class Login extends Controller
         $this->page_date['url'] = array(
             'loginUrl' => URL::route('loginUrl'),
             'webUrl' => URL::to('/'),
-            'ajaxUrl' => URL::to('/')
         );
     }
 
@@ -36,7 +36,7 @@ class Login extends Controller
     {
         //处理请求参数并验证用户是否存在
         $inputs = $request->input();
-        $user = Manager::where('login_name',$inputs['loginName'])->select('login_name','password','disabled')->first();
+        $user = Manager::where('login_name',$inputs['loginName'])->select('manager_code','login_name','password','disabled')->first();
         $userInfo = $user['attributes'];
         if(is_null($user)){
             json_response(['status'=>'faild', 'msg'=>'用户名或密码错误！']);
@@ -50,6 +50,9 @@ class Login extends Controller
             json_response(['status'=>'faild', 'msg'=>'用户名或密码错误！']);
         }
         else{
+            setcookie("s",md5($userInfo['login_name']),time()+1800);
+            session([md5($userInfo['login_name'])=>$userInfo['manager_code']]);
+            Session::save();
             json_response(['status'=>'succ', 'msg'=>'登陆成功！']);
         }
 

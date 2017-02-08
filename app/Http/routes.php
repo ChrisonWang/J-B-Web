@@ -10,21 +10,23 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-//前台相关路由
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::group(['middleware' => ['web']], function () {
+    //前台相关路由
+    Route::get('/', function () {
+        return view('welcome');
+    });
 
 //后台相关路由
-Route::get('manage', 'Manage\Login@index');
+    Route::get('manage', 'Manage\Login@index');
 
-//Route::get('manage/dashboard', 'Manage\Dashboard@index');
+    Route::post('manage/login',['as'=>'loginUrl', 'uses'=>'Manage\Login@doLogin']);
 
-Route::post('manage/login',['as'=>'loginUrl', 'uses'=>'Manage\Login@doLogin']);
+    Route::get('manage/dashboard',['as'=>'dashBoard', 'uses'=>'Manage\Dashboard@index']);
 
-Route::get('manage/dashboard',['as'=>'dashBoard', 'uses'=>'Manage\Dashboard@index']);
+    Route::post('manage/ajax/{action}','Manage\Login@ajaxRequest');
 
-Route::post('manage/ajax/{action}','Manage\Login@ajaxRequest');
+    Route::post('manage/loadContent','Manage\Dashboard@loadContent');
+});
 
 /*
 |--------------------------------------------------------------------------
