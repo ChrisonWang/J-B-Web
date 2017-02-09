@@ -28,6 +28,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('manage/ajax/{action}','Manage\Login@ajaxRequest');
 
     Route::post('manage/loadContent','Manage\Dashboard@loadContent');
+
+    Route::post('manage/changePassword','Manage\Dashboard@loadContent');
 });
 
 /*

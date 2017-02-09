@@ -247,10 +247,10 @@ i.nav_icon {
   font-size:14px;
 }
 .form-control {
-  background: none !important;
+  /*background: none !important;
   border: 1px solid #fff !important;
   border-radius: 20px !important;
-  box-shadow: none !important;
+  box-shadow: none !important;*/
 }
 .navbar-form.navbar-right input[type="text"] {
   color: #fff;

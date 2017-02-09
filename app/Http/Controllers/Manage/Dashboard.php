@@ -23,27 +23,23 @@ class Dashboard extends Controller
             'loginUrl' => URL::route('loginUrl'),
             'webUrl' => URL::to('/'),
             'ajaxUrl' => URL::to('/'),
+            'login' => URL::to('manage'),
             'loadContent' => URL::to('manage/loadContent'),
         );
     }
 
     public function index(Request $request)
     {
-        if(!isset($_COOKIE['s']) || empty($_COOKIE['s'])){
-            return redirect('manage');
-        }
-        $login_name = $_COOKIE['s'];
-        $managerCode = session($login_name);
-        //验证用户
-        $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name')->first();
-        if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name){
+        //判断登录状态
+        $loginStatus = $this->checkLoginStatus();
+        if(!$loginStatus){
             return redirect('manage');
         }
         else{
-            $managerInfo = $this->_getManagerInfo($managerCode);
+            //获取用户信息
+            $managerInfo = $this->_getManagerInfo($loginStatus);
             $this->page_date['managerInfo'] = $managerInfo;
         }
-
         return view('judicial.manage.dashboard',$this->page_date);
     }
 
@@ -100,4 +96,49 @@ class Dashboard extends Controller
 
         return $managerInfo;
     }
+
+    /**
+     * 返回修改密码的页面
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function _content_ChangePassword()
+    {
+        $loginStatus = $this->checkLoginStatus();
+        if(!$loginStatus){
+            json_response(['status'=>'failed','type'=>'redirect', 'content'=>$this->page_date['url']['login']]);
+        }
+        else{
+            $this->page_date['url']['changePassword'] = URL::to('manage/changePassword');
+            $pageContent = view('judicial.manage.layout.changePassword',$this->page_date)->render();
+            //返回给前段
+            json_response(['status'=>'succ','type'=>'content', 'content'=>$pageContent]);
+        }
+    }
+
+    private function _changePassword()
+    {
+        $loginStatus = $this->checkLoginStatus();
+        if(!$loginStatus){
+            json_response(['status'=>'failed','type'=>'redirect', 'content'=>$this->page_date['url']['login']]);
+        }
+    }
+
+    public function checkLoginStatus()
+    {
+        if(!isset($_COOKIE['s']) || empty($_COOKIE['s'])){
+            return false;
+        }
+        $login_name = $_COOKIE['s'];
+        $managerCode = session($login_name);
+        //验证用户
+        $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name')->first();
+        if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name){
+            return false;
+        }
+        else{
+            return $managerCode;
+        }
+    }
+
 }

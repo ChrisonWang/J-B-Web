@@ -29,6 +29,9 @@ class Login extends Controller
 
     public function index()
     {
+        if(isset($_COOKIE['s']) && !empty($_COOKIE['s'])){
+            return redirect('manage/dashboard');
+        }
         return view('judicial.manage.login',$this->page_date);
     }
 

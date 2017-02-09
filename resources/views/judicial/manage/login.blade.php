@@ -3,31 +3,40 @@
 <!--引入公共头部-->
 @include('judicial.manage.head')
 <body id="login">
-  <div class="login-logo">
-    <a href="index.html"><img src="{{ asset('/images/logo.png') }}" alt=""/></a>
+  <div class="container col-md-offset-4 col-md-4" style="padding-top: 12%">
+	  <div class="panel panel-default">
+		  <div class="panel-heading">
+			  <h3 class=" text-center">三门峡市司法局管理系统登录</h3>
+		  </div>
+		  <div class="panel-body" >
+			  <form class="form-horizontal" id="loginForm">
+				  <br/>
+				  <div class="form-group">
+					  <label for="loginName" class="col-md-3 control-label">登录名：</label>
+					  <div class="col-md-8">
+						  <input name="loginName" id="loginName" class="form-control" type="text" class="text" placeholder="请输入登录名/手机号/邮箱">
+					  </div>
+				  </div>
+				  <div class="form-group">
+					  <label for="passWord" class="col-md-3 control-label">密码：</label>
+					  <div class="col-md-8">
+						  <input name="passWord" id="passWord" class="form-control" type="password" placeholder="请输入登录密码">
+					  </div>
+				  </div>
+				  <div class="form-group">
+					  <hr/>
+					  <div class="col-sm-offset-1 col-sm-5">
+						  <input type="button" onclick="do_login()" value="登录" class="btn btn-primary btn-block">
+					  </div>
+					  <div class=" col-sm-5">
+						  <a href="{{ $url['webUrl'] }}" class="btn btn-danger btn-block">返回前台</a>
+					  </div>
+				  </div>
+			  </form>
+		  </div>
+	  </div>
   </div>
-  <h2 class="form-heading">三门峡市司法局管理系统登录</h2>
-  <div class="app-cam">
-	<form id="loginForm" class="form-horizontal">
-		<div class="form-group">
-			{!! csrf_field() !!}
-			<input name="loginName" type="text" class="text" placeholder="请输入登录名/手机号/邮箱">
-			<input name="passWord" type="password" placeholder="请输入登录密码">
-			<h5 id="notice" class="lead" style="color: firebrick"></h5>
-		</div>
-		<div class="form-group">
-			<input type="button" onclick="do_login()" value="登录" class="btn btn-primary btn-block">
-		</div>
-		<ul class="new">
-			<li class="new_left"><p><a href="#">忘记密码</a></p></li>
-			<li class="new_right"><p><a href="{{ $url['webUrl'] }}">返回前台</a></p></li>
-			<div class="clearfix"></div>
-		</ul>
-	</form>
-  </div>
-   <div class="copy_layout login">
-      <p>Copyright &copy; 2017 版权所有：河南省三门峡市司法局</p>
-   </div>
+
 </body>
 </html>
 

@@ -25,14 +25,16 @@
 <script>
 	$(function(){
 		$("#side-menu a").click(function(){
-			var node = $(this).data("node");
-			loadContent(node);
+			loadContent($(this));
+		});
+		$("#panel-body").click(function(){
+
 		});
 	});
 
 	//加载右侧内容
-	function loadContent(node){
-		var node_id = node;
+	function loadContent(t){
+		var node_id = t.data("node");
 		var url = '{{ $url['loadContent'] }}';
 		var container = $("#page-wrapper");
 
@@ -57,11 +59,18 @@
 						container.html(re.content);
 						return
 					}
-					else{
-						alert(re.content);
+					else if(re.type == 'redirect'){
+						window.location.href = re.content;
+					}
+					else {
+						return;
 					}
 				}
 			}
 		});
+	}
+
+	function popModal(){
+		$('#manageModal').modal('show');
 	}
 </script>
