@@ -15,11 +15,13 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('user','Web\Users@index');
+    Route::get('user','Web\User@index');
 
-    Route::get('user/logout', 'Web\Users@logout');
+    Route::get('user/logout', 'Web\User@logout');
 
-    Route::post('user/login','Web\Users@doLogin');
+    Route::post('user/login','Web\User@doLogin');
+
+    Route::get('user/createMember','Web\User@createMember');
 
 //后台相关路由
     Route::get('manage', 'Manage\Login@index');

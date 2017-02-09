@@ -143,9 +143,12 @@ class Dashboard extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'原密码错误！']);
         }
         else{
-            $password = password_hash($confirmPassword,PASSWORD_BCRYPT);
-            $affected = Manager::where('manager_code',$managerCode)->update(['password'=>$password, 'update_date'=>date("Y-m-d H:i:s",time())]);
-            if($affected){
+            $confirmPasswordE = password_hash($confirmPassword,PASSWORD_BCRYPT);
+            if($password === $confirmPasswordE){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'新密码与旧密码相同！']);
+            }
+            $affected = Manager::where('manager_code',$managerCode)->update(['password'=>$confirmPasswordE, 'update_date'=>date("Y-m-d H:i:s",time())]);
+            if($affected || $affected>0){
                 json_response(['status'=>'succ','type'=>'notice', 'res'=>'修改成功！']);
             }
             else{
