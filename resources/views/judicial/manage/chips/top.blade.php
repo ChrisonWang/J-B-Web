@@ -34,7 +34,7 @@
     </li>
     <li><a><p style="color: white"><strong>{{$managerInfo['role_name']}}</strong></p></a></li>
     <li><a href="javascript:void(0);" data-node="managerInfo" onclick="loadContent($(this))"><p style="color: white"><strong>个人信息</strong></p></a></li>
-    <li><a href="javascript:void(0)" data-node="changePassword" onclick="loadContent($(this))"><p style="color: white"><strong>修改密码</strong></p></a></li>
+    <li><a href="javascript:void(0);" data-node="changePassword" onclick="loadContent($(this))"><p style="color: white"><strong>修改密码</strong></p></a></li>
     <li><a href="logout"><p style="color: white"><strong>退出</strong></p></a></li>
 </ul>
 <!--模态框-->

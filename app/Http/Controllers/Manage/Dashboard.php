@@ -54,7 +54,7 @@ class Dashboard extends Controller
         $action = '_content_'.ucfirst($nodeId);
         if(!method_exists($this,$action)){
             $errorPage = view('judicial.notice.errorNode')->render();
-            json_response(['status'=>'faild','type'=>'content', 'content'=>$errorPage]);
+            json_response(['status'=>'faild','type'=>'page', 'res'=>$errorPage]);
         }
         else{
             $this->$action();
@@ -73,7 +73,7 @@ class Dashboard extends Controller
         $this->page_date['managerInfo'] = $managerInfo;
         $pageContent = view('judicial.manage.layout.managerInfo',$this->page_date)->render();
         //返回给前段
-        json_response(['status'=>'succ','type'=>'content', 'content'=>$pageContent]);
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
     /**
@@ -104,26 +104,61 @@ class Dashboard extends Controller
      */
     private function _content_ChangePassword()
     {
-        $loginStatus = $this->checkLoginStatus();
-        if(!$loginStatus){
-            json_response(['status'=>'failed','type'=>'redirect', 'content'=>$this->page_date['url']['login']]);
+        $managerCode = $this->checkLoginStatus();
+        if(!$managerCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_date['url']['login']]);
         }
         else{
-            $this->page_date['url']['changePassword'] = URL::to('manage/changePassword');
             $pageContent = view('judicial.manage.layout.changePassword',$this->page_date)->render();
             //返回给前段
-            json_response(['status'=>'succ','type'=>'content', 'content'=>$pageContent]);
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
     }
 
-    private function _changePassword()
+    public function changePassword(Request $request)
     {
-        $loginStatus = $this->checkLoginStatus();
-        if(!$loginStatus){
-            json_response(['status'=>'failed','type'=>'redirect', 'content'=>$this->page_date['url']['login']]);
+        $managerCode = $this->checkLoginStatus();
+        if(!$managerCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_date['url']['login']]);
         }
+        //解析用户提交的
+        $inputs = $request->input();
+        $oldPassword = preg_replace('/\s/', '', $inputs['oldPassword']);
+        $newPassword = preg_replace('/\s/', '', $inputs['newPassword']);
+        $confirmPassword = preg_replace('/\s/', '', $inputs['confirmPassword']);
+        //过滤不合法的提交
+        if(empty($oldPassword) || empty($newPassword) || empty($confirmPassword)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'密码不能包含空格！']);
+        }
+        if($inputs['newPassword'] != $inputs['confirmPassword']){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'两次输入的新密码不一致！']);
+        }
+        //验证用户
+        $manager = Manager::where('manager_code',$managerCode)->select('password')->first();
+        if(is_null($manager)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'用户不存在']);
+        }
+        $password = $manager['attributes']['password'];
+        if(!password_verify($oldPassword,$password)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'原密码错误！']);
+        }
+        else{
+            $password = password_hash($confirmPassword,PASSWORD_BCRYPT);
+            $affected = Manager::where('manager_code',$managerCode)->update(['password'=>$password, 'update_date'=>date("Y-m-d H:i:s",time())]);
+            if($affected){
+                json_response(['status'=>'succ','type'=>'notice', 'res'=>'修改成功！']);
+            }
+            else{
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
+            }
+        }
+
     }
 
+    /**
+     * 检查用户的登录状态
+     * @return bool|mixed
+     */
     public function checkLoginStatus()
     {
         if(!isset($_COOKIE['s']) || empty($_COOKIE['s'])){

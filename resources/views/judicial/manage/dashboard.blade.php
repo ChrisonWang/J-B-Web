@@ -14,7 +14,9 @@
 	</nav><!-- #Navigation -->
 	<!-- 中间容器 -->
 	<div id="page-wrapper" style="padding-top: 15px">
+		<div class="container-fluid" id="manageContainer">
 		@include('judicial.manage.layout.managerInfo')
+		</div>
 	</div><!-- 中间内容End -->
 
 </div>
@@ -27,10 +29,49 @@
 		$("#side-menu a").click(function(){
 			loadContent($(this));
 		});
-		$("#panel-body").click(function(){
-
-		});
 	});
+
+	//处理ajax返回
+	function ajaxResult(re,notice){
+		var container = $("#manageContainer");
+		switch (re.type){
+			case 'page':
+				container.html(re.res);
+				break;
+			case 'notice':
+				notice.removeClass('hidden');
+				notice.html(re.res);
+				break;
+			case 'error':
+				container.html(re.res);
+				break;
+			case 'redirect':
+				window.location.href = re.res;
+				break;
+			default:
+				return;
+		}
+	}
+
+	//修改密码
+	function toChangePassword(){
+		if(!checkInput()){
+			return
+		}
+		$("#changePasswordNotice").addClass('hidden');
+		$.ajax({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			async: false,
+			type: "POST",
+			url: '{{ URL::to('manage/changePassword') }}',
+			data: $('#changePasswordForm').serialize(),
+			success: function(re){
+				ajaxResult(re,$("#changePasswordNotice"));
+			}
+		});
+	}
 
 	//加载右侧内容
 	function loadContent(t){
@@ -46,31 +87,31 @@
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			},
+			async: false,
 			type: "POST",
 			url: url,
 			data: 'node_id='+node_id,
 			success: function(re){
-				if(re.status == 'succ'){
-					container.html(re.content)
-					return
-				}
-				else {
-					if(re.type == 'content'){
-						container.html(re.content);
-						return
-					}
-					else if(re.type == 'redirect'){
-						window.location.href = re.content;
-					}
-					else {
-						return;
-					}
-				}
+				ajaxResult(re);
 			}
 		});
 	}
 
-	function popModal(){
-		$('#manageModal').modal('show');
+	function checkInput(){
+		var newPass = $("#newPassword").val().replace(/(^s*)|(s*$)/g, "");
+		var confirmPass = $("#confirmPassword").val().replace(/(^s*)|(s*$)/g, "");
+		var oldPass = $("#oldPassword").val().replace(/(^s*)|(s*$)/g, "");
+		if(newPass.length==0 || confirmPass.length==0 || oldPass.length==0){
+			$("#changePasswordNotice").removeClass('hidden');
+			$("#changePasswordNotice").html("密码不能包含空格！");
+			return false;
+		}
+		if(newPass != confirmPass){
+			$("#changePasswordNotice").removeClass('hidden');
+			$("#changePasswordNotice").html("两次输入的密码不一致！");
+			return false;
+		}
+		return true;
 	}
+
 </script>

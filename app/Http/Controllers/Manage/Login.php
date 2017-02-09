@@ -42,21 +42,21 @@ class Login extends Controller
         $user = Manager::where('login_name',$inputs['loginName'])->select('manager_code','login_name','password','disabled')->first();
         $userInfo = $user['attributes'];
         if(is_null($user)){
-            json_response(['status'=>'faild', 'msg'=>'用户名或密码错误！']);
+            json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'用户不存在！']);
         }
         elseif($userInfo['disabled'] == 'yes'){
-            json_response(['status'=>'faild', 'msg'=>'账号被禁用，请联系管理员']);
+            json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'账号被禁用，请联系管理员']);
         }
 
         //验证密码
         if(!password_verify($inputs['passWord'],$userInfo['password'])){
-            json_response(['status'=>'faild', 'msg'=>'用户名或密码错误！']);
+            json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'用户名或密码错误！']);
         }
         else{
             setcookie("s",md5($userInfo['login_name']),time()+1800);
             session([md5($userInfo['login_name'])=>$userInfo['manager_code']]);
             Session::save();
-            json_response(['status'=>'succ', 'msg'=>'登陆成功！']);
+            json_response(['status'=>'succ', 'type'=>'notice', 'res'=>'登陆成功！']);
         }
 
     }
@@ -67,7 +67,7 @@ class Login extends Controller
      */
     public function ajaxRequest($action = null){
         if(!method_exists($this,'_ajax_'.$action)){
-            json_response(['status'=>'faild', 'msg'=>'不存在的方法']);
+            json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'不存在的方法']);
         }
         $_action = '_ajax_'.$action;
         $this->$_action($_REQUEST['loginName']);
@@ -81,14 +81,14 @@ class Login extends Controller
     private function _ajax_checkUser($loginName){
         $user = Manager::where('login_name',$loginName)->select('login_name','disabled')->first();
         if(is_null($user)){
-            json_response(['status'=>'faild', 'msg'=>'用户名不存在！']);
+            json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'用户名不存在！']);
 
         }
         elseif($user['attributes']['disabled'] == 'yes'){
-            json_response(['status'=>'faild', 'msg'=>'账号被禁用，请联系管理员']);
+            json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'账号被禁用，请联系管理员']);
         }
         else{
-            json_response(['status'=>'succ']);
+            json_response(['status'=>'succ', 'type'=>'notice', 'res'=>'ok']);
         }
     }
 

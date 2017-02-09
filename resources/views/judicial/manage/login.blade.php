@@ -54,7 +54,7 @@
 				success: function(re){
 					if(re.status == 'faild'){
 						$('#notice').removeClass('hidden');
-						$('#notice').text(re.msg);
+						$('#notice').text(re.res);
 					}
 				}
 			})
@@ -82,7 +82,7 @@
 				}
 				else{
 					$('#notice').removeClass('hidden');
-					$('#notice').text(re.msg);
+					$('#notice').text(re.res);
 				}
 			}
 		});

@@ -15,6 +15,11 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', function () {
         return view('welcome');
     });
+    Route::get('user','Web\Users@index');
+
+    Route::get('user/logout', 'Web\Users@logout');
+
+    Route::post('user/login','Web\Users@doLogin');
 
 //后台相关路由
     Route::get('manage', 'Manage\Login@index');
@@ -29,7 +34,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('manage/loadContent','Manage\Dashboard@loadContent');
 
-    Route::post('manage/changePassword','Manage\Dashboard@loadContent');
+    Route::post('manage/changePassword','Manage\Dashboard@changePassword');
 });
 
 /*
