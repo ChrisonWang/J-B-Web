@@ -1,7 +1,207 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2017/2/9
- * Time: 17:31
- */
+<!DOCTYPE HTML>
+<html>
+<!--引入公共头部-->
+@include('judicial.web.chips.head')
+<body>
+<!--头部导航-->
+@include('judicial.web.chips.nav')
+<div class="wrapper">
+    <div class="container-main">
+        <div class="login-box">
+            <div class="login-box-top" id="top-tab">
+                <div class="login-box-tap on"><a href="javascript:void(0);" data-page="login" id="tap-login">登录</a></div>
+                <div class="login-box-tap"><a href="javascript:void(0);" data-page="signup" id="tap-signup">注册</a></div>
+            </div>
+            <div>
+                <div class="container-fluid" style="margin-top: 30px"  id="login-container">
+                    <form class="form-horizontal" id="loginForm">
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-10">
+                                <input type="text" class="form-control" name="loginName" id="loginName" placeholder="请输入登录名/手机号/邮箱">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-10">
+                                <input type="password" class="form-control" name="passWord" id="passWord" placeholder="请输入密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-10">
+                                <p class="text-left hidden" id="notice" style="color: red"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-10">
+                                <button type="button" class="btn btn-danger btn-block" onclick="do_login()">登录</button>
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-top: 20px">
+                            <hr/>
+                            <div class="col-md-offset-1 col-md-10">
+                                <p class="login-link text-center">没有账号？<a href="javascript:void(0);" onclick="javascript:$('#tap-signup').click();">注册账号 >></a></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-10">
+                                <p class="login-link text-center"><a href="#">忘记密码?</a></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @include('judicial.web.chips.foot')
+</div>
+</body>
+</html>
+<script>
+    $(function(){
+        $("#top-tab a").click(function(){
+            var page = $(this).data("page");
+            var container = $("#login-container");
+            $("#top-tab a").parent().removeClass('on')
+            $(this).parent().addClass('on');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                async: false,
+                type: "POST",
+                url: "login/changeTab",
+                data: 'page='+page,
+                success: function(re){
+                    ajaxResult(re,container);
+                }
+            });
+        });
+    });
+
+    function checkLoginInput(){
+        var loginName = $("#loginName").val().replace(/(^s*)|(s*$)/g, "");
+        var passWord = $("#passWord").val().replace(/(^s*)|(s*$)/g, "");
+        var container = $("#notice");
+        if(loginName.length==0 || passWord.length==0){
+            container.removeClass('hidden');
+            container.html("账号或密码不能为空！");
+            return false;
+        }
+        else{
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                async: false,
+                type: "POST",
+                url: "user/login/checkInput",
+                data: {userInput: loginName, checkItem: 'login-login-name'},
+                success: function(re){
+                    if(re.status=='failed'){
+                        container.removeClass('hidden');
+                        container.html(re.res);
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                }
+            });
+        }
+    }
+
+    //处理ajax返回
+    function ajaxResult(re,container,notice){
+        switch (re.type){
+            case 'page':
+                container.html(re.res);
+                break;
+            case 'notice':
+                notice.removeClass('hidden');
+                notice.html(re.res);
+                break;
+            case 'error':
+                container.html(re.res);
+                break;
+            case 'redirect':
+                window.location.href = re.res;
+                break;
+            default:
+                return;
+        }
+    }
+
+    function do_login(){
+        $('#notice').text("");
+        $('#notice').addClass('hidden');
+        if(!checkLoginInput()){
+            return
+        }
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: "{{ $url['userLoginUrl'] }}",
+            data: $('#loginForm').serialize(),
+            dataType: "json",
+            success: function(re){
+                if(re.status == 'succ'){
+                    window.location.href = "/user";
+                }
+                else{
+                    $('#notice').removeClass('hidden');
+                    $('#notice').text(re.res);
+                }
+            }
+        });
+    }
+
+    function signup(){
+        if(!checkSignupInput()){
+            return
+        }
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: "{{URL::to('user/signup')}}",
+            data: $('#signupForm').serialize(),
+            dataType: "json",
+            success: function(re){
+                if(re.status == 'succ'){
+                    alert("注册成功！");
+                    window.location.href = "/user";
+                }
+                else{
+                    $('#notice').removeClass('hidden');
+                    $('#notice').text(re.res);
+                    $("#password").val('');
+                    $("#passwordConfirm").val('');
+                    return;
+                }
+            }
+        });
+    }
+
+    function checkSignupInput(){
+        var cellPhone = $("#cellPhone").val().replace(/(^s*)|(s*$)/g, "");
+        var loginName = $("#loginName").val().replace(/(^s*)|(s*$)/g, "");
+        var password = $("#password").val().replace(/(^s*)|(s*$)/g, "");
+        var passwordConfirm = $("#passwordConfirm").val().replace(/(^s*)|(s*$)/g, "");
+        var container = $("#notice");
+        if(loginName.length==0 || password.length==0 || passwordConfirm.length==0 || cellPhone.length==0){
+            container.removeClass('hidden');
+            container.html("必填信息不能为空！");
+            return false;
+        }
+        if(password != passwordConfirm){
+            container.removeClass('hidden');
+            container.html("两次输入的密码不一致！");
+            return false;
+        }
+        return true;
+    }
+</script>
