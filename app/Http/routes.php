@@ -12,9 +12,8 @@
 */
 Route::group(['middleware' => ['web']], function () {
     //前台相关路由
-    Route::get('/', function () {
-        return view('judicial.web.index');
-    });
+    Route::get('/', 'Web\Index@index');
+
     Route::get('user','Web\User@index');
 
     Route::get('user/login','Web\User@login');

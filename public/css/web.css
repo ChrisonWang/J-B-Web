@@ -193,6 +193,13 @@ body a{
     letter-spacing: 0;
     float: right;
 }
+.panel-member-top div.right a, .panel-member-top div.right a:hover{
+    text-decoration: none;
+    text-align: center;
+    font-family: "微软雅黑";
+    font-size: 12px;
+    color: #E23939;
+}
 .panel-member-body{
     width: 100%;
     height:auto;

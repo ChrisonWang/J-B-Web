@@ -43,7 +43,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-offset-1 col-md-10">
-                                <p class="login-link text-center"><a href="#">忘记密码?</a></p>
+                                <p class="login-link text-center"><a href="javascript:void(0);">忘记密码?</a></p>
                             </div>
                         </div>
                     </form>
@@ -76,6 +76,9 @@
             });
         });
     });
+    @if(isset($action) && $action == 'signup')
+            $('#tap-signup').click();
+    @endif
 
     function checkLoginInput(){
         var loginName = $("#loginName").val().replace(/(^s*)|(s*$)/g, "");
@@ -84,25 +87,24 @@
         if(loginName.length==0 || passWord.length==0){
             container.removeClass('hidden');
             container.html("账号或密码不能为空！");
-            return false;
+            return "error";
         }
         else{
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                async: false,
                 type: "POST",
-                url: "user/login/checkInput",
+                url: '{{ URL::to('user/login/checkInput') }}',
                 data: {userInput: loginName, checkItem: 'login-login-name'},
                 success: function(re){
                     if(re.status=='failed'){
                         container.removeClass('hidden');
                         container.html(re.res);
-                        return false;
+                        return "error";
                     }
                     else {
-                        return true;
+                        return "succ";
                     }
                 }
             });
@@ -133,8 +135,8 @@
     function do_login(){
         $('#notice').text("");
         $('#notice').addClass('hidden');
-        if(!checkLoginInput()){
-            return
+        if(checkLoginInput()=="no"){
+            return;
         }
         $.ajax({
             headers: {

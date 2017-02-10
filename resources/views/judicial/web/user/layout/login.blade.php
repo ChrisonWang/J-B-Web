@@ -22,12 +22,12 @@
     <div class="form-group" style="padding-top: 20px">
         <hr/>
         <div class="col-md-offset-1 col-md-10">
-            <p class="login-link text-center">没有账号？<a href="#">注册账号 >></a></p>
+            <p class="login-link text-center">没有账号？<a href="javascript:void(0);" onclick="javascript:$('#tap-signup').click();">注册账号 >></a></p>
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-offset-1 col-md-10">
-            <p class="login-link text-center"><a href="#">忘记密码?</a></p>
+            <p class="login-link text-center"><a href="javascript:void(0);">忘记密码?</a></p>
         </div>
     </div>
 </form>

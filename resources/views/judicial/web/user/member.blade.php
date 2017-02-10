@@ -11,24 +11,20 @@
         <div class="panel-member">
             <div class="panel-member-top">
                 <div class="title">账号信息</div>
-                <div class="right">修改账号密码</div>
+                <div class="right"><a href="javascript:void(0) ;">修改账号密码</a></div>
             </div>
             <div class="panel-member-body">
                 <div class="item">
-                    <p>用户姓名：</p>
-                    <p>王欣</p>
+                    <p>登录账号：</p>
+                    <p>{{ $memberInfo['loginName'] }}</p>
                 </div>
                 <div class="item">
-                    <p>用户姓名：</p>
-                    <p>王欣</p>
+                    <p>用户手机：</p>
+                    <p>{{ $memberInfo['cellPhone'] }}</p>
                 </div>
                 <div class="item">
-                    <p>用户姓名：</p>
-                    <p>王欣</p>
-                </div>
-                <div class="item">
-                    <p>用户姓名：</p>
-                    <p>王欣</p>
+                    <p>用户权限：</p>
+                    <p>{{ $memberInfo['memberLevel'] }}</p>
                 </div>
                 <div class="clear"></div>
             </div>
@@ -36,24 +32,16 @@
         <div class="panel-member">
             <div class="panel-member-top">
                 <div class="title">个人信息</div>
-                <div class="right">修改个人信息</div>
+                <div class="right"><a href="javascript:void(0) ;">修改个人信息</a></div>
             </div>
             <div class="panel-member-body">
                 <div class="item">
                     <p>用户姓名：</p>
-                    <p>王欣</p>
+                    <p>{{ $memberInfo['citizenName'] }}</p>
                 </div>
                 <div class="item">
-                    <p>用户姓名：</p>
-                    <p>王欣</p>
-                </div>
-                <div class="item">
-                    <p>用户姓名：</p>
-                    <p>王欣</p>
-                </div>
-                <div class="item">
-                    <p>用户姓名：</p>
-                    <p>王欣</p>
+                    <p>邮箱：</p>
+                    <p>{{ $memberInfo['email'] }}</p>
                 </div>
                 <div class="clear"></div>
             </div>

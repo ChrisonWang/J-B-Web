@@ -38,22 +38,43 @@ class User extends Controller
      */
     public function index(Request $request)
     {
+
         $loginStatus = $this->checkLoginStatus();
         if(!$loginStatus){
-            return redirect('user/login');
+            $action = $request->input('action');
+            return redirect()->action('Web\User@login',['action'=>$action]);
         }
         else{
             //获取用户信息
-            $memberInfo = json_encode($this->_getMemberInfo($loginStatus));
-            $this->page_date['memberInfo'] = json_decode($memberInfo,true);
+            $memberInfo = $this->_getMemberInfo($loginStatus);
+            //格式化用户信息
+            $memberLevel = DB::table('user_member_level')->select('level_title')->where('level_id', $memberInfo->member_level)->get();
+            $memberLevel = $memberLevel[0]->level_title;
+            $formatMemberInfo = array(
+                'loginName'=>$memberInfo->login_name,
+                'cellPhone'=>$memberInfo->cell_phone,
+                'email'=>empty($memberInfo->email) ? "未设置" : $memberInfo->email,
+                'memberLevel'=>$memberLevel,
+                'citizenName'=>empty($memberInfo->citizen_name) ? "未设置" : $memberInfo->citizen_name,
+                'sex'=>$memberInfo->sex == 'female' ? "女" : "男",
+                'identityNo'=>$memberInfo->identity_no,
+                'address'=>$memberInfo->address,
+                'description'=>$memberInfo->description
+            );
+            $this->page_date['memberInfo'] = $formatMemberInfo;
+            $this->page_date['is_signin'] = 'yes';
         }
         return view('judicial.web.user.member',$this->page_date);
     }
 
-    public function login()
+    public function login(Request $request)
     {
+        $action = $request->input('action');
         $loginStatus = $this->checkLoginStatus();
         if(!$loginStatus){
+            if($action == 'signup'){
+                $this->page_date['action'] = 'signup';
+            }
             return view('judicial.web.user.login',$this->page_date);
         }
         else{
@@ -195,7 +216,7 @@ class User extends Controller
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>"检查失败！"]);
                 break;
         }
-        return true;
+        json_response(['status'=>'succ','type'=>'notice', 'res'=>"验证通过"]);
     }
 
     /**
