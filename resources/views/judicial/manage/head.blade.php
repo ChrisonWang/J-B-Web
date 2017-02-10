@@ -1,5 +1,5 @@
 <head>
-    <title>三门峡市司法局管理系统后台登录</title>
+    <title>...</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="三门峡市司法局" />

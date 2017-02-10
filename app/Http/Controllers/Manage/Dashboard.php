@@ -171,7 +171,7 @@ class Dashboard extends Controller
         $managerCode = session($login_name);
         //验证用户
         $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name')->first();
-        if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name){
+        if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name || $managerInfo['attributes']['disabled']=='yes'){
             return false;
         }
         else{

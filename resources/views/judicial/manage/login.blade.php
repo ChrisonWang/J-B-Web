@@ -24,8 +24,13 @@
 					  </div>
 				  </div>
 				  <div class="form-group">
+					  <div class="col-md-5">
+						  <p class="text-left hidden" id="notice" style="color: red"></p>
+					  </div>
+				  </div>
+				  <div class="form-group">
 					  <hr/>
-					  <div class="col-sm-offset-1 col-sm-5">
+					  <div class="col-md-offset-1 col-md-5">
 						  <input type="button" onclick="do_login()" value="登录" class="btn btn-primary btn-block">
 					  </div>
 					  <div class=" col-sm-5">

@@ -20,18 +20,18 @@ function gen_unique_code($prefix='MEM_'){
     return $password;
 }
 
-function phone($str){
-    $pattern = '^1[34578]\d{9}$';
+function preg_phone($str){
+    $pattern = '/^1[34578]\d{9}$/';
     return(preg_match($pattern, $str));
 }
 
 function preg_email($str){
-    $pattern = '^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$';
+    $pattern = '/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/';
     return(preg_match($pattern, $str));
 }
 
 function preg_login_name($str){
-    $pattern = '^[a-zA-Z0-9_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$';
+    $pattern = '/^[a-zA-Z0-9_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/';
     $rs = preg_match($pattern, $str);
     if($rs){
         $strLenth = strlen($str);

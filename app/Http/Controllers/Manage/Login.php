@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Session;
+
 use Illuminate\Support\Facades\URL;
 
 use App\Http\Requests;
