@@ -44,11 +44,11 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .id_sch_r button {background: #DD3938;border-radius: 0 2px 2px 0;border: 0;color: #fff;width: 80px;height: 35px;position: relative;right: 3px;font-size: 14px;}
 
 /*banner*/
-.idx_banner .swiper-pagination-bullet-active{background: #DD3938;}
+.idx_banner .swiper-pagination-bullet-active{background: #222222;}
 .idx_banner{overflow: hidden;}
 .idb_left{float: left;}
 .banner_sd {width: 550px;height: 350px;overflow: hidden;}
-.banner_sd .swiper-pagination-bullet{width: 10px;height: 10px;}
+.banner_sd .swiper-pagination-bullet{width: 20px;height: 20px;}
 
 .idb_right {float: right;}
 .idbr_top {background: #DD3938;border-radius: 2px;width: 410px;height: 40px;line-height: 40px;}
@@ -65,7 +65,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 /*视频模块*/
 .idx_vedio{margin: 20px auto; overflow: hidden;}
 .vd_left{width: 350px; height: 250px; background: #F9F9F9; border: 1px solid #ECECEC; text-align: center; position: relative; padding-top: 50px; float: left;}
-.vd_tit{position: absolute; color: #DD3938; font-size: 13px; left: 0; width: 60px; display: block; padding-left: 10px; border-left: 5px solid #DD3938; height: 25px; line-height: 25px; top: 10px;}
+.vd_tit{ position: absolute; color: #DD3938; font-size: 13px; left: 0; min-width: 60px; display: block; padding-left: 10px; border-left: 5px solid #DD3938; height: 25px; line-height: 25px; top: 10px;}
 .vd_mid{width: 400px; height: 275px; position: relative; float: left; background: #F9F9F9; border: 1px solid #ECECEC; margin-left: 20px; padding-top: 25px;}
 .vd_mid ul{overflow: hidden;}
 .vd_mid ul li{width: 160px; height: 100px; float: left; background-color: #ECECEC; margin-left: 25px; margin-top: 25px; text-align: center;}

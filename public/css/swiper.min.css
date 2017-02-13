@@ -181,11 +181,11 @@
 }
 
 .swiper-pagination-bullet {
-    width: 6px;
-    height: 6px;
+    width: 20px;
+    height: 20px;
     display: inline-block;
-    border-radius: 100%;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255,255,255,0.10);
+    border: 1px solid #222222;
 }
 
 button.swiper-pagination-bullet {

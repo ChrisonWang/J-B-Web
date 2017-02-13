@@ -93,7 +93,7 @@ class User extends Controller
         }else{
             $userInfo = $this->_getMemberInfo($member_code);
             setcookie("_token",md5($userInfo->login_name),time()+1800);
-            session([md5($userInfo->login_name)=>$userInfo->member_code]);
+            Session::put(md5($userInfo['login_name']),$userInfo['manager_code'],30);
             Session::save();
             json_response(['status'=>'succ', 'type'=>'redirect', 'res'=>$this->page_date['url']['user']]);
         }
@@ -118,7 +118,7 @@ class User extends Controller
         }
         else{
             setcookie("_token",md5($userInfo->login_name),time()+1800);
-            session([md5($userInfo->login_name)=>$userInfo->member_code]);
+            Session::put(md5($userInfo['login_name']),$userInfo['manager_code'],30);
             Session::save();
             json_response(['status'=>'succ', 'type'=>'notice', 'res'=>'登陆成功！']);
         }

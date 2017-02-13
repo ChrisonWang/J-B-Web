@@ -55,7 +55,7 @@ class Login extends Controller
         }
         else{
             setcookie("s",md5($userInfo['login_name']),time()+1800);
-            session([md5($userInfo['login_name'])=>$userInfo['manager_code']]);
+            Session::put(md5($userInfo['login_name']),$userInfo['manager_code'],30);
             Session::save();
             json_response(['status'=>'succ', 'type'=>'notice', 'res'=>'登陆成功！']);
         }

@@ -10,8 +10,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::group(['middleware' => ['web']], function () {
-    //前台相关路由
+//前台相关路由
+Route::group(['middleware' => ['web','user.verify']], function () {
+
     Route::get('/', 'Web\Index@index');
 
     Route::get('user','Web\User@index');
@@ -29,9 +30,12 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('user/login/checkInput','Web\User@_ajax_checkInput');
 
     Route::post('user/createMember','Web\User@createMember');
+});
 
 
 //后台相关路由
+Route::group(['middleware' => ['web','manage.verify']], function () {
+
     Route::get('manage', 'Manage\Login@index');
 
     Route::get('manage/logout', 'Manage\Login@logout');
