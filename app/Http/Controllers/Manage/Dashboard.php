@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Session;
+
 use Illuminate\Support\Facades\URL;
 
 use App\Http\Requests;
@@ -94,14 +96,14 @@ class Dashboard extends Controller
             return false;
         }
         //获取数据
-        $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','cell_phone','email','nickname','role_id','office_id','type_id','user_type','disabled','create_date')->first();
+        $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','cell_phone','email','nickname','role_id','office_id','type_id','type_id','disabled','create_date')->first();
         $managerInfo = $managerInfo['attributes'];
         $officeInfo = DB::table('user_office')->select('office_name')->where('id', $managerInfo['office_id'])->get();
         $roleInfo = DB::table('user_role')->select('role_name','role_permisson')->where('role_id', $managerInfo['role_id'])->get();
         $typeInfo = DB::table('user_type')->select('type_name')->where('type_id', $managerInfo['type_id'])->get();
         $managerInfo['office_name'] = $officeInfo[0]->office_name;
         $managerInfo['role_name'] = $roleInfo[0]->role_name;
-        $managerInfo['type_id'] = $roleInfo[0]->type_name;
+        $managerInfo['type_name'] = $typeInfo[0]->type_name;
 
         return $managerInfo;
     }
@@ -138,9 +140,9 @@ class Dashboard extends Controller
                 $m_role[$i]['role_checked'] = ($role->role_name==$managerInfo['role_name']) ? 'yes':'no';
             }
             foreach($types as $i => $type){
-                $m_type[$i]['role_id'] = $type->type_id;
-                $m_type[$i]['role_name'] = $type->type_name;
-                $m_type[$i]['role_checked'] = ($type->type_name==$managerInfo['type_name']) ? 'yes':'no';
+                $m_type[$i]['type_id'] = $type->type_id;
+                $m_type[$i]['type_name'] = $type->type_name;
+                $m_type[$i]['type_checked'] = ($type->type_name==$managerInfo['type_name']) ? 'yes':'no';
             }
             $managerInfo['office_name'] = $m_office;
             $managerInfo['role_name'] = $m_role;
@@ -153,11 +155,70 @@ class Dashboard extends Controller
         }
     }
 
-    public function editManagerInfo(Request $request)
+    public function toEditManagerInfo(Request $request)
     {
+        $managerCode = $this->checkLoginStatus();
+        if(!$managerCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_data['url']['login']]);
+        }
         $inputs = $request->input();
-        if(!!$this->_checkManagerInput($inputs)){
+        if(!!$this->_checkManagerInput($inputs,$managerCode)){
+            $change_password = empty($inputs['password']) ? false : true;
+            $member_code = $this->editManagerInfo($inputs,$managerCode,$change_password,$request);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
+        }
+    }
 
+    private function editManagerInfo($inputs,$managerCode,$change_password,Request $request)
+    {
+        if($change_password === true){
+            $save_data = array(
+                'login_name' => $inputs['login_name'],
+                'role_id' => $inputs['user_role'],
+                'office_id' => $inputs['user_office'],
+                'type_id' => $inputs['user_type'],
+                'cell_phone' => $inputs['cell_phone'],
+                'email' => $inputs['email'],
+                'nickname' => $inputs['nickname'],
+                'disabled' => $inputs['disabled'],
+                'password' => password_hash($inputs['password'], PASSWORD_BCRYPT),
+                'update_date' => date('Y-m-d H:i:s',time())
+            );
+        }
+        else{
+            $save_data = array(
+                'login_name' => $inputs['login_name'],
+                'role_id' => $inputs['user_role'],
+                'office_id' => $inputs['user_office'],
+                'type_id' => $inputs['user_type'],
+                'cell_phone' => $inputs['cell_phone'],
+                'email' => $inputs['email'],
+                'nickname' => $inputs['nickname'],
+                'disabled' => $inputs['disabled'],
+                'update_date' => date('Y-m-d H:i:s',time())
+            );
+        }
+        $res = DB::table('user_manager')->where('manager_code', $managerCode)->update($save_data);
+        if($res>0){
+            if($change_password === true){
+                $login_name = $_COOKIE['s'];
+                $request->session()->forget($login_name);
+                setcookie('s','',time()-3600);
+                Session::save();
+                json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
+            }
+            else{
+                $managerInfo = $this->_getManagerInfo($managerCode);
+                //传递值到模板
+                $this->page_data['managerInfo'] = $managerInfo;
+                $pageContent = view('judicial.manage.layout.managerInfo',$this->page_data)->render();
+                json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+            }
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
         }
     }
 
@@ -215,7 +276,7 @@ class Dashboard extends Controller
             $affected = Manager::where('manager_code',$managerCode)->update(['password'=>$confirmPasswordE, 'update_date'=>date("Y-m-d H:i:s",time())]);
             if($affected || $affected>0){
                 $request->session()->forget($_COOKIE['s']);
-                setcookie('s','',time()-3600);
+                setcookie('s','',time()-3600*24);
                 json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
             }
             else{
@@ -239,6 +300,7 @@ class Dashboard extends Controller
         //验证用户
         $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','disabled')->first();
         if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name || $managerInfo['attributes']['disabled']=='yes'){
+            setcookie('s','',time()-3600*24);
             return false;
         }
         else{
@@ -249,29 +311,35 @@ class Dashboard extends Controller
     /**
      * 检查提交的用户信息表单
      */
-    private function _checkManagerInput($input)
+    private function _checkManagerInput($input,$managerCode)
     {
-        if($input['password'] != $input['password_confirm']){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"两次密码输入不一致"]);
-        }
-        elseif(!preg_phone($input['cell_Phone'])){
+        if(!preg_phone($input['cell_phone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入正确的手机号！"]);
         }
-        elseif($this->_phoneExist($input['cell_Phone'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cell_Phone']." 已经被注册过了"]);
+        elseif($this->_phoneExist($input['cell_phone'],$managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cell_Phone']." 已存在"]);
         }
-        elseif(!preg_login_name($input['login_name'])){
+        elseif(!preg_manager_name($input['login_name'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法！"]);
         }
-        elseif($this->_loginNameExist($input['login_name'])){
+        elseif($this->_loginNameExist($input['login_name'],$managerCode)){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名已存在！"]);
         }
-        elseif(!preg_password($input['password_confirm'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);
+        elseif(!preg_email($input['email'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱不合法！"]);
         }
-        else{
-            return true;
+        elseif($this->_emailExist($input['email'],$managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱已存在！"]);
         }
+        elseif($this->_nicknameExist($input['nickname'],$managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名已存在！"]);
+        }
+        elseif(!empty($input['password'])){
+            if(!preg_password($input['password'])){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);
+            }
+        }
+        return true;
     }
 
     /**
@@ -279,9 +347,10 @@ class Dashboard extends Controller
      * @param $phone
      * @return bool
      */
-    private function _phoneExist($phone){
-        $user = Manager::where('cell_phone',$phone)->select('manager_code')->first();
-        if(is_null($user)){
+    private function _phoneExist($phone,$manager_code){
+        $sql = 'SELECT manager_code FROM user_manager WHERE `cell_phone` = "'.$phone.'" AND `manager_code` != "'.$manager_code.'"';
+        $res = DB::select($sql);
+        if(count($res)<1){
             return false;
         }else{
             return true;
@@ -293,9 +362,43 @@ class Dashboard extends Controller
      * @param $loginName
      * @return bool
      */
-    private function _loginNameExist($loginName){
-        $user = Manager::where('login_name',$loginName)->select('manager_code')->first();
-        if(is_null($user)){
+    private function _loginNameExist($loginName,$manager_code)
+    {
+        $sql = 'SELECT manager_code FROM user_manager WHERE `login_name` = "'.$loginName.'" AND `manager_code` != "'.$manager_code.'"';
+        $res = DB::select($sql);
+        if(count($res)<1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 检查是否存在的昵称
+     * @param $loginName
+     * @return bool
+     */
+    private function _nicknameExist($nickName,$manager_code)
+    {
+        $sql = 'SELECT manager_code FROM user_manager WHERE `nickname` = "'.$nickName.'" AND `manager_code` != "'.$manager_code.'"';
+        $res = DB::select($sql);
+        if(count($res)<1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 检查是否存在的邮箱
+     * @param $email
+     * @return bool
+     */
+    private function _emailExist($email,$manager_code)
+    {
+        $sql = 'SELECT manager_code FROM user_manager WHERE `email` = "'.$email.'" AND `manager_code` != "'.$manager_code.'"';
+        $res = DB::select($sql);
+        if(count($res)<1){
             return false;
         }else{
             return true;

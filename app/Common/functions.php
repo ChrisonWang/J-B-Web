@@ -42,8 +42,13 @@ function preg_login_name($str){
     return $rs;
 }
 
+function preg_manager_name($str){
+    $pattern = '/((?=.*\d)(?=.*\D)|(?=.*\d)|(?=.*[a-zA-Z])|(?=.*[a-zA-Z])(?=.*[^a-zA-Z]))^.{5,16}$/';
+    return(preg_match($pattern, $str));
+}
+
 function preg_password($str){
-    $pattern = '/^[a-zA-Z\d_]{8,16}$/';
+    $pattern = '/((?=.*\d)(?=.*\D)|(?=.*\d)|(?=.*[a-zA-Z])|(?=.*[a-zA-Z])(?=.*[^a-zA-Z]))^.{8,16}$/';
     return(preg_match($pattern, $str));
 }
 

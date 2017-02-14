@@ -1,6 +1,11 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">个人信息</h3>
+        <h3 class="panel-title">个人信息
+        </h3>
+        <div class="pull-right">
+            <i class="fa fa-check-square-o fa-2"></i>
+            <a href="javascript:void(0);" data-node="EditManagerInfo" onclick="loadContent($(this))">编辑</a>
+        </div>
     </div>
     <div class="panel-body">
         <dl class="dl-horizontal">
@@ -9,7 +14,7 @@
         </dl>
         <dl class="dl-horizontal">
             <dt>用户类型：</dt>
-            <dd>{{$managerInfo['user_type']=="manager"?"系统用户":""}}</dd>
+            <dd>{{$managerInfo['type_name']}}</dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>科室：</dt>

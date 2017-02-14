@@ -77,6 +77,26 @@
 		});
 	}
 
+	//修改个人资料
+	function doEdit(){
+		$("#editManagerInfoNotice").addClass('hidden');
+		$.ajax({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			async: false,
+			type: "POST",
+			url: '{{ URL::to('manage/dashboard/editManagerInfo') }}',
+			data: $('#editManagerInfoForm').serialize(),
+			success: function(re){
+				if(re.status == 'succ'){
+					alert("修改成功！");
+				}
+				ajaxResult(re,$("#editManagerInfoNotice"));
+			}
+		});
+	}
+
 	//加载右侧内容
 	function loadContent(t){
 		var node_id = t.data("node");
@@ -101,6 +121,7 @@
 		});
 	}
 
+	//检查输入
 	function checkInput(){
 		var newPass = $("#newPassword").val().replace(/(^s*)|(s*$)/g, "");
 		var confirmPass = $("#confirmPassword").val().replace(/(^s*)|(s*$)/g, "");

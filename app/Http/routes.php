@@ -44,6 +44,8 @@ Route::group(['middleware' => ['web','manage.verify']], function () {
 
     Route::get('manage/dashboard',['as'=>'dashBoard', 'uses'=>'Manage\Dashboard@index']);
 
+    Route::post('manage/dashboard/editManagerInfo','Manage\Dashboard@toEditManagerInfo');
+
     Route::post('manage/ajax/{action}','Manage\Login@ajaxRequest');
 
     Route::post('manage/loadContent','Manage\Dashboard@loadContent');
