@@ -68,6 +68,10 @@
 			url: '{{ URL::to('manage/changePassword') }}',
 			data: $('#changePasswordForm').serialize(),
 			success: function(re){
+				if(re.status == 'succ' && re.type == 'redirect'){
+					alert("修改成功！请重新登录");
+					window.location.href = re.res;
+				}
 				ajaxResult(re,$("#changePasswordNotice"));
 			}
 		});

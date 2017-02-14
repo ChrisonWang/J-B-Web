@@ -19,13 +19,14 @@ class Dashboard extends Controller
 
     public function __construct()
     {
-        $this->page_date['url'] = array(
+        $this->page_data['url'] = array(
             'loginUrl' => URL::route('loginUrl'),
             'webUrl' => URL::to('/'),
             'ajaxUrl' => URL::to('/'),
             'login' => URL::to('manage'),
             'loadContent' => URL::to('manage/loadContent'),
         );
+        $this->manager_code = $this->checkLoginStatus();
     }
 
     public function index(Request $request)
@@ -38,9 +39,9 @@ class Dashboard extends Controller
         else{
             //获取用户信息
             $managerInfo = $this->_getManagerInfo($loginStatus);
-            $this->page_date['managerInfo'] = $managerInfo;
+            $this->page_data['managerInfo'] = $managerInfo;
         }
-        return view('judicial.manage.dashboard',$this->page_date);
+        return view('judicial.manage.dashboard',$this->page_data);
     }
 
     /**
@@ -68,12 +69,18 @@ class Dashboard extends Controller
      */
     private function _content_ManagerInfo()
     {
-        $managerInfo = $this->_getManagerInfo('123');
-        //传递值到模板
-        $this->page_date['managerInfo'] = $managerInfo;
-        $pageContent = view('judicial.manage.layout.managerInfo',$this->page_date)->render();
-        //返回给前段
-        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        $managerCode = $this->checkLoginStatus();
+        if(!$managerCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_data['url']['login']]);
+        }
+        else{
+            $managerInfo = $this->_getManagerInfo($managerCode);
+            //传递值到模板
+            $this->page_data['managerInfo'] = $managerInfo;
+            $pageContent = view('judicial.manage.layout.managerInfo',$this->page_data)->render();
+            //返回给前段
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        }
     }
 
     /**
@@ -87,14 +94,71 @@ class Dashboard extends Controller
             return false;
         }
         //获取数据
-        $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','cell_phone','email','nickname','role_id','office_id','user_type')->first();
+        $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','cell_phone','email','nickname','role_id','office_id','type_id','user_type','disabled','create_date')->first();
         $managerInfo = $managerInfo['attributes'];
         $officeInfo = DB::table('user_office')->select('office_name')->where('id', $managerInfo['office_id'])->get();
         $roleInfo = DB::table('user_role')->select('role_name','role_permisson')->where('role_id', $managerInfo['role_id'])->get();
+        $typeInfo = DB::table('user_type')->select('type_name')->where('type_id', $managerInfo['type_id'])->get();
         $managerInfo['office_name'] = $officeInfo[0]->office_name;
         $managerInfo['role_name'] = $roleInfo[0]->role_name;
+        $managerInfo['type_id'] = $roleInfo[0]->type_name;
 
         return $managerInfo;
+    }
+
+    /**
+     * 修改用户资料模板
+     * @param null $managerCode
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function  _content_EditManagerInfo()
+    {
+        $managerCode = $this->checkLoginStatus();
+        if(!$managerCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_data['url']['login']]);
+        }
+        else{
+            $managerInfo = $this->_getManagerInfo($managerCode);
+            //格式化办公室信息/角色信息/用户类型
+            $offices = DB::table('user_office')->select('id','office_name')->get();
+            $roles = DB::table('user_role')->select('role_id','role_name')->get();
+            $types = DB::table('user_type')->select('type_id','type_name')->get();
+            $m_office = array();
+            $m_role = array();
+            $m_type = array();
+            foreach($offices as $i => $office){
+                $m_office[$i]['office_id'] = $office->id;
+                $m_office[$i]['office_name'] = $office->office_name;
+                $m_office[$i]['office_checked'] = ($office->office_name==$managerInfo['office_name']) ? 'yes':'no';
+            }
+            foreach($roles as $i => $role){
+                $m_role[$i]['role_id'] = $role->role_id;
+                $m_role[$i]['role_name'] = $role->role_name;
+                $m_role[$i]['role_checked'] = ($role->role_name==$managerInfo['role_name']) ? 'yes':'no';
+            }
+            foreach($types as $i => $type){
+                $m_type[$i]['role_id'] = $type->type_id;
+                $m_type[$i]['role_name'] = $type->type_name;
+                $m_type[$i]['role_checked'] = ($type->type_name==$managerInfo['type_name']) ? 'yes':'no';
+            }
+            $managerInfo['office_name'] = $m_office;
+            $managerInfo['role_name'] = $m_role;
+            $managerInfo['type_name'] = $m_type;
+            //传递值到模板
+            $this->page_data['managerInfo'] = $managerInfo;
+            $pageContent = view('judicial.manage.layout.editManagerInfo',$this->page_data)->render();
+            //返回给前端
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        }
+    }
+
+    public function editManagerInfo(Request $request)
+    {
+        $inputs = $request->input();
+        if(!!$this->_checkManagerInput($inputs)){
+
+        }
     }
 
     /**
@@ -106,10 +170,10 @@ class Dashboard extends Controller
     {
         $managerCode = $this->checkLoginStatus();
         if(!$managerCode){
-            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_date['url']['login']]);
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_data['url']['login']]);
         }
         else{
-            $pageContent = view('judicial.manage.layout.changePassword',$this->page_date)->render();
+            $pageContent = view('judicial.manage.layout.changePassword',$this->page_data)->render();
             //返回给前段
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
@@ -119,7 +183,7 @@ class Dashboard extends Controller
     {
         $managerCode = $this->checkLoginStatus();
         if(!$managerCode){
-            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_date['url']['login']]);
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_data['url']['login']]);
         }
         //解析用户提交的
         $inputs = $request->input();
@@ -144,12 +208,15 @@ class Dashboard extends Controller
         }
         else{
             $confirmPasswordE = password_hash($confirmPassword,PASSWORD_BCRYPT);
-            if($password === $confirmPasswordE){
+            if(password_verify($password,$confirmPassword)){
+            //if($password === $confirmPasswordE){
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>'新密码与旧密码相同！']);
             }
             $affected = Manager::where('manager_code',$managerCode)->update(['password'=>$confirmPasswordE, 'update_date'=>date("Y-m-d H:i:s",time())]);
             if($affected || $affected>0){
-                json_response(['status'=>'succ','type'=>'notice', 'res'=>'修改成功！']);
+                $request->session()->forget($_COOKIE['s']);
+                setcookie('s','',time()-3600);
+                json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
             }
             else{
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
@@ -176,6 +243,62 @@ class Dashboard extends Controller
         }
         else{
             return $managerCode;
+        }
+    }
+
+    /**
+     * 检查提交的用户信息表单
+     */
+    private function _checkManagerInput($input)
+    {
+        if($input['password'] != $input['password_confirm']){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"两次密码输入不一致"]);
+        }
+        elseif(!preg_phone($input['cell_Phone'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入正确的手机号！"]);
+        }
+        elseif($this->_phoneExist($input['cell_Phone'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cell_Phone']." 已经被注册过了"]);
+        }
+        elseif(!preg_login_name($input['login_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法！"]);
+        }
+        elseif($this->_loginNameExist($input['login_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名已存在！"]);
+        }
+        elseif(!preg_password($input['password_confirm'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);
+        }
+        else{
+            return true;
+        }
+    }
+
+    /**
+     * 检查是否存在手机号
+     * @param $phone
+     * @return bool
+     */
+    private function _phoneExist($phone){
+        $user = Manager::where('cell_phone',$phone)->select('manager_code')->first();
+        if(is_null($user)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 检查授粉存在的用户名
+     * @param $loginName
+     * @return bool
+     */
+    private function _loginNameExist($loginName){
+        $user = Manager::where('login_name',$loginName)->select('manager_code')->first();
+        if(is_null($user)){
+            return false;
+        }else{
+            return true;
         }
     }
 
