@@ -93,7 +93,7 @@ class User extends Controller
         }else{
             $userInfo = $this->_getMemberInfo($member_code);
             setcookie("_token",md5($userInfo->login_name),time()+1800);
-            Session::put(md5($userInfo['login_name']),$userInfo['manager_code'],30);
+            Session::put(md5($userInfo->login_name),$userInfo->member_code,30);
             Session::save();
             json_response(['status'=>'succ', 'type'=>'redirect', 'res'=>$this->page_date['url']['user']]);
         }
@@ -118,7 +118,7 @@ class User extends Controller
         }
         else{
             setcookie("_token",md5($userInfo->login_name),time()+1800);
-            Session::put(md5($userInfo['login_name']),$userInfo['manager_code'],30);
+            Session::put(md5($userInfo->login_name),$userInfo->member_code,30);
             Session::save();
             json_response(['status'=>'succ', 'type'=>'notice', 'res'=>'登陆成功！']);
         }
@@ -180,14 +180,17 @@ class User extends Controller
             return false;
         }
         $login_name = $_COOKIE['_token'];
-        $managerCode = session($login_name);
+        $memberCode = session($login_name);
+        if(empty($memberCode) || !$memberCode){
+            return false;
+        }
         //验证用户
-        $memberInfo = Members::where('member_code',$managerCode)->select('login_name','disabled')->first();
+        $memberInfo = Members::where('member_code',$memberCode)->select('login_name','disabled')->first();
         if(is_null($memberInfo) || md5($memberInfo['attributes']['login_name'])!=$login_name || $memberInfo['attributes']['disabled']=='yes'){
             return false;
         }
         else{
-            return $managerCode;
+            return $memberCode;
         }
     }
 
@@ -230,9 +233,18 @@ class User extends Controller
             return false;
         }
         //获取数据
-        $managerInfo = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->first();
-
-        return $managerInfo;
+        $memberCount = DB::table('user_members')->where('member_code',$managerCode)->first();
+        $memberCount = json_decode(json_encode($memberCount),true);
+        if(is_null($memberCount)){
+            return false;
+        }
+        else{
+            $memberInfo = DB::table('user_member_info')->where('member_code',$managerCode)->first();
+            $memberInfo = json_decode(json_encode($memberInfo),true);
+        }
+        $memberInfo = array_merge($memberCount,$memberInfo);
+        $memberInfo = json_decode(json_encode($memberInfo));
+        return $memberInfo;
     }
 
     /**
@@ -245,7 +257,17 @@ class User extends Controller
         $user = Members::where('login_name',$loginName)->select('member_code','password','disabled')->first();
         $userInfo = $user['attributes'];
         if(is_null($user)){
-            return ['status'=>false,'res'=>"用户不存在！"];
+            $user = Members::where('cell_phone',$loginName)->select('member_code','password','disabled')->first();
+            $userInfo = $user['attributes'];
+            if(is_null($user)){
+                return ['status'=>false,'res'=>"用户不存在！"];
+            }
+            elseif($userInfo['disabled'] == 'yes'){
+                return ['status'=>false,'res'=>"账户被禁用，请联系管理员！"];
+            }
+            else{
+                return ['status'=>true,'res'=>$userInfo['member_code']];
+            }
         }
         elseif($userInfo['disabled'] == 'yes'){
             return ['status'=>false,'res'=>"账户被禁用，请联系管理员！"];
@@ -253,6 +275,161 @@ class User extends Controller
         else{
             return ['status'=>true,'res'=>$userInfo['member_code']];
         }
+    }
+
+    /**
+     * 修改手机号码页面
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|View
+     */
+    public function changePhone(Request $request)
+    {
+        $memberCode = $this->checkLoginStatus();
+        if(!$memberCode){
+            return redirect('user/login');
+        }
+        return view('judicial.web.user.layout.changePhone');
+    }
+
+    public function doChangePhone(Request $request)
+    {
+        $memberCode = $this->checkLoginStatus();
+        if(!$memberCode){
+            return redirect('user/login');
+        }
+        //解析用户提交的
+        $inputs = $request->input();
+        $cell_phone = preg_replace('/\s/', '', $inputs['cell_phone']);
+        if(empty($cell_phone)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'手机号不能为空！']);
+        }
+        elseif(!preg_phone($cell_phone)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请输入正确的11位手机号码！']);
+        }
+        elseif($this->_phoneExist($cell_phone,$memberCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'手机号已存在！']);
+        }
+        //验证用户
+        $member = Members::where('member_code',$memberCode)->select('password','cell_phone')->first();
+        if($cell_phone == $member['attributes']['cell_phone']){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'与原手机号码相同']);
+        }
+        else{
+            //以事务的方式修改
+            DB::beginTransaction();
+            $id = DB::table('user_members')->where('member_code',$memberCode)->update(['cell_phone'=>$cell_phone]);
+            if($id === false){
+                DB::rollback();
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+            }
+            $iid = $res = DB::table('user_member_info')->where('member_code',$memberCode)->update(['update_date'=>date('Y-m-d H:i:s', time())]);
+            if($iid === false){
+                DB::rollback();
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+            }
+            DB::commit();
+            json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('user')]);
+        }
+    }
+
+
+    /**
+     * 修改密码
+     * @param Request $request
+     */
+    public function changePassword(Request $request)
+    {
+        $memberCode = $this->checkLoginStatus();
+        if(!$memberCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('user/login') ]);
+        }
+        //解析用户提交的
+        $inputs = $request->input();
+        $oldPassword = preg_replace('/\s/', '', $inputs['oldPassword']);
+        $newPassword = preg_replace('/\s/', '', $inputs['newPassword']);
+        $confirmPassword = preg_replace('/\s/', '', $inputs['confirmPassword']);
+        //过滤不合法的提交
+        if(empty($oldPassword) || empty($newPassword) || empty($confirmPassword)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'密码不能包含空格！']);
+        }
+        if($inputs['newPassword'] != $inputs['confirmPassword']){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'两次输入的新密码不一致！']);
+        }
+        //验证用户
+        $member = Members::where('member_code',$memberCode)->select('password')->first();
+        if(is_null($member)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'用户不存在']);
+        }
+        $password = $member['attributes']['password'];
+        if(!password_verify($oldPassword,$password)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'原密码错误！']);
+        }
+        else{
+            $confirmPasswordE = password_hash($confirmPassword,PASSWORD_BCRYPT);
+            if(password_verify($password,$confirmPassword)){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'新密码与旧密码相同！']);
+            }
+            $affected = Members::where('member_code',$memberCode)->update(['password'=>$confirmPasswordE]);
+            if($affected || $affected>0){
+                $request->session()->forget($_COOKIE['_token']);
+                setcookie('s','',time()-3600*24);
+                Session::save();
+                json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('user/login')]);
+            }
+            else{
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
+            }
+        }
+    }
+
+    /**
+     * 修改用户信息
+     * @param Request $request
+     */
+    public function changeInfo(Request $request)
+    {
+        $memberCode = $this->checkLoginStatus();
+        if(!$memberCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('user/login') ]);
+        }
+        //解析用户提交的
+        $inputs = $request->input();
+        $citizen_name = preg_replace('/\s/', '', $inputs['citizen_name']);
+        $email = preg_replace('/\s/', '', $inputs['email']);
+        if(empty($citizen_name)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
+        }elseif(empty($email)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'邮箱不能为空！']);
+        }
+        if(!preg_email($email)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请输入正确的邮箱！']);
+        }
+        elseif($this->_emailExist($email,$memberCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'邮箱已存在！']);
+        }
+        //以事务的方式修改
+        DB::beginTransaction();
+        $id = DB::table('user_member_info')->where('member_code',$memberCode)->update(['citizen_name'=>$citizen_name]);
+        if($id === false){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+        }
+        $iid = DB::table('user_members')->where('member_code',$memberCode)->update(['email'=>$email]);
+        if($iid === false){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+        }
+        if($id==0 && $iid==0){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败，数据没有变化']);
+        }
+        $res = DB::table('user_member_info')->where('member_code',$memberCode)->update(['update_date'=>date('Y-m-d H:i:s', time())]);
+        if($res == 0){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+        }
+        DB::commit();
+        json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('user')]);
     }
 
     private function _checkSignupInput($input)
@@ -267,7 +444,7 @@ class User extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cellPhone']." 已经被注册过了"]);
         }
         elseif(!preg_login_name($input['loginName'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法！"]);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名应为8-20位字符"]);
         }
         elseif($this->_loginNameExist($input['loginName'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名已存在！"]);
@@ -281,13 +458,35 @@ class User extends Controller
     }
 
     /**
-     * 检查授粉存在的用户名
-     * @param $loginName
+     * 检查是否存在的邮箱
+     * @param $email $member_code
      * @return bool
      */
-    private function _loginNameExist($loginName){
-        $user = Members::where('login_name',$loginName)->select('member_code')->first();
-        if(is_null($user)){
+    private function _emailExist($email, $member_code=null){
+        $sql = 'SELECT member_code FROM user_members WHERE `email` = "'.$email.'" AND `member_code` != "'.$member_code.'"';
+        if(is_null($member_code)){
+            $sql = 'SELECT member_code FROM user_members WHERE `email` = "'.$email.'"';
+        }
+        $res = DB::select($sql);
+        if(count($res)<1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 检查授粉存在的用户名
+     * @param $loginName, $member_code
+     * @return bool
+     */
+    private function _loginNameExist($loginName, $member_code=null){
+        $sql = 'SELECT member_code FROM user_members WHERE `login_name` = "'.$loginName.'" AND `member_code` != "'.$member_code.'"';
+        if(is_null($member_code)){
+            $sql = 'SELECT member_code FROM user_members WHERE `login_name` = "'.$loginName.'"';
+        }
+        $res = DB::select($sql);
+        if(count($res)<1){
             return false;
         }else{
             return true;
@@ -299,9 +498,13 @@ class User extends Controller
      * @param $phone
      * @return bool
      */
-    private function _phoneExist($phone){
-        $user = Members::where('cell_phone',$phone)->select('member_code')->first();
-        if(is_null($user)){
+    private function _phoneExist($phone, $member_code=null){
+        $sql = 'SELECT member_code FROM user_members WHERE `cell_phone` = "'.$phone.'" AND `member_code` != "'.$member_code.'"';
+        if(is_null($member_code)){
+            $sql = 'SELECT member_code FROM user_members WHERE `cell_phone` = "'.$phone.'"';
+        }
+        $res = DB::select($sql);
+        if(count($res)<1){
             return false;
         }else{
             return true;

@@ -30,6 +30,14 @@ Route::group(['middleware' => ['web','user.verify']], function () {
     Route::post('user/login/checkInput','Web\User@_ajax_checkInput');
 
     Route::post('user/createMember','Web\User@createMember');
+
+    Route::post('user/changePassword','Web\User@changePassword');
+
+    Route::post('user/changeInfo','Web\User@changeInfo');
+
+    Route::get('user/changePhone','Web\User@changePhone');
+
+    Route::post('user/changePhone','Web\User@doChangePhone');
 });
 
 

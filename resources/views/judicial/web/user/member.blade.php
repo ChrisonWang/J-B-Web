@@ -1,113 +1,68 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    @include('judicial.web.chips.head')
-<body>
-<!--头部导航-->
-@include('judicial.web.chips.nav')
-<div class="wrapper">
-
-    <div class="container-mamber">
-        <div class="panel-member">
-            <div class="panel-member-top">
-                <div class="title">账号信息</div>
-                <div class="right"><a href="javascript:void(0) ;">修改账号密码</a></div>
-            </div>
-            <div class="panel-member-body">
-                <div class="item">
-                    <p>登录账号：</p>
-                    <p>{{ $memberInfo['loginName'] }}</p>
-                </div>
-                <div class="item">
-                    <p>用户手机：</p>
-                    <p>{{ $memberInfo['cellPhone'] }}</p>
-                </div>
-                <div class="item">
-                    <p>用户权限：</p>
-                    <p>{{ $memberInfo['memberLevel'] }}</p>
-                </div>
-                <div class="clear"></div>
-            </div>
-        </div>
-        <div class="panel-member">
-            <div class="panel-member-top">
-                <div class="title">个人信息</div>
-                <div class="right"><a href="javascript:void(0) ;">修改个人信息</a></div>
-            </div>
-            <div class="panel-member-body">
-                <div class="item">
-                    <p>用户姓名：</p>
-                    <p>{{ $memberInfo['citizenName'] }}</p>
-                </div>
-                <div class="item">
-                    <p>邮箱：</p>
-                    <p>{{ $memberInfo['email'] }}</p>
-                </div>
-                <div class="clear"></div>
-            </div>
-        </div>
-        <div class="panel-member">
-            <div class="panel-member-top">
-                <div class="panel-member-switch on"><a href="javascript:void(0);">司法鉴定申请记录</a></div>
-                <div class="panel-member-switch"><a href="javascript:void(0);">法律援助预约记录</a></div>
-                <div class="panel-member-switch"><a href="javascript:void(0);">公检法指派申请记录</a></div>
-                <div class="panel-member-switch"><a href="javascript:void(0);">问题咨询记录</a></div>
-                <div class="panel-member-switch"><a href="javascript:void(0);">征求意见记录</a></div>
-            </div>
-            <div class="panel-member-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>提交标签</th>
-                        <th>审批编号</th>
-                        <th>鉴定类型</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    @include('judicial.web.chips.foot')
+<table id="dg">
+    <thead>
+    <tr>
+        <th field="name">name</th>
+    </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    &nbsp;&nbsp;
+    <span style="vertical-align: middle">城市：</span>
+    <select name="city" class="easyui-combobox" data-options="panelHeight:'auto', editable: false" id="search_city">
+        <?php foreach ($service_city as $city):?>
+        <option value="<?php echo $city['code'];?>"><?php echo $city['name'];?></option>
+        <?php endforeach;?>
+    </select>
+    <span style="vertical-align: middle">项目名：</span>
+    <input name="pattern" class="easyui-textbox" id="search_pattern" />
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="searchKey()">Search</a>
 </div>
-</body>
-</html>
+<script type="text/javascript">
+    var city = '<?php echo $c;?>';
+    var type = '<?php echo $type;?>';
+    var next_type = '<?php echo $next_type;?>';
+    var parent_id = '<?php echo $parent_id;?>';
+
+    function searchKey() {
+        var c = $('#search_city').combobox('getValue');
+        var pattern = $('#search_pattern').textbox('getValue');
+        var param = {city: c, type: type, pattern: pattern};
+        var url = '<?php echo base_url('admin/home/data')?>/'+city+'/'+type+'?act=list';
+        $('#dg').datagrid({
+            url: url,
+            queryParams: param,
+            columns: js_context.fields[c][type] == undefined ? [] : [js_context.fields[c][type]]
+        });
+        city = c;
+    }
+
+    $(function() {
+
+        $('#dg').datagrid({
+            url: null,
+            toolbar: type == 'building' ? "#toolbar" : null,
+            pagination: true,
+            pageSize: 50,
+            rownumbers: true,
+            fitColumns: true,
+            fit: true,
+            singleSelect: true,
+            border: false,
+            onDblClickRow: function(index, row) {
+                if(js_context.data_types[type] == undefined || next_type == '')
+                    return true;
+
+                open_tabs(next_type, '<?php echo base_url('admin/home/data');?>/'+city+'/'+next_type+'/'+row[js_context.data_types[type]]);
+            }
+        });
+
+        if(type != 'building' && parent_id != '') {
+            $('#dg').datagrid({
+                columns: js_context.fields[city][type] == undefined ? [] : [js_context.fields[city][type]],
+                url: '<?php echo base_url('admin/home/data')?>/'+city+'/'+type+'?act=list',
+                queryParams: {city: city, type: type, pattern: parent_id}
+            });
+        }
+
+    });
+</script>

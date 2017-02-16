@@ -27,12 +27,12 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-1 col-md-10">
-            <input type="password" class="form-control" id="password" name="password" placeholder="请设置账户密码" required>
+            <input type="text" class="form-control" id="password" name="password" placeholder="请设置账户密码" required  autocomplete="off" onfocus="this.type='password'">
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-offset-1 col-md-10">
-            <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" placeholder="请确认账户密码" required>
+            <input type="text" class="form-control" id="passwordConfirm" name="passwordConfirm" placeholder="请确认账户密码" required  autocomplete="off" onfocus="this.type='password'">
         </div>
     </div>
     <div class="form-group">
