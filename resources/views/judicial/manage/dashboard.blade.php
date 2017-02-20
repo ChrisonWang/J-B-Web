@@ -1,7 +1,9 @@
 <!DOCTYPE HTML>
 <html>
-<!--引入公共头部-->
+<!-- 引入公共头部 -->
 @include('judicial.manage.chips.head')
+<!-- 引入UEditor -->
+@include('UEditor::head');
 <body>
 <div id="wrapper">
 	<!-- Navigation -->
@@ -30,6 +32,30 @@
 			loadContent($(this));
 		});
 	});
+
+	//加载右侧内容
+	function loadContent(t){
+		var node_id = t.data("node").split('-');
+		var url ='/manage/'+node_id[0]+'LoadContent';
+		var container = $("#page-wrapper");
+
+		if(node_id==undefined || node_id == ""){
+			return false
+		}
+		//获取模板
+		$.ajax({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			async: false,
+			type: "POST",
+			url: url,
+			data: 'node_id='+node_id[1],
+			success: function(re){
+				ajaxResult(re);
+			}
+		});
+	}
 
 	//处理ajax返回
 	function ajaxResult(re,notice){
@@ -93,30 +119,6 @@
 					alert("修改成功！");
 				}
 				ajaxResult(re,$("#editManagerInfoNotice"));
-			}
-		});
-	}
-
-	//加载右侧内容
-	function loadContent(t){
-		var node_id = t.data("node");
-		var url = '{{ $url['loadContent'] }}';
-		var container = $("#page-wrapper");
-
-		if(node_id==undefined || node_id == ""){
-			return false
-		}
-		//获取模板
-		$.ajax({
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			},
-			async: false,
-			type: "POST",
-			url: url,
-			data: 'node_id='+node_id,
-			success: function(re){
-				ajaxResult(re);
 			}
 		});
 	}

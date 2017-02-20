@@ -24,4 +24,6 @@
     <!-- Graph JavaScript -->
     <script src="{{ asset('/js/d3.v3.js') }}"></script>
     <script src="{{ asset('/js/rickshaw.js') }}"></script>
+    <!-- 司法局后台js -->
+    <script src="{{ asset('/js/manage.js') }}"></script>
 </head>

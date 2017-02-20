@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "maatwebsite/excel": "~2.0.0",
         "predis/predis": "1.0.*",
-        "mews/captcha": "^2.1"
+        "mews/captcha": "^2.1",
+        "stevenyangecho/laravel-u-editor": "~1.1"
     },
     "minimum-stability": "dev",
     "require-dev": {

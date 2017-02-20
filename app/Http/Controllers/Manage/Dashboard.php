@@ -31,16 +31,22 @@ class Dashboard extends Controller
         $this->manager_code = $this->checkLoginStatus();
     }
 
+    /**
+     * 后台入口
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
         //判断登录状态
-        $loginStatus = $this->checkLoginStatus();
-        if(!$loginStatus){
+        $managerCode = $request->get('managerCode');
+        if(!$managerCode){
+            setcookie('s','',time()-3600*24);
             return redirect('manage');
         }
         else{
             //获取用户信息
-            $managerInfo = $this->_getManagerInfo($loginStatus);
+            $managerInfo = $this->_getManagerInfo($managerCode);
             $this->page_data['managerInfo'] = $managerInfo;
         }
         return view('judicial.manage.dashboard',$this->page_data);
@@ -60,7 +66,7 @@ class Dashboard extends Controller
             json_response(['status'=>'faild','type'=>'page', 'res'=>$errorPage]);
         }
         else{
-            $this->$action();
+            $this->$action($request);
         }
     }
 
@@ -69,7 +75,7 @@ class Dashboard extends Controller
      * @throws \Exception
      * @throws \Throwable
      */
-    private function _content_ManagerInfo()
+    private function _content_ManagerInfo($request)
     {
         $managerCode = $this->checkLoginStatus();
         if(!$managerCode){
@@ -114,7 +120,7 @@ class Dashboard extends Controller
      * @throws \Exception
      * @throws \Throwable
      */
-    private function  _content_EditManagerInfo()
+    private function  _content_EditManagerInfo($request)
     {
         $managerCode = $this->checkLoginStatus();
         if(!$managerCode){
@@ -227,9 +233,9 @@ class Dashboard extends Controller
      * @throws \Exception
      * @throws \Throwable
      */
-    private function _content_ChangePassword()
+    private function _content_ChangePassword($request)
     {
-        $managerCode = $this->checkLoginStatus();
+        $managerCode = $request->get('managerCode');
         if(!$managerCode){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_data['url']['login']]);
         }
