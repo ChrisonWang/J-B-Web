@@ -57,8 +57,6 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/userLoadContent','Manage\Dashboard@loadContent');
 
         //CMS标签标签管理
-        Route::get('manage/cms/tags','Manage\Cms\Tags@index');
-
         Route::get('manage/cms/tags/show','Manage\Cms\Tags@show');
 
         Route::get('manage/cms/tags/add','Manage\Cms\Tags@create');
@@ -70,6 +68,32 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/cms/tags/edit','Manage\Cms\Tags@doEdit');
 
         Route::get('manage/cms/tags/delete','Manage\Cms\Tags@doDelete');
+
+        //CMS机构分类管理
+        Route::get('manage/cms/department/type/show','Manage\Cms\DepartmentType@show');
+
+        Route::get('manage/cms/department/type/add','Manage\Cms\DepartmentType@create');
+
+        Route::post('manage/cms/department/type/add','Manage\Cms\DepartmentType@store');
+
+        Route::get('manage/cms/department/type/edit','Manage\Cms\DepartmentType@edit');
+
+        Route::post('manage/cms/department/type/edit','Manage\Cms\DepartmentType@doEdit');
+
+        Route::get('manage/cms/department/type/delete','Manage\Cms\DepartmentType@doDelete');
+
+        //CMS机构管理
+        Route::get('manage/cms/department/type/show','Manage\Cms\Department@show');
+
+        Route::get('manage/cms/department/type/add','Manage\Cms\Department@create');
+
+        Route::post('manage/cms/department/type/add','Manage\Cms\Department@store');
+
+        Route::get('manage/cms/department/type/edit','Manage\Cms\Department@edit');
+
+        Route::post('manage/cms/department/type/edit','Manage\Cms\Department@doEdit');
+
+        Route::get('manage/cms/department/type/delete','Manage\Cms\Department@doDelete');
 
     });
 

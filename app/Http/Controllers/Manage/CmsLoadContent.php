@@ -52,4 +52,18 @@ class CmsLoadContent extends Controller
         $pageContent = view('judicial.manage.cms.tagList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
+
+    private function _content_DepartmentType($request)
+    {
+        $type_data = array();
+        $types = DB::table('cms_department_type')->get();
+        foreach($types as $key=> $type){
+            $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
+            $type_data[$key]['type_name'] = $type->type_name;
+            $type_data[$key]['create_date'] = $type->create_date;
+        }
+        $this->page_data['type_list'] = $type_data;
+        $pageContent = view('judicial.manage.cms.departmentTypeList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
 }

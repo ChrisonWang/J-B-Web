@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\URL;
+
 use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
@@ -128,7 +130,7 @@ class Tags extends Controller
         $tag_id = keys_decrypt($inputs['tag_key']);
         $tags = DB::table('cms_tags')->where('id',$tag_id)->first();
         if(is_null($tags)){
-            json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
+            json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
         }
         $tag_detail['tag_key'] = keys_encrypt($tags->id);
         $tag_detail['tag_title'] = $tags->tag_title;
