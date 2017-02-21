@@ -6,7 +6,7 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <button type="button" class="btn btn-primary">新增</button>
+            <a type="button" data-tag-key='none' data-method="add" onclick="tagMethod($(this))" class="btn btn-primary">新增</a>
         </div>
         <hr/>
         <div class="container-fluid">
@@ -21,11 +21,11 @@
                 @foreach($tag_list as $tag)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-tag-key="{{ $tag['tag_key'] }}" data-method="show" onclick="tagMethod($(this))">查看</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $tag['tag_key'] }}" data-method="show" onclick="tagMethod($(this))">查看</a>
                         &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-tag-key="{{ $tag['tag_key'] }}" data-method="edit" onclick="tagMethod($(this))">编辑</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $tag['tag_key'] }}" data-method="edit" onclick="tagMethod($(this))">编辑</a>
                         &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-tag-key="{{ $tag['tag_key'] }}" data-method="delete" onclick="tagMethod($(this))">删除</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $tag['tag_key'] }}" data-method="delete" data-title="{{ $tag['tag_title'] }}" onclick="tagMethod($(this))">删除</a>
                     </td>
                     <td>{{ $tag['tag_title'] }}</td>
                 </tr>

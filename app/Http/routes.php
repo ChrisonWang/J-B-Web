@@ -59,13 +59,17 @@ Route::group(['middleware' => ['web']], function () {
         //CMS标签标签管理
         Route::get('manage/cms/tags','Manage\Cms\Tags@index');
 
-        Route::post('manage/cms/tags/show','Manage\Cms\Tags@show');
+        Route::get('manage/cms/tags/show','Manage\Cms\Tags@show');
 
-        Route::post('manage/cms/tags/create','Manage\Cms\Tags@store');
+        Route::get('manage/cms/tags/add','Manage\Cms\Tags@create');
 
-        Route::post('manage/cms/tags/edit','Manage\Cms\Tags@edit');
+        Route::post('manage/cms/tags/add','Manage\Cms\Tags@store');
 
-        Route::post('manage/cms/tags/delete','Manage\Cms\Tags@delete');
+        Route::get('manage/cms/tags/edit','Manage\Cms\Tags@edit');
+
+        Route::post('manage/cms/tags/edit','Manage\Cms\Tags@doEdit');
+
+        Route::get('manage/cms/tags/delete','Manage\Cms\Tags@doDelete');
 
     });
 
