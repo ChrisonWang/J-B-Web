@@ -1,31 +1,34 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            机构简介管理
+            领导简介管理/新增
         </h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" id="departmentAddForm">
+        <form class="form-horizontal" id="leaderAddForm">
             <div class="form-group">
-                <label for="department_name" class="col-md-1 control-label">名称：</label>
+                <label for="leader_name" class="col-md-1 control-label">姓名：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="department_name" name="department_name" placeholder="请输入分类名称" />
+                    <input type="text" class="form-control" id="leader_name" name="leader_name" placeholder="请输入领导姓名" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="type_id" class="col-md-1 control-label">分类：</label>
+                <label for="leader_job" class="col-md-1 control-label">岗位：</label>
                 <div class="col-md-3">
-                    <select id="type_id" name="type_id" class="form-control">
-                        @foreach ($type_list as $type)
-                        <option value="{{ $type['type_id'] }}">{{ $type['type_name'] }}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" class="form-control" id="leader_job" name="leader_job" placeholder="请输入领导岗位" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="typeName" class="col-md-1 control-label">排序：</label>
+                <label for="sort" class="col-md-1 control-label">排序权重：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="sort" name="sort" placeholder="请输入权重（数字越大越靠前）" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="leader_photo" class="col-md-1 control-label">照片：</label>
+                <div class="btn btn-default btn-file col-md-3">
+                    <i class="fa fa-paperclip"></i>上传头像图片
+                    <input type="file" id="leader_photo" name="leader_photo" />
                 </div>
             </div>
             <div class="form-group">
@@ -36,16 +39,16 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-3">
-                    <p class="text-left hidden" id="addDepartmentNotice" style="color: red"></p>
+                    <p class="text-left hidden" id="addLeaderNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-1">
-                    <button type="button" class="btn btn-info btn-block" onclick="addDepartment()">确认</button>
+                    <button type="button" class="btn btn-info btn-block" onclick="addLeader()">确认</button>
                 </div>
                 <div class="col col-md-1">
-                    <button type="button" class="btn btn-danger btn-block" data-node="cms-department" onclick="loadContent($(this))">返回列表</button>
+                    <button type="button" class="btn btn-danger btn-block" data-node="cms-leaderIntroduction" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>
         </form>

@@ -59,7 +59,7 @@ class DepartmentType extends Controller
         //判断是否有重名的
         $type_id = DB::table('cms_department_type')->select('type_id')->where('type_name',$inputs['typeName'])->get();
         if(count($type_id) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['typeName'].'的标签']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['typeName'].'的分类']);
         }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());

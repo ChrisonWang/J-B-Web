@@ -102,11 +102,6 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
-                    <p class="text-left hidden" id="editManagerInfoNotice" style="color: red"></p>
-                </div>
-            </div>
-            <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-3">
                     <button type="button" class="btn btn-info btn-block" onclick="doEdit()">确认</button>

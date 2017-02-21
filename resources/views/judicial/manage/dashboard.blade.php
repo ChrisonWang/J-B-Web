@@ -35,6 +35,9 @@
 
 	//加载右侧内容
 	function loadContent(t){
+		if(typeof(UE_Content)=="object"){
+			UE_Content.destroy();
+		}
 		var node_id = t.data("node").split('-');
 		var url ='/manage/'+node_id[0]+'LoadContent';
 		var container = $("#page-wrapper");
@@ -69,9 +72,15 @@
 				notice.html(re.res);
 				break;
 			case 'error':
+				if(typeof(UE_Content)=="object"){
+					UE_Content.destroy();
+				}
 				container.html(re.res);
 				break;
 			case 'redirect':
+				if(typeof(UE_Content)=="object"){
+					UE_Content.destroy();
+				}
 				window.location.href = re.res;
 				break;
 			default:

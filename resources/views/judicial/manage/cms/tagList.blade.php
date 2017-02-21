@@ -33,11 +33,5 @@
                 </tbody>
             </table>
         </div>
-        <!-- 加载编辑器的容器 -->
-        <script id="container" name="content" type="text/plain"></script>
-        <!-- 实例化编辑器 -->
-        <script type="text/javascript">
-            var ue = UE.getEditor('container');
-        </script>
     </div>
 </div>

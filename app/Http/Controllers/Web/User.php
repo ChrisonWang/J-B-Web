@@ -499,9 +499,9 @@ class User extends Controller
      * @return bool
      */
     private function _phoneExist($phone, $member_code=null){
-        $sql = 'SELECT member_code FROM user_members WHERE `cell_phone` = "'.$phone.'" AND `member_code` != "'.$member_code.'"';
+        $sql = 'SELECT `member_code` FROM user_members WHERE `cell_phone` = "'.$phone.'" AND `member_code` != "'.$member_code.'"';
         if(is_null($member_code)){
-            $sql = 'SELECT member_code FROM user_members WHERE `cell_phone` = "'.$phone.'"';
+            $sql = 'SELECT `member_code` FROM user_members WHERE `cell_phone` = "'.$phone.'"';
         }
         $res = DB::select($sql);
         if(count($res)<1){

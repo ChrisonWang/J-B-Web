@@ -53,6 +53,12 @@ class CmsLoadContent extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    /**
+     * 机构类型管理
+     * @param $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
     private function _content_DepartmentType($request)
     {
         $type_data = array();
@@ -66,4 +72,46 @@ class CmsLoadContent extends Controller
         $pageContent = view('judicial.manage.cms.departmentTypeList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
+
+    private function _content_Department($request)
+    {
+        //取出分类
+        $type_data = array();
+        $types = DB::table('cms_department_type')->get();
+        foreach($types as $type){
+            $type_data[$type->type_id] = $type->type_name;
+        }
+        //取出机构
+        $department_data = array();
+        $departments = DB::table('cms_department')->get();
+        foreach($departments as $key=> $department){
+            $department_data[$key]['key'] = keys_encrypt($department->id);
+            $department_data[$key]['department_name'] = $department->department_name;
+            $department_data[$key]['type_id'] = $department->type_id;
+            $department_data[$key]['type_name'] = $type_data[$department->type_id];
+            $department_data[$key]['sort'] = $department->sort;
+            $department_data[$key]['create_date'] = $department->create_date;
+        }
+        //返回到前段界面
+        $this->page_data['department_list'] = $department_data;
+        $pageContent = view('judicial.manage.cms.departmentList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_LeaderIntroduction($request)
+    {
+        //取出数据
+        $leaders_data = array();
+        $leaders = DB::table('cms_leaders')->get();
+        foreach($leaders as $key=> $leader){
+            $leaders_data[$key]['key'] = keys_encrypt($leader->id);
+            $leaders_data[$key]['leader_name'] = $leader->name;
+            $leaders_data[$key]['leader_job'] = $leader->job;
+        }
+        //返回到前段界面
+        $this->page_data['leader_list'] = $leaders_data;
+        $pageContent = view('judicial.manage.cms.leaderList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
 }

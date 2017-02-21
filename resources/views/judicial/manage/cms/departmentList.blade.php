@@ -6,7 +6,7 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <a type="button" data-tag-key='none' data-method="add" onclick="typeMethod($(this))" class="btn btn-primary">新增</a>
+            <a type="button" data-key='none' data-method="add" onclick="departmentMethod($(this))" class="btn btn-primary">新增</a>
         </div>
         <hr/>
         <div class="container-fluid">
@@ -19,17 +19,17 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                @foreach($type_list as $type)
+                @foreach($department_list as $department)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $type['type_key'] }}" data-method="show" onclick="typeMethod($(this))">查看</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $department['key'] }}" data-method="show" onclick="departmentMethod($(this))">查看</a>
                         &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $type['type_key'] }}" data-method="edit" onclick="typeMethod($(this))">编辑</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $department['key'] }}" data-method="edit" onclick="departmentMethod($(this))">编辑</a>
                         &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $type['type_key'] }}" data-method="delete" data-title="{{ $type['type_name'] }}" onclick="typeMethod($(this))">删除</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $department['key'] }}" data-method="delete" data-title="{{ $department['department_name'] }}" onclick="departmentMethod($(this))">删除</a>
                     </td>
-                    <td>{{ $type['department_name'] }}</td>
-                    <td>{{ $type['type_name'] }}</td>
+                    <td>{{ $department['department_name'] }}</td>
+                    <td>{{ $department['type_name'] }}</td>
                 </tr>
                 @endforeach
                 </tbody>

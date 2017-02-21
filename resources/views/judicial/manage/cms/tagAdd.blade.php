@@ -25,8 +25,11 @@
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-1">
                     <button type="button" class="btn btn-info btn-block" onclick="addTag()">确认</button>
+                </div>
+                <div class="col col-md-1">
+                    <button type="button" class="btn btn-block btn-danger" data-node="cms-tagsMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>
         </form>

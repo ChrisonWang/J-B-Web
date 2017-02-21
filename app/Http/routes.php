@@ -83,17 +83,30 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('manage/cms/department/type/delete','Manage\Cms\DepartmentType@doDelete');
 
         //CMS机构管理
-        Route::get('manage/cms/department/type/show','Manage\Cms\Department@show');
+        Route::get('manage/cms/department/show','Manage\Cms\Department@show');
 
-        Route::get('manage/cms/department/type/add','Manage\Cms\Department@create');
+        Route::get('manage/cms/department/add','Manage\Cms\Department@create');
 
-        Route::post('manage/cms/department/type/add','Manage\Cms\Department@store');
+        Route::post('manage/cms/department/add','Manage\Cms\Department@store');
 
-        Route::get('manage/cms/department/type/edit','Manage\Cms\Department@edit');
+        Route::get('manage/cms/department/edit','Manage\Cms\Department@edit');
 
-        Route::post('manage/cms/department/type/edit','Manage\Cms\Department@doEdit');
+        Route::post('manage/cms/department/edit','Manage\Cms\Department@doEdit');
 
-        Route::get('manage/cms/department/type/delete','Manage\Cms\Department@doDelete');
+        Route::get('manage/cms/department/delete','Manage\Cms\Department@doDelete');
+
+        //CMS领导简介管理
+        Route::get('manage/cms/leader/show','Manage\Cms\Leader@show');
+
+        Route::get('manage/cms/leader/add','Manage\Cms\Leader@create');
+
+        Route::post('manage/cms/leader/add','Manage\Cms\Leader@store');
+
+        Route::get('manage/cms/leader/edit','Manage\Cms\Leader@edit');
+
+        Route::post('manage/cms/leader/edit','Manage\Cms\Leader@doEdit');
+
+        Route::get('manage/cms/leader/delete','Manage\Cms\Leader@doDelete');
 
     });
 
