@@ -204,7 +204,6 @@ class Department extends Controller
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
             'description'=> htmlspecialchars($inputs['description']),
             'type_id'=> keys_decrypt($inputs['type_id']),
-            'create_date'=> $now,
             'update_date'=> $now
         );
         $rs = DB::table('cms_department')->where('id',$id)->update($save_data);

@@ -142,7 +142,6 @@ class Leader extends Controller
             'description'=> htmlspecialchars($inputs['description']),
             'job'=> $inputs['leader_job'],
             'photo'=> empty($inputs['leader_photo']) ? '' : $inputs['leader_photo'],
-            'create_date'=> $now,
             'update_date'=> $now
         );
         $rs = DB::table('cms_leaders')->where('id',$id)->update($save_data);

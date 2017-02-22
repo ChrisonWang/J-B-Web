@@ -108,6 +108,45 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/cms/leader/delete','Manage\Cms\Leader@doDelete');
 
+        //CMS宣传视频管理
+        Route::get('manage/cms/video/show','Manage\Cms\Video@show');
+
+        Route::get('manage/cms/video/add','Manage\Cms\Video@create');
+
+        Route::post('manage/cms/video/add','Manage\Cms\Video@store');
+
+        Route::get('manage/cms/video/edit','Manage\Cms\Video@edit');
+
+        Route::post('manage/cms/video/edit','Manage\Cms\Video@doEdit');
+
+        Route::get('manage/cms/video/delete','Manage\Cms\Video@doDelete');
+
+        //CMS后台推荐链接管理
+        Route::get('manage/cms/recommend/show','Manage\Cms\Recommend@show');
+
+        Route::get('manage/cms/recommend/add','Manage\Cms\Recommend@create');
+
+        Route::post('manage/cms/recommend/add','Manage\Cms\Recommend@store');
+
+        Route::get('manage/cms/recommend/edit','Manage\Cms\Recommend@edit');
+
+        Route::post('manage/cms/recommend/edit','Manage\Cms\Recommend@doEdit');
+
+        Route::get('manage/cms/recommend/delete','Manage\Cms\Recommend@doDelete');
+
+        //CMS司法局简介管理
+        Route::get('manage/cms/intro/show','Manage\Cms\Introduction@show');
+
+        Route::get('manage/cms/intro/add','Manage\Cms\Introduction@create');
+
+        Route::post('manage/cms/intro/add','Manage\Cms\Introduction@store');
+
+        Route::get('manage/cms/intro/edit','Manage\Cms\Introduction@edit');
+
+        Route::post('manage/cms/intro/edit','Manage\Cms\Introduction@doEdit');
+
+        Route::get('manage/cms/intro/delete','Manage\Cms\Introduction@doDelete');
+
     });
 
     Route::get('manage', 'Manage\Login@index');

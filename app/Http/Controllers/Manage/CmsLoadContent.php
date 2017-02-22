@@ -114,4 +114,55 @@ class CmsLoadContent extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    private function _content_VideoMng($request)
+    {
+        //取出数据
+        $video_data = array();
+        $videos = DB::table('cms_video')->get();
+        foreach($videos as $key=> $video){
+            $video_data[$key]['key'] = keys_encrypt($video->video_code);
+            $video_data[$key]['video_title'] = $video->title;
+            $video_data[$key]['video_link'] = $video->link;
+            $video_data[$key]['disabled'] = $video->disabled;
+            $video_data[$key]['sort'] = $video->sort;
+        }
+        //返回到前段界面
+        $this->page_data['video_list'] = $video_data;
+        $pageContent = view('judicial.manage.cms.videoList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_RecommendLink($request)
+    {
+        //取出数据
+        $r_data = array();
+        $links = DB::table('cms_recommend_links')->get();
+        foreach($links as $key=> $link){
+            $r_data[$key]['key'] = keys_encrypt($link->id);
+            $r_data[$key]['r_title'] = $link->title;
+            $r_data[$key]['r_link'] = $link->link;
+        }
+        //返回到前段界面
+        $this->page_data['r_list'] = $r_data;
+        $pageContent = view('judicial.manage.cms.recommendList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_justiceIntroduction($request)
+    {
+        //取出数据
+        $introduce = DB::table('cms_justice_bureau_introduce')->first();
+        if(count($introduce)==0){
+            $this->page_data['no_intro'] = "yes";
+            $pageContent = view('judicial.manage.cms.introList',$this->page_data)->render();
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        }
+        //返回到前段界面
+        $this->page_data['no_intro'] = "no";
+        $this->page_data['introduce']['create_date'] = $introduce->create_date;
+        $this->page_data['introduce']['key'] = keys_encrypt($introduce->id);
+        $pageContent = view('judicial.manage.cms.introList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
 }
