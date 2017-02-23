@@ -165,4 +165,21 @@ class CmsLoadContent extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    private function _content_Flink1Mng($request)
+    {
+        //取出数据
+        $flink_data = array();
+        $links = DB::table('cms_image_flinks')->get();
+        foreach($links as $key=> $link){
+            $flink_data[$key]['key'] = keys_encrypt($link->id);
+            $flink_data[$key]['fi_title'] = $link->title;
+            $flink_data[$key]['fi_links'] = $link->links;
+            $flink_data[$key]['image'] = $link->image;
+        }
+        //返回到前段界面
+        $this->page_data['flink_list'] = $flink_data;
+        $pageContent = view('judicial.manage.cms.flinksImgList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
 }

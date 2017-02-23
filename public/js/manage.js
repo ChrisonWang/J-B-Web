@@ -572,3 +572,86 @@ function addIntro(){
         }
     });
 }
+
+//一级友情链接管理
+function flinkImgMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/cms/flinkImg/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editFlinkImg(){
+    var url = '/manage/cms/flinkImg/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#flinkImgEditForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#flinkImgEditNotice'));
+            }
+        }
+    });
+}
+
+function addFlinkImg(){
+    var url = '/manage/cms/flinkImg/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#flinkImgAddForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addFlinkImgNotice'));
+            }
+        }
+    });
+}
