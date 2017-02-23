@@ -182,4 +182,21 @@ class CmsLoadContent extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    private function _content_ChannelMng($request)
+    {
+        //取出数据
+        $channel_data = array();
+        $channels = DB::table('cms_channel')->where('pid',0)->get();
+        foreach($channels as $key=> $channel){
+            $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+            $channel_data[$key]['is_recommend'] = $channel->is_recommend;
+            $channel_data[$key]['form_download'] = $channel->form_download;
+            $channel_data[$key]['sort'] = $channel->sort;
+        }
+        //返回到前段界面
+        $this->page_data['channel_list'] = $channel_data;
+        $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
 }

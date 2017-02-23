@@ -147,6 +147,71 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/cms/intro/delete','Manage\Cms\Introduction@doDelete');
 
+        //CMS一级友情链接管理
+        Route::get('manage/cms/flinkImg/show','Manage\Cms\FlinksImg@show');
+
+        Route::get('manage/cms/flinkImg/add','Manage\Cms\FlinksImg@create');
+
+        Route::post('manage/cms/flinkImg/add','Manage\Cms\FlinksImg@store');
+
+        Route::get('manage/cms/flinkImg/edit','Manage\Cms\FlinksImg@edit');
+
+        Route::post('manage/cms/flinkImg/edit','Manage\Cms\FlinksImg@doEdit');
+
+        Route::get('manage/cms/flinkImg/delete','Manage\Cms\FlinksImg@doDelete');
+
+        //科室管理
+        Route::get('manage/user/office/show','Manage\User\Office@show');
+
+        Route::get('manage/user/office/add','Manage\User\Office@create');
+
+        Route::post('manage/user/office/add','Manage\User\Office@store');
+
+        Route::get('manage/user/office/edit','Manage\User\Office@edit');
+
+        Route::post('manage/user/office/edit','Manage\User\Office@doEdit');
+
+        Route::get('manage/user/office/delete','Manage\User\Office@doDelete');
+
+        //功能点管理
+        Route::get('manage/user/nodes/show','Manage\User\Nodes@show');
+
+        Route::get('manage/user/nodes/add','Manage\User\Nodes@create');
+
+        Route::post('manage/user/nodes/add','Manage\User\Nodes@store');
+
+        Route::get('manage/user/nodes/edit','Manage\User\Nodes@edit');
+
+        Route::post('manage/user/nodes/edit','Manage\User\Nodes@doEdit');
+
+        Route::get('manage/user/nodes/delete','Manage\User\Nodes@doDelete');
+
+        //菜单管理
+        Route::get('manage/user/menus/show','Manage\User\Menus@show');
+
+        Route::get('manage/user/menus/add','Manage\User\Menus@create');
+
+        Route::post('manage/user/menus/add','Manage\User\Menus@store');
+
+        Route::get('manage/user/menus/edit','Manage\User\Menus@edit');
+
+        Route::post('manage/user/menus/edit','Manage\User\Menus@doEdit');
+
+        Route::get('manage/user/menus/delete','Manage\User\Menus@doDelete');
+
+        //频道管理
+        Route::get('manage/cms/channel/show','Manage\Cms\Channel@show');
+
+        Route::get('manage/cms/channel/add','Manage\Cms\Channel@create');
+
+        Route::post('manage/cms/channel/add','Manage\Cms\Channel@store');
+
+        Route::get('manage/cms/channel/edit','Manage\Cms\Channel@edit');
+
+        Route::post('manage/cms/channel/edit','Manage\Cms\Channel@doEdit');
+
+        Route::get('manage/cms/channel/delete','Manage\Cms\Channel@doDelete');
+
     });
 
     Route::get('manage', 'Manage\Login@index');

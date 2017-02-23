@@ -83,7 +83,14 @@
 				}
 				window.location.href = re.res;
 				break;
+			case 'alert':
+				if(typeof(UE_Content)=="object"){
+					UE_Content.destroy();
+				}
+				alert(re.res);
+				break;
 			default:
+				alert(re.res);
 				return;
 		}
 	}

@@ -1,6 +1,24 @@
 /**
  * Created by Administrator on 2017/2/20.
  */
+function delRow(t){
+    if($("#menu-nodes tr").length <= 1){
+        $("#add-row-notice").removeClass("hidden");
+        $("#add-row-notice").text("至少添加一条信息");
+        return
+    }
+    t.parents("tr").remove();
+}
+
+function addRow(){
+    var content = $("#node-row tbody").html()
+    $("#menu-nodes").append(content);
+    $("#add-row-notice").removeClass("hidden");
+    $("#add-row-notice").text("请勿添加重复的信息，系统会自动删除");
+    return
+}
+
+
 //标签管理
 function tagMethod(t){
     var tagKey = t.data('key');
@@ -651,6 +669,338 @@ function addFlinkImg(){
             }
             else if(re.status == 'failed') {
                 ajaxResult(re,$('#addFlinkImgNotice'));
+            }
+        }
+    });
+}
+
+//科室管理
+function officeMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/user/office/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editOffice(){
+    var url = '/manage/user/office/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#officeEditForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#officeEditNotice'));
+            }
+        }
+    });
+}
+
+function addOffice(){
+    var url = '/manage/user/office/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#officeAddForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addOfficeNotice'));
+            }
+        }
+    });
+}
+
+//功能点管理
+function nodeMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/user/nodes/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editNode(){
+    var url = '/manage/user/nodes/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#nodeEditForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#nodeEditNotice'));
+            }
+        }
+    });
+}
+
+function addNode(){
+    var url = '/manage/user/nodes/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#nodeAddForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addNodeNotice'));
+            }
+        }
+    });
+}
+
+//菜单管理
+function menuMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/user/menus/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editMenu(){
+    var url = '/manage/user/menus/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#menuEditForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#menuEditNotice'));
+            }
+        }
+    });
+}
+
+function addMenu(){
+    var url = '/manage/user/menus/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#menuAddForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addMenuNotice'));
+            }
+        }
+    });
+}
+
+//频道管理
+function channelMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/cms/channel/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editChannel(){
+    var url = '/manage/cms/channel/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#channelEditForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#channelEditNotice'));
+            }
+        }
+    });
+}
+
+function addChannel(){
+    var url = '/manage/cms/channel/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#channelAddForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addcChannelNotice'));
             }
         }
     });

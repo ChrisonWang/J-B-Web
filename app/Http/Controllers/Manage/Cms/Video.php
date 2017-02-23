@@ -203,7 +203,7 @@ class Video extends Controller
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
         else{
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'删除失败！']);
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
         }
     }
 

@@ -411,4 +411,75 @@ class Dashboard extends Controller
         }
     }
 
+    /**
+     * 加载科室管理界面
+     * @param $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function _content_OfficeMng($request)
+    {
+        //取出数据
+        $office_data = array();
+        $_office = DB::table('user_office')->get();
+        foreach($_office as $key=> $office){
+            $office_data[$key]['key'] = keys_encrypt($office->id);
+            $office_data[$key]['office_name'] = $office->office_name;
+        }
+        //返回到前段界面
+        $this->page_data['office_list'] = $office_data;
+        $pageContent = view('judicial.manage.user.officeList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    /**
+     * 加载功能点管理界面
+     * @param $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function _content_NodesMng($request)
+    {
+        $this->page_data['node_schema'] = array(
+                'A'=> 'roles(角色管理表)',
+                'B'=> 'channels(频道管理表)',
+                'C'=> 'department(科室管理表)',
+                'D'=> 'article(文章管理表)',
+        );
+        //取出数据
+        $node_list = array();
+        $nodes = DB::table('user_nodes')->get();
+        foreach($nodes as $key=> $node){
+            $node_list[$key]['key'] = keys_encrypt($node->id);
+            $node_list[$key]['node_name'] = $node->node_name;
+            $node_list[$key]['node_schema'] = $node->node_schema;
+        }
+        //返回到前段界面
+        $this->page_data['node_list'] = $node_list;
+        $pageContent = view('judicial.manage.user.nodeList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    /**
+     * 菜单管理管理界面
+     * @param $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function _content_MenuMng($request)
+    {
+        //取出数据
+        $menu_list = array();
+        $menus = DB::table('user_menus')->get();
+        foreach($menus as $key=> $menu){
+            $menu_list[$key]['key'] = keys_encrypt($menu->id);
+            $menu_list[$key]['menu_name'] = $menu->menu_name;
+            $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+        }
+        //返回到前段界面
+        $this->page_data['menu_list'] = $menu_list;
+        $pageContent = view('judicial.manage.user.menuList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
 }

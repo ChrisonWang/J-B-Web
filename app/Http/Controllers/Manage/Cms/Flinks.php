@@ -12,7 +12,7 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
-class Leader extends Controller
+class Flinks extends Controller
 {
     private $page_data = array();
 
@@ -23,7 +23,7 @@ class Leader extends Controller
      */
     public function create(Request $request)
     {
-        $pageContent = view('judicial.manage.cms.leaderAdd',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.flinkAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -47,14 +47,14 @@ class Leader extends Controller
             'create_date'=> $now,
             'update_date'=> $now
         );
-        $id = DB::table('cms_leaders')->insertGetId($save_data);
+        $id = DB::table('cms_flinks')->insertGetId($save_data);
         if($id === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
         }
         //添加成功后刷新页面数据
         else{
             $leaders_data = array();
-            $leaders = DB::table('cms_leaders')->get();
+            $leaders = DB::table('cms_flinks')->get();
             foreach($leaders as $key=> $leader){
                 $leaders_data[$key]['key'] = keys_encrypt($leader->id);
                 $leaders_data[$key]['leader_name'] = $leader->name;
@@ -62,7 +62,7 @@ class Leader extends Controller
             }
             //返回到前段界面
             $this->page_data['leader_list'] = $leaders_data;
-            $pageContent = view('judicial.manage.cms.leaderList',$this->page_data)->render();
+            $pageContent = view('judicial.manage.cms.flinkList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
     }
@@ -80,7 +80,7 @@ class Leader extends Controller
         $id = keys_decrypt($inputs['key']);
 
         //取出详情
-        $leader = DB::table('cms_leaders')->where('id',$id)->first();
+        $leader = DB::table('cms_flinks')->where('id',$id)->first();
         if(is_null($leader)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
         }
@@ -94,7 +94,7 @@ class Leader extends Controller
 
         //页面中显示
         $this->page_data['leaderDetail'] = $leader_detail;
-        $pageContent = view('judicial.manage.cms.leaderDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.flinkDetail',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -112,7 +112,7 @@ class Leader extends Controller
         $id = keys_decrypt($inputs['key']);
 
         //取出详情
-        $leader = DB::table('cms_leaders')->where('id',$id)->first();
+        $leader = DB::table('cms_flinks')->where('id',$id)->first();
         if(is_null($leader)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
         }
@@ -126,7 +126,7 @@ class Leader extends Controller
 
         //页面中显示
         $this->page_data['leaderDetail'] = $leader_detail;
-        $pageContent = view('judicial.manage.cms.leaderEdit',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.flinkEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -142,15 +142,16 @@ class Leader extends Controller
             'description'=> htmlspecialchars($inputs['description']),
             'job'=> $inputs['leader_job'],
             'photo'=> empty($inputs['leader_photo']) ? '' : $inputs['leader_photo'],
+            'create_date'=> $now,
             'update_date'=> $now
         );
-        $rs = DB::table('cms_leaders')->where('id',$id)->update($save_data);
+        $rs = DB::table('cms_flinks')->where('id',$id)->update($save_data);
         if($rs === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
         }
         //修改成功则回调页面,取出数据
         $leaders_data = array();
-        $leaders = DB::table('cms_leaders')->get();
+        $leaders = DB::table('cms_flinks')->get();
         foreach($leaders as $key=> $leader){
             $leaders_data[$key]['key'] = keys_encrypt($leader->id);
             $leaders_data[$key]['leader_name'] = $leader->name;
@@ -158,7 +159,7 @@ class Leader extends Controller
         }
         //返回到前段界面
         $this->page_data['leader_list'] = $leaders_data;
-        $pageContent = view('judicial.manage.cms.leaderList',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.flinkList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -166,10 +167,10 @@ class Leader extends Controller
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        $row = DB::table('cms_leaders')->where('id',$id)->delete();
+        $row = DB::table('cms_flinks')->where('id',$id)->delete();
         if( $row > 0 ){
             $leaders_data = array();
-            $leaders = DB::table('cms_leaders')->get();
+            $leaders = DB::table('cms_flinks')->get();
             foreach($leaders as $key=> $leader){
                 $leaders_data[$key]['key'] = keys_encrypt($leader->id);
                 $leaders_data[$key]['leader_name'] = $leader->name;
@@ -177,12 +178,36 @@ class Leader extends Controller
             }
             //返回到前段界面
             $this->page_data['leader_list'] = $leaders_data;
-            $pageContent = view('judicial.manage.cms.leaderList',$this->page_data)->render();
+            $pageContent = view('judicial.manage.cms.flinkList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
         else{
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
         }
+    }
+
+    /**
+     * 检查是否允许删除与插入
+     * @param string $method
+     * @param array $data
+     * @return bool
+     */
+    private function _checkData($method = 'insert',$data = array())
+    {
+        $id = keys_decrypt($data['key']);
+        if($method != 'insert'){
+            $row = DB::table('cms_flinks')->select('id')->where('pid', $id)->get();
+            if(count($row)>0){
+                return false;
+            }
+        }
+        else{
+            $row = DB::table('cms_flinks')->select('id','pid','title')->where('title', $data['f_title'])->first();
+            if($data['pid'] == $row['pid']){
+                return false;
+            }
+        }
+        return true;
     }
 
 }
