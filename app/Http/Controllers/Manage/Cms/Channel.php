@@ -36,38 +36,63 @@ class Channel extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        //判断子链接是否有没有填写的
+        $subs = json_decode($inputs['sub'], true);
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
             'pid'=> 0,
             'channel_title'=> $inputs['channel_title'],
-            'is_recommend'=> (isset($inputs['is_recommend']) && $inputs['is_recommend']) ? $inputs['is_recommend'] : 'no',
-            'form_download'=> (isset($inputs['form_download']) && $inputs['form_download']) ? $inputs['form_download'] : 'no',
-            'zwgk'=> (isset($inputs['zwgk']) && $inputs['zwgk']) ? $inputs['zwgk'] : 'no',
-            'wsbs'=> (isset($inputs['wsbs']) && $inputs['wsbs']) ? $inputs['wsbs'] : 'no',
-            'sort'=> empty($inputs['sort']) ? 0 : $inputs['leader_photo'],
-            'create_Date'=> $now,
+            'is_recommend'=> (isset($inputs['is_recommend']) && $inputs['is_recommend']=='yes') ? 'yes' : 'no',
+            'form_download'=> (isset($inputs['form_download']) && $inputs['form_download']=='yes') ? 'yes' : 'no',
+            'zwgk'=> (isset($inputs['zwgk']) && $inputs['zwgk']=='yes') ? 'yes' : 'no',
+            'wsbs'=> (isset($inputs['wsbs']) && $inputs['wsbs']=='yes') ? 'yes' : 'no',
+            'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
+            'create_date'=> $now,
             'update_date'=> $now
         );
+        DB::beginTransaction();
         $id = DB::table('cms_channel')->insertGetId($save_data);
         if($id === false){
+            DB::rollBack();
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
         }
-        //添加成功后刷新页面数据
-        else{
-            $channel_data = array();
-            $channels = DB::table('cms_channel')->where('pid',0)->get();
-            foreach($channels as $key=> $channel){
-                $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
-                $channel_data[$key]['is_recommend'] = $channel->is_recommend;
-                $channel_data[$key]['form_download'] = $channel->form_download;
-                $channel_data[$key]['sort'] = $channel->sort;
+        foreach($subs as $sub){
+            $now = date('Y-m-d H:i:s', time());
+            $save_data = array(
+                'pid'=> $id,
+                'channel_title'=> $sub['sub_title'],
+                'is_recommend'=>'no',
+                'form_download'=>'no',
+                'zwgk'=> $sub['sub_zwgk'],
+                'wsbs'=> $sub['sub_wsbs'],
+                'sort'=> $sub['sub_sort'],
+                'create_date'=> $now,
+                'update_date'=> $now
+            );
+            $iid = DB::table('cms_channel')->insertGetId($save_data);
+            if($iid === false){
+                DB::rollBack();
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
             }
-            //返回到前段界面
-            $this->page_data['channel_list'] = $channel_data;
-            $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
-            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
+        DB::commit();
+        //添加成功后刷新页面数据
+        $channel_data = array();
+        $channels = DB::table('cms_channel')->where('pid',0)->get();
+        foreach($channels as $key=> $channel){
+            $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+            $channel_data[$key]['channel_title'] = $channel->channel_title;
+            $channel_data[$key]['is_recommend'] = $channel->is_recommend;
+            $channel_data[$key]['form_download'] = $channel->form_download;
+            $channel_data[$key]['zwgk'] = $channel->zwgk;
+            $channel_data[$key]['wsbs'] = $channel->wsbs;
+            $channel_data[$key]['sort'] = $channel->sort;
+        }
+        //返回到前段界面
+        $this->page_data['channel_list'] = $channel_data;
+        $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
     /**
@@ -78,25 +103,47 @@ class Channel extends Controller
      */
     public function show(Request $request)
     {
-        $leader_detail = array();
+        $channel_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
 
         //取出详情
-        $leader = DB::table('cms_channel')->where('id',$id)->first();
-        if(is_null($leader)){
+        $channels = DB::table('cms_channel')->where('channel_id',$id)->first();
+        if(is_null($channels)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
         }
-        $leader_detail['key'] = keys_encrypt($leader->id);
-        $leader_detail['leader_name'] = $leader->name;
-        $leader_detail['leader_job'] = $leader->job;
-        $leader_detail['sort'] = $leader->sort;
-        $leader_detail['description'] = $leader->description;
-        $leader_detail['create_date'] = $leader->create_date;
-        $leader_detail['update_date'] = $leader->update_date;
+        $channel_detail['key'] = keys_encrypt($channels->channel_id);
+        $channel_detail['channel_title'] = $channels->channel_title;
+        $channel_detail['is_recommend'] = $channels->is_recommend;
+        $channel_detail['form_download'] = $channels->form_download;
+        $channel_detail['zwgk'] = $channels->zwgk;
+        $channel_detail['wsbs'] = $channels->wsbs;
+        $channel_detail['sort'] = $channels->sort;
+        $channel_detail['create_date'] = $channels->create_date;
+        $channel_detail['update_date'] = $channels->update_date;
 
+        //取出子频道
+        $sub_channels = DB::table('cms_channel')->where('pid',$id)->get();
+        if(count($sub_channels)<1){
+            $subs = 'none';
+        }
+        else{
+            $subs = array();
+            foreach($sub_channels as $k=> $sub){
+                $subs[$k]['key'] = keys_encrypt($sub->channel_id);
+                $subs[$k]['channel_title'] = $sub->channel_title;
+                $subs[$k]['is_recommend'] = $sub->is_recommend;
+                $subs[$k]['form_download'] = $sub->form_download;
+                $subs[$k]['zwgk'] = $sub->zwgk;
+                $subs[$k]['wsbs'] = $sub->wsbs;
+                $subs[$k]['sort'] = $sub->sort;
+                $subs[$k]['create_date'] = $sub->create_date;
+                $subs[$k]['update_date'] = $sub->update_date;
+            }
+        }
         //页面中显示
-        $this->page_data['leaderDetail'] = $leader_detail;
+        $this->page_data['subs'] = $subs;
+        $this->page_data['channel_detail'] = $channel_detail;
         $pageContent = view('judicial.manage.cms.channelDetail',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -110,26 +157,48 @@ class Channel extends Controller
      */
     public function edit(Request $request)
     {
-        $leader_detail = array();
+        $channel_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
 
         //取出详情
-        $leader = DB::table('cms_channel')->where('id',$id)->first();
-        if(is_null($leader)){
+        $channels = DB::table('cms_channel')->where('channel_id',$id)->first();
+        if(is_null($channels)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
         }
-        $leader_detail['key'] = keys_encrypt($leader->id);
-        $leader_detail['leader_name'] = $leader->name;
-        $leader_detail['leader_job'] = $leader->job;
-        $leader_detail['sort'] = $leader->sort;
-        $leader_detail['description'] = $leader->description;
-        $leader_detail['create_date'] = $leader->create_date;
-        $leader_detail['update_date'] = $leader->update_date;
+        $channel_detail['key'] = keys_encrypt($channels->channel_id);
+        $channel_detail['channel_title'] = $channels->channel_title;
+        $channel_detail['is_recommend'] = $channels->is_recommend;
+        $channel_detail['form_download'] = $channels->form_download;
+        $channel_detail['zwgk'] = $channels->zwgk;
+        $channel_detail['wsbs'] = $channels->wsbs;
+        $channel_detail['sort'] = $channels->sort;
+        $channel_detail['create_date'] = $channels->create_date;
+        $channel_detail['update_date'] = $channels->update_date;
 
+        //取出子频道
+        $sub_channels = DB::table('cms_channel')->where('pid',$id)->get();
+        if(count($sub_channels)<1){
+            $subs = 'none';
+        }
+        else{
+            $subs = array();
+            foreach($sub_channels as $k=> $sub){
+                $subs[$k]['key'] = keys_encrypt($sub->channel_id);
+                $subs[$k]['channel_title'] = $sub->channel_title;
+                $subs[$k]['is_recommend'] = $sub->is_recommend;
+                $subs[$k]['form_download'] = $sub->form_download;
+                $subs[$k]['zwgk'] = $sub->zwgk;
+                $subs[$k]['wsbs'] = $sub->wsbs;
+                $subs[$k]['sort'] = $sub->sort;
+                $subs[$k]['create_date'] = $sub->create_date;
+                $subs[$k]['update_date'] = $sub->update_date;
+            }
+        }
         //页面中显示
-        $this->page_data['leaderDetail'] = $leader_detail;
-        $pageContent = view('judicial.manage.cms.channelEdit',$this->page_data)->render();
+        $this->page_data['subs'] = $subs;
+        $this->page_data['channel_detail'] = $channel_detail;
+        $pageContent = view('judicial.manage.cms.channelDetail',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -137,28 +206,90 @@ class Channel extends Controller
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        //执行插入数据操作
-        $now = date('Y-m-d H:i:s', time());
-        $save_data = array(
-            'name'=> $inputs['leader_name'],
+        $sql = 'SELECT `channel_id` FROM cms_channel WHERE `channel_title` = "'.$inputs['channel_title'].'" AND `channel_id` != "'.$id.'" AND `pid` = 0';
+        $res = DB::select($sql);
+        if(count($res) != 0){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['channel_title'].'的一级频道']);
+        }
+        //处理二级分类
+        $del_data = array();
+        $edit_data = array();
+        $add_data = array();
+        $subs = json_decode($inputs['sub'],true);
+        $sub_channel = DB::table('cms_channel')->where('pid',$id)->get();
+        //处理需要编辑和新增的
+        foreach($subs as $k=> $sub){
+            if($sub['method'] == 'edit'){
+                $edit_data[keys_decrypt($sub['key'])]['channel_title'] = $sub['sub_title'];
+                $edit_data[keys_decrypt($sub['key'])]['zwgk'] = $sub['sub_zwgk'];
+                $edit_data[keys_decrypt($sub['key'])]['wsbs'] = $sub['sub_wsbs'];
+                $edit_data[keys_decrypt($sub['key'])]['sort'] = $sub['sub_sort'];
+                $edit_data[keys_decrypt($sub['key'])]['update_date'] = date('Y-m-d H:i:s', time());
+            }else{
+                $add_data[$k]['channel_title'] = $sub['sub_title'];
+                $add_data[$k]['zwgk'] = $sub['sub_zwgk'];
+                $add_data[$k]['wsbs'] = $sub['sub_wsbs'];
+                $add_data[$k]['sort'] = $sub['sub_sort'];
+                $add_data[$k]['pid'] = $id;
+                $add_data[$k]['create_date'] = date('Y-m-d H:i:s', time());
+                $add_data[$k]['update_date'] = date('Y-m-d H:i:s', time());
+            }
+        }
+        //处理需要删除的
+        foreach($sub_channel as $channel){
+            if(!isset($edit_data[$channel->channel_id])){
+                $del_data[$channel->channel_id] = $channel->channel_id;
+            }
+        }
+
+        $p_edit_data = array(
+            'pid'=> 0,
+            'channel_title'=> $inputs['channel_title'],
+            'is_recommend'=> (isset($inputs['is_recommend']) && $inputs['is_recommend']=='yes') ? 'yes' : 'no',
+            'form_download'=> (isset($inputs['form_download']) && $inputs['form_download']=='yes') ? 'yes' : 'no',
+            'zwgk'=> (isset($inputs['zwgk']) && $inputs['zwgk']=='yes') ? 'yes' : 'no',
+            'wsbs'=> (isset($inputs['wsbs']) && $inputs['wsbs']=='yes') ? 'yes' : 'no',
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
-            'description'=> htmlspecialchars($inputs['description']),
-            'job'=> $inputs['leader_job'],
-            'photo'=> empty($inputs['leader_photo']) ? '' : $inputs['leader_photo'],
-            'create_date'=> $now,
-            'update_date'=> $now
+            'update_date'=> date('Y-m-d H:i:s', time())
         );
-        $rs = DB::table('cms_channel')->where('id',$id)->update($save_data);
-        if($rs === false){
+        //事物方式执行插入数据操作
+        DB::beginTransaction();
+        $re = DB::table('cms_channel')->where('channel_id', $id)->update($p_edit_data);
+        if($re === false){
+            DB::rollback();
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
         }
-        //修改成功则回调页面,取出数据
+        $pid = DB::table('cms_channel')->insert($add_data);
+        if($pid === false){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+        }
+        //更新
+        foreach($edit_data as $k=> $edit){
+            $re = DB::table('cms_channel')->where('channel_id', $k)->update($edit);
+            if($re === false){
+                DB::rollback();
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+            }
+        }
+        //删除
+        foreach($del_data as $k=> $edit){
+            $re = DB::table('cms_channel')->where('channel_id', $k)->delete();
+            if(!$re){
+                DB::rollback();
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+            }
+        }
+        DB::commit();
         $channel_data = array();
         $channels = DB::table('cms_channel')->where('pid',0)->get();
         foreach($channels as $key=> $channel){
             $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+            $channel_data[$key]['channel_title'] = $channel->channel_title;
             $channel_data[$key]['is_recommend'] = $channel->is_recommend;
             $channel_data[$key]['form_download'] = $channel->form_download;
+            $channel_data[$key]['zwgk'] = $channel->zwgk;
+            $channel_data[$key]['wsbs'] = $channel->wsbs;
             $channel_data[$key]['sort'] = $channel->sort;
         }
         //返回到前段界面
@@ -171,52 +302,34 @@ class Channel extends Controller
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        $sub = DB::table('cms_channel')->where('pid',$id);
-        if(count($sub) > 0){
-            json_response(['status'=>'failed','type'=>'alert', 'res'=>'无法删除，该频道下还有子频道！']);
-        }
-        $row = DB::table('cms_channel')->where('id',$id)->delete();
-        if( $row > 0 ){
-            $channel_data = array();
-            $channels = DB::table('cms_channel')->where('pid',0)->get();
-            foreach($channels as $key=> $channel){
-                $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
-                $channel_data[$key]['is_recommend'] = $channel->is_recommend;
-                $channel_data[$key]['form_download'] = $channel->form_download;
-                $channel_data[$key]['sort'] = $channel->sort;
-            }
-            //返回到前端界面
-            $this->page_data['channel_list'] = $channel_data;
-            $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
-            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
-        }
-        else{
+        //事物方式删除
+        DB::beginTransaction();
+        $row = DB::table('cms_channel')->where('pid',$id)->delete();
+        if($row == false ){
+            DB::rollBack();
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
         }
-    }
-
-    /**
-     * 检查是否允许删除与插入
-     * @param string $method
-     * @param array $data
-     * @return bool
-     */
-    private function _checkData($method = 'insert',$data = array())
-    {
-        $id = keys_decrypt($data['key']);
-        if($method != 'insert'){
-            $row = DB::table('cms_channel')->select('id')->where('pid', $id)->get();
-            if(count($row)>0){
-                return false;
-            }
+        $row_p = DB::table('cms_channel')->where('channel_id',$id)->delete();
+        if($row_p == false ){
+            DB::rollBack();
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
         }
-        else{
-            $row = DB::table('cms_channel')->select('id','pid','title')->where('title', $data['f_title'])->first();
-            if($data['pid'] == $row['pid']){
-                return false;
-            }
+        DB::commit();
+        $channel_data = array();
+        $channels = DB::table('cms_channel')->where('pid',0)->get();
+        foreach($channels as $key=> $channel){
+            $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+            $channel_data[$key]['channel_title'] = $channel->channel_title;
+            $channel_data[$key]['is_recommend'] = $channel->is_recommend;
+            $channel_data[$key]['form_download'] = $channel->form_download;
+            $channel_data[$key]['zwgk'] = $channel->zwgk;
+            $channel_data[$key]['wsbs'] = $channel->wsbs;
+            $channel_data[$key]['sort'] = $channel->sort;
         }
-        return true;
+        //返回到前段界面
+        $this->page_data['channel_list'] = $channel_data;
+        $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
 }

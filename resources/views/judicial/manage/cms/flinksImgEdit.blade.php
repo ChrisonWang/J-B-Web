@@ -20,12 +20,25 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="fi_image" class="col-md-1 control-label">照片：</label>
-                <div class="btn btn-default btn-file col-md-3">
-                    <i class="fa fa-paperclip"></i>上传头像图片
-                    <input type="file" id="fi_image" name="fi_image" />
+                <label for="upload_photo" class="col-md-1 control-label">图片(120 * 50)：</label>
+                <div class="col-md-3">
+                    <i class="fa fa-paperclip"></i>上传图片
+                    <input type="file" id="upload_photo" class="btn btn-default btn-file" name="fi_photo" onchange="upload_img($(this))"/>
                 </div>
             </div>
+            @if( isset($flink_detail['fi_image']) && $flink_detail['fi_image'] != "none" )
+                <div class="form-group" id="image-thumbnail">
+                    <label for="leader_photo" class="col-md-1 control-label">预览：</label>
+                    <div class="col-md-3" id="image-holder">
+                        <img src="{{ $flink_detail['fi_image'] }}" class="img-thumbnail img-responsive">
+                    </div>
+                </div>
+            @else
+                <div class="form-group hidden" id="image-thumbnail">
+                    <label for="leader_photo" class="col-md-1 control-label">预览：</label>
+                    <div class="col-md-3" id="image-holder"></div>
+                </div>
+            @endif
             <div class="form-group">
                 <label for="create_date" class="col-md-1 control-label">创建时间：</label>
                 <div class="col-md-3">
@@ -34,7 +47,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-3">
-                    <p class="text-left hidden" id="flinknImgEditNotice" style="color: red"></p>
+                    <p class="text-left hidden" id="flinkImgEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">

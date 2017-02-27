@@ -174,11 +174,26 @@ class CmsLoadContent extends Controller
             $flink_data[$key]['key'] = keys_encrypt($link->id);
             $flink_data[$key]['fi_title'] = $link->title;
             $flink_data[$key]['fi_links'] = $link->links;
-            $flink_data[$key]['image'] = $link->image;
+            $flink_data[$key]['fi_image'] = $link->image;
         }
         //返回到前段界面
         $this->page_data['flink_list'] = $flink_data;
         $pageContent = view('judicial.manage.cms.flinksImgList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_Flink2Mng($request)
+    {
+        //取出数据
+        $flinks_data = array();
+        $links = DB::table('cms_flinks')->where('pid',0)->get();
+        foreach($links as $key=> $link){
+            $flinks_data[$key]['key'] = keys_encrypt($link->id);
+            $flinks_data[$key]['title'] = $link->title;
+        }
+        //返回到前段界面
+        $this->page_data['flink_list'] = $flinks_data;
+        $pageContent = view('judicial.manage.cms.flinksList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -189,13 +204,69 @@ class CmsLoadContent extends Controller
         $channels = DB::table('cms_channel')->where('pid',0)->get();
         foreach($channels as $key=> $channel){
             $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+            $channel_data[$key]['channel_title'] = $channel->channel_title;
             $channel_data[$key]['is_recommend'] = $channel->is_recommend;
             $channel_data[$key]['form_download'] = $channel->form_download;
+            $channel_data[$key]['zwgk'] = $channel->zwgk;
+            $channel_data[$key]['wsbs'] = $channel->wsbs;
             $channel_data[$key]['sort'] = $channel->sort;
         }
         //返回到前段界面
         $this->page_data['channel_list'] = $channel_data;
         $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_FormMng($request)
+    {
+        //取出频道
+        $channels_data = array();
+        $channels = DB::table('cms_channel')->get();
+        foreach($channels as $channel){
+            $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
+        }
+        //取出数据
+        $forms_data = array();
+        $forms = DB::table('cms_forms')->get();
+        foreach($forms as $key=> $form){
+            $forms_data[$key]['key'] = keys_encrypt($form->id);
+            $forms_data[$key]['title'] = $form->title;
+            $forms_data[$key]['disabled'] = $form->disabled;
+            $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
+            $forms_data[$key]['file'] = $form->file;
+            $forms_data[$key]['create_date'] = $form->create_date;
+        }
+        //返回到前段界面
+        $this->page_data['channel_list'] = $channels_data;
+        $this->page_data['form_list'] = $forms_data;
+        $pageContent = view('judicial.manage.cms.formsList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_ArticleMng($request)
+    {
+        //取出频道
+        $channels_data = array();
+        $channels = DB::table('cms_channel')->get();
+        foreach($channels as $channel){
+            $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
+        }
+        //取出数据
+        $article_data = array();
+        $articles = DB::table('cms_article')->get();
+        foreach($articles as $key=> $article){
+            $article_data[$key]['key'] = $article->article_code;
+            $article_data[$key]['article_title'] = $article->article_title;
+            $article_data[$key]['disabled'] = $article->disabled;
+            $article_data[$key]['channel_id'] = keys_encrypt($article->channel_id);
+            $article_data[$key]['sub_channel_id'] = keys_encrypt($article->sub_channel);
+            $article_data[$key]['clicks'] = $article->clicks;
+            $article_data[$key]['publish_date'] = $article->publish_date;
+        }
+        //返回到前段界面
+        $this->page_data['channel_list'] = $channels_data;
+        $this->page_data['article_list'] = $article_data;
+        $pageContent = view('judicial.manage.cms.articleList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 

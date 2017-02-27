@@ -7,9 +7,13 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <!-- jQuery -->
     <script src="{{ asset('/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.form.js') }}"></script>
     <!-- Bootstrap Core CSS and JS -->
     <link href="{{ asset('/css/bootstrap.min.css') }}" rel='stylesheet' type='text/css' />
     <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+    <!-- datetimepicker Core CSS and JS -->
+    <link href="{{ asset('/css/jquery.datetimepicker.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ asset('/js/jquery.datetimepicker.full.js') }}"></script>
     <!-- Custom CSS -->
     <link href="{{ asset('/css/style.css') }}" rel='stylesheet' type='text/css' />
     <!-- Graph CSS -->

@@ -21,6 +21,9 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 /*头部*/
 .w1024{width: 1024px;clear: both;margin: 0 auto;}
 .w980{width: 980px;clear: both;margin: 0 auto;}
+.w810{width: 810px;}
+.w700{width: 700px;margin: 0 auto}
+.mx600{max-width: 600px;margin: 0 auto;}
 
 .index_hd{position: relative;}
 .login {position: absolute;right: 50px;font-size: 14px;top: 10px;color: #fff;}
@@ -44,11 +47,11 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .id_sch_r button {background: #DD3938;border-radius: 0 2px 2px 0;border: 0;color: #fff;width: 80px;height: 35px;position: relative;right: 3px;font-size: 14px;}
 
 /*banner*/
-.idx_banner .swiper-pagination-bullet-active{background: #222222;}
+.idx_banner .swiper-pagination-bullet-active{background: #DD3938;}
 .idx_banner{overflow: hidden;}
 .idb_left{float: left;}
 .banner_sd {width: 550px;height: 350px;overflow: hidden;}
-.banner_sd .swiper-pagination-bullet{width: 20px;height: 20px;}
+.banner_sd .swiper-pagination-bullet{width: 10px;height: 10px;}
 
 .idb_right {float: right;}
 .idbr_top {background: #DD3938;border-radius: 2px;width: 410px;height: 40px;line-height: 40px;}
@@ -128,3 +131,68 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .foot span{margin-right: 20px;}
 .more_link{color: #DD3938; text-align: center; display: block; cursor: pointer;}
 .vid_more{position: absolute; right: 10px; top: 10px; font-size: 13px; color: #222; cursor: pointer;}
+
+
+/*政务公开*/
+.zw_mb{margin-top: 10px; margin-bottom: 100px; overflow: hidden;}
+.zw_left{float: left; width: 150px; background-color: #F9F9F9; margin-left: 25px;}
+.zw_left ul li{text-align: left; text-indent: 30px; font-size: 14px; line-height: 40px;}
+.zw_left ul li i{float: right; font-weight: bold; margin-right: 25px; width: 20px; height: 20px; margin-top: 10px;}
+.r_awry{background: url("../images/btn_arrowright_20x20.png") no-repeat center; background-size: 100%;}
+.lb_select .r_awry{background: url("../images/btn_arrowdown_20x20.png") no-repeat center; background-size: 100%;}
+.law_body span{display: block; text-align: center; text-indent: 0px;}
+.lb_act{background-color: #E23939; color: #fff;}
+.law_body{display: none;}
+.lb_select .law_body{display: block;}
+.zw_right{float: right; margin-right: 20px;}
+.zwr_top{background-color: #f9f9f9; line-height: 40px; text-indent: 10px; color: #929292;}
+.zwr_mid{margin-top: 10px;}
+.zwr_mid li div{display: inline-block; color: #222; font-size: 14px;}
+.zwr_mid li{line-height: 40px; margin-left: 10px;}
+.zwrm_a{width: 600px;}
+.zwrm_b{width: 80px;}
+.zwrm_c{width: 80px; margin-left: 20px;}
+.zwr_mid li:hover div{color: #E23939;}
+.zwr_ft{text-align: center; margin-top: 40px;}
+.zwr_ft div{display: inline-block;}
+.fy_left{margin-left: -50px;}
+.fy_left span{margin-left: 10px; color: #222222;}
+.fy_right{margin-left: 30px;}
+.fy_right span{margin-left: 10px; color: #929292;}
+.fy_right input{width: 30px; margin: 0 10px; text-align: center;}
+.fy_btn{background-color: #E23939; color: #fff!important; padding: 3px 10px; border-radius: 2px;}
+
+/*政务公开_文章详情*/
+.wz_top .h_tit{font-size: 18px; padding: 20px 0; text-align: center; border-bottom: 1px solid #ececec; display: block;}
+.wzt_down{overflow: hidden; margin-top: 10px;}
+.wztd_left{float: left;}
+.wztd_right{float: right; color: #E23939;}
+.wzt_down span{margin-right: 20px;}
+.wz_img{text-align: center; margin: 20px 0;}
+.wz_mg{margin: 20px 0; font-family: MicrosoftYaHei; font-size: 15px; color: #222222; letter-spacing: 0; line-height: 30px;}
+.wz_link{position: relative; background-color: #F9F9F9; height: 100px; line-height: 120px;}
+.wz_btn{width: 340px; display: inline-block; text-align: center; font-size: 13px; color: #222222;}
+.wz_btn i{padding: 5px 15px; background-color: #fff; border-radius: 2px; border: 1px solid #ECECEC; margin-left: 20px;}
+.wz_btn i:hover{background-color: #ECECEC;}
+.zwv_txt{text-align: center; display: block; font-family: MicrosoftYaHei; font-size: 12px; color: #222222; letter-spacing: 0; margin-top: 10px;}
+.zw_vedio ul li{display: inline-block; margin-top: 20px; margin-right: 27px;position: relative;}
+.zw_vedio ul li:hover .vd_btn{display: block;}
+.zw_vedio ul li:nth-child(3n){margin-right: 0;}
+.zw_vedio .vd_btn{position: absolute;top: 60px;left: 100px;display: none;}
+.sf_link{background-color: #F9F9F9; position: relative; padding-top: 50px; margin-top: 20px;}
+.sf_link ul{width: 600px; overflow: hidden;}
+.sf_link ul li{float: left; width: 170px; list-style: initial; margin-left: 30px; margin-bottom: 10px;}
+.sf_link ul li a{color: #222222;}
+.sf_link ul li a:hover{color: #929292;}
+.ld_body{overflow: hidden; margin-top: 20px; padding-bottom: 20px; border-bottom: 1px solid #ECECEC;}
+.ldb_left{float: left; margin-left: 20px;}
+.ldb_right{float: right; width: 660px; color: #222222;}
+.ldb_tit{font-family: MicrosoftYaHei; font-size: 16px; color: #222222; letter-spacing: 0;}
+.ldb_mg{margin: 10px 0;}
+.ldb_right span{display: block;}
+
+/*搜索*/
+.serach{margin: 0 auto; width: 700px; float: none; margin-bottom: 60px;}
+.serach_body{text-align: center; margin-top: 20px;}
+.serach_body input{width: 450px; font-size: 14px; text-indent: 20px; padding: 10px 0; vertical-align: middle;}
+.serach_btn{width: 100px; height: 40px; font-size: 14px; background-color: #DF3737; display: inline-block; vertical-align: middle; color: #fff; line-height: 40px; margin-left: 10px;}

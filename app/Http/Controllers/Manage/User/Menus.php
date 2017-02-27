@@ -55,19 +55,20 @@ class Menus extends Controller
             $db_node[keys_encrypt($_node->id)] = $_node->node_name;
         }
         $nodes = array_unique($inputs['nodes']);
+        $save_nodes = array();
         foreach($nodes as $k=> $node){
             if(!isset($db_node[$node])){
                 unset($nodes[$k]);
             }
             else{
-                $nodes[$k] = keys_decrypt($node);
+                $save_nodes[keys_decrypt($node)] = $db_node[$node];
             }
         }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
             'menu_name'=> $inputs['menu_name'],
-            'nodes'=> json_encode($nodes),
+            'nodes'=> json_encode($save_nodes),
             'create_date'=> $now,
             'update_date'=> $now
         );
@@ -118,8 +119,8 @@ class Menus extends Controller
         //加密节点id
         if(!empty($node->nodes)){
             $menu_nodes = array();
-            foreach(json_decode($node->nodes, true) as $_node){
-                $menu_nodes[]['menu_node'] = keys_encrypt($_node);
+            foreach(json_decode($node->nodes, true) as $key=> $_node){
+                $menu_nodes[keys_encrypt($key)] = $_node;
             }
         }
         else{
@@ -165,7 +166,7 @@ class Menus extends Controller
         if(!empty($node->nodes)){
             $menu_nodes = array();
             foreach(json_decode($node->nodes, true) as $_node){
-                $menu_nodes[]['menu_node'] = keys_encrypt($_node);
+                $menu_nodes[][keys_encrypt($key)] = $_node;
             }
         }
         else{
@@ -200,18 +201,19 @@ class Menus extends Controller
             $db_node[keys_encrypt($_node->id)] = $_node->node_name;
         }
         $nodes = array_unique($inputs['nodes']);
+        $save_nodes = array();
         foreach($nodes as $k=> $node){
             if(!isset($db_node[$node])){
                 unset($nodes[$k]);
             }
             else{
-                $nodes[$k] = keys_decrypt($node);
+                $save_nodes[keys_decrypt($node)] = $db_node[$node];
             }
         }
         //执行更新数据操作
         $save_data = array(
             'menu_name'=> $inputs['menu_name'],
-            'nodes'=> json_encode($nodes),
+            'nodes'=> json_encode($save_nodes),
             'update_date'=> $now = date('Y-m-d H:i:s', time())
         );
         $rs = DB::table('user_menus')->where('id',$id)->update($save_data);

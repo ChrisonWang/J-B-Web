@@ -27,14 +27,27 @@
             </div>
             <div class="form-group">
                 <label for="leader_photo" class="col-md-1 control-label">照片：</label>
-                <div class="btn btn-default btn-file col-md-3">
+                <div class="col-md-3">
                     <i class="fa fa-paperclip"></i>上传头像图片
-                    <input type="file" id="leader_photo" name="leader_photo" />
+                    <input type="file" id="upload_photo" class="btn btn-file" name="leader_photo" onchange="upload_img($(this))"/>
                 </div>
             </div>
+            @if( isset($leaderDetail['photo']) && $leaderDetail['photo'] != "none" )
+                <div class="form-group" id="image-thumbnail">
+                    <label for="leader_photo" class="col-md-1 control-label">预览：</label>
+                    <div class="col-md-3" id="image-holder">
+                        <img src="{{ $leaderDetail['photo'] }}" class="img-thumbnail img-responsive">
+                    </div>
+                </div>
+            @else
+                <div class="form-group hidden" id="image-thumbnail">
+                    <label for="leader_photo" class="col-md-1 control-label">预览：</label>
+                    <div class="col-md-3" id="image-holder"></div>
+                </div>
+            @endif
             <div class="form-group">
                 <label for="UE_DepartmentDetail" class="col-md-1 control-label">简介：</label>
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <script id="UE_Content" name="description" type="text/plain"></script>
                 </div>
             </div>
@@ -56,9 +69,9 @@
     </div>
 </div>
 <script type="text/javascript">
+    var value = '{!! $leaderDetail['description'] !!}';
     var UE_Content = UE.getEditor('UE_Content');
     UE_Content.ready(function(){
-        var value = '{{ $leaderDetail['description'] }}';
         UE_Content.execCommand('insertHtml',value);
     });
 </script>

@@ -92,7 +92,7 @@ class User extends Controller
             json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'注册失败！']);
         }else{
             $userInfo = $this->_getMemberInfo($member_code);
-            setcookie("_token",md5($userInfo->login_name),time()+1800);
+            setcookie("_token",md5($userInfo->login_name),time()+24*3600);
             Session::put(md5($userInfo->login_name),$userInfo->member_code,30);
             Session::save();
             json_response(['status'=>'succ', 'type'=>'redirect', 'res'=>$this->page_date['url']['user']]);
@@ -117,7 +117,7 @@ class User extends Controller
             json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'用户名或密码错误！']);
         }
         else{
-            setcookie("_token",md5($userInfo->login_name),time()+1800);
+            setcookie("_token",md5($userInfo->login_name),time()+24*3600);
             Session::put(md5($userInfo->login_name),$userInfo->member_code,30);
             Session::save();
             json_response(['status'=>'succ', 'type'=>'notice', 'res'=>'登陆成功！']);
@@ -131,7 +131,7 @@ class User extends Controller
         }
         $login_name = $_COOKIE['_token'];
         $request->session()->forget($login_name);
-        setcookie('_token','',time()-3600);
+        setcookie('_token','',time()-24*3600*30);
 
         return redirect('/');
     }
@@ -372,7 +372,7 @@ class User extends Controller
             $affected = Members::where('member_code',$memberCode)->update(['password'=>$confirmPasswordE]);
             if($affected || $affected>0){
                 $request->session()->forget($_COOKIE['_token']);
-                setcookie('s','',time()-3600*24);
+                setcookie('s','',time()-3600*24*30);
                 Session::save();
                 json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('user/login')]);
             }

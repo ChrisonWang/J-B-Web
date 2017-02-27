@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\URL;
 
+use Illuminate\Support\Facades\Storage;
+
 use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
@@ -36,13 +38,33 @@ class Leader extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        //处理图片上传
+        $file = $request->file('leader_photo');
+        if(is_null($file) || !$file->isValid()){
+            $photo_path = '';
+        }
+        else{
+            $destPath = realpath(public_path('uploads/images'));
+            if(!file_exists($destPath)){
+                mkdir($destPath, 0755, true);
+            }
+            $extension = $file->getClientOriginalExtension();
+            $filename = gen_unique_code('IMG_').'.'.$extension;
+            if(!$file->move($destPath,$filename)){
+                $photo_path = '';
+            }
+            else{
+                $photo_path = URL::to('/').'/uploads/images/'.$filename;
+            }
+        }
+
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
             'name'=> $inputs['leader_name'],
             'job'=> $inputs['leader_job'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
-            'photo'=> empty($inputs['leader_photo']) ? '' : $inputs['leader_photo'],
+            'photo'=> empty($photo_path) ? '' : $photo_path,
             'description'=> htmlspecialchars($inputs['description']),
             'create_date'=> $now,
             'update_date'=> $now
@@ -87,8 +109,9 @@ class Leader extends Controller
         $leader_detail['key'] = keys_encrypt($leader->id);
         $leader_detail['leader_name'] = $leader->name;
         $leader_detail['leader_job'] = $leader->job;
+        $leader_detail['photo'] = empty($leader->photo) ? "none" : $leader->photo;
         $leader_detail['sort'] = $leader->sort;
-        $leader_detail['description'] = $leader->description;
+        $leader_detail['description'] = htmlspecialchars_decode($leader->description, ENT_HTML5);
         $leader_detail['create_date'] = $leader->create_date;
         $leader_detail['update_date'] = $leader->update_date;
 
@@ -119,8 +142,9 @@ class Leader extends Controller
         $leader_detail['key'] = keys_encrypt($leader->id);
         $leader_detail['leader_name'] = $leader->name;
         $leader_detail['leader_job'] = $leader->job;
+        $leader_detail['photo'] = empty($leader->photo) ? "none" : $leader->photo;
         $leader_detail['sort'] = $leader->sort;
-        $leader_detail['description'] = $leader->description;
+        $leader_detail['description'] = htmlspecialchars_decode($leader->description, ENT_HTML5);
         $leader_detail['create_date'] = $leader->create_date;
         $leader_detail['update_date'] = $leader->update_date;
 
@@ -134,14 +158,36 @@ class Leader extends Controller
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
+
+        //处理图片上传
+        $file = $request->file('leader_photo');
+        if(is_null($file) || !$file->isValid()){
+            $photo_path = '';
+        }
+        else{
+            $destPath = realpath(public_path('uploads/images'));
+            if(!file_exists($destPath)){
+                mkdir($destPath, 0755, true);
+            }
+            $extension = $file->getClientOriginalExtension();
+            $filename = gen_unique_code('IMG_').'.'.$extension;
+            if(!$file->move($destPath,$filename)){
+                $photo_path = '';
+            }
+            else{
+                $photo_path = URL::to('/').'/uploads/images/'.$filename;
+            }
+        }
+
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
             'name'=> $inputs['leader_name'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
+            'photo'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
             'description'=> htmlspecialchars($inputs['description']),
             'job'=> $inputs['leader_job'],
-            'photo'=> empty($inputs['leader_photo']) ? '' : $inputs['leader_photo'],
+            'photo'=> empty($photo_path) ? '' : $photo_path,
             'update_date'=> $now
         );
         $rs = DB::table('cms_leaders')->where('id',$id)->update($save_data);

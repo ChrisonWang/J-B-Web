@@ -39,7 +39,7 @@
 <script type="text/javascript">
     var UE_Content = UE.getEditor('UE_Content');
     UE_Content.ready(function(){
-        var value = '{{ $intro['introduce'] }}';
+        var value = '{!! $intro['introduce'] !!}';
         UE_Content.execCommand('insertHtml',value);
     });
 </script>

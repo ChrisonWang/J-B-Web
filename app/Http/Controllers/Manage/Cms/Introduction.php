@@ -40,7 +40,7 @@ class Introduction extends Controller
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
-            'introduce'=> htmlspecialchars($inputs['intro']),
+            'introduce'=> $inputs['intro'],
             'create_date'=> $now,
             'update_date'=> $now
         );
@@ -83,7 +83,7 @@ class Introduction extends Controller
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
         }
         $intro['key'] = keys_encrypt($introduce->id);
-        $intro['introduce'] = htmlspecialchars_decode($introduce->introduce);
+        $intro['introduce'] = $introduce->introduce;
         $intro['create_date'] = $introduce->create_date;
 
         //页面中显示
@@ -110,7 +110,7 @@ class Introduction extends Controller
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
         }
         $intro['key'] = keys_encrypt($introduce->id);
-        $intro['introduce'] = htmlspecialchars_decode($introduce->introduce);
+        $intro['introduce'] = $introduce->introduce;
         $intro['create_date'] = $introduce->create_date;
 
         //页面中显示
@@ -125,7 +125,7 @@ class Introduction extends Controller
         $id = keys_decrypt($inputs['key']);
         //执行更新数据操作
         $save_data = array(
-            'introduce'=> htmlspecialchars($inputs['intro']),
+            'introduce'=> $inputs['intro'],
             'update_date'=> date('Y-m-d H:i:s', time())
         );
         $rs = DB::table('cms_justice_bureau_introduce')->where('id',$id)->update($save_data);

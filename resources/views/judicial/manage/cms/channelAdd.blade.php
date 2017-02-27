@@ -10,16 +10,16 @@
             <tbody class="text-center">
             <tr>
                 <td>
-                    <input type="text" class="form-control" name="sub['channel_title'][]" placeholder="请输频道名称" />
+                    <input type="text" class="form-control" name="sub-channel_title" placeholder="请输频道名称" />
                 </td>
                 <td>
-                    <input type="checkbox" class="form-control" name="sub['zwgk'][]" value="yes" checked/>
+                    <input type="checkbox" class="form-control" name="sub-zwgk" value="yes" checked/>
                 </td>
                 <td>
-                    <input type="checkbox" class="form-control" name="sub['wsbs'][]" value="yes" checked/>
+                    <input type="checkbox" class="form-control" name="sub-wsbs" value="yes" checked/>
                 </td>
                 <td>
-                    <input type="text" class="form-control" name="sub['sort'][]" placeholder="请输入权重（数字越大越靠前）" />
+                    <input type="text" class="form-control" name="sub-sort" placeholder="请输入权重（数字越大越靠前）" />
                 </td>
                 <td>
                     <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
@@ -32,9 +32,9 @@
     <div class="panel-body">
         <form class="form-horizontal" id="channelAddForm">
             <div class="form-group">
-                <label for="menu_name" class="col-md-1 control-label">菜单名称：</label>
+                <label for="channel_title" class="col-md-1 control-label">菜单名称：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="menu_name" name="menu_name" placeholder="请输菜单名称" />
+                    <input type="text" class="form-control" id="channel_title" name="channel_title" placeholder="请输菜单名称" />
                 </div>
             </div>
             <div class="form-group">
@@ -84,16 +84,16 @@
                             <tbody class="text-center" id="menu-nodes">
                             <tr>
                                 <td>
-                                    <input type="text" class="form-control" name="sub['channel_title'][]" placeholder="请输频道名称" />
+                                    <input type="text" class="form-control" name="sub-channel_title" placeholder="请输频道名称" />
                                 </td>
                                 <td>
-                                    <input type="checkbox" class="form-control" name="sub['zwgk'][]" value="yes" checked/>
+                                    <input type="checkbox" class="form-control" name="sub-zwgk" value="yes" checked/>
                                 </td>
                                 <td>
-                                    <input type="checkbox" class="form-control" name="sub['wsbs'][]" value="yes" checked/>
+                                    <input type="checkbox" class="form-control" name="sub-wsbs" value="yes" checked/>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" name="sub['sort'][]" placeholder="请输入权重（数字越大越靠前）" />
+                                    <input type="text" class="form-control" name="sub-sort" placeholder="请输入权重（数字越大越靠前）" />
                                 </td>
                                 <td>
                                     <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>

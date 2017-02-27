@@ -46,12 +46,12 @@
                             </thead>
                             <tbody class="text-center" id="menu-nodes">
                             @if($menu_detail['nodes'] != 'none' && is_array($menu_detail['nodes']))
-                                @foreach($menu_detail['nodes'] as $menu_node)
+                                @foreach($menu_detail['nodes'] as $node_key=> $menu_node)
                                     <tr>
                                         <td>
                                             <select name="nodes[]" class="form-control">
                                                 @foreach($node_list as $node)
-                                                    <option value="{{ $node['key'] }}" @if($node['key'] == $menu_node['menu_node']) selected @endif>{{ $node['node_name'] }}</option>
+                                                    <option value="{{ $node['key'] }}" @if($node['key'] == $node_key) selected @endif>{{ $node['node_name'] }}</option>
                                                 @endforeach
                                             </select>
                                         </td>

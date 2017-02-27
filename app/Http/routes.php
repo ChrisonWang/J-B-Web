@@ -160,6 +160,19 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/cms/flinkImg/delete','Manage\Cms\FlinksImg@doDelete');
 
+        //CMS二级友情链接管理
+        Route::get('manage/cms/flinks/show','Manage\Cms\Flinks@show');
+
+        Route::get('manage/cms/flinks/add','Manage\Cms\Flinks@create');
+
+        Route::post('manage/cms/flinks/add','Manage\Cms\Flinks@store');
+
+        Route::get('manage/cms/flinks/edit','Manage\Cms\Flinks@edit');
+
+        Route::post('manage/cms/flinks/edit','Manage\Cms\Flinks@doEdit');
+
+        Route::get('manage/cms/flinks/delete','Manage\Cms\Flinks@doDelete');
+
         //科室管理
         Route::get('manage/user/office/show','Manage\User\Office@show');
 
@@ -186,6 +199,19 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/user/nodes/delete','Manage\User\Nodes@doDelete');
 
+        //用户管理
+        Route::get('manage/user/users/show','Manage\User\Users@show');
+
+        Route::get('manage/user/users/add','Manage\User\Users@create');
+
+        Route::post('manage/user/users/add','Manage\User\Users@store');
+
+        Route::get('manage/user/users/edit','Manage\User\Users@edit');
+
+        Route::post('manage/user/users/edit','Manage\User\Users@doEdit');
+
+        Route::get('manage/user/users/delete','Manage\User\Users@doDelete');
+
         //菜单管理
         Route::get('manage/user/menus/show','Manage\User\Menus@show');
 
@@ -199,6 +225,19 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/user/menus/delete','Manage\User\Menus@doDelete');
 
+        //角色管理
+        Route::get('manage/user/roles/show','Manage\User\Roles@show');
+
+        Route::get('manage/user/roles/add','Manage\User\Roles@create');
+
+        Route::post('manage/user/roles/add','Manage\User\Roles@store');
+
+        Route::get('manage/user/roles/edit','Manage\User\Roles@edit');
+
+        Route::post('manage/user/roles/edit','Manage\User\Roles@doEdit');
+
+        Route::get('manage/user/roles/delete','Manage\User\Roles@doDelete');
+
         //频道管理
         Route::get('manage/cms/channel/show','Manage\Cms\Channel@show');
 
@@ -211,6 +250,34 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/cms/channel/edit','Manage\Cms\Channel@doEdit');
 
         Route::get('manage/cms/channel/delete','Manage\Cms\Channel@doDelete');
+
+        //表单管理
+        Route::get('manage/cms/forms/show','Manage\Cms\Forms@show');
+
+        Route::get('manage/cms/forms/add','Manage\Cms\Forms@create');
+
+        Route::post('manage/cms/forms/add','Manage\Cms\Forms@store');
+
+        Route::get('manage/cms/forms/edit','Manage\Cms\Forms@edit');
+
+        Route::post('manage/cms/forms/edit','Manage\Cms\Forms@doEdit');
+
+        Route::get('manage/cms/forms/delete','Manage\Cms\Forms@doDelete');
+
+        //文章管理
+        Route::get('manage/cms/article/show','Manage\Cms\Article@show');
+
+        Route::get('manage/cms/article/add','Manage\Cms\Article@create');
+
+        Route::post('manage/cms/article/add','Manage\Cms\Article@store');
+
+        Route::get('manage/cms/article/edit','Manage\Cms\Article@edit');
+
+        Route::post('manage/cms/article/edit','Manage\Cms\Article@doEdit');
+
+        Route::get('manage/cms/article/delete','Manage\Cms\Article@doDelete');
+
+        Route::post('manage/cms/article/get_sub_channel','Manage\Cms\Article@ajaxGetChannel');
 
     });
 

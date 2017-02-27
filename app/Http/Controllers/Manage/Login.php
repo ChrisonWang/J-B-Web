@@ -54,7 +54,7 @@ class Login extends Controller
             json_response(['status'=>'faild', 'type'=>'notice', 'res'=>'用户名或密码错误！']);
         }
         else{
-            setcookie("s",md5($userInfo['login_name']),time()+1800);
+            setcookie("s",md5($userInfo['login_name']),time()+24*3600);
             Session::put(md5($userInfo['login_name']),$userInfo['manager_code'],30);
             Session::save();
             json_response(['status'=>'succ', 'type'=>'notice', 'res'=>'登陆成功！']);
@@ -100,7 +100,7 @@ class Login extends Controller
         }
         $login_name = $_COOKIE['s'];
         $request->session()->forget($login_name);
-        setcookie('s','',time()-3600);
+        setcookie('s','',time()-24*3600*30);
 
         return redirect('manage');
     }

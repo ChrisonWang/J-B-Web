@@ -19,11 +19,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="fi_image" class="col-md-1 control-label">照片：</label>
-                <div class="btn btn-default btn-file col-md-3">
-                    <i class="fa fa-paperclip"></i>上传头像图片
-                    <input type="file" id="fi_image" name="fi_image" />
+                <label for="upload_photo" class="col-md-1 control-label">图片(120 * 50)：</label>
+                <div class="col-md-3">
+                    <i class="fa fa-paperclip"></i>上传图片
+                    <input type="file" id="upload_photo" class="btn btn-default btn-file" name="fi_photo" onchange="upload_img($(this))"/>
                 </div>
+            </div>
+            <div class="form-group hidden" id="image-thumbnail">
+                <label for="image-holder" class="col-md-1 control-label">预览：</label>
+                <div class="col-md-3" id="image-holder"></div>
             </div>
             <div class="form-group">
                 <label for="create_date" class="col-md-1 control-label">创建时间：</label>

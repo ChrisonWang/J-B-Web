@@ -73,7 +73,7 @@ class Department extends Controller
         $save_data = array(
             'department_name'=> $inputs['department_name'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
-            'description'=> htmlspecialchars($inputs['description']),
+            'description'=> $inputs['description'],
             'type_id'=> keys_decrypt($inputs['type_id']),
             'create_date'=> $now,
             'update_date'=> $now
@@ -202,7 +202,7 @@ class Department extends Controller
         $save_data = array(
             'department_name'=> $inputs['department_name'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
-            'description'=> htmlspecialchars($inputs['description']),
+            'description'=> $inputs['description'],
             'type_id'=> keys_decrypt($inputs['type_id']),
             'update_date'=> $now
         );

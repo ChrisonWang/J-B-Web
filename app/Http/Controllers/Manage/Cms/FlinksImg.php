@@ -13,7 +13,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class FlinksImg extends Controller
-
 {
     private $page_data = array();
 
@@ -42,12 +41,31 @@ class FlinksImg extends Controller
         if(count($id) != 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['fi_title'].'的推荐链接']);
         }
+        //处理图片上传
+        $file = $request->file('fi_photo');
+        if(is_null($file) || !$file->isValid()){
+            $photo_path = '';
+        }
+        else{
+            $destPath = realpath(public_path('uploads/images'));
+            if(!file_exists($destPath)){
+                mkdir($destPath, 0755, true);
+            }
+            $extension = $file->getClientOriginalExtension();
+            $filename = gen_unique_code('IMG_').'.'.$extension;
+            if(!$file->move($destPath,$filename)){
+                $photo_path = '';
+            }
+            else{
+                $photo_path = URL::to('/').'/uploads/images/'.$filename;
+            }
+        }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
             'title'=> $inputs['fi_title'],
             'links'=> $inputs['fi_links'],
-            'image'=> isset($inputs['fi_image'])? $inputs['fi_image'] : '',
+            'image'=> $photo_path,
             'create_date'=> $now,
             'update_date'=> $now
         );
@@ -91,7 +109,7 @@ class FlinksImg extends Controller
         $flink_detail['key'] = keys_encrypt($links->id);
         $flink_detail['fi_title'] = $links->title;
         $flink_detail['fi_links'] = $links->links;
-        $flink_detail['fi_image'] = $links->image;
+        $flink_detail['fi_image'] = empty($links->image) ? 'none' : $links->image;
         $flink_detail['create_date'] = $links->create_date;
 
         //页面中显示
@@ -120,7 +138,7 @@ class FlinksImg extends Controller
         $flink_detail['key'] = keys_encrypt($links->id);
         $flink_detail['fi_title'] = $links->title;
         $flink_detail['fi_links'] = $links->links;
-        $flink_detail['fi_image'] = $links->image;
+        $flink_detail['fi_image'] = empty($links->image) ? 'none' : $links->image;
         $flink_detail['create_date'] = $links->create_date;
 
         //页面中显示
@@ -134,16 +152,36 @@ class FlinksImg extends Controller
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
-        $sql = 'SELECT `id` FROM cms_image_flinks WHERE `title` = "'.$inputs['fi_title'].'" AND `id` != "'.$id.'"';
+        $sql = 'SELECT `id` FROM cms_flinks WHERE `title` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';
         $res = DB::select($sql);
         if(count($res) != 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['fi_title'].'的推荐链接']);
+        }
+        //处理图片上传
+        $file = $request->file('fi_photo');
+        if(is_null($file) || !$file->isValid()){
+            $photo_path = '';
+        }
+        else{
+            $destPath = realpath(public_path('uploads/images'));
+            if(!file_exists($destPath)){
+                mkdir($destPath, 0755, true);
+            }
+            $extension = $file->getClientOriginalExtension();
+            $filename = gen_unique_code('IMG_').'.'.$extension;
+            if(!$file->move($destPath,$filename)){
+                $photo_path = '';
+            }
+            else{
+                $photo_path = URL::to('/').'/uploads/images/'.$filename;
+            }
         }
         //执行更新数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
             'title'=> $inputs['fi_title'],
             'links'=> $inputs['fi_links'],
+            'image'=> $photo_path,
             'update_date'=> $now
         );
         $rs = DB::table('cms_image_flinks')->where('id',$id)->update($save_data);

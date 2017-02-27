@@ -30,7 +30,7 @@ function tagMethod(t){
             return false;
         }
     }
-    $.ajax({
+    $('#formsEditForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -294,7 +294,7 @@ function leaderMethod(t){
 
 function editLeader(){
     var url = '/manage/cms/leader/edit';
-    $.ajax({
+    $('#leaderEditForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -319,7 +319,7 @@ function editLeader(){
 
 function addLeader(){
     var url = '/manage/cms/leader/add';
-    $.ajax({
+    $('#leaderAddForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -340,6 +340,29 @@ function addLeader(){
             }
         }
     });
+}
+
+function upload_img(t){
+    if( typeof(FileReader) != "undefined" ){
+        var image_holder = $("#image-holder");
+        var image_thumbnail = $("#image-thumbnail");
+        image_holder.empty();
+        image_thumbnail.addClass("hidden");
+        var reader = new FileReader();
+        reader.onload = function(e){
+            $("<img />", {
+                "src": e.target.result,
+                "class": "img-thumbnail img-responsive"
+            }).appendTo(image_holder);
+        };
+
+        image_thumbnail.removeClass("hidden");
+        image_holder.show();
+        reader.readAsDataURL(t[0].files[0]);
+    }
+    else {
+        alert("您的浏览器不支持控件，无法预览图片！");
+    }
 }
 
 //视频管理
@@ -626,7 +649,7 @@ function flinkImgMethod(t){
 
 function editFlinkImg(){
     var url = '/manage/cms/flinkImg/edit';
-    $.ajax({
+    $('#flinkImgAddForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -651,7 +674,7 @@ function editFlinkImg(){
 
 function addFlinkImg(){
     var url = '/manage/cms/flinkImg/add';
-    $.ajax({
+    $('#flinkImgAddForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -669,6 +692,124 @@ function addFlinkImg(){
             }
             else if(re.status == 'failed') {
                 ajaxResult(re,$('#addFlinkImgNotice'));
+            }
+        }
+    });
+}
+
+//二级友情链接管理
+function flinkMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/cms/flinks/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？该分类下的子链接都会被删除！");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editFlinks(){
+    $('#add-row-notice').addClass('hidden');
+    var url = '/manage/cms/flinks/edit';
+    var sub_input = $("#menu-nodes").find("tr");
+    var sub_list = new Array();
+    var v = true;
+    sub_list['add'] = new Array();
+    sub_list['edit'] = new Array();
+    sub_input.each(function(i,tr){
+        var k = $(this).find("input[name='sub_title[]']").data('key');
+        var t = $(this).find("input[name='sub_title[]']").val();
+        var l = $(this).find("input[name='sub_link[]']").val();
+        if( t =='' || l == '' ){
+            $('#add-row-notice').removeClass('hidden');
+            $('#add-row-notice').text('请填写完整的名称和链接');
+            v = false;
+            return false
+        }
+        else {
+            if(typeof(k) == 'undefined'){
+                var sub = {key:'', sub_title:t, sub_link: l, method: 'add'};
+            }
+            else{
+                var sub = {key:k, sub_title:t, sub_link: l, method: 'edit'};
+            }
+            sub_list[i] = sub;
+        }
+    });
+    if(v == true){
+        var data = {key: $("input[name='key']").val(), title: $("input[name='title']").val(), sub: JSON.stringify(sub_list)};
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: data,
+            success: function(re){
+                if(re.status == 'succ'){
+                    alert("修改成功！！！");
+                    if(typeof(UE_Content)=="object"){
+                        UE_Content.destroy();
+                    }
+                    ajaxResult(re);
+                }
+                else if(re.status == 'failed') {
+                    ajaxResult(re,$('#flinksEditNotice'));
+                }
+            }
+        });
+    }
+    return;
+}
+
+function addFlinks(){
+    var url = '/manage/cms/flinks/add';
+    var sub_input = $("#menu-nodes").find("tr");
+    var sub_list = new Array();
+    sub_input.each(s,function(i){
+        sub_list[i] = s;
+    });
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#flinksAddForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addFlinksNotice'));
             }
         }
     });
@@ -923,11 +1064,289 @@ function addMenu(){
     });
 }
 
+//角色管理
+function rolesMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/user/roles/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除角色："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editRoles(){
+    var url = '/manage/user/roles/edit';
+    var sub_input = $("#menu-nodes").find("tr");
+    var p_list = new Array();
+    var v = true;
+    sub_input.each(function(i,tr){
+        var menus = $(this).find("select[name='menus'] option:selected").val();
+        var nodes = $(this).find("select[name='nodes'] option:selected").val();
+        var permission = $(this).find("select[name='permission'] option:selected").val();
+        if( menus == '' || nodes == '' || permission == ''){
+            $('#add-row-notice').removeClass('hidden');
+            $('#add-row-notice').text('请填写完整的频道名称名称');
+            v = false;
+            return false
+        }
+        var p = {menus:menus, nodes: nodes, permission: permission};
+        p_list[i] = p;
+    });
+    if(v == true){
+        var data = {
+            key: $("input[name='key']").val(),
+            title: $("input[name='title']").val(),
+            sub: JSON.stringify(p_list)};
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: data,
+            success: function(re){
+                if(re.status == 'succ'){
+                    alert("修改成功！！！");
+                    if(typeof(UE_Content)=="object"){
+                        UE_Content.destroy();
+                    }
+                    ajaxResult(re);
+                }
+                else if(re.status == 'failed') {
+                    ajaxResult(re,$('#menuEditNotice'));
+                }
+            }
+        });
+    }
+}
+
+function addRoles(){
+    var url = '/manage/user/roles/add';
+    var sub_input = $("#menu-nodes").find("tr");
+    var p_list = new Array();
+    var v = true;
+    sub_input.each(function(i,tr){
+        var menus = $(this).find("select[name='menus'] option:selected").val();
+        var nodes = $(this).find("select[name='nodes'] option:selected").val();
+        var permission = $(this).find("select[name='permission'] option:selected").val();
+        if( menus == '' || nodes == '' || permission == ''){
+            $('#add-row-notice').removeClass('hidden');
+            $('#add-row-notice').text('请填写完整的频道名称名称');
+            v = false;
+            return false
+        }
+        var p = {menus:menus, nodes: nodes, permission: permission};
+        p_list[i] = p;
+    });
+    if(v == true){
+        var data = {
+            title: $("input[name='title']").val(),
+            sub: JSON.stringify(p_list)};
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: data,
+            success: function(re){
+                if(re.status == 'succ'){
+                    alert("添加成功！！！");
+                    if(typeof(UE_Content)=="object"){
+                        UE_Content.destroy();
+                    }
+                    ajaxResult(re);
+                }
+                else if(re.status == 'failed') {
+                    ajaxResult(re,$('#addMenuNotice'));
+                }
+            }
+        });
+    }
+}
+
 //频道管理
 function channelMethod(t){
     var key = t.data('key');
     var method = t.data('method');
     var url = '/manage/cms/channel/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？该频道下的子频道也会被删除！");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editChannel(){
+    $('#add-row-notice').addClass('hidden');
+    var url = '/manage/cms/channel/edit';
+    var sub_input = $("#menu-nodes").find("tr");
+    var sub_list = new Array();
+    var v = true;
+    sub_list['add'] = new Array();
+    sub_list['edit'] = new Array();
+    sub_input.each(function(i,tr){
+        var k = $(this).find("input[name='sub-channel_title']").data('key');
+        var title = $(this).find("input[name='sub-channel_title']").val();
+        var sort = (typeof($(this).find("input[name='sub-sort']").val())=='undefined' || $(this).find("input[name='sub-sort']").val()=='') ? 0 : $(this).find("input[name='sub-sort']").val();
+        var zwgk = ($(this).find("input[name='sub-zwgk']").is(':checked')) ==true ? 'yes' : 'no';
+        var wsbs = ($(this).find("input[name='sub-wsbs']").is(':checked')) ==true ? 'yes' : 'no';
+        if( title =='' ){
+            $('#add-row-notice').removeClass('hidden');
+            $('#add-row-notice').text('请填写完整的名称和链接');
+            v = false;
+            return false
+        }
+        else {
+            if(typeof(k) == 'undefined'){
+                var sub = {key:'', sub_title:title, sub_zwgk: zwgk, sub_wsbs: wsbs, sub_sort: sort, method: 'add'};
+            }
+            else{
+                var sub = {key:k, sub_title:title, sub_zwgk: zwgk, sub_wsbs: wsbs, sub_sort: sort, method: 'edit'};
+            }
+            sub_list[i] = sub;
+        }
+    });
+    if(v == true){
+        var data = {
+            key: $("input[name='key']").val(),
+            channel_title: $("input[name='channel_title']").val(),
+            sort: $("input[name='sort']").val(),
+            is_recommend: $("input[name='is_recommend']").val(),
+            form_download: $("input[name='form_download']").val(),
+            zwgk: $("input[name='zwgk']").val(),
+            wsbs: $("input[name='wsbs']").val(),
+            sub: JSON.stringify(sub_list)};
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: data,
+            success: function(re){
+                if(re.status == 'succ'){
+                    alert("修改成功！！！");
+                    if(typeof(UE_Content)=="object"){
+                        UE_Content.destroy();
+                    }
+                    ajaxResult(re);
+                }
+                else if(re.status == 'failed') {
+                    ajaxResult(re,$('#channelEditNotice'));
+                }
+            }
+        });
+    }
+    return;
+}
+
+function addChannel(){
+    $('#add-row-notice').addClass('hidden');
+    var url = '/manage/cms/channel/add';
+    var sub_input = $("#menu-nodes").find("tr");
+    var sub_list = new Array();
+    var v = true;
+    sub_input.each(function(i,tr){
+        var title = $(this).find("input[name='sub-channel_title']").val();
+        var sort = (typeof($(this).find("input[name='sub-sort']").val())=='undefined' || $(this).find("input[name='sub-sort']").val()=='') ? 0 : $(this).find("input[name='sub-sort']").val();
+        var zwgk = ($(this).find("input[name='sub-zwgk']").is(':checked')) ==true ? 'yes' : 'no';
+        var wsbs = ($(this).find("input[name='sub-wsbs']").is(':checked')) ==true ? 'yes' : 'no';
+        if( title ==''){
+            $('#add-row-notice').removeClass('hidden');
+            $('#add-row-notice').text('请填写完整的频道名称名称');
+            v = false;
+            return false
+        }
+        var sub = {sub_title:title, sub_zwgk: zwgk, sub_wsbs: wsbs, sub_sort: sort};
+        sub_list[i] = sub;
+    });
+    if(v == true){
+        var data = {
+            channel_title: $("input[name='channel_title']").val(),
+            sort: $("input[name='sort']").val(),
+            is_recommend: $("input[name='is_recommend']").val(),
+            form_download: $("input[name='form_download']").val(),
+            zwgk: $("input[name='zwgk']").val(),
+            wsbs: $("input[name='wsbs']").val(),
+            sub: JSON.stringify(sub_list)};
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: data,
+            success: function(re){
+                if(re.status == 'succ'){
+                    alert("添加成功！！！");
+                    if(typeof(UE_Content)=="object"){
+                        UE_Content.destroy();
+                    }
+                    ajaxResult(re);
+                }
+                else if(re.status == 'failed') {
+                    ajaxResult(re,$('#addChannelNotice'));
+                }
+            }
+        });
+    }
+    return;
+}
+
+//表单管理
+function formsMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/cms/forms/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除："+ t.data('title')+"？");
         if(c != true){
@@ -956,16 +1375,16 @@ function channelMethod(t){
     });
 }
 
-function editChannel(){
-    var url = '/manage/cms/channel/edit';
-    $.ajax({
+function editForms(){
+    var url = '/manage/cms/forms/edit';
+    $('#formsEditForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         async: false,
         type: "POST",
         url: url,
-        data: $('#channelEditForm').serialize(),
+        data: $('#formsEditForm').serialize(),
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
@@ -975,14 +1394,14 @@ function editChannel(){
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
-                ajaxResult(re,$('#channelEditNotice'));
+                ajaxResult(re,$('#formsEditNotice'));
             }
         }
     });
 }
 
-function addChannel(){
-    var url = '/manage/cms/channel/add';
+function addForms(){
+    var url = '/manage/cms/forms/add';
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -990,7 +1409,7 @@ function addChannel(){
         async: false,
         type: "POST",
         url: url,
-        data: $('#channelAddForm').serialize(),
+        data: $('#formsAddForm').serialize(),
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
@@ -1000,7 +1419,203 @@ function addChannel(){
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
-                ajaxResult(re,$('#addcChannelNotice'));
+                ajaxResult(re,$('#addFormsNotice'));
+            }
+        }
+    });
+}
+
+function changeFile(){
+    $('#change_box').addClass("hidden");
+    $('#file_box').removeClass("hidden");
+}
+
+//文章管理
+function articleMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/cms/article/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除文章：《"+ t.data('title')+"》？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editArticle(){
+    var url = '/manage/cms/article/edit';
+    $('#articleEditForm').ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#articleEditForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#articleEditNotice'));
+            }
+        }
+    });
+}
+
+function addArticle(){
+    var url = '/manage/cms/article/add';
+    $('#articleAddForm').ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#articleAddForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addArticleNotice'));
+            }
+        }
+    });
+}
+
+function getSubChannel(c){
+    var url = '/manage/cms/article/get_sub_channel';
+    var channel_key = c.find("option:selected").val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: url,
+        method: "POST",
+        data: 'channel_key='+channel_key,
+        success:function(re){
+            if(re.status == 'succ'){
+                var list = jQuery.parseJSON(re.res);
+                var options = '';
+                $.each(list, function(i,sub){
+                    options += '<option value="'+sub.channel_key+'">'+sub.channel_title+'</option>';
+                });
+                $("#sub_channel_id").html(options);
+            }
+            return;
+        }
+    });
+}
+
+//用户管理
+function userMethod(t){
+    var key = t.data('key');
+    var type = t.data('type');
+    var method = t.data('method');
+    var url = '/manage/user/users/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除用户："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: {key: key, type: type},
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editUser(){
+    var url = '/manage/user/users/edit';
+    $('#userEditForm').ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#UserEditForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#userEditNotice'));
+            }
+        }
+    });
+}
+
+function addUser(){
+    var url = '/manage/user/users/add';
+    $('#userAddForm').ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#userAddForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                if(typeof(UE_Content)=="object"){
+                    UE_Content.destroy();
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addUserNotice'));
             }
         }
     });

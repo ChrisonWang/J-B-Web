@@ -41,7 +41,7 @@ class Dashboard extends Controller
         //判断登录状态
         $managerCode = $request->get('managerCode');
         if(!$managerCode){
-            setcookie('s','',time()-3600*24);
+            setcookie('s','',time()-3600*24*30);
             return redirect('manage');
         }
         else{
@@ -211,7 +211,7 @@ class Dashboard extends Controller
             if($change_password === true){
                 $login_name = $_COOKIE['s'];
                 $request->session()->forget($login_name);
-                setcookie('s','',time()-3600);
+                setcookie('s','',time()-3600*24*30);
                 Session::save();
                 json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
             }
@@ -282,7 +282,7 @@ class Dashboard extends Controller
             $affected = Manager::where('manager_code',$managerCode)->update(['password'=>$confirmPasswordE, 'update_date'=>date("Y-m-d H:i:s",time())]);
             if($affected || $affected>0){
                 $request->session()->forget($_COOKIE['s']);
-                setcookie('s','',time()-3600*24);
+                setcookie('s','',time()-3600*24*30);
                 json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
             }
             else{
@@ -306,7 +306,7 @@ class Dashboard extends Controller
         //验证用户
         $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','disabled')->first();
         if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name || $managerInfo['attributes']['disabled']=='yes'){
-            setcookie('s','',time()-3600*24);
+            setcookie('s','',time()-3600*24*30);
             return false;
         }
         else{
@@ -482,4 +482,69 @@ class Dashboard extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    /**
+     * 角色管理界面
+     * @param $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function _content_RoleMng($request)
+    {
+        //取出数据
+        $role_list = array();
+        $roles = DB::table('user_roles')->get();
+        foreach($roles as $key=> $role){
+            $role_list[$key]['key'] = keys_encrypt($role->id);
+            $role_list[$key]['name'] = $role->name;
+        }
+        //返回到前段界面
+        $this->page_data['role_list'] = $role_list;
+        $pageContent = view('judicial.manage.user.rolesList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    /**
+     * 用户管理界面
+     * @param $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function _content_UserMng($request)
+    {
+        //取出管理员
+        $user_list = array();
+        $managers = DB::table('user_manager')->get();
+        foreach($managers as $key=> $managers){
+            $user_list[$key]['key'] = $managers->manager_code;
+            $user_list[$key]['login_name'] = $managers->login_name;
+            $user_list[$key]['type_id'] = $managers->type_id;
+            $user_list[$key]['nickname'] = $managers->nickname;
+            $user_list[$key]['cell_phone'] = $managers->cell_phone;
+            $user_list[$key]['disabled'] = $managers->disabled;
+            $user_list[$key]['create_date'] = $managers->create_date;
+        }
+        //取出用户
+        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        foreach($members as $member){
+            $user_list[] = array(
+                'key'=> $member->member_code,
+                'login_name'=> $member->login_name,
+                'type_id'=> $member->user_type,
+                'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                'cell_phone'=> $member->cell_phone,
+                'disabled'=> $member->disabled,
+                'create_date'=> $member->create_date,
+            );
+        }
+        //取出用户类型
+        $user_type = DB::table('user_type')->get();
+        foreach($user_type as $type){
+            $type_list[$type->type_id] = $type->type_name;
+        }
+        //返回到前段界面
+        $this->page_data['type_list'] = $type_list;
+        $this->page_data['user_list'] = $user_list;
+        $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
 }

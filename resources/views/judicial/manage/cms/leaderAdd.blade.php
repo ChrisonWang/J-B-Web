@@ -26,14 +26,18 @@
             </div>
             <div class="form-group">
                 <label for="leader_photo" class="col-md-1 control-label">照片：</label>
-                <div class="btn btn-default btn-file col-md-3">
+                <div class="col-md-3">
                     <i class="fa fa-paperclip"></i>上传头像图片
-                    <input type="file" id="leader_photo" name="leader_photo" />
+                    <input type="file" id="upload_photo" class="btn btn-default btn-file" name="leader_photo" onchange="upload_img($(this))"/>
                 </div>
+            </div>
+            <div class="form-group hidden" id="image-thumbnail">
+                <label for="image-holder" class="col-md-1 control-label">预览：</label>
+                <div class="col-md-3" id="image-holder"></div>
             </div>
             <div class="form-group">
                 <label for="UE_Content" class="col-md-1 control-label">简介：</label>
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <script id="UE_Content" name="description" type="text/plain"></script>
                 </div>
             </div>
@@ -45,7 +49,7 @@
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-1">
-                    <button type="button" class="btn btn-info btn-block" onclick="addLeader()">确认</button>
+                    <button type="submit" class="btn btn-info btn-block" onclick="addLeader()">确认</button>
                 </div>
                 <div class="col col-md-1">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-leaderIntroduction" onclick="loadContent($(this))">返回列表</button>
