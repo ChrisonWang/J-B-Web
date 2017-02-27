@@ -40,6 +40,11 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('user/changePhone','Web\User@doChangePhone');
     });
 
+    //前台CMS路由
+    Route::get('list/{cid}/{page?}','Web\Index@article_list');
+
+    Route::get('article/{article_code}','Web\Index@article_content');
+
 //后台相关路由
     Route::group(['middleware' => ['manage.verify']], function () {
 

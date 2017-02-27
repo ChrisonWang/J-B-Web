@@ -12,79 +12,58 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span>首页&nbsp;&nbsp;>&nbsp;</span>
-            <span>政务公开&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #101010;">业务动态</span>
+            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>
+            <span style="color: #101010;">{{ $sub_title }}</span>
         </div>
         <div class="zwr_mid">
+            @if($article_list != 'none')
             <ul>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
-                <li>
-                    <div class="zwrm_a">习近平：普及宪法知识增强宪法意识 弘扬宪法精神推动宪法实施</div>
-                    <div class="zwrm_b">2017-01-14</div>
-                    <div class="zwrm_c">浏览 1289</div>
-                </li>
+                @foreach($article_list as $article)
+                    <li>
+                        <div class="zwrm_a"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ $article['article_title'] }}</a></div>
+                        <div class="zwrm_b">{{ $article['publish_date'] }}</div>
+                        <div class="zwrm_c">浏览：{{ $article['clicks'] }}</div>
+                    </li>
+                @endforeach
             </ul>
+            @else
+                <p>该频道下暂无文章！</p>
+            @endif
         </div>
-        <div class="zwr_ft">
-            <div class="fy_left">
-                <span>首页</span>
-                <span>上一页</span>
-                <span>下一页</span>
-                <span>尾页</span>
-            </div>
-            <div class="fy_right">
-                <span>总记录数：1983</span>
-                <span>显示13条记录</span>
-                <span>当前页1/23</span>
-                <span>跳转至第<input type="text" value="3">页</span>
-                <span class="fy_btn">跳转</span>
-            </div>
-        </div>
+        @if($article_list != 'none')
+            @if($page['page_count'] == 1 )
+                <div class="zwr_ft">
+                    <div class="fy_left">
+                        <span>首页</span>
+                        <span>上一页</span>
+                        <span>下一页</span>
+                        <span>尾页</span>
+                    </div>
+                    <div class="fy_right">
+                        <span>总记录数： {{ $page['count'] }}</span>
+                        <span>显示 {{ $page['count'] }} 条记录</span>
+                        <span>当前页1/1</span>
+                    </div>
+                </div>
+            @else
+                <div class="zwr_ft">
+                    <div class="fy_left">
+                        <span><a href="/list/{{$page['channel_id']}}/1">首页</a></span>
+                        <span>@if(($page['now_page'] - 1) > 0)<a href="/list/{{$page['channel_id']}}/{{$page['now_page'] - 1}}">@endif上一页</a></span>
+                        <span>@if(($page['now_page'] + 1) <= $page['page_count'])<a href="/list/{{$page['channel_id']}}/{{$page['now_page'] + 1}}">@endif下一页</a></span>
+                        <span><a href="/list/{{$page['channel_id']}}/{{$page['page_count']}}">尾页</a></span>
+                    </div>
+                    <div class="fy_right">
+                        <span>总记录数：{{ $page['count'] }}</span>
+                        <span>显示 16 条记录</span>
+                        <span>当前页{{ $page['now_page'] }}/{{ $page['page_count'] }}</span>
+                        <span>跳转至第<input type="text" value="1">页</span>
+                        <span class="fy_btn">跳转</span>
+                    </div>
+                </div>
+            @endif
+        @endif
     </div>
 
 </div>
