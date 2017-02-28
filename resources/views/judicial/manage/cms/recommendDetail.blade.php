@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            后台推荐链接管理/修改
+            后台推荐链接管理/查看
         </h3>
     </div>
     <div class="panel-body">

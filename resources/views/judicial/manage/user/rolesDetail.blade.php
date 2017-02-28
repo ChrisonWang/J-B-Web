@@ -18,7 +18,7 @@
                 </td>
                 <td>
                     <select name="nodes" class="form-control node-row">
-                        @foreach($node_list as $node)
+                        @foreach($f_node_list as $node)
                             <option value={{ $node['node_key'] }}>{{ $node['node_name'] }}</option>
                         @endforeach
                     </select>
@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label for="title" class="col-md-1 control-label">菜单名称：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="title" name="title" placeholder="请输菜单名称" />
+                    <input type="text" class="form-control" id="title" name="title" placeholder="请输角色名称" value="{{ $role_detail['title'] }}"/>
                 </div>
             </div>
             <div class="form-group">
@@ -69,7 +69,7 @@
                                 </td>
                                 <td>
                                     <select name="nodes" class="form-control node-row">
-                                        @foreach($node_list as $node)
+                                        @foreach($f_node_list as $node)
                                             <option value={{ $node['node_key'] }}>{{ $node['node_name'] }}</option>
                                         @endforeach
                                     </select>
@@ -113,10 +113,7 @@
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
-                    <button type="button" class="btn btn-info btn-block" onclick="addRoles()">确认</button>
-                </div>
-                <div class="col col-md-1">
+                <div class="col col-md-offset-1 col-md-1">
                     <button type="button" class="btn btn-danger btn-block" data-node="user-roleMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

@@ -41,7 +41,7 @@ class Leader extends Controller
         if(empty($inputs['leader_name'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
         }
-        elseif(empty($inputs['job'])){
+        elseif(empty($inputs['leader_job'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'职务不能为空！']);
         }
         elseif(empty($inputs['description'])){
@@ -170,7 +170,7 @@ class Leader extends Controller
         if(empty($inputs['leader_name'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
         }
-        elseif(empty($inputs['job'])){
+        elseif(empty($inputs['leader_job'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'职务不能为空！']);
         }
         elseif(empty($inputs['description'])){
@@ -204,7 +204,6 @@ class Leader extends Controller
         $save_data = array(
             'name'=> $inputs['leader_name'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
-            'photo'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
             'description'=> htmlspecialchars($inputs['description']),
             'job'=> $inputs['leader_job'],
             'photo'=> empty($photo_path) ? '' : $photo_path,

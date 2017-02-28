@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            领导简介管理/{{ $leaderDetail['leader_name']."的简介" }}
+            领导简介管理/修改：{{ $leaderDetail['leader_name']."的简介" }}
         </h3>
     </div>
     <div class="panel-body">

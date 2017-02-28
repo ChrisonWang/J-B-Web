@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            二级友情链接管理/编辑
+            二级友情链接管理/查看
         </h3>
     </div>
     <!--隐藏的模板-->

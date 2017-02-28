@@ -31,7 +31,26 @@ class Index extends Controller
             'loadContent' => URL::to('manage/loadContent'),
             'user'=>URL::to('user')
         );
+        //拿出政务公开
+        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
+        $zwgk_list = 'none';
+        if(count($c_data) > 0){
+            $zwgk_list = array();
+            foreach($c_data as $_c_date){
+                $zwgk_list[] = array(
+                    'key'=> $_c_date->channel_id,
+                    'channel_title'=> $_c_date->channel_title,
+                );
+            }
+        }
+        $this->page_date['zwgk_list'] = $zwgk_list;
+        $this->page_date['channel_list'] = $this->get_left_list();
     }
+
+    /**
+     * @param Request $request
+     * @return View
+     */
     function index(Request $request){
         $loginStatus = $this->checkLoginStatus();
         if(!!$loginStatus){
@@ -39,20 +58,81 @@ class Index extends Controller
         }
         //拿出图片新闻
         $pic_articles = DB::table('cms_article')->where(['disabled'=>'no'])->where('thumb','!=','')->skip(0)->take(6)->orderBy('publish_date', 'desc')->get();
-        if(count($pic_articles) < 1){
-            $article_list = 'none';
+        $pic_article_list = 'none';
+        if(count($pic_articles) > 0){
+            $pic_article_list = array();
+            foreach($pic_articles as $article){
+                $pic_article_list[] = array(
+                    'key'=> $article->article_code,
+                    'article_title'=> $article->article_title,
+                    'thumb'=> $article->thumb,
+                    'publish_date'=> date('Y-m-d',strtotime($article->publish_date)),
+                );
+            }
         }
-        foreach($pic_articles as $article){
-            $pic_article_list[] = array(
-                'key'=> $article->article_code,
-                'article_title'=> $article->article_title,
-                'thumb'=> $article->thumb,
-                'publish_date'=> date('Y-m-d',strtotime($article->publish_date)),
-            );
+        //拿出首页推荐的频道
+        $rc_data = DB::table('cms_channel')->where(['zwgk'=>'yes', 'is_recommend'=>'yes'])->orderBy('sort', 'desc')->skip(0)->take(3)->get();
+        $recommend_list = 'none';
+        if(count($rc_data) > 0){
+            $recommend_list = array();
+            foreach($rc_data as $k=> $rc){
+                $recommend_list[$k] = array(
+                    'key'=> $rc->channel_id,
+                    'channel_title'=> $rc->channel_title,
+                );
+                $atricles = DB::table('cms_article')->where(['disabled'=>'no', 'channel_id'=>$rc->channel_id])->orWhere(['disabled'=>'no', 'sub_channel'=>$rc->channel_id])->orderBy('publish_date', 'desc')->get();
+                if(count($atricles) > 0 ){
+                    foreach($atricles as $atricle){
+                        $recommend_list[$k]['article_list'] = array(
+                            'key'=> $atricle->article_code,
+                            'article_title'=> $atricle->article_title,
+                            'publish_date'=> $atricle->publish_date,
+                        );
+                    }
+                }
+                else{
+                    $recommend_list[$k]['article_list'] = 'none';
+                }
+            }
+        }
+        //拿出图片链接
+        $img_flink_data = DB::table('cms_image_flinks')->get();
+        $img_flink_list = 'none';
+        if(count($img_flink_data) > 0){
+            $img_flink_list = array();
+            foreach($img_flink_data as $_img_flink_data){
+                $img_flink_list[] = array(
+                    'links'=> $_img_flink_data->links,
+                    'title'=> $_img_flink_data->title,
+                    'image'=> $_img_flink_data->image,
+                );
+            }
+        }
+        //拿出文字链接与分类
+        $link_types = DB::table('cms_flinks')->where('pid', 0)->get();
+        $flink_type_list = 'none';
+        if(count($link_types) > 0) {
+            $flink_type_list = array();
+            foreach ($link_types as $link_type) {
+                $flink_type_list[keys_encrypt($link_type->id)] = $link_type->title;
+            }
+        }
+        $flinks = DB::table('cms_flinks')->where('pid', '!=', 0)->get();
+        $flinks_list = 'none';
+        if(count($flinks) > 0) {
+            $flinks_list = array();
+            foreach ($flinks as $flink) {
+                $flinks_list[keys_encrypt($flink->pid)][] = array(
+                    'title'=> $flink->title,
+                    'link'=> $flink->link,
+                );
+            }
         }
 
+        $this->page_date['recommend_list'] = $recommend_list;
         $this->page_date['pic_article_list'] = $pic_article_list;
-        $this->page_date['channel_list'] = $this->get_left_list();
+        $this->page_date['flink_type_list'] = $flink_type_list;
+        $this->page_date['flinks_list'] = $flinks_list;
         return view('judicial.web.index', $this->page_date);
     }
 
@@ -104,16 +184,17 @@ class Index extends Controller
     public function article_list($cid, $page = 1)
     {
         $channel_id = $cid;
-        $this->page_date['channel_list'] = $this->get_left_list();
         //频道信息
         $channel = DB::table('cms_channel')->where('channel_id', $channel_id)->first();
-        $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
-        if((count($channel) * count($p_channel))==0){
+        if((count($channel)==0)){
             return view('errors.404');
         }
         else{
             $this->page_date['sub_title'] = $channel->channel_title;
-            $this->page_date['title'] = $p_channel->channel_title;
+            $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
+            if(count($p_channel)!=0){
+                $this->page_date['title'] = $p_channel->channel_title;
+            }
         }
         $offset = 16 * ($page-1);
         $count = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'disabled'=>'no', 'thumb'=>''])->count();
@@ -153,8 +234,6 @@ class Index extends Controller
      */
     public function picture_list($page = 1)
     {
-        $this->page_date['channel_list'] = $this->get_left_list();
-
         $offset = 9 * ($page-1);
         $count = DB::table('cms_article')->where(['disabled'=>'no'])->where('thumb','!=','')->count();
         if($count < 1){
@@ -196,9 +275,6 @@ class Index extends Controller
         if(empty($article_code)){
             return view('errors.404');
         }
-        //左侧信息
-        $this->page_date['channel_list'] = $this->get_left_list();
-
         //获取正文
         $article = DB::table('cms_article')->where('article_code', $article_code)->first();
         if(is_null($article)){
@@ -239,8 +315,6 @@ class Index extends Controller
         if(empty($key)){
             return view('errors.404');
         }
-        //左侧信息
-        $this->page_date['channel_list'] = $this->get_left_list();
         //获取正文
         $department = DB::table('cms_department')->where('id', keys_decrypt($key))->first();
         if(is_null($department)){
@@ -259,8 +333,6 @@ class Index extends Controller
 
     public function introduction()
     {
-        //左侧信息
-        $this->page_date['channel_list'] = $this->get_left_list();
         //获取正文
         $introduction = DB::table('cms_justice_bureau_introduce')->first();
         if(is_null($introduction)){
@@ -321,9 +393,6 @@ class Index extends Controller
      */
     public function leader()
     {
-        //左侧菜单
-        $this->page_date['channel_list'] = $this->get_left_list();
-
         $leader_list = array();
         $leaders = DB::table('cms_leaders')->orderBy('sort', 'desc')->get();
         if(count($leaders) < 1){
@@ -343,12 +412,8 @@ class Index extends Controller
         return view('judicial.web.leaderList', $this->page_date);
     }
 
-
     public function department()
     {
-        //左侧菜单
-        $this->page_date['channel_list'] = $this->get_left_list();
-
         $department_list = array();
         $d_types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->get();
         if(count($d_types) < 1){

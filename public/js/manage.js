@@ -30,7 +30,7 @@ function tagMethod(t){
             return false;
         }
     }
-    $('#formsEditForm').ajaxSubmit({
+    $('#tagEditForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -1137,7 +1137,7 @@ function editRoles(){
                     ajaxResult(re);
                 }
                 else if(re.status == 'failed') {
-                    ajaxResult(re,$('#menuEditNotice'));
+                    ajaxResult(re,$('#rolesEditNotice'));
                 }
             }
         });
@@ -1183,7 +1183,7 @@ function addRoles(){
                     ajaxResult(re);
                 }
                 else if(re.status == 'failed') {
-                    ajaxResult(re,$('#addMenuNotice'));
+                    ajaxResult(re,$('#addRolesNotice'));
                 }
             }
         });
@@ -1597,7 +1597,6 @@ function editUser(){
 }
 
 function addUser(){
-    checkRequired();
     var url = '/manage/user/users/add';
     $('#userAddForm').ajaxSubmit({
         headers: {

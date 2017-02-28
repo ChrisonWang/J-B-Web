@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            机构分类管理
+            机构分类管理/编辑
         </h3>
     </div>
     <div class="panel-body">

@@ -13,8 +13,8 @@
     <div class="zw_right w810">
         <div class="zwr_top">
             <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
-            <span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #101010;">{{ $sub_title }}</span>
+            @if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif
+            @if(isset($sub_title))<span style="color: #101010;">{{ $sub_title }}</span>@endif
         </div>
         <div class="zwr_mid">
             @if($article_list != 'none')

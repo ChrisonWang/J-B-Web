@@ -421,7 +421,7 @@ class Dashboard extends Controller
     {
         //取出数据
         $office_data = array();
-        $_office = DB::table('user_office')->get();
+        $_office = DB::table('user_office')->orderBy('create_date', 'desc')->get();
         foreach($_office as $key=> $office){
             $office_data[$key]['key'] = keys_encrypt($office->id);
             $office_data[$key]['office_name'] = $office->office_name;
@@ -448,7 +448,7 @@ class Dashboard extends Controller
         );
         //取出数据
         $node_list = array();
-        $nodes = DB::table('user_nodes')->get();
+        $nodes = DB::table('user_nodes')->orderBy('create_date', 'desc')->get();
         foreach($nodes as $key=> $node){
             $node_list[$key]['key'] = keys_encrypt($node->id);
             $node_list[$key]['node_name'] = $node->node_name;
@@ -470,7 +470,7 @@ class Dashboard extends Controller
     {
         //取出数据
         $menu_list = array();
-        $menus = DB::table('user_menus')->get();
+        $menus = DB::table('user_menus')->orderBy('create_date', 'desc')->get();
         foreach($menus as $key=> $menu){
             $menu_list[$key]['key'] = keys_encrypt($menu->id);
             $menu_list[$key]['menu_name'] = $menu->menu_name;
@@ -492,7 +492,7 @@ class Dashboard extends Controller
     {
         //取出数据
         $role_list = array();
-        $roles = DB::table('user_roles')->get();
+        $roles = DB::table('user_roles')->orderBy('create_date', 'desc')->get();
         foreach($roles as $key=> $role){
             $role_list[$key]['key'] = keys_encrypt($role->id);
             $role_list[$key]['name'] = $role->name;

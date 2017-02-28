@@ -128,7 +128,7 @@ class Recommend extends Controller
 
         //页面中显示
         $this->page_data['r_detail'] = $r_detail;
-        $pageContent = view('judicial.manage.cms.recommendDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.recommendEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 

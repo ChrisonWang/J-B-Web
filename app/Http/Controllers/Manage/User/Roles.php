@@ -66,7 +66,7 @@ class Roles extends Controller
         $subs = json_decode($inputs['sub'], true);
         $permission = array();
         foreach($subs as $sub){
-            $permission[] = $sub['menus'].'||'.$sub['nodes'].'||'.$sub['permission'];
+            $permission[] = keys_decrypt($sub['menus']).'||'.keys_decrypt($sub['nodes']).'||'.$sub['permission'];
         }
         $permission = array_unique($permission);
         //执行插入数据操作
@@ -116,7 +116,7 @@ class Roles extends Controller
             $menu_list[$key]['key'] = keys_encrypt($menu->id);
             $menu_list[$key]['menu_name'] = $menu->menu_name;
             foreach(json_decode($menu->nodes, true) as $n_k=> $_node){
-                $menu_nodes[keys_encrypt($menu->id)][keys_encrypt($n_k)] = $_node;
+                $menu_nodes[$menu->id][keys_encrypt($n_k)] = $_node;
             }
         }
         //取出详情
@@ -182,7 +182,7 @@ class Roles extends Controller
             $menu_list[$key]['key'] = keys_encrypt($menu->id);
             $menu_list[$key]['menu_name'] = $menu->menu_name;
             foreach(json_decode($menu->nodes, true) as $n_k=> $_node){
-                $menu_nodes[keys_encrypt($menu->id)][keys_encrypt($n_k)] = $_node;
+                $menu_nodes[$menu->id][keys_encrypt($n_k)] = $_node;
             }
         }
         //取出详情
@@ -246,7 +246,7 @@ class Roles extends Controller
         $subs = json_decode($inputs['sub'], true);
         $permission = array();
         foreach($subs as $sub){
-            $permission[] = $sub['menus'].'||'.$sub['nodes'].'||'.$sub['permission'];
+            $permission[] = keys_decrypt($sub['menus']).'||'.keys_decrypt($sub['nodes']).'||'.$sub['permission'];
         }
         $permission = array_unique($permission);
         //执行更新数据操作

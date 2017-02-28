@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            文章管理/查看
+            文章管理/编辑
         </h3>
     </div>
     <!--隐藏的模板-->

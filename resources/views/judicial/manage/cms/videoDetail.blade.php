@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            宣传视频管理/修改
+            宣传视频管理/查看
         </h3>
     </div>
     <div class="panel-body">

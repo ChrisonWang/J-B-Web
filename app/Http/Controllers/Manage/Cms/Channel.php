@@ -201,7 +201,7 @@ class Channel extends Controller
         //页面中显示
         $this->page_data['subs'] = $subs;
         $this->page_data['channel_detail'] = $channel_detail;
-        $pageContent = view('judicial.manage.cms.channelDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.channelEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 

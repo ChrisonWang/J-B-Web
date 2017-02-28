@@ -2,7 +2,6 @@
  * Created by Auser on 2017/2/10.
  */
 $(function(){
-
     //首页选中
     $(".idbr_top ul li").click(function(){
         $(this).siblings("li").removeClass("idbr_topsd");
@@ -22,4 +21,14 @@ $(function(){
         $(this).siblings("span").removeClass("lb_act");
         $(this).addClass("lb_act");
     })
-})
+});
+
+function jumpToFlink(s){
+    var url = 'http://'+s.find("option:selected").val();
+    if(url == 'type'){
+        return true;
+    }
+    else {
+        window.open(url);
+    }
+}

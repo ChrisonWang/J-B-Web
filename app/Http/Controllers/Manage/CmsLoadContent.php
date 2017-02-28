@@ -41,7 +41,7 @@ class CmsLoadContent extends Controller
     private function _content_TagsMng($request)
     {
         $tag_data = array();
-        $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->get();
+        $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->orderBy('create_date', 'desc')->get();
         foreach($tags as $key=> $tag){
             $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);
             $tag_data[$key]['tag_title'] = $tag->tag_title;
@@ -62,7 +62,7 @@ class CmsLoadContent extends Controller
     private function _content_DepartmentType($request)
     {
         $type_data = array();
-        $types = DB::table('cms_department_type')->get();
+        $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->get();
         foreach($types as $key=> $type){
             $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
             $type_data[$key]['type_name'] = $type->type_name;
@@ -77,13 +77,13 @@ class CmsLoadContent extends Controller
     {
         //取出分类
         $type_data = array();
-        $types = DB::table('cms_department_type')->get();
+        $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->get();
         foreach($types as $type){
             $type_data[$type->type_id] = $type->type_name;
         }
         //取出机构
         $department_data = array();
-        $departments = DB::table('cms_department')->get();
+        $departments = DB::table('cms_department')->orderBy('create_date', 'desc')->get();
         foreach($departments as $key=> $department){
             $department_data[$key]['key'] = keys_encrypt($department->id);
             $department_data[$key]['department_name'] = $department->department_name;
@@ -102,7 +102,7 @@ class CmsLoadContent extends Controller
     {
         //取出数据
         $leaders_data = array();
-        $leaders = DB::table('cms_leaders')->get();
+        $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->get();
         foreach($leaders as $key=> $leader){
             $leaders_data[$key]['key'] = keys_encrypt($leader->id);
             $leaders_data[$key]['leader_name'] = $leader->name;
@@ -118,7 +118,7 @@ class CmsLoadContent extends Controller
     {
         //取出数据
         $video_data = array();
-        $videos = DB::table('cms_video')->get();
+        $videos = DB::table('cms_video')->orderBy('create_date', 'desc')->get();
         foreach($videos as $key=> $video){
             $video_data[$key]['key'] = keys_encrypt($video->video_code);
             $video_data[$key]['video_title'] = $video->title;
@@ -169,7 +169,7 @@ class CmsLoadContent extends Controller
     {
         //取出数据
         $flink_data = array();
-        $links = DB::table('cms_image_flinks')->get();
+        $links = DB::table('cms_image_flinks')->orderBy('create_date', 'desc')->get();
         foreach($links as $key=> $link){
             $flink_data[$key]['key'] = keys_encrypt($link->id);
             $flink_data[$key]['fi_title'] = $link->title;
@@ -186,7 +186,7 @@ class CmsLoadContent extends Controller
     {
         //取出数据
         $flinks_data = array();
-        $links = DB::table('cms_flinks')->where('pid',0)->get();
+        $links = DB::table('cms_flinks')->where('pid',0)->orderBy('create_date', 'desc')->get();
         foreach($links as $key=> $link){
             $flinks_data[$key]['key'] = keys_encrypt($link->id);
             $flinks_data[$key]['title'] = $link->title;
@@ -201,7 +201,7 @@ class CmsLoadContent extends Controller
     {
         //取出数据
         $channel_data = array();
-        $channels = DB::table('cms_channel')->where('pid',0)->get();
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('create_date', 'desc')->get();
         foreach($channels as $key=> $channel){
             $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
             $channel_data[$key]['channel_title'] = $channel->channel_title;
@@ -221,7 +221,7 @@ class CmsLoadContent extends Controller
     {
         //取出频道
         $channels_data = array();
-        $channels = DB::table('cms_channel')->get();
+        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
         foreach($channels as $channel){
             $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
         }
@@ -247,7 +247,7 @@ class CmsLoadContent extends Controller
     {
         //取出频道
         $channels_data = array();
-        $channels = DB::table('cms_channel')->get();
+        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
         foreach($channels as $channel){
             $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
         }
@@ -259,7 +259,7 @@ class CmsLoadContent extends Controller
         }
         //取出数据
         $article_data = array();
-        $articles = DB::table('cms_article')->get();
+        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->get();
         foreach($articles as $key=> $article){
             $article_data[$key]['key'] = $article->article_code;
             $article_data[$key]['article_title'] = $article->article_title;

@@ -102,7 +102,7 @@ class DepartmentType extends Controller
     {
         $type_detail = array();
         $inputs = $request->input();
-        $type_id = keys_decrypt($inputs['type_key'],'D');
+        $type_id = keys_decrypt($inputs['type_key']);
         $types = DB::table('cms_department_type')->where('type_id',$type_id)->first();
         if(is_null($types)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);

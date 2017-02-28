@@ -415,7 +415,7 @@ class Users extends Controller
     {
         $inputs = $request->input();
         $code = $inputs['key'];
-        $type = keys_decrypt($inputs['type']);
+        $type = $inputs['type'];
         if($type == 1){
             DB::beginTransaction();
             $res = DB::table('user_members')->where('member_code',$code)->delete();

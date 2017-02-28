@@ -119,7 +119,7 @@ class Introduction extends Controller
 
         //页面中显示
         $this->page_data['intro'] = $intro;
-        $pageContent = view('judicial.manage.cms.introDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.introEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 

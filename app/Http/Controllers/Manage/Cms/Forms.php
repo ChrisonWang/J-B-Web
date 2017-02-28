@@ -185,7 +185,7 @@ class Forms extends Controller
 
         //页面中显示
         $this->page_data['form_detail'] = $form_detail;
-        $pageContent = view('judicial.manage.cms.formsDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.formsEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 

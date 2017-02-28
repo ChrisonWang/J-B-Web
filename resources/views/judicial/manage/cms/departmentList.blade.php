@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            机构简介管理
+            机构管理
         </h3>
     </div>
     <div class="panel-body">

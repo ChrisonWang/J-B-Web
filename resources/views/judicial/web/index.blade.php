@@ -40,20 +40,30 @@
     <div class="idb_right">
         <div class="idbr_top">
             <ul>
-                <li class="idbr_topsd">热点新闻</li>
-                <li>业务动态</li>
-                <li>公告通知</li>
+                @foreach($recommend_list as $k=> $recommend)
+                    <li @if($k == 0)class="idbr_topsd"@endif>{{ $recommend['channel_title'] }}</li>
+                @endforeach
             </ul>
             <a href="javascript:void(0)">更多>></a>
         </div>
         <div class="idbr_down">
-            <ul>
-                暂无数据
-                {{--<li>
-                    <span class="idbrd_l">中信公证处积极开展公证宣传活动</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>--}}
-            </ul>
+            暂无文章
+            {{--@foreach($recommend_list as $k=> $recommend)
+                @if($recommend['article_list'] != 'none' && is_array($recommend['article_list']))
+                    <ul>
+                        @foreach($recommend['article_list'] as $k=> $recommend)
+                            <li>
+                                <span class="idbrd_l">
+                                    <a href="{{ URL::to('/article').'/'.$recommend['key'] }}" target="_blank">{{ $recommend['article_title'] }}</a>
+                                </span>
+                                <span class="idbrd_r">{{ $recommend['publish_date'] }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    暂无文章
+                @endif
+            @endforeach--}}
         </div>
     </div>
 </div>
@@ -68,20 +78,20 @@
 
     <div class="vd_mid">
         <span class="vd_tit">推荐链接</span>
-        <ul>
-            <li class="ico_1">
-                <span><a href="" target="_blank">公务员普法在线学习</a></span>
-            </li>
-            <li class="ico_2">
-                <span><a href="" target="_blank">常用法律文书格式</a></span>
-            </li>
-            <li class="ico_3">
-                <span><a href="" target="_blank">法律法规查询</a></span>
-            </li>
-            <li class="ico_4">
-                <span><a href="" target="_blank">社区矫正</a></span>
-            </li>
-        </ul>
+            <ul>
+                <li class="ico_1" onclick="javascript: window.open('#'); ">
+                    <span>公务员普法在线学习</span>
+                </li>
+                <li class="ico_2" onclick="javascript: window.open('http://www.64365.com/lawtxt/'); ">
+                    <span>常用法律文书格式</span>
+                </li>
+                    <li class="ico_3" onclick="javascript: window.open('http://search.chinalaw.gov.cn/search.html'); ">
+                    <span>法律法规查询</span>
+                </li>
+                <li class="ico_4" onclick="javascript: window.open('http://www.sfjz.com.cn/'); ">
+                    <span>社区矫正</span>
+                </li>
+            </ul>
     </div>
 
     <div class="vd_right">
@@ -151,23 +161,31 @@
 <div class="ft_last w980">
     <span class="vd_tit">友情链接</span>
     <div class="last_link">
-        <span>==河南地市司法局链接==♦</span>
-        <span>==河南地市司法局链接==♦</span>
-        <span>==河南地市司法局链接==♦</span>
-        <span>==河南地市司法局链接==♦</span>
-        <span>==河南地市司法局链接==♦</span>
+        @if($flink_type_list != 'none' && is_array($flink_type_list))
+            @foreach($flink_type_list as $key=> $flink_type)
+                <span>
+                    <select onchange="jumpToFlink($(this))" style="text-align: center">
+                        <option value="type">==&nbsp;&nbsp;{{ $flink_type }}&nbsp;&nbsp;==</option>
+                        @foreach($flinks_list[$key] as $flinks)
+                            <option value="{{ $flinks['link'] }}" style="text-align: center">==&nbsp;&nbsp;{{ $flinks['title'] }}&nbsp;&nbsp;==</option>
+                        @endforeach
+                    </select>
+                </span>
+            @endforeach
+        @endif
     </div>
     <div class="ft_sidlast swiper-container w980">
-        <ul class="swiper-wrapper">
-            <li class="swiper-slide"><img src="images/csd.png"></li>
-            <li class="swiper-slide"><img src="images/csd.png"></li>
-            <li class="swiper-slide"><img src="images/csd.png"></li>
-            <li class="swiper-slide"><img src="images/csd.png"></li>
-            <li class="swiper-slide"><img src="images/csd.png"></li>
-            <li class="swiper-slide"><img src="images/csd.png"></li>
-            <li class="swiper-slide"><img src="images/csd.png"></li>
-            <li class="swiper-slide"><img src="images/csd.png"></li>
-        </ul>
+        @if(isset($img_flink_list) && is_array($img_flink_list))
+            <ul class="swiper-wrapper">
+                @foreach($img_flink_list as $img_flink)
+                    <li class="swiper-slide">
+                        <a href="{{ $img_flink['links'] }}" target="_blank">
+                            <img src="{{ $img_flink['image'] }}" alt="{{ $img_flink['title'] }}">
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
     </div>

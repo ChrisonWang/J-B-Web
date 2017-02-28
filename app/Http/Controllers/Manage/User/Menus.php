@@ -152,9 +152,6 @@ class Menus extends Controller
     {
         $menu_detail = array();
         $inputs = $request->input();
-        if(empty($inputs['menu_name'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
-        }
         $id = keys_decrypt($inputs['key']);
         //取出功能点
         $node_list = array();
@@ -193,6 +190,9 @@ class Menus extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['menu_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
         $sql = 'SELECT `id` FROM user_menus WHERE `menu_name` = "'.$inputs['menu_name'].'" AND `id` != "'.$id.'"';

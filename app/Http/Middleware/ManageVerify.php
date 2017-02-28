@@ -6,6 +6,8 @@ use Closure;
 
 use App\Models\Manage\User\Manager;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Session;
 
 use Illuminate\Support\Facades\URL;
@@ -40,6 +42,24 @@ class ManageVerify
             }
         }
         $request->attributes->add(['managerCode'=>$managerCode]);
+
         return $next($request);
     }
+
+    private function getPermission($managerCode)
+    {
+        if(!empty($managerCode) && strstr($managerCode, 'ADMIN_')){
+            return 'ROOT';
+        }
+        //权限
+        $role_id = DB::table('user_manager')->select('role_id')->where('manager_code', $managerCode)->first();
+        $permissions = DB::table('user_roles')->select('permission')->where('id', $role_id->role_id)->first();
+        $permissions = json_decode($permissions->permission, true);
+        $p_list = array();
+        foreach($permissions as $permission){
+            $p_list[] = $permission;
+        }
+        return true;
+    }
+
 }

@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            司法局简介管理/修改
+            司法局简介管理/查看
         </h3>
     </div>
     <div class="panel-body">

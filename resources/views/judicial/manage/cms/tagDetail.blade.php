@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            标签管理
+            标签管理/查看
         </h3>
     </div>
     <div class="panel-body">

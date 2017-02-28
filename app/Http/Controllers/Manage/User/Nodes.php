@@ -133,7 +133,7 @@ class Nodes extends Controller
 
         //页面中显示
         $this->page_data['node_detail'] = $node_detail;
-        $pageContent = view('judicial.manage.user.nodeDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.user.nodeEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 

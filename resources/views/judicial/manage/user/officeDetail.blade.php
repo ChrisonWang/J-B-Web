@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            科室管理/修改
+            科室管理/查看
         </h3>
     </div>
     <div class="panel-body">
@@ -26,10 +26,7 @@
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
-                    <button type="button" class="btn btn-info btn-block" onclick="editOffice()">确认</button>
-                </div>
-                <div class="col col-md-1">
+                <div class="col col-md-offset-1 col-md-1">
                     <button type="button" class="btn btn-danger btn-block" data-node="user-officeMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>
