@@ -36,6 +36,13 @@ class FlinksImg extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['fi_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['fi_links'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'链接不能为空！']);
+        }
+
         //判断是否有重名的
         $id = DB::table('cms_image_flinks')->select('id')->where('title',$inputs['fi_title'])->get();
         if(count($id) != 0){
@@ -45,6 +52,7 @@ class FlinksImg extends Controller
         $file = $request->file('fi_photo');
         if(is_null($file) || !$file->isValid()){
             $photo_path = '';
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传图片！']);
         }
         else{
             $destPath = realpath(public_path('uploads/images'));

@@ -12,7 +12,8 @@
         "mews/captcha": "^2.1",
         "stevenyangecho/laravel-u-editor": "~1.1",
         "barryvdh/laravel-ide-helper": "^2.3",
-        "tom-lingham/searchy" : "2.*"
+        "tom-lingham/searchy" : "2.*",
+        "mmanos/laravel-search": "dev-master"
     },
     "minimum-stability": "dev",
     "require-dev": {

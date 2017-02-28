@@ -63,6 +63,13 @@ class Department extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['department_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['description'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
+        }
+
         //判断是否有重名的
         $department_id = DB::table('cms_department')->select('id')->where('department_name',$inputs['department_name'])->get();
         if(count($department_id) != 0){
@@ -190,6 +197,13 @@ class Department extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['department_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['description'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
+        }
+
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
         $sql = 'SELECT `id` FROM cms_department WHERE `department_name` = "'.$inputs['department_name'].'" AND `id` != "'.$id.'"';

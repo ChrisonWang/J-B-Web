@@ -56,6 +56,10 @@ class DepartmentType extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['typeName'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'分类名称不能为空！']);
+        }
+
         //判断是否有重名的
         $type_id = DB::table('cms_department_type')->select('type_id')->where('type_name',$inputs['typeName'])->get();
         if(count($type_id) != 0){
@@ -141,6 +145,10 @@ class DepartmentType extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['typeName'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'分类名称不能为空！']);
+        }
+
         $type_id = keys_decrypt($inputs['typeKey']);
         $save_data = array(
             'type_name'=> $inputs['typeName'],

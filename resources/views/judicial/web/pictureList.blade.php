@@ -12,74 +12,54 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span>首页&nbsp;&nbsp;>&nbsp;</span>
-            <span>政务公开&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #101010;">宣传视频</span>
+            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span style="color: #101010;">图片中心</span>
         </div>
         <div class="zw_vedio">
-            <ul>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-                <li>
-                    <img src="images/cs2.jpg"  controls="controls" width="250" height="167">
-                    <a class="vd_btn"><img src="images/btn_play_50x50.png" width="50" height="50"></a>
-                    <span class="zwv_txt">市公证协会举办全市公证业务培训</span>
-                </li>
-            </ul>
+            @if($article_list != 'none')
+                <ul>
+                    @foreach($article_list as $article)
+                        <li>
+                            <a href="{{ URL::to('/article').'/'.$article['key'] }}">
+                                <img src="{{ $article['thumb'] }}"  controls="controls" width="250" height="167">
+                            </a>
+                            <span class="zwv_txt">
+                                <a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ $article['publish_date'] }}</a>
+                            </span>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p>该频道下暂无文章！</p>
+            @endif
         </div>
-        <div class="zwr_ft">
-            <div class="fy_left">
-                <span>首页</span>
-                <span>上一页</span>
-                <span>下一页</span>
-                <span>尾页</span>
-            </div>
-            <div class="fy_right">
-                <span>总记录数：1983</span>
-                <span>显示13条记录</span>
-                <span>当前页1/23</span>
-                <span>跳转至第<input type="text" value="3">页</span>
-                <span class="fy_btn">跳转</span>
-            </div>
-        </div>
+        @if($article_list != 'none')
+            @if($page['page_count'] == 1 )
+                <div class="zwr_ft">
+                    <div class="fy_right">
+                        <span>总记录数： {{ $page['count'] }}</span>
+                        <span>显示 {{ $page['count'] }} 条记录</span>
+                        <span>当前页1/1</span>
+                    </div>
+                </div>
+            @else
+                <div class="zwr_ft">
+                    <div class="fy_left">
+                        <span><a href="/picture/1">首页</a></span>
+                        <span>@if(($page['now_page'] - 1) > 0)<a href="/picture/{{$page['now_page'] - 1}}">@endif上一页</a></span>
+                        <span>@if(($page['now_page'] + 1) <= $page['page_count'])<a href="/picture/{{$page['now_page'] + 1}}">@endif下一页</a></span>
+                        <span><a href="/picture/{{$page['page_count']}}">尾页</a></span>
+                    </div>
+                    <div class="fy_right">
+                        <span>总记录数：{{ $page['count'] }}</span>
+                        <span>显示 9 条记录</span>
+                        <span>当前页{{ $page['now_page'] }}/{{ $page['page_count'] }}</span>
+                        <span>跳转至第<input type="text" value="1">页</span>
+                        <span class="fy_btn">跳转</span>
+                    </div>
+                </div>
+            @endif
+        @endif
     </div>
 
 </div>
@@ -87,11 +67,5 @@
 
 <!--底部-->
 @include('judicial.web.chips.foot')
-<script>
-    $(function(){
-        $('#header').load('header.html');
-        $('#footer').load('footer.html');
-    })
-</script>
 </body>
 </html>

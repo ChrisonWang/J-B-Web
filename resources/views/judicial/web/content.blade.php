@@ -12,9 +12,9 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span>首页&nbsp;&nbsp;>&nbsp;</span>
-            <span>政务公开&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #101010;">业务动态</span>
+            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>
+            <span style="color: #101010;">{{ $sub_title }}</span>
         </div>
         <div class="wz_body w700">
             <div class="wz_top">
@@ -23,7 +23,6 @@
                     <div class="wztd_left">
                         <span>{{ $article_detail['publish_date'] }}</span>
                         <span>浏览数：{{ $article_detail['clicks'] }}</span>
-                        <span>字号：[ 小 中 大 ]</span>
                     </div>
                     <div class="wztd_right">
                         @foreach($article_detail['tags'] as $tag)

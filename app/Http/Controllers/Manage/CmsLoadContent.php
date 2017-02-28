@@ -251,6 +251,12 @@ class CmsLoadContent extends Controller
         foreach($channels as $channel){
             $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
         }
+        //取出标签
+        $tag_list = array();
+        $tags = DB::table('cms_tags')->get();
+        foreach($tags as $tag){
+            $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
+        }
         //取出数据
         $article_data = array();
         $articles = DB::table('cms_article')->get();
@@ -264,6 +270,7 @@ class CmsLoadContent extends Controller
             $article_data[$key]['publish_date'] = $article->publish_date;
         }
         //返回到前段界面
+        $this->page_data['tag_list'] = $tag_list;
         $this->page_data['channel_list'] = $channels_data;
         $this->page_data['article_list'] = $article_data;
         $pageContent = view('judicial.manage.cms.articleList',$this->page_data)->render();

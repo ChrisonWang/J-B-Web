@@ -57,6 +57,10 @@ class Tags extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['tagTitle'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+
         //判断是否有重名的
         $tag_id = DB::table('cms_tags')->select('id')->where('tag_title',$inputs['tagTitle'])->get();
         if(count($tag_id) != 0){
@@ -146,6 +150,10 @@ class Tags extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['tagTitle'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+
         $tag_id = keys_decrypt($inputs['tagKey']);
         $save_data = array(
             'tag_title'=> $inputs['tagTitle'],

@@ -10,6 +10,30 @@
         </div>
         <hr/>
         <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="search-title">标题：</label>
+                            <input type="text" class="form-control" id="search-title" name="search-title" placeholder="请输入标题">
+                        </div>
+                        <div class="form-group">
+                            <label for="search-channel-key">频道：</label>
+                            <select id="search-channel-key" name="search-channel-key" class="form-control">
+                                @if(isset($channel_list))
+                                    @foreach($channel_list as $key=> $name)
+                                        <option value="{{ $key }}">{{ $name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-info" onclick="search_list($('#this-container'))">搜索</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="container-fluid" id="this-container">
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                     <tr>

@@ -54,10 +54,13 @@ class Roles extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         //判断是否有重名的
         $id = DB::table('user_roles')->select('id')->where('name',$inputs['title'])->get();
         if(count($id) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['title'].'的角色菜单']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['title'].'的角色']);
         }
         //处理功能点
         $subs = json_decode($inputs['sub'], true);
@@ -229,12 +232,15 @@ class Roles extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
         $sql = 'SELECT `id` FROM user_roles WHERE `name` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';
         $res = DB::select($sql);
         if(count($res) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['title'].'的菜单']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['title'].'的角色']);
         }
         //处理功能点
         $subs = json_decode($inputs['sub'], true);

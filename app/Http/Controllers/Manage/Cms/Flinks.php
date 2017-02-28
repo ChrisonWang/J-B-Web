@@ -36,10 +36,14 @@ class Flinks extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+
         //判断是否有重名的
         $id = DB::table('cms_flinks')->select('id')->where('title',$inputs['title'])->get();
         if(count($id) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['title'].'的分类']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['title'].'的链接']);
         }
         //判断子链接是否有没有填写的
         if(count($inputs['sub_title']) != count($inputs['sub_link'])){
@@ -183,6 +187,10 @@ class Flinks extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+
         //判断是否有重名的
         $id = keys_decrypt($inputs['key']);
         $sql = 'SELECT `id` FROM cms_flinks WHERE `title` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';

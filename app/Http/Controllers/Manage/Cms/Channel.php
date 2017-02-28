@@ -36,6 +36,9 @@ class Channel extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['channel_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
         //判断子链接是否有没有填写的
         $subs = json_decode($inputs['sub'], true);
         //执行插入数据操作
@@ -205,6 +208,9 @@ class Channel extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['channel_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
         $id = keys_decrypt($inputs['key']);
         $sql = 'SELECT `channel_id` FROM cms_channel WHERE `channel_title` = "'.$inputs['channel_title'].'" AND `channel_id` != "'.$id.'" AND `pid` = 0';
         $res = DB::select($sql);

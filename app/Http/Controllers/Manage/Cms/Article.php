@@ -75,6 +75,12 @@ class Article extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['article_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['publish_date'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'发布时间不能为空！']);
+        }
         //处理上传的图片
         $file = $request->file('thumb');
         if(is_null($file) || !$file->isValid()){
@@ -284,6 +290,13 @@ class Article extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['article_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['publish_date'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'发布时间不能为空！']);
+        }
+
         $article_code = $inputs['key'];
         $sql = 'SELECT `article_code` FROM cms_article WHERE `article_title` = "'.$inputs['article_title'].'" AND `article_code` != "'.$article_code.'"';
         $res = DB::select($sql);

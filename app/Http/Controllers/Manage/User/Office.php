@@ -37,6 +37,9 @@ class Office extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['office_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         //判断是否有重名的
         $id = DB::table('user_office')->select('id')->where('office_name',$inputs['office_name'])->get();
         if(count($id) != 0){
@@ -125,6 +128,9 @@ class Office extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['office_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
         $sql = 'SELECT `id` FROM user_office WHERE `office_name` = "'.$inputs['office_name'].'" AND `id` != "'.$id.'"';

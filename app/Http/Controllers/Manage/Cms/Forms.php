@@ -44,6 +44,10 @@ class Forms extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+
         //判断是否有重名的
         $id = DB::table('cms_forms')->select('id')->where('title',$inputs['title'])->get();
         if(count($id) != 0){
@@ -188,6 +192,10 @@ class Forms extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
         $sql = 'SELECT `id` FROM cms_flinks WHERE `title` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';

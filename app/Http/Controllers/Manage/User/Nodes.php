@@ -45,6 +45,9 @@ class Nodes extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['node_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         //判断是否有重名的
         $id = DB::table('user_nodes')->select('id')->where('node_name',$inputs['node_name'])->get();
         if(count($id) != 0){
@@ -137,6 +140,9 @@ class Nodes extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['node_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
         $sql = 'SELECT `id` FROM user_nodes WHERE `node_name` = "'.$inputs['node_name'].'" AND `id` != "'.$id.'"';

@@ -8,11 +8,14 @@
 <!--搜索栏-->
 <div class="index_search">
     <div class="id_sch_l">
-        今日： 2017年2月11号 星期五
+        今天是： {{ date('Y-m-d l',time()) }}
     </div>
     <div class="id_sch_r">
-        <input type="search" placeholder="输入搜索关键词">
-        <button>搜索</button>
+        <form action="{{ URL::route('search') }}" method="post">
+            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+            <input type="search" name="keywords" placeholder="输入搜索关键词" value="">
+            <button type="submit">搜索</button>
+        </form>
     </div>
 </div>
 
@@ -21,26 +24,15 @@
     <div class="idb_left">
         <div class="swiper-container banner_sd">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <a href="javascript:void(0);">
-                        <img src="images/cs.jpg">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="javascript:void(0);">
-                        <img src="images/cs2.jpg">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="javascript:void(0);">
-                        <img src="images/cs3.jpg">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="javascript:void(0);">
-                        <img src="images/cs4.jpg">
-                    </a>
-                </div>
+                @if($pic_article_list!='none' && is_array($pic_article_list))
+                    @foreach($pic_article_list as $pic_article)
+                        <div class="swiper-slide">
+                            <a href="{{ URL::to('/article').'/'.$pic_article['key'] }}" alt="{{ $pic_article['article_title'] }}">
+                                <img src="{{ $pic_article['thumb'] }}">
+                            </a>
+                        </div>
+                    @endforeach
+                @endif
             </div>
             <div class="swiper-pagination"></div>
         </div>
@@ -56,38 +48,11 @@
         </div>
         <div class="idbr_down">
             <ul>
-                <li>
+                暂无数据
+                {{--<li>
                     <span class="idbrd_l">中信公证处积极开展公证宣传活动</span>
                     <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">中信公证处积极开展公证宣传活动</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
+                </li>--}}
             </ul>
         </div>
     </div>
@@ -105,16 +70,16 @@
         <span class="vd_tit">推荐链接</span>
         <ul>
             <li class="ico_1">
-                <span>公务员普法在线学习</span>
+                <span><a href="" target="_blank">公务员普法在线学习</a></span>
             </li>
             <li class="ico_2">
-                <span>常用法律文书格式</span>
+                <span><a href="" target="_blank">常用法律文书格式</a></span>
             </li>
             <li class="ico_3">
-                <span>法律法规查询</span>
+                <span><a href="" target="_blank">法律法规查询</a></span>
             </li>
             <li class="ico_4">
-                <span>社区矫正</span>
+                <span><a href="" target="_blank">社区矫正</a></span>
             </li>
         </ul>
     </div>
@@ -142,37 +107,11 @@
         </div>
         <div class="idbr_down">
             <ul>
-                <li>
+                暂无数据
+                {{--<li>
                     <span class="idbrd_l">中信公证处积极开展公证宣传活动</span>
                     <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法市委常委、政法委书记“12·4”国家宪法市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">中信公证处积极开展公证宣传活动</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="idbrd_l">市委常委、政法委书记“12·4”国家宪法日系列政法委书记“12·4”国家宪法日系列</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>
-                <li>
-                    <span class="more_link">查看更多>></span>
-                </li>
+                </li>--}}
             </ul>
         </div>
     </div>
@@ -201,12 +140,7 @@
     <span class="vd_tit">图片中心</span>
     <div class="ft_sid swiper-container w980">
         <ul class="swiper-wrapper">
-            <li class="swiper-slide"><img src="images/csftsd.png"><span>风雨历程二十载 同心同德铸辉煌</span></li>
-            <li class="swiper-slide"><img src="images/csftsd.png"><span>风雨历程二十载 同心同德铸辉煌</span></li>
-            <li class="swiper-slide"><img src="images/csftsd.png"><span>风雨历程二十载 同心同德铸辉煌</span></li>
-            <li class="swiper-slide"><img src="images/csftsd.png"><span>风雨历程二十载 同心同德铸辉煌</span></li>
-            <li class="swiper-slide"><img src="images/csftsd.png"><span>风雨历程二十载 同心同德铸辉煌</span></li>
-            <li class="swiper-slide"><img src="images/csftsd.png"><span>风雨历程二十载 同心同德铸辉煌</span></li>
+            {{--<li class="swiper-slide"><img src="images/csftsd.png"><span>风雨历程二十载 同心同德铸辉煌</span></li>--}}
         </ul>
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>

@@ -58,6 +58,9 @@ class Users extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(!$this->_addCheckInput($inputs)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写正确的表单信息！']);
+        }
         //判断是否有重名的
         $type_id = keys_decrypt($inputs['user_type']);
         if($type_id == 1){
@@ -301,6 +304,7 @@ class Users extends Controller
     {
         $inputs = $request->input();
         $code = $inputs['key'];
+        $this->_checkInput($inputs, $code);
         //判断是否有重名的
         $type_id = keys_decrypt($inputs['user_type']);
         if($type_id == 1){
@@ -341,12 +345,12 @@ class Users extends Controller
             $id = DB::table('user_members')->where('member_code', $code)->update($saveMembers);
             if($id===false){
                 DB::rollback();
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
             }
-            $iid = DB::table('user_member_info')->insertGetId($saveMemberInfo);
+            $iid = DB::table('user_member_info')->where('member_code', $code)->update($saveMemberInfo);
             if($iid===false){
                 DB::rollback();
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
             }
             DB::commit();
         }
@@ -469,6 +473,116 @@ class Users extends Controller
         }
         else{
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
+        }
+    }
+
+    private function _checkInput($input, $managerCode){
+        if(!preg_phone($input['cell_phone'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入正确的手机号！"]);
+        }
+        elseif($this->_phoneExist($input['cell_phone'],$managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cell_phone']." 已存在"]);
+        }
+        elseif(!preg_manager_name($input['login_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法！"]);
+        }
+        elseif($this->_loginNameExist($input['login_name'],$managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名已存在！"]);
+        }
+        elseif(!preg_email($input['email'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱不合法！"]);
+        }
+        elseif($this->_emailExist($input['email'],$managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱已存在！"]);
+        }
+        elseif($this->_nicknameExist($input['nickname'],$managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名已存在！"]);
+        }
+        elseif(!empty($input['password'])){
+            if(!preg_password($input['password'])){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);
+            }
+        }
+        return true;
+    }
+
+    private function _addCheckInput($input){
+        if(!preg_phone($input['cell_phone'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入正确的手机号！"]);
+        }
+        elseif(!preg_manager_name($input['login_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法！"]);
+        }
+        elseif(!preg_email($input['email'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱不合法！"]);
+        }
+        if(!preg_password($input['password'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);
+
+        }
+        return true;
+    }
+
+    /**
+     * 检查是否存在手机号
+     * @param $phone
+     * @return bool
+     */
+    private function _phoneExist($phone,$manager_code){
+        $sql = 'SELECT manager_code FROM user_manager WHERE `cell_phone` = "'.$phone.'" AND `manager_code` != "'.$manager_code.'"';
+        $res = DB::select($sql);
+        if(count($res)<1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 检查授粉存在的用户名
+     * @param $loginName
+     * @return bool
+     */
+    private function _loginNameExist($loginName,$manager_code)
+    {
+        $sql = 'SELECT manager_code FROM user_manager WHERE `login_name` = "'.$loginName.'" AND `manager_code` != "'.$manager_code.'"';
+        $res = DB::select($sql);
+        if(count($res)<1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 检查是否存在的昵称
+     * @param $loginName
+     * @return bool
+     */
+    private function _nicknameExist($nickName,$manager_code)
+    {
+        $sql = 'SELECT manager_code FROM user_manager WHERE `nickname` = "'.$nickName.'" AND `manager_code` != "'.$manager_code.'"';
+        $res = DB::select($sql);
+        if(count($res)<1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 检查是否存在的邮箱
+     * @param $email
+     * @return bool
+     */
+    private function _emailExist($email,$manager_code)
+    {
+        $sql = 'SELECT manager_code FROM user_manager WHERE `email` = "'.$email.'" AND `manager_code` != "'.$manager_code.'"';
+        $res = DB::select($sql);
+        if(count($res)<1){
+            return false;
+        }else{
+            return true;
         }
     }
 

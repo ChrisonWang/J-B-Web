@@ -41,9 +41,23 @@ Route::group(['middleware' => ['web']], function () {
     });
 
     //前台CMS路由
+    Route::post('search',['as'=>'search', 'uses'=>'Web\Index@search']);
+
     Route::get('list/{cid}/{page?}','Web\Index@article_list');
 
+    Route::get('picture/{page?}','Web\Index@picture_list');
+
+    Route::get('video/{page?}','Web\Index@video_list');
+
     Route::get('article/{article_code}','Web\Index@article_content');
+
+    Route::get('intro','Web\Index@introduction');
+
+    Route::get('leader','Web\Index@leader');
+
+    Route::get('department','Web\Index@department');
+
+    Route::get('department/intro/{key?}','Web\Index@departmentIntro');
 
 //后台相关路由
     Route::group(['middleware' => ['manage.verify']], function () {

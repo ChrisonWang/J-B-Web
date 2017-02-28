@@ -38,10 +38,20 @@ class Leader extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['leader_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
+        }
+        elseif(empty($inputs['job'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'职务不能为空！']);
+        }
+        elseif(empty($inputs['description'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
+        }
         //处理图片上传
         $file = $request->file('leader_photo');
         if(is_null($file) || !$file->isValid()){
             $photo_path = '';
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传头像照片！']);
         }
         else{
             $destPath = realpath(public_path('uploads/images'));
@@ -157,12 +167,22 @@ class Leader extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        $id = keys_decrypt($inputs['key']);
+        if(empty($inputs['leader_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
+        }
+        elseif(empty($inputs['job'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'职务不能为空！']);
+        }
+        elseif(empty($inputs['description'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
+        }
 
+        $id = keys_decrypt($inputs['key']);
         //处理图片上传
         $file = $request->file('leader_photo');
         if(is_null($file) || !$file->isValid()){
             $photo_path = '';
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传头像照片！']);
         }
         else{
             $destPath = realpath(public_path('uploads/images'));

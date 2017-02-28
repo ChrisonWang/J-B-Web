@@ -43,6 +43,9 @@ class Menus extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['menu_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         //判断是否有重名的
         $id = DB::table('user_menus')->select('id')->where('menu_name',$inputs['menu_name'])->get();
         if(count($id) != 0){
@@ -149,6 +152,9 @@ class Menus extends Controller
     {
         $menu_detail = array();
         $inputs = $request->input();
+        if(empty($inputs['menu_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
+        }
         $id = keys_decrypt($inputs['key']);
         //取出功能点
         $node_list = array();

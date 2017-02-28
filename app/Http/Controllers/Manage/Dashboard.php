@@ -541,9 +541,15 @@ class Dashboard extends Controller
         foreach($user_type as $type){
             $type_list[$type->type_id] = $type->type_name;
         }
+        //取出科室
+        $user_office = DB::table('user_office')->get();
+        foreach($user_office as $office){
+            $office_list[keys_encrypt($office->id)] = $office->office_name;
+        }
         //返回到前段界面
         $this->page_data['type_list'] = $type_list;
         $this->page_data['user_list'] = $user_list;
+        $this->page_data['office_list'] = $office_list;
         $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }

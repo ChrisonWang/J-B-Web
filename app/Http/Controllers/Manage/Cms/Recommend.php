@@ -36,6 +36,13 @@ class Recommend extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['r_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['r_link'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'链接不能为空！']);
+        }
+
         //判断是否有重名的
         $id = DB::table('cms_recommend_links')->select('id')->where('title',$inputs['r_title'])->get();
         if(count($id) != 0){
@@ -128,6 +135,13 @@ class Recommend extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['r_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['r_link'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'链接不能为空！']);
+        }
+
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
         $sql = 'SELECT `id` FROM cms_recommend_links WHERE `title` = "'.$inputs['r_title'].'" AND `id` != "'.$id.'"';

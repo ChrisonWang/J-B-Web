@@ -37,6 +37,10 @@ class Introduction extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['intro'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写简介正文！！']);
+        }
+
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
@@ -122,6 +126,10 @@ class Introduction extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['intro'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写简介正文！！']);
+        }
+
         $id = keys_decrypt($inputs['key']);
         //执行更新数据操作
         $save_data = array(

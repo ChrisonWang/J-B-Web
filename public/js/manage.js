@@ -1597,6 +1597,7 @@ function editUser(){
 }
 
 function addUser(){
+    checkRequired();
     var url = '/manage/user/users/add';
     $('#userAddForm').ajaxSubmit({
         headers: {
@@ -1619,4 +1620,8 @@ function addUser(){
             }
         }
     });
+}
+
+function search_list(c){
+    c.html('<h4 class="text-center">未能检索到信息！</h4>');
 }

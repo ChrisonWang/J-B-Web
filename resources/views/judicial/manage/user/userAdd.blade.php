@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label for="login_name" class="col-md-1 control-label">账号：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="login_name" name="login_name" placeholder="请输菜单名称" />
+                    <input type="text" class="form-control" id="login_name" name="login_name" placeholder="请输菜单名称" required=true/>
                 </div>
             </div>
             <div class="form-group">
@@ -45,7 +45,7 @@
             <div class="form-group">
                 <label for="cell_phone" class="col-md-1 control-label">手机号码：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="cell_phone" name="cell_phone" placeholder="请输手机号码" />
+                    <input type="text" class="form-control" id="cell_phone" name="cell_phone" placeholder="请输手机号码" required=true/>
                 </div>
             </div>
             <div class="form-group">
