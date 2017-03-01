@@ -16,15 +16,16 @@
             <span style="color: #101010;">宣传视频</span>
         </div>
         <div class="zw_vedio">
-            @if($article_list != 'none')
+            @if($video_list != 'none')
                 <ul>
-                    @foreach($article_list as $article)
+                    @foreach($video_list as $video)
                         <li>
-                            <a href="{{ URL::to('/article').'/'.$article['key'] }}">
-                                <img src="{{ $article['thumb'] }}"  controls="controls" width="250" height="167">
+                            <a href="{{ URL::to('/article').'/'.$video['key'] }}">
+                                <img src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="250" height="167">
                             </a>
+                            <a class="vd_btn"><img src="{{ asset('/images/btn_play_50x50.png') }}" width="50" height="50"></a>
                             <span class="zwv_txt">
-                                <a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ $article['publish_date'] }}</a>
+                                <a href="{{ URL::to('/article').'/'.$video['key'] }}">{{ $video['title'] }}</a>
                             </span>
                         </li>
                     @endforeach
@@ -33,7 +34,7 @@
                 <p>该频道下暂无文章！</p>
             @endif
         </div>
-        @if($article_list != 'none')
+        @if($video_list != 'none')
             @if($page['page_count'] == 1 )
                 <div class="zwr_ft">
                     <div class="fy_right">

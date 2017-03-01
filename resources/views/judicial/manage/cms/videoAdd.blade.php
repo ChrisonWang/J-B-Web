@@ -22,7 +22,7 @@
                 <label for="disabled" class="col-md-1 control-label">是否发布：</label>
                 <div class="col-md-3">
                     <h3>
-                        <input type="checkbox" name="disabled" id="disabled" value="yes" />
+                        <input type="checkbox" name="disabled" id="disabled" value="yes" checked/>
                     </h3>
                 </div>
             </div>

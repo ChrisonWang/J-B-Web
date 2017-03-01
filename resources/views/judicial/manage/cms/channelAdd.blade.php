@@ -13,10 +13,10 @@
                     <input type="text" class="form-control" name="sub-channel_title" placeholder="请输频道名称" />
                 </td>
                 <td>
-                    <input type="checkbox" class="form-control" name="sub-zwgk" value="yes" checked/>
+                    <input type="checkbox" class="form-control" name="sub-zwgk" value="yes"/>
                 </td>
                 <td>
-                    <input type="checkbox" class="form-control" name="sub-wsbs" value="yes" checked/>
+                    <input type="checkbox" class="form-control" name="sub-wsbs" value="yes"/>
                 </td>
                 <td>
                     <input type="text" class="form-control" name="sub-sort" placeholder="请输入权重（数字越大越靠前）" />
@@ -52,13 +52,13 @@
             <div class="form-group">
                 <label for="zwgk" class="col-md-1 control-label">是否归属政务公开：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="zwgk" name="zwgk" value="yes" checked/>
+                    <input type="checkbox" class="form-control" id="zwgk" name="zwgk" value="yes" onclick="checkBoxDisabled($(this))" checked/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="wsbs" class="col-md-1 control-label">是否归属网上办事：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="wsbs" name="wsbs" value="yes" checked/>
+                    <input type="checkbox" class="form-control" id="wsbs" name="wsbs" value="yes" onclick="checkBoxDisabled($(this))" checked/>
                 </div>
             </div>
             <div class="form-group">

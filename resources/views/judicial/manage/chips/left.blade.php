@@ -31,8 +31,8 @@
                         <a href="javascript:void(0);" data-node="cms-tagsMng">标签管理</a>
                         <a href="javascript:void(0);" data-node="cms-articleMng">文章管理</a>
                         <a href="javascript:void(0);" data-node="cms-videoMng">宣传视频管理</a>
-                        <a href="javascript:void(0);" data-node="cms-flink1Mng">一级友情链接</a>
-                        <a href="javascript:void(0);" data-node="cms-flink2Mng">二级友情链接</a>
+                        <a href="javascript:void(0);" data-node="cms-flink1Mng">图片友情链接</a>
+                        <a href="javascript:void(0);" data-node="cms-flink2Mng">一/二级友情链接</a>
                         <a href="javascript:void(0);" data-node="cms-formMng">表单管理</a>
                         <a href="javascript:void(0);" data-node="cms-justiceIntroduction">司法局简介</a>
                         <a href="javascript:void(0);" data-node="cms-leaderIntroduction">领导简介</a>

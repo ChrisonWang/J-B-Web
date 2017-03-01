@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            一级友情链接/修改
+            图片友情链接/修改
         </h3>
     </div>
     <div class="panel-body">
@@ -27,6 +27,7 @@
                 </div>
             </div>
             @if( isset($flink_detail['fi_image']) && $flink_detail['fi_image'] != "none" )
+                <input type="hidden" name="is_image" value="yes"/>
                 <div class="form-group" id="image-thumbnail">
                     <label for="leader_photo" class="col-md-1 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder">

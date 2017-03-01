@@ -498,6 +498,9 @@ class Users extends Controller
         elseif($this->_nicknameExist($input['nickname'],$managerCode)){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名已存在！"]);
         }
+        elseif(strlen($input['nickname']) > 20){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名长度不能超过20字符！"]);
+        }
         elseif(!empty($input['password'])){
             if(!preg_password($input['password'])){
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);

@@ -51,7 +51,7 @@ class Forms extends Controller
         //判断是否有重名的
         $id = DB::table('cms_forms')->select('id')->where('title',$inputs['title'])->get();
         if(count($id) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['title'].'的推荐链接']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['title'].'的表单']);
         }
         //处理文件上传
         $file = $request->file('file');
@@ -91,7 +91,7 @@ class Forms extends Controller
         else{
             //取出频道
             $channels_data = array();
-            $channels = DB::table('cms_forms')->get();
+            $channels = DB::table('cms_channel')->get();
             foreach($channels as $channel){
                 $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
             }

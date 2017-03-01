@@ -37,6 +37,12 @@ class Video extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['video_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['video_link'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频地址不能为空！']);
+        }
         $disabled = 'no';
         //判断是否有重名的
         $video_code = DB::table('cms_video')->select('video_code')->where('title',$inputs['video_title'])->get();
@@ -65,13 +71,13 @@ class Video extends Controller
         else{
             //取出数据
             $video_data = array();
-            $videos = DB::table('cms_video')->get();
+            $videos = DB::table('cms_video')->orderBy('sort', 'desc')->get();
             foreach($videos as $key=> $video){
                 $video_data[$key]['key'] = keys_encrypt($video->video_code);
                 $video_data[$key]['video_title'] = $video->title;
                 $video_data[$key]['video_link'] = $video->link;
                 $video_data[$key]['disabled'] = $video->disabled;
-                $video_data[$key]['sort'] = $video->sort;
+                $video_data[$key]['sort'] = empty($video->sort) ? 0 : $video->sort;
             }
             //返回到前段界面
             $this->page_data['video_list'] = $video_data;
@@ -134,13 +140,20 @@ class Video extends Controller
 
         //页面中显示
         $this->page_data['video_detail'] = $video_detail;
-        $pageContent = view('judicial.manage.cms.videoDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.videoEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
+        if(empty($inputs['video_title'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+        }
+        elseif(empty($inputs['video_link'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频地址不能为空！']);
+        }
+
         $video_code = keys_decrypt($inputs['key']);
         $disabled = 'no';
         //判断是否有重名的
@@ -167,7 +180,7 @@ class Video extends Controller
         }
         //修改成功则回调页面,取出数据
         $video_data = array();
-        $videos = DB::table('cms_video')->get();
+        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->get();
         foreach($videos as $key=> $video){
             $video_data[$key]['key'] = keys_encrypt($video->video_code);
             $video_data[$key]['video_title'] = $video->title;
@@ -189,7 +202,7 @@ class Video extends Controller
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
             $video_data = array();
-            $videos = DB::table('cms_video')->get();
+            $videos = DB::table('cms_video')->orderBy('sort', 'desc')->get();
             foreach($videos as $key=> $video){
                 $video_data[$key]['key'] = keys_encrypt($video->video_code);
                 $video_data[$key]['video_title'] = $video->title;

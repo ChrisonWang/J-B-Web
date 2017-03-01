@@ -64,7 +64,7 @@ class Recommend extends Controller
         else{
             //取出数据
             $r_data = array();
-            $links = DB::table('cms_recommend_links')->get();
+            $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->get();
             foreach($links as $key=> $link){
                 $r_data[$key]['key'] = keys_encrypt($link->id);
                 $r_data[$key]['r_title'] = $link->title;
@@ -162,7 +162,7 @@ class Recommend extends Controller
         }
         //修改成功则回调页面,取出数据
         $r_data = array();
-        $links = DB::table('cms_recommend_links')->get();
+        $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->get();
         foreach($links as $key=> $link){
             $r_data[$key]['key'] = keys_encrypt($link->id);
             $r_data[$key]['r_title'] = $link->title;
@@ -182,7 +182,7 @@ class Recommend extends Controller
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
             $r_data = array();
-            $links = DB::table('cms_recommend_links')->get();
+            $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->get();
             foreach($links as $key=> $link){
                 $r_data[$key]['key'] = keys_encrypt($link->id);
                 $r_data[$key]['r_title'] = $link->title;

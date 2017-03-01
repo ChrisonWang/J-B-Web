@@ -228,7 +228,47 @@ class Index extends Controller
     }
 
     /**
-     * 返回新闻列表
+     * 返回视频新闻列表
+     * @param Request $request
+     * @return View
+     */
+    public function video_list($page = 1)
+    {
+        $offset = 9 * ($page-1);
+        $count = DB::table('cms_video')->where(['disabled'=>'no'])->count();
+        if($count < 1){
+            $video_list = 'none';
+            $this->page_date['video_list'] = $video_list;
+            return view('judicial.web.videoList', $this->page_date);
+        }
+        else{
+            $videos = DB::table('cms_video')->where(['disabled'=>'no'])->skip($offset)->take(9)->get();
+            if(count($videos) < 1){
+                return view('errors.404');
+            }
+            else{
+                foreach($videos as $video){
+                    $video_list[$video->video_code] = array(
+                        'key'=> $video->video_code,
+                        'title'=> $video->title,
+                        'link'=> $video->link,
+                        'create_date'=> date('Y-m-d',strtotime($video->create_date)),
+                    );
+                }
+            }
+
+            $this->page_date['page'] = array(
+                'count' => $count,
+                'page_count' => ($count>9) ? ($count % 9) + 1 : 1,
+                'now_page' => $page,
+            );
+            $this->page_date['video_list'] = $video_list;
+            return view('judicial.web.videoList', $this->page_date);
+        }
+    }
+
+    /**
+     * 返回图片新闻列表
      * @param Request $request
      * @return View
      */
@@ -296,10 +336,10 @@ class Index extends Controller
                 'files'=> empty($article->files) ? 'none' : $article->files,
             );
             //频道信息
-            $channel = DB::table('cms_channel')->where('channel_id', $article_detail['channel_id'])->first();
+            $channel = DB::table('cms_channel')->where('channel_id', $article_detail['channel_id'])->orWhere('channel_id', $article_detail['sub_channel'])->first();
             $sub_channel = DB::table('cms_channel')->where('channel_id', $article_detail['sub_channel'])->first();
-            $this->page_date['title'] = $channel->channel_title;
-            $this->page_date['sub_title'] = $sub_channel->channel_title;
+            $this->page_date['title'] = isset($channel->channel_title) ? $channel->channel_title : '频道已被删除';
+            $this->page_date['sub_title'] = isset($channel->sub_title) ? $channel->sub_title : '频道已被删除';
         }
 
         $this->page_date['tag_list'] = $tag_list;

@@ -62,7 +62,7 @@
             <div class="form-group">
                 <label for="channel_id" class="col-md-1 control-label">频道：</label>
                 <div class="col-md-3">
-                    <select name="channel_id" class="form-control" onchange="getSubChannel($(this))">
+                    <select name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
                         @foreach($channel_list as $channel)
                             <option value="{{ $channel['channel_key'] }}" @if($article_detail['channel_id'] == $channel['channel_key']) selected @endif>{{ $channel['channel_title'] }}</option>
                         @endforeach

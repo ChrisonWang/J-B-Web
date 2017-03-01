@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            一级友情链接
+            图片友情链接
         </h3>
     </div>
     <div class="panel-body">

@@ -25,19 +25,19 @@ function tagMethod(t){
     var method = t.data('method');
     var url = '/manage/cms/tags/'+method;
     if(method == 'delete'){
-        var c = confirm("确认删除标签："+ t.data('title')+"？");
+        var c = confirm("确认删除分类："+ t.data('title')+"？");
         if(c != true){
             return false;
         }
     }
-    $('#tagEditForm').ajaxSubmit({
+    $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         async: false,
         type: "GET",
         url: url,
-        data: 'tag_key='+tagKey,
+        data: 'key='+tagKey,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -114,7 +114,7 @@ function typeMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'type_key='+typeKey,
+        data: 'node_id='+typeKey,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -649,7 +649,7 @@ function flinkImgMethod(t){
 
 function editFlinkImg(){
     var url = '/manage/cms/flinkImg/edit';
-    $('#flinkImgAddForm').ajaxSubmit({
+    $('#flinkImgEditForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -789,30 +789,45 @@ function addFlinks(){
     var url = '/manage/cms/flinks/add';
     var sub_input = $("#menu-nodes").find("tr");
     var sub_list = new Array();
-    sub_input.each(s,function(i){
-        sub_list[i] = s;
-    });
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        async: false,
-        type: "POST",
-        url: url,
-        data: $('#flinksAddForm').serialize(),
-        success: function(re){
-            if(re.status == 'succ'){
-                alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
-                ajaxResult(re);
-            }
-            else if(re.status == 'failed') {
-                ajaxResult(re,$('#addFlinksNotice'));
-            }
+    var v = true;
+    sub_input.each(function(i,tr){
+        var t = $(this).find("input[name='sub_title[]']").val();
+        var l = $(this).find("input[name='sub_link[]']").val();
+        if( t =='' || l == '' ){
+            $('#add-row-notice').removeClass('hidden');
+            $('#add-row-notice').text('请填写完整的名称和链接');
+            v = false;
+            return;
+        }
+        else {
+            var sub = {key:'', sub_title:t, sub_link: l};
+            sub_list[i] = sub;
         }
     });
+    if(v == true){
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: $('#flinksAddForm').serialize(),
+            success: function(re){
+                if(re.status == 'succ'){
+                    alert("添加成功！！！");
+                    if(typeof(UE_Content)=="object"){
+                        UE_Content.destroy();
+                    }
+                    ajaxResult(re);
+                }
+                else if(re.status == 'failed') {
+                    ajaxResult(re,$('#addFlinksNotice'));
+                }
+            }
+        });
+    }
+    return;
 }
 
 //科室管理
@@ -1258,11 +1273,12 @@ function editChannel(){
             key: $("input[name='key']").val(),
             channel_title: $("input[name='channel_title']").val(),
             sort: $("input[name='sort']").val(),
-            is_recommend: $("input[name='is_recommend']").val(),
-            form_download: $("input[name='form_download']").val(),
-            zwgk: $("input[name='zwgk']").val(),
-            wsbs: $("input[name='wsbs']").val(),
-            sub: JSON.stringify(sub_list)};
+            is_recommend: ($("input[name='is_recommend']").is(':checked') == true) ?  'yes' : 'no',
+            form_download: ($("input[name='form_download']").is(':checked') == true) ? 'yes' : 'no',
+            zwgk: ($("input[name='zwgk']").is(':checked') == true) ? 'yes' : 'no',
+            wsbs: ($("input[name='wsbs']").is(':checked') == true) ? 'yes' : 'no',
+            sub: JSON.stringify(sub_list)
+        };
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1312,10 +1328,10 @@ function addChannel(){
         var data = {
             channel_title: $("input[name='channel_title']").val(),
             sort: $("input[name='sort']").val(),
-            is_recommend: $("input[name='is_recommend']").val(),
-            form_download: $("input[name='form_download']").val(),
-            zwgk: $("input[name='zwgk']").val(),
-            wsbs: $("input[name='wsbs']").val(),
+            is_recommend: ($("input[name='is_recommend']").is(':checked') == true) ?  'yes' : 'no',
+            form_download: ($("input[name='form_download']").is(':checked') == true) ? 'yes' : 'no',
+            zwgk: ($("input[name='zwgk']").is(':checked') == true) ? 'yes' : 'no',
+            wsbs: ($("input[name='wsbs']").is(':checked') == true) ? 'yes' : 'no',
             sub: JSON.stringify(sub_list)};
         $.ajax({
             headers: {
@@ -1513,7 +1529,8 @@ function addArticle(){
     });
 }
 
-function getSubChannel(c){
+function getSubChannel(c,sub){
+    sub.html('<option value="none" selected>暂无分类</option>');
     var url = '/manage/cms/article/get_sub_channel';
     var channel_key = c.find("option:selected").val();
     $.ajax({
@@ -1530,7 +1547,10 @@ function getSubChannel(c){
                 $.each(list, function(i,sub){
                     options += '<option value="'+sub.channel_key+'">'+sub.channel_title+'</option>';
                 });
-                $("#sub_channel_id").html(options);
+                sub.html(options);
+            }
+            else if(re.status == 'failed'){
+                return;
             }
             return;
         }
@@ -1619,6 +1639,36 @@ function addUser(){
             }
         }
     });
+}
+
+function checkBoxDisabled(cb){
+    if($("#wsbs").is(':checked') && $("#zwgk").is(':checked')){
+        $("input[name='sub-zwgk']").attr('disabled',false);
+        $("input[name='sub-wsbs']").attr('disabled',false);
+    }
+    else {
+        var c_name = cb.attr('name');
+        if(c_name == 'wsbs'){
+            var list = $("input[name='sub-zwgk']");
+            var r_list = $("input[name='sub-wsbs']");
+        }
+        else if(c_name == 'zwgk'){
+            var list = $("input[name='sub-wsbs']");
+            var r_list = $("input[name='sub-zwgk']");
+        }
+        $.each(list,function(i,input){
+            if(cb.is(':checked')){
+                $(r_list[i]).removeAttr('disabled');
+            }
+            else {
+                $(this).removeAttr('checked');
+                $(r_list[i]).attr('disabled','disabled');
+            }
+            $(this).removeAttr('checked');
+            $(this).attr('disabled','disabled');
+        });
+    }
+    return;
 }
 
 function search_list(c){

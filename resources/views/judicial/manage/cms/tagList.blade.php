@@ -6,7 +6,7 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <a type="button" data-tag-key='none' data-method="add" onclick="tagMethod($(this))" class="btn btn-primary">新增</a>
+            <a type="button" data-key='none' data-method="add" onclick="tagMethod($(this))" class="btn btn-primary">新增</a>
         </div>
         <hr/>
         <div class="container-fluid">

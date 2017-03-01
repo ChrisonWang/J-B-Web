@@ -43,6 +43,8 @@ Route::group(['middleware' => ['web']], function () {
     //前台CMS路由
     Route::post('search',['as'=>'search', 'uses'=>'Web\Index@search']);
 
+    Route::post('get',['as'=>'search', 'uses'=>'Web\Index@search']);
+
     Route::get('list/{cid}/{page?}','Web\Index@article_list');
 
     Route::get('picture/{page?}','Web\Index@picture_list');

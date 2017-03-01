@@ -19,10 +19,10 @@
                         </div>
                         <div class="form-group">
                             <label for="search-channel-key">频道：</label>
-                            <select id="search-channel-key" name="search-channel-key" class="form-control">
+                            <select id="search-channel-key" name="search-channel-key" class="form-control" onchange="getSubChannel($(this),$('#search-sub-channel-key'))">
                                 @if(isset($channel_list))
-                                    @foreach($channel_list as $key=> $name)
-                                        <option value="{{ $key }}">{{ $name }}</option>
+                                    @foreach($channel_list as $channel)
+                                        <option value="{{ $channel['key'] }}">{{ $channel['channel_title'] }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -30,8 +30,8 @@
                         <div class="form-group">
                             <label for="search-sub-channel-key">二级频道：</label>
                             <select id="search-sub-channel-key" name="search-sub-channel-key" class="form-control">
-                                @if(isset($channel_list))
-                                    @foreach($channel_list as $key=> $name)
+                                @if(isset($sub_channel_list))
+                                    @foreach($sub_channel_list as $key=> $name)
                                         <option value="{{ $key }}">{{ $name }}</option>
                                     @endforeach
                                 @endif

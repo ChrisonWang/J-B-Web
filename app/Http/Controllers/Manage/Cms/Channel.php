@@ -82,7 +82,7 @@ class Channel extends Controller
         DB::commit();
         //添加成功后刷新页面数据
         $channel_data = array();
-        $channels = DB::table('cms_channel')->where('pid',0)->get();
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('create_date', 'desc')->get();
         foreach($channels as $key=> $channel){
             $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
             $channel_data[$key]['channel_title'] = $channel->channel_title;
@@ -288,7 +288,7 @@ class Channel extends Controller
         }
         DB::commit();
         $channel_data = array();
-        $channels = DB::table('cms_channel')->where('pid',0)->get();
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('create_date', 'desc')->get();
         foreach($channels as $key=> $channel){
             $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
             $channel_data[$key]['channel_title'] = $channel->channel_title;
@@ -322,7 +322,7 @@ class Channel extends Controller
         }
         DB::commit();
         $channel_data = array();
-        $channels = DB::table('cms_channel')->where('pid',0)->get();
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('create_date', 'desc')->get();
         foreach($channels as $key=> $channel){
             $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
             $channel_data[$key]['channel_title'] = $channel->channel_title;

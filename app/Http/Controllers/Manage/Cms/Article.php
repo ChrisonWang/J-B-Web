@@ -128,14 +128,34 @@ class Article extends Controller
         }
 
         //添加成功后刷新页面数据
-        $channels_data = array();
-        $channels = DB::table('cms_channel')->get();
-        foreach($channels as $channel){
-            $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
+        $channels_data = 'none';
+        $sub_channels_data = 'none';
+        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+        if(count($channels) > 0){
+            $channels_data = array();
+            foreach($channels as $key => $channel){
+                $channels_data[$key] = array(
+                    'key'=> keys_encrypt($channel->channel_id),
+                    'channel_title'=> $channel->channel_title,
+                );
+            }
+        }
+        $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+        if(count($sub_channels) > 0){
+            $sub_channels_data = array();
+            foreach($sub_channels as $sub_channel){
+                $sub_channels_data[keys_encrypt($sub_channel->channel_id)] = $sub_channel->channel_title;
+            }
+        }
+        //取出标签
+        $tag_list = array();
+        $tags = DB::table('cms_tags')->get();
+        foreach($tags as $tag){
+            $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
         }
         //取出数据
         $article_data = array();
-        $articles = DB::table('cms_article')->get();
+        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->get();
         foreach($articles as $key=> $article){
             $article_data[$key]['key'] = $article->article_code;
             $article_data[$key]['article_title'] = $article->article_title;
@@ -146,7 +166,9 @@ class Article extends Controller
             $article_data[$key]['publish_date'] = $article->publish_date;
         }
         //返回到前段界面
+        $this->page_data['tag_list'] = $tag_list;
         $this->page_data['channel_list'] = $channels_data;
+        $this->page_data['sub_channel_list'] = $sub_channels_data;
         $this->page_data['article_list'] = $article_data;
         $pageContent = view('judicial.manage.cms.articleList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -345,15 +367,36 @@ class Article extends Controller
         if($re === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
         }
-        //修改成功后
-        $channels_data = array();
-        $channels = DB::table('cms_channel')->get();
-        foreach($channels as $channel){
-            $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
+
+        //修改成功后,取出频道
+        $channels_data = 'none';
+        $sub_channels_data = 'none';
+        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+        if(count($channels) > 0){
+            $channels_data = array();
+            foreach($channels as $key => $channel){
+                $channels_data[$key] = array(
+                    'key'=> keys_encrypt($channel->channel_id),
+                    'channel_title'=> $channel->channel_title,
+                );
+            }
+        }
+        $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+        if(count($sub_channels) > 0){
+            $sub_channels_data = array();
+            foreach($sub_channels as $sub_channel){
+                $sub_channels_data[keys_encrypt($sub_channel->channel_id)] = $sub_channel->channel_title;
+            }
+        }
+        //取出标签
+        $tag_list = array();
+        $tags = DB::table('cms_tags')->get();
+        foreach($tags as $tag){
+            $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
         }
         //取出数据
         $article_data = array();
-        $articles = DB::table('cms_article')->get();
+        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->get();
         foreach($articles as $key=> $article){
             $article_data[$key]['key'] = $article->article_code;
             $article_data[$key]['article_title'] = $article->article_title;
@@ -364,7 +407,9 @@ class Article extends Controller
             $article_data[$key]['publish_date'] = $article->publish_date;
         }
         //返回到前段界面
+        $this->page_data['tag_list'] = $tag_list;
         $this->page_data['channel_list'] = $channels_data;
+        $this->page_data['sub_channel_list'] = $sub_channels_data;
         $this->page_data['article_list'] = $article_data;
         $pageContent = view('judicial.manage.cms.articleList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -382,14 +427,34 @@ class Article extends Controller
         }
         else{
             //删除完成后取出频道
-            $channels_data = array();
-            $channels = DB::table('cms_channel')->get();
-            foreach($channels as $channel){
-                $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
+            $channels_data = 'none';
+            $sub_channels_data = 'none';
+            $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+            if(count($channels) > 0){
+                $channels_data = array();
+                foreach($channels as $key => $channel){
+                    $channels_data[$key] = array(
+                        'key'=> keys_encrypt($channel->channel_id),
+                        'channel_title'=> $channel->channel_title,
+                    );
+                }
+            }
+            $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+            if(count($sub_channels) > 0){
+                $sub_channels_data = array();
+                foreach($sub_channels as $sub_channel){
+                    $sub_channels_data[keys_encrypt($sub_channel->channel_id)] = $sub_channel->channel_title;
+                }
+            }
+            //取出标签
+            $tag_list = array();
+            $tags = DB::table('cms_tags')->get();
+            foreach($tags as $tag){
+                $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
             }
             //取出数据
             $article_data = array();
-            $articles = DB::table('cms_article')->get();
+            $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->get();
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;
                 $article_data[$key]['article_title'] = $article->article_title;
@@ -400,7 +465,9 @@ class Article extends Controller
                 $article_data[$key]['publish_date'] = $article->publish_date;
             }
             //返回到前段界面
+            $this->page_data['tag_list'] = $tag_list;
             $this->page_data['channel_list'] = $channels_data;
+            $this->page_data['sub_channel_list'] = $sub_channels_data;
             $this->page_data['article_list'] = $article_data;
             $pageContent = view('judicial.manage.cms.articleList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -412,16 +479,18 @@ class Article extends Controller
         $sub_channel_list = array();
         $channel_id = $request->input('channel_key');
         $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channel_id))->get();
-        if(is_null($sub_channels)){
+        if(count($sub_channels) < 1){
             json_response(['status'=>'failed']);
         }
-        foreach($sub_channels as $sub_channel){
-            $sub_channel_list[] = array(
-                'channel_key'=> keys_encrypt($sub_channel->channel_id),
-                'channel_title'=> $sub_channel->channel_title,
-            );
+        else{
+            foreach($sub_channels as $sub_channel){
+                $sub_channel_list[] = array(
+                    'channel_key'=> keys_encrypt($sub_channel->channel_id),
+                    'channel_title'=> $sub_channel->channel_title,
+                );
+            }
+            json_response(['status'=>'succ', 'res'=>json_encode($sub_channel_list)]);
         }
-        json_response(['status'=>'succ', 'res'=>json_encode($sub_channel_list)]);
     }
 
 }

@@ -20,7 +20,7 @@
             @foreach($search_list as $search)
             <li>
                 <div class="zwrm_a"><a href="{{ URL::to('article').'/'.$search['key'] }}">{{ $search['article_title'] }}</a></div>
-                <div class="zwrm_b">{{ $search['create_date'] }}</div>
+                <div class="zwrm_b">{{ $search['publish_date'] }}</div>
             </li>
             @endforeach
         </ul>

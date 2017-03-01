@@ -151,7 +151,7 @@ class FlinksImg extends Controller
 
         //页面中显示
         $this->page_data['flink_detail'] = $flink_detail;
-        $pageContent = view('judicial.manage.cms.flinksImgDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.flinksImgEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -160,28 +160,33 @@ class FlinksImg extends Controller
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
-        $sql = 'SELECT `id` FROM cms_flinks WHERE `title` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';
+        $sql = 'SELECT `id` FROM cms_image_flinks WHERE `title` = "'.$inputs['fi_title'].'" AND `id` != "'.$id.'"';
         $res = DB::select($sql);
         if(count($res) != 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['fi_title'].'的推荐链接']);
         }
         //处理图片上传
-        $file = $request->file('fi_photo');
-        if(is_null($file) || !$file->isValid()){
-            $photo_path = '';
+        if(isset($inputs['is_image']) && $inputs['is_image'] == 'yes'){
+            $photo_path = 'image';
         }
         else{
-            $destPath = realpath(public_path('uploads/images'));
-            if(!file_exists($destPath)){
-                mkdir($destPath, 0755, true);
-            }
-            $extension = $file->getClientOriginalExtension();
-            $filename = gen_unique_code('IMG_').'.'.$extension;
-            if(!$file->move($destPath,$filename)){
+            $file = $request->file('fi_photo');
+            if(is_null($file) || !$file->isValid()){
                 $photo_path = '';
             }
             else{
-                $photo_path = URL::to('/').'/uploads/images/'.$filename;
+                $destPath = realpath(public_path('uploads/images'));
+                if(!file_exists($destPath)){
+                    mkdir($destPath, 0755, true);
+                }
+                $extension = $file->getClientOriginalExtension();
+                $filename = gen_unique_code('IMG_').'.'.$extension;
+                if(!$file->move($destPath,$filename)){
+                    $photo_path = '';
+                }
+                else{
+                    $photo_path = URL::to('/').'/uploads/images/'.$filename;
+                }
             }
         }
         //执行更新数据操作
@@ -192,6 +197,9 @@ class FlinksImg extends Controller
             'image'=> $photo_path,
             'update_date'=> $now
         );
+        if($photo_path == 'image'){
+            unset($save_data['image']);
+        }
         $rs = DB::table('cms_image_flinks')->where('id',$id)->update($save_data);
         if($rs === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);

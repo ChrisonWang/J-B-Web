@@ -13,10 +13,10 @@
                     <input type="text" class="form-control" name="sub-channel_title" placeholder="请输频道名称" />
                 </td>
                 <td>
-                    <input type="checkbox" class="form-control" name="sub-zwgk" value="yes" checked/>
+                    <input type="checkbox" class="form-control" name="sub-zwgk" value="yes"/>
                 </td>
                 <td>
-                    <input type="checkbox" class="form-control" name="sub-wsbs" value="yes" checked/>
+                    <input type="checkbox" class="form-control" name="sub-wsbs" value="yes"/>
                 </td>
                 <td>
                     <input type="text" class="form-control" name="sub-sort" placeholder="请输入权重（数字越大越靠前）" />
@@ -53,13 +53,13 @@
             <div class="form-group">
                 <label for="zwgk" class="col-md-1 control-label">是否归属政务公开：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="zwgk" name="zwgk" value="yes"  @if($channel_detail['zwgk'] == 'yes') checked @endif/>
+                    <input type="checkbox" class="form-control" id="zwgk" name="zwgk" value="yes" onclick="checkBoxDisabled($(this))" @if($channel_detail['zwgk'] == 'yes') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="wsbs" class="col-md-1 control-label">是否归属网上办事：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="wsbs" name="wsbs" value="yes"  @if($channel_detail['wsbs'] == 'yes') checked @endif/>
+                    <input type="checkbox" class="form-control" id="wsbs" name="wsbs" value="yes" onclick="checkBoxDisabled($(this))" @if($channel_detail['wsbs'] == 'yes') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
@@ -103,24 +103,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            @else
-                                <tr>
-                                    <td>
-                                        <input type="text" class="form-control" name="sub-channel_title" placeholder="请输频道名称" />
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" class="form-control" name="sub-zwgk" value="yes" checked/>
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" class="form-control" name="sub-wsbs" value="yes" checked/>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" name="sub-sort" placeholder="请输入权重（数字越大越靠前）" />
-                                    </td>
-                                    <td>
-                                        <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                                    </td>
-                                </tr>
                             @endif
                             </tbody>
                         </table>
@@ -161,3 +143,22 @@
         </form>
     </div>
 </div>
+
+<script>
+    $(function(){
+        if($("#wsbs").is(':checked') == false){
+            var list = $("input[name='sub-wsbs']");
+            $.each(list,function(i,input){
+                $(this).attr('checked',false);
+                $(this).attr('disabled','disabled');
+            });
+        }
+        if($("#zwgk").is(':checked') == false){
+            var list = $("input[name='sub-zwgk']");
+            $.each(list,function(i,input){
+                $(this).attr('checked',false);
+                $(this).attr('disabled','disabled');
+            });
+        }
+    })
+</script>

@@ -118,7 +118,7 @@ class CmsLoadContent extends Controller
     {
         //取出数据
         $video_data = array();
-        $videos = DB::table('cms_video')->orderBy('create_date', 'desc')->get();
+        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->get();
         foreach($videos as $key=> $video){
             $video_data[$key]['key'] = keys_encrypt($video->video_code);
             $video_data[$key]['video_title'] = $video->title;
@@ -136,7 +136,7 @@ class CmsLoadContent extends Controller
     {
         //取出数据
         $r_data = array();
-        $links = DB::table('cms_recommend_links')->get();
+        $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->get();
         foreach($links as $key=> $link){
             $r_data[$key]['key'] = keys_encrypt($link->id);
             $r_data[$key]['r_title'] = $link->title;
@@ -246,10 +246,24 @@ class CmsLoadContent extends Controller
     private function _content_ArticleMng($request)
     {
         //取出频道
-        $channels_data = array();
+        $channels_data = 'none';
+        $sub_channels_data = 'none';
         $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
-        foreach($channels as $channel){
-            $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
+        if(count($channels) > 0){
+            $channels_data = array();
+            foreach($channels as $key => $channel){
+                $channels_data[$key] = array(
+                    'key'=> keys_encrypt($channel->channel_id),
+                    'channel_title'=> $channel->channel_title,
+                );
+            }
+        }
+        $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+        if(count($sub_channels) > 0){
+            $sub_channels_data = array();
+            foreach($sub_channels as $sub_channel){
+                $sub_channels_data[keys_encrypt($sub_channel->channel_id)] = $sub_channel->channel_title;
+            }
         }
         //取出标签
         $tag_list = array();
@@ -272,6 +286,7 @@ class CmsLoadContent extends Controller
         //返回到前段界面
         $this->page_data['tag_list'] = $tag_list;
         $this->page_data['channel_list'] = $channels_data;
+        $this->page_data['sub_channel_list'] = $sub_channels_data;
         $this->page_data['article_list'] = $article_data;
         $pageContent = view('judicial.manage.cms.articleList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

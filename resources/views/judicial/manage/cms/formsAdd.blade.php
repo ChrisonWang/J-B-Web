@@ -15,7 +15,7 @@
             <div class="form-group">
                 <label for="disabled" class="col-md-1 control-label">是否官网显示：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="disabled" name="disabled" checked/>
+                    <input type="checkbox" class="form-control" value="no" id="disabled" name="disabled" checked/>
                 </div>
             </div>
             <div class="form-group">
@@ -56,7 +56,7 @@
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-1">
-                    <button type="submit" class="btn btn-info btn-block" onclick="addForms()">确认</button>
+                    <button type="button" class="btn btn-info btn-block" onclick="addForms()">确认</button>
                 </div>
                 <div class="col col-md-1">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-formMng" onclick="loadContent($(this))">返回列表</button>

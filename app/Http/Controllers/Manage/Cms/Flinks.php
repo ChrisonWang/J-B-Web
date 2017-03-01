@@ -74,6 +74,8 @@ class Flinks extends Controller
                 $save_data_sub[$k]['title'] = $s_title;
                 $save_data_sub[$k]['link'] = $inputs['sub_link'][$k];
                 $save_data_sub[$k]['pid'] = $pid;
+                $save_data_sub[$k]['create_date'] = $now;
+                $save_data_sub[$k]['update_date'] = $now;
             }
             $sub_id = DB::table('cms_flinks')->insert($save_data_sub);
             if(!$sub_id){
@@ -84,7 +86,7 @@ class Flinks extends Controller
         DB::commit();
         //添加成功后刷新页面数据
         $flinks_data = array();
-        $links = DB::table('cms_flinks')->where('pid',0)->get();
+        $links = DB::table('cms_flinks')->where('pid',0)->orderBy('create_date', 'desc')->get();
         foreach($links as $key=> $link){
             $flinks_data[$key]['key'] = keys_encrypt($link->id);
             $flinks_data[$key]['title'] = $link->title;
@@ -176,7 +178,6 @@ class Flinks extends Controller
         else{
             $_sub_links = 'none';
         }
-
         //页面中显示
         $this->page_data['flinks_detail'] = $flinks_detail;
         $this->page_data['flinks_detail']['sub_links'] = $_sub_links;
@@ -209,8 +210,10 @@ class Flinks extends Controller
             if($sub['method'] == 'edit'){
                 $edit_data[keys_decrypt($sub['key'])]['title'] = $sub['sub_title'];
                 $edit_data[keys_decrypt($sub['key'])]['link'] = $sub['sub_link'];
+                $edit_data[keys_decrypt($sub['key'])]['pid'] = $id;
                 $edit_data[keys_decrypt($sub['key'])]['update_date'] = date('Y-m-d H:i:s', time());
-            }else{
+            }
+            elseif($sub['method'] == 'add'){
                 $add_data[$k]['title'] = $sub['sub_title'];
                 $add_data[$k]['link'] = $sub['sub_link'];
                 $add_data[$k]['pid'] = $id;
@@ -227,6 +230,11 @@ class Flinks extends Controller
 
         //事物方式执行插入数据操作
         DB::beginTransaction();
+        $tid = DB::table('cms_flinks')->where('id', keys_decrypt($inputs['key']))->update(['title'=> $inputs['title'], 'update_date'=> date('Y-m-d H:i:s', time())]);
+        if($tid === false){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+        }
         $pid = DB::table('cms_flinks')->insert($add_data);
         if($pid === false){
             DB::rollback();
@@ -251,7 +259,7 @@ class Flinks extends Controller
         DB::commit();
         //添加成功后刷新页面数据
         $flinks_data = array();
-        $links = DB::table('cms_flinks')->where('pid',0)->get();
+        $links = DB::table('cms_flinks')->where('pid',0)->orderBy('create_date', 'desc')->get();
         foreach($links as $key=> $link){
             $flinks_data[$key]['key'] = keys_encrypt($link->id);
             $flinks_data[$key]['title'] = $link->title;
@@ -270,7 +278,7 @@ class Flinks extends Controller
         $row_sub = DB::table('cms_flinks')->where('pid',$id)->delete();
         if( $row > 0 && $row_sub > 0 ){
             $flinks_data = array();
-            $links = DB::table('cms_flinks')->where('pid',0)->get();
+            $links = DB::table('cms_flinks')->where('pid',0)->orderBy('create_date', 'desc')->get();
             foreach($links as $key=> $link){
                 $flinks_data[$key]['key'] = keys_encrypt($link->id);
                 $flinks_data[$key]['title'] = $link->title;

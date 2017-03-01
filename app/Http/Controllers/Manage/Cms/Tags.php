@@ -104,7 +104,7 @@ class Tags extends Controller
     {
         $tag_detail = array();
         $inputs = $request->input();
-        $tag_id = keys_decrypt($inputs['tag_key']);
+        $tag_id = keys_decrypt($inputs['key']);
         $tags = DB::table('cms_tags')->where('id',$tag_id)->first();
         if(is_null($tags)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
@@ -131,7 +131,7 @@ class Tags extends Controller
     {
         $tag_detail = array();
         $inputs = $request->input();
-        $tag_id = keys_decrypt($inputs['tag_key']);
+        $tag_id = keys_decrypt($inputs['key']);
         $tags = DB::table('cms_tags')->where('id',$tag_id)->first();
         if(is_null($tags)){
             json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
@@ -178,7 +178,7 @@ class Tags extends Controller
     public function doDelete(Request $request)
     {
         $inputs = $request->input();
-        $tag_id = keys_decrypt($inputs['tag_key']);
+        $tag_id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_tags')->where('id',$tag_id)->delete();
         if( $row > 0 ){
             $tag_data = array();
