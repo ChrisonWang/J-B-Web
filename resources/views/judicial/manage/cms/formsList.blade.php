@@ -27,7 +27,8 @@
                                 @endif
                             </select>
                         </div>
-                        <button type="button" class="btn btn-info" onclick="search_list($('#this-container'))">搜索</button>
+                        <input type="hidden" name="s_type" value="forms"/>
+                        <button id="search" type="button" class="btn btn-info" data-type="forms" onclick="search_list($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>
@@ -63,5 +64,9 @@
                 </tbody>
             </table>
         </div>
+        <!--分页-->
+        @if(isset($pages) && is_array($pages) && $pages != 'none')
+            @include('judicial.manage.chips.pages')
+        @endif
     </div>
 </div>

@@ -18,6 +18,35 @@ class Leader extends Controller
 {
     private $page_data = array();
 
+    public function index($page = 1)
+    {
+        //取出数据
+        $leaders_data = array();
+        $pages = 'none';
+        $count = DB::table('cms_leaders')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($leaders) > 0){
+            foreach($leaders as $key=> $leader){
+                $leaders_data[$key]['key'] = keys_encrypt($leader->id);
+                $leaders_data[$key]['leader_name'] = $leader->name;
+                $leaders_data[$key]['leader_job'] = $leader->job;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'leader',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['leader_list'] = $leaders_data;
+        $pageContent = view('judicial.manage.cms.leaderList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -86,13 +115,26 @@ class Leader extends Controller
         //添加成功后刷新页面数据
         else{
             $leaders_data = array();
-            $leaders = DB::table('cms_leaders')->get();
-            foreach($leaders as $key=> $leader){
-                $leaders_data[$key]['key'] = keys_encrypt($leader->id);
-                $leaders_data[$key]['leader_name'] = $leader->name;
-                $leaders_data[$key]['leader_job'] = $leader->job;
+            $pages = 'none';
+            $count = DB::table('cms_leaders')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($leaders) > 0){
+                foreach($leaders as $key=> $leader){
+                    $leaders_data[$key]['key'] = keys_encrypt($leader->id);
+                    $leaders_data[$key]['leader_name'] = $leader->name;
+                    $leaders_data[$key]['leader_job'] = $leader->job;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'leader',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['leader_list'] = $leaders_data;
             $pageContent = view('judicial.manage.cms.leaderList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -215,13 +257,26 @@ class Leader extends Controller
         }
         //修改成功则回调页面,取出数据
         $leaders_data = array();
-        $leaders = DB::table('cms_leaders')->get();
-        foreach($leaders as $key=> $leader){
-            $leaders_data[$key]['key'] = keys_encrypt($leader->id);
-            $leaders_data[$key]['leader_name'] = $leader->name;
-            $leaders_data[$key]['leader_job'] = $leader->job;
+        $pages = 'none';
+        $count = DB::table('cms_leaders')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($leaders) > 0){
+            foreach($leaders as $key=> $leader){
+                $leaders_data[$key]['key'] = keys_encrypt($leader->id);
+                $leaders_data[$key]['leader_name'] = $leader->name;
+                $leaders_data[$key]['leader_job'] = $leader->job;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'leader',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['leader_list'] = $leaders_data;
         $pageContent = view('judicial.manage.cms.leaderList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -234,13 +289,26 @@ class Leader extends Controller
         $row = DB::table('cms_leaders')->where('id',$id)->delete();
         if( $row > 0 ){
             $leaders_data = array();
-            $leaders = DB::table('cms_leaders')->get();
-            foreach($leaders as $key=> $leader){
-                $leaders_data[$key]['key'] = keys_encrypt($leader->id);
-                $leaders_data[$key]['leader_name'] = $leader->name;
-                $leaders_data[$key]['leader_job'] = $leader->job;
+            $pages = 'none';
+            $count = DB::table('cms_leaders')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($leaders) > 0){
+                foreach($leaders as $key=> $leader){
+                    $leaders_data[$key]['key'] = keys_encrypt($leader->id);
+                    $leaders_data[$key]['leader_name'] = $leader->name;
+                    $leaders_data[$key]['leader_job'] = $leader->job;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'leader',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['leader_list'] = $leaders_data;
             $pageContent = view('judicial.manage.cms.leaderList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

@@ -16,23 +16,41 @@ class Department extends Controller
 {
     private $page_data = array();
 
-    /**
-     * 标签管理列表
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index($page = 1)
     {
+        //取出分类
         $type_data = array();
-        $types = DB::table('cms_department_type')->get();
-        foreach($types as $key=> $type){
-            $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
-            $type_data[$key]['type_name'] = $type->type_name;
-            $type_data[$key]['create_date'] = $type->create_date;
+        $pages = 'none';
+        $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->get();
+        foreach($types as $type){
+            $type_data[$type->type_id] = $type->type_name;
         }
-        $this->page_data['type_list'] = $type_data;
-        $pageContent = view('judicial.manage.cms.departmentTypeList',$this->page_data)->render();
+        //取出机构
+        $department_data = array();
+        $count = DB::table('cms_department')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $departments = DB::table('cms_department')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($departments) > 0){
+            foreach($departments as $key=> $department){
+                $department_data[$key]['key'] = keys_encrypt($department->id);
+                $department_data[$key]['department_name'] = $department->department_name;
+                $department_data[$key]['type_id'] = $department->type_id;
+                $department_data[$key]['type_name'] = $type_data[$department->type_id];
+                $department_data[$key]['sort'] = $department->sort;
+                $department_data[$key]['create_date'] = $department->create_date;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'department',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['department_list'] = $department_data;
+        $pageContent = view('judicial.manage.cms.departmentList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -93,22 +111,35 @@ class Department extends Controller
         else{
             //取出分类
             $type_data = array();
-            $types = DB::table('cms_department_type')->get();
+            $pages = 'none';
+            $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->get();
             foreach($types as $type){
                 $type_data[$type->type_id] = $type->type_name;
             }
             //取出机构
             $department_data = array();
-            $departments = DB::table('cms_department')->get();
-            foreach($departments as $key=> $department){
-                $department_data[$key]['key'] = keys_encrypt($department->id);
-                $department_data[$key]['department_name'] = $department->department_name;
-                $department_data[$key]['type_id'] = $department->type_id;
-                $department_data[$key]['type_name'] = $type_data[$department->type_id];
-                $department_data[$key]['sort'] = $department->sort;
-                $department_data[$key]['create_date'] = $department->create_date;
+            $count = DB::table('cms_department')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $departments = DB::table('cms_department')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($departments) > 0){
+                foreach($departments as $key=> $department){
+                    $department_data[$key]['key'] = keys_encrypt($department->id);
+                    $department_data[$key]['department_name'] = $department->department_name;
+                    $department_data[$key]['type_id'] = $department->type_id;
+                    $department_data[$key]['type_name'] = $type_data[$department->type_id];
+                    $department_data[$key]['sort'] = $department->sort;
+                    $department_data[$key]['create_date'] = $department->create_date;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'department',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['department_list'] = $department_data;
             $pageContent = view('judicial.manage.cms.departmentList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -181,16 +212,37 @@ class Department extends Controller
         $department_detail['update_date'] = $types->update_date;
         //取出分类
         $type_data = array();
-        $types = DB::table('cms_department_type')->get();
-        foreach($types as $key=> $type){
-            $type_data[$key]['type_id'] = keys_encrypt($type->type_id);
-            $type_data[$key]['type_name'] = $type->type_name;
-            $type_data[$key]['checked'] = $department_detail['type_id']==$type->type_id ? 'yes': 'no';
+        $pages = 'none';
+        $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->get();
+        foreach($types as $type){
+            $type_data[$type->type_id] = $type->type_name;
         }
-        //页面中显示
-        $this->page_data['type_list'] = $type_data;
-        $this->page_data['department_detail'] = $department_detail;
-        $pageContent = view('judicial.manage.cms.departmentEdit',$this->page_data)->render();
+        //取出机构
+        $department_data = array();
+        $count = DB::table('cms_department')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $departments = DB::table('cms_department')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($departments) > 0){
+            foreach($departments as $key=> $department){
+                $department_data[$key]['key'] = keys_encrypt($department->id);
+                $department_data[$key]['department_name'] = $department->department_name;
+                $department_data[$key]['type_id'] = $department->type_id;
+                $department_data[$key]['type_name'] = $type_data[$department->type_id];
+                $department_data[$key]['sort'] = $department->sort;
+                $department_data[$key]['create_date'] = $department->create_date;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'department',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['department_list'] = $department_data;
+        $pageContent = view('judicial.manage.cms.departmentList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -253,24 +305,36 @@ class Department extends Controller
         $id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_department')->where('id',$id)->delete();
         if( $row > 0 ){
-            //取出分类
             $type_data = array();
-            $types = DB::table('cms_department_type')->get();
+            $pages = 'none';
+            $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->get();
             foreach($types as $type){
                 $type_data[$type->type_id] = $type->type_name;
             }
             //取出机构
             $department_data = array();
-            $departments = DB::table('cms_department')->get();
-            foreach($departments as $key=> $department){
-                $department_data[$key]['key'] = keys_encrypt($department->id);
-                $department_data[$key]['department_name'] = $department->department_name;
-                $department_data[$key]['type_id'] = $department->type_id;
-                $department_data[$key]['type_name'] = $type_data[$department->type_id];
-                $department_data[$key]['sort'] = $department->sort;
-                $department_data[$key]['create_date'] = $department->create_date;
+            $count = DB::table('cms_department')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $departments = DB::table('cms_department')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($departments) > 0){
+                foreach($departments as $key=> $department){
+                    $department_data[$key]['key'] = keys_encrypt($department->id);
+                    $department_data[$key]['department_name'] = $department->department_name;
+                    $department_data[$key]['type_id'] = $department->type_id;
+                    $department_data[$key]['type_name'] = $type_data[$department->type_id];
+                    $department_data[$key]['sort'] = $department->sort;
+                    $department_data[$key]['create_date'] = $department->create_date;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'department',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['department_list'] = $department_data;
             $pageContent = view('judicial.manage.cms.departmentList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

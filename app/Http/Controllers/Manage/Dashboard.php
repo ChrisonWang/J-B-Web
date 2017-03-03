@@ -411,6 +411,115 @@ class Dashboard extends Controller
         }
     }
 
+    public function ajaxSearchList(Request $request)
+    {
+        $inputs = $request->input();
+        switch($inputs['s_type']){
+            case 'forms':
+                if(isset($inputs['search-title']) && !empty($inputs['search-title'])){
+                    $sql = 'SELECT * FROM `cms_forms` WHERE `channel_id` = '.keys_decrypt($inputs['search-channel-key']).' AND `title` LIKE "%'.$inputs['search-title'].'%"';
+                }
+                else{
+                    $sql = 'SELECT * FROM `cms_forms` WHERE `channel_id` = '.keys_decrypt($inputs['search-channel-key']);
+                }
+                $forms = DB::select($sql);
+                if($forms && count($forms) > 0){
+                    //取出频道
+                    $channels_data = array();
+                    $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+                    foreach($channels as $channel){
+                        $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
+                    }
+                    $forms_data = array();
+                    foreach($forms as $key=> $form){
+                        $forms_data[$key]['key'] = keys_encrypt($form->id);
+                        $forms_data[$key]['title'] = $form->title;
+                        $forms_data[$key]['disabled'] = $form->disabled;
+                        $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
+                        $forms_data[$key]['file'] = $form->file;
+                        $forms_data[$key]['create_date'] = $form->create_date;
+                    }
+                    //返回到前段界面
+                    $this->page_data['channel_list'] = $channels_data;
+                    $this->page_data['form_list'] = $forms_data;
+                    $pageContent = view('judicial.manage.cms.ajaxSearch.formsSearch',$this->page_data)->render();
+                    json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+                }
+                else{
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
+                }
+                break;
+
+            case 'article':
+                $where = 'WHERE';
+                if(isset($inputs['search-title']) && !empty($inputs['search-title'])){
+                    $where .= ' `article_title` LIKE "%'.$inputs['search-title'].'%" AND';
+                }
+                if(isset($inputs['search-channel-key']) && !empty($inputs['search-channel-key'])){
+                    $where .= ' `channel_id` = "'.keys_decrypt($inputs['search-channel-key']).'" AND';
+                }
+                if(isset($inputs['search-sub-channel-key']) && !empty($inputs['search-sub-channel-key'])){
+                    $where .= ' `sub_channel` = "'.keys_decrypt($inputs['search-sub-channel-key']).'"AND ';
+                }
+                if(isset($inputs['search-tags-key']) && !empty($inputs['search-tags-key'])){
+                    $where .= ' `tags` = "'.keys_decrypt($inputs['search-tags-key']).'"AND ';
+                }
+                $sql = 'SELECT * FROM `cms_article` '.$where.' 1';
+                $articles = DB::select($sql);
+                if($articles && count($articles) > 0){
+                    //取出频道
+                    $channels_data = 'none';
+                    $sub_channels_data = 'none';
+                    $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+                    if(count($channels) > 0){
+                        $channels_data = array();
+                        foreach($channels as $key => $channel){
+                            $channels_data[$key] = array(
+                                'key'=> keys_encrypt($channel->channel_id),
+                                'channel_title'=> $channel->channel_title,
+                            );
+                        }
+                    }
+                    $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+                    if(count($sub_channels) > 0){
+                        $sub_channels_data = array();
+                        foreach($sub_channels as $sub_channel){
+                            $sub_channels_data[keys_encrypt($sub_channel->channel_id)] = $sub_channel->channel_title;
+                        }
+                    }
+                    //取出标签
+                    $tag_list = array();
+                    $tags = DB::table('cms_tags')->get();
+                    foreach($tags as $tag){
+                        $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
+                    }
+                    //取出数据
+                    $article_data = array();
+                    foreach($articles as $key=> $article){
+                        $article_data[$key]['key'] = $article->article_code;
+                        $article_data[$key]['article_title'] = $article->article_title;
+                        $article_data[$key]['disabled'] = $article->disabled;
+                        $article_data[$key]['channel_id'] = keys_encrypt($article->channel_id);
+                        $article_data[$key]['sub_channel_id'] = keys_encrypt($article->sub_channel);
+                        $article_data[$key]['clicks'] = $article->clicks;
+                        $article_data[$key]['publish_date'] = $article->publish_date;
+                    }
+                    //返回到前段界面
+                    $this->page_data['tag_list'] = $tag_list;
+                    $this->page_data['channel_list'] = $channels_data;
+                    $this->page_data['sub_channel_list'] = $sub_channels_data;
+                    $this->page_data['article_list'] = $article_data;
+                    $pageContent = view('judicial.manage.cms.ajaxSearch.articleSearch',$this->page_data)->render();
+                    json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+                }
+                else{
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
+                }
+
+                break;
+        }
+    }
+
     /**
      * 加载科室管理界面
      * @param $request

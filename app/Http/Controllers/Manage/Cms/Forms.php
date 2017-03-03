@@ -35,6 +35,45 @@ class Forms extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    public function index($page = 1)
+    {
+        //取出频道
+        $channels_data = array();
+        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+        foreach($channels as $channel){
+            $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
+        }
+        //取出数据
+        $forms_data = array();
+        $pages = 'none';
+        $count = DB::table('cms_forms')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $forms = DB::table('cms_forms')->skip(0)->take($offset)->get();
+        if(count($forms) > 0){
+            foreach($forms as $key=> $form){
+                $forms_data[$key]['key'] = keys_encrypt($form->id);
+                $forms_data[$key]['title'] = $form->title;
+                $forms_data[$key]['disabled'] = $form->disabled;
+                $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
+                $forms_data[$key]['file'] = $form->file;
+                $forms_data[$key]['create_date'] = $form->create_date;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'forms',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['channel_list'] = $channels_data;
+        $this->page_data['form_list'] = $forms_data;
+        $pageContent = view('judicial.manage.cms.formsList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -89,24 +128,36 @@ class Forms extends Controller
         }
         //添加成功后刷新页面数据
         else{
-            //取出频道
             $channels_data = array();
-            $channels = DB::table('cms_channel')->get();
+            $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
             foreach($channels as $channel){
                 $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
             }
             //取出数据
             $forms_data = array();
-            $forms = DB::table('cms_forms')->get();
-            foreach($forms as $key=> $form){
-                $forms_data[$key]['key'] = keys_encrypt($form->id);
-                $forms_data[$key]['title'] = $form->title;
-                $forms_data[$key]['disabled'] = $form->disabled;
-                $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
-                $forms_data[$key]['file'] = $form->file;
-                $forms_data[$key]['create_date'] = $form->create_date;
+            $pages = 'none';
+            $count = DB::table('cms_forms')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $forms = DB::table('cms_forms')->skip(0)->take($offset)->get();
+            if(count($forms) > 0){
+                foreach($forms as $key=> $form){
+                    $forms_data[$key]['key'] = keys_encrypt($form->id);
+                    $forms_data[$key]['title'] = $form->title;
+                    $forms_data[$key]['disabled'] = $form->disabled;
+                    $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
+                    $forms_data[$key]['file'] = $form->file;
+                    $forms_data[$key]['create_date'] = $form->create_date;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'forms',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['channel_list'] = $channels_data;
             $this->page_data['form_list'] = $forms_data;
             $pageContent = view('judicial.manage.cms.formsList',$this->page_data)->render();
@@ -237,22 +288,35 @@ class Forms extends Controller
         }
         //修改成功则回调页面,取出数据
         $channels_data = array();
-        $channels = DB::table('cms_channel')->get();
+        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
         foreach($channels as $channel){
             $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
         }
         //取出数据
         $forms_data = array();
-        $forms = DB::table('cms_forms')->get();
-        foreach($forms as $key=> $form){
-            $forms_data[$key]['key'] = keys_encrypt($form->id);
-            $forms_data[$key]['title'] = $form->title;
-            $forms_data[$key]['disabled'] = $form->disabled;
-            $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
-            $forms_data[$key]['file'] = $form->file;
-            $forms_data[$key]['create_date'] = $form->create_date;
+        $pages = 'none';
+        $count = DB::table('cms_forms')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $forms = DB::table('cms_forms')->skip(0)->take($offset)->get();
+        if(count($forms) > 0){
+            foreach($forms as $key=> $form){
+                $forms_data[$key]['key'] = keys_encrypt($form->id);
+                $forms_data[$key]['title'] = $form->title;
+                $forms_data[$key]['disabled'] = $form->disabled;
+                $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
+                $forms_data[$key]['file'] = $form->file;
+                $forms_data[$key]['create_date'] = $form->create_date;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'forms',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['channel_list'] = $channels_data;
         $this->page_data['form_list'] = $forms_data;
         $pageContent = view('judicial.manage.cms.formsList',$this->page_data)->render();
@@ -267,22 +331,35 @@ class Forms extends Controller
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
             $channels_data = array();
-            $channels = DB::table('cms_channel')->get();
+            $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
             foreach($channels as $channel){
                 $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
             }
             //取出数据
             $forms_data = array();
-            $forms = DB::table('cms_forms')->get();
-            foreach($forms as $key=> $form){
-                $forms_data[$key]['key'] = keys_encrypt($form->id);
-                $forms_data[$key]['title'] = $form->title;
-                $forms_data[$key]['disabled'] = $form->disabled;
-                $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
-                $forms_data[$key]['file'] = $form->file;
-                $forms_data[$key]['create_date'] = $form->create_date;
+            $pages = 'none';
+            $count = DB::table('cms_forms')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $forms = DB::table('cms_forms')->skip(0)->take($offset)->get();
+            if(count($forms) > 0){
+                foreach($forms as $key=> $form){
+                    $forms_data[$key]['key'] = keys_encrypt($form->id);
+                    $forms_data[$key]['title'] = $form->title;
+                    $forms_data[$key]['disabled'] = $form->disabled;
+                    $forms_data[$key]['channel_id'] = keys_encrypt($form->channel_id);
+                    $forms_data[$key]['file'] = $form->file;
+                    $forms_data[$key]['create_date'] = $form->create_date;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'forms',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['channel_list'] = $channels_data;
             $this->page_data['form_list'] = $forms_data;
             $pageContent = view('judicial.manage.cms.formsList',$this->page_data)->render();

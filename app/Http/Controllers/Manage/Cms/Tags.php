@@ -22,16 +22,29 @@ class Tags extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($page = 1)
     {
         $tag_data = array();
-        $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->get();
-        foreach($tags as $key=> $tag){
-            $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);
-            $tag_data[$key]['tag_title'] = $tag->tag_title;
-            $tag_data[$key]['tag_color'] = $tag->tag_color;
-            $tag_data[$key]['create_date'] = $tag->create_date;
+        $pages = '';
+        $count = DB::table('cms_tags')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($tags) > 0){
+            foreach($tags as $key=> $tag){
+                $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);
+                $tag_data[$key]['tag_title'] = $tag->tag_title;
+                $tag_data[$key]['tag_color'] = $tag->tag_color;
+                $tag_data[$key]['create_date'] = $tag->create_date;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'tags',
+            );
         }
+        $this->page_data['pages'] = $pages;
         $this->page_data['tag_list'] = $tag_data;
         $pageContent = view('judicial.manage.cms.tagList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -81,13 +94,26 @@ class Tags extends Controller
         //添加成功后刷新页面数据
         else{
             $tag_data = array();
-            $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->get();
-            foreach($tags as $key=> $tag){
-                $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);
-                $tag_data[$key]['tag_title'] = $tag->tag_title;
-                $tag_data[$key]['tag_color'] = $tag->tag_color;
-                $tag_data[$key]['create_date'] = $tag->create_date;
+            $pages = '';
+            $count = DB::table('cms_tags')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($tags) > 0){
+                foreach($tags as $key=> $tag){
+                    $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);
+                    $tag_data[$key]['tag_title'] = $tag->tag_title;
+                    $tag_data[$key]['tag_color'] = $tag->tag_color;
+                    $tag_data[$key]['create_date'] = $tag->create_date;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'tags',
+                );
             }
+            $this->page_data['pages'] = $pages;
             $this->page_data['tag_list'] = $tag_data;
             $pageContent = view('judicial.manage.cms.tagList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -165,13 +191,29 @@ class Tags extends Controller
         }
 
         //修改成功则回调页面
-        $tags = DB::table('cms_tags')->where('id',$tag_id)->first();
-        $tag_detail['tag_key'] = keys_encrypt($tags->id);
-        $tag_detail['tag_title'] = $tags->tag_title;
-        $tag_detail['create_date'] = $tags->create_date;
-        $tag_detail['update_date'] = $tags->update_date;
-        $this->page_data['tag_detail'] = $tag_detail;
-        $pageContent = view('judicial.manage.cms.tagDetail',$this->page_data)->render();
+        $tag_data = array();
+        $pages = '';
+        $count = DB::table('cms_tags')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($tags) > 0){
+            foreach($tags as $key=> $tag){
+                $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);
+                $tag_data[$key]['tag_title'] = $tag->tag_title;
+                $tag_data[$key]['tag_color'] = $tag->tag_color;
+                $tag_data[$key]['create_date'] = $tag->create_date;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'tags',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['tag_list'] = $tag_data;
+        $pageContent = view('judicial.manage.cms.tagList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -182,13 +224,26 @@ class Tags extends Controller
         $row = DB::table('cms_tags')->where('id',$tag_id)->delete();
         if( $row > 0 ){
             $tag_data = array();
-            $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->get();
-            foreach($tags as $key=> $tag){
-                $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);
-                $tag_data[$key]['tag_title'] = $tag->tag_title;
-                $tag_data[$key]['tag_color'] = $tag->tag_color;
-                $tag_data[$key]['create_date'] = $tag->create_date;
+            $pages = '';
+            $count = DB::table('cms_tags')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($tags) > 0){
+                foreach($tags as $key=> $tag){
+                    $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);
+                    $tag_data[$key]['tag_title'] = $tag->tag_title;
+                    $tag_data[$key]['tag_color'] = $tag->tag_color;
+                    $tag_data[$key]['create_date'] = $tag->create_date;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'tags',
+                );
             }
+            $this->page_data['pages'] = $pages;
             $this->page_data['tag_list'] = $tag_data;
             $pageContent = view('judicial.manage.cms.tagList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

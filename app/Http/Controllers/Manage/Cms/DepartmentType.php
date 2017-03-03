@@ -22,15 +22,28 @@ class DepartmentType extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($page = 1)
     {
         $type_data = array();
-        $types = DB::table('cms_department_type')->get();
-        foreach($types as $key=> $type){
-            $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
-            $type_data[$key]['type_name'] = $type->type_name;
-            $type_data[$key]['create_date'] = $type->create_date;
+        $pages = 'none';
+        $count = DB::table('cms_department_type')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($types) > 0){
+            foreach($types as $key=> $type){
+                $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
+                $type_data[$key]['type_name'] = $type->type_name;
+                $type_data[$key]['create_date'] = $type->create_date;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'departmentType',
+            );
         }
+        $this->page_data['pages'] = $pages;
         $this->page_data['type_list'] = $type_data;
         $pageContent = view('judicial.manage.cms.departmentTypeList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -79,13 +92,25 @@ class DepartmentType extends Controller
         //添加成功后刷新页面数据
         else{
             $type_data = array();
-            $types = DB::table('cms_department_type')->get();
-            foreach($types as $key=> $type){
-                $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
-                $type_data[$key]['type_name'] = $type->type_name;
-                $type_data[$key]['create_date'] = $type->create_date;
-                $type_data[$key]['update_date'] = $type->update_date;
+            $pages = 'none';
+            $count = DB::table('cms_department_type')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($types) > 0){
+                foreach($types as $key=> $type){
+                    $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
+                    $type_data[$key]['type_name'] = $type->type_name;
+                    $type_data[$key]['create_date'] = $type->create_date;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'departmentType',
+                );
             }
+            $this->page_data['pages'] = $pages;
             $this->page_data['type_list'] = $type_data;
             $pageContent = view('judicial.manage.cms.departmentTypeList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -160,14 +185,28 @@ class DepartmentType extends Controller
         }
 
         //修改成功则回调页面
-        $type_detail = array();
-        $types = DB::table('cms_department_type')->where('type_id',$type_id)->first();
-        $type_detail['type_key'] = keys_encrypt($types->type_id);
-        $type_detail['type_name'] = $types->type_name;
-        $type_detail['create_date'] = $types->create_date;
-        $type_detail['update_date'] = $types->update_date;
-        $this->page_data['type_detail'] = $type_detail;
-        $pageContent = view('judicial.manage.cms.departmentTypeDetail',$this->page_data)->render();
+        $type_data = array();
+        $pages = 'none';
+        $count = DB::table('cms_department_type')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($types) > 0){
+            foreach($types as $key=> $type){
+                $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
+                $type_data[$key]['type_name'] = $type->type_name;
+                $type_data[$key]['create_date'] = $type->create_date;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'departmentType',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['type_list'] = $type_data;
+        $pageContent = view('judicial.manage.cms.departmentTypeList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -178,13 +217,25 @@ class DepartmentType extends Controller
         $row = DB::table('cms_department_type')->where('type_id',$type_id)->delete();
         if( $row > 0 ){
             $type_data = array();
-            $types = DB::table('cms_department_type')->get();
-            foreach($types as $key=> $type){
-                $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
-                $type_data[$key]['type_name'] = $type->type_name;
-                $type_data[$key]['create_date'] = $type->create_date;
-                $type_data[$key]['update_date'] = $type->update_date;
+            $pages = 'none';
+            $count = DB::table('cms_department_type')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($types) > 0){
+                foreach($types as $key=> $type){
+                    $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
+                    $type_data[$key]['type_name'] = $type->type_name;
+                    $type_data[$key]['create_date'] = $type->create_date;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'departmentType',
+                );
             }
+            $this->page_data['pages'] = $pages;
             $this->page_data['type_list'] = $type_data;
             $pageContent = view('judicial.manage.cms.departmentTypeList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

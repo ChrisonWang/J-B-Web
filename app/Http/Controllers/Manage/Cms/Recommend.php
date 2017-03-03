@@ -16,6 +16,34 @@ class Recommend extends Controller
 {
     private $page_data = array();
 
+    public function index($page = 1){
+        //取出数据
+        $r_data = array();
+        $pages = 'none';
+        $count = DB::table('cms_recommend_links')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($links) > 0){
+            foreach($links as $key=> $link){
+                $r_data[$key]['key'] = keys_encrypt($link->id);
+                $r_data[$key]['r_title'] = $link->title;
+                $r_data[$key]['r_link'] = $link->link;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'recommend',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['r_list'] = $r_data;
+        $pageContent = view('judicial.manage.cms.recommendList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -62,15 +90,27 @@ class Recommend extends Controller
         }
         //添加成功后刷新页面数据
         else{
-            //取出数据
             $r_data = array();
-            $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->get();
-            foreach($links as $key=> $link){
-                $r_data[$key]['key'] = keys_encrypt($link->id);
-                $r_data[$key]['r_title'] = $link->title;
-                $r_data[$key]['r_link'] = $link->link;
+            $pages = 'none';
+            $count = DB::table('cms_recommend_links')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($links) > 0){
+                foreach($links as $key=> $link){
+                    $r_data[$key]['key'] = keys_encrypt($link->id);
+                    $r_data[$key]['r_title'] = $link->title;
+                    $r_data[$key]['r_link'] = $link->link;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'recommend',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['r_list'] = $r_data;
             $pageContent = view('judicial.manage.cms.recommendList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -162,13 +202,26 @@ class Recommend extends Controller
         }
         //修改成功则回调页面,取出数据
         $r_data = array();
-        $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->get();
-        foreach($links as $key=> $link){
-            $r_data[$key]['key'] = keys_encrypt($link->id);
-            $r_data[$key]['r_title'] = $link->title;
-            $r_data[$key]['r_link'] = $link->link;
+        $pages = 'none';
+        $count = DB::table('cms_recommend_links')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($links) > 0){
+            foreach($links as $key=> $link){
+                $r_data[$key]['key'] = keys_encrypt($link->id);
+                $r_data[$key]['r_title'] = $link->title;
+                $r_data[$key]['r_link'] = $link->link;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'recommend',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['r_list'] = $r_data;
         $pageContent = view('judicial.manage.cms.recommendList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -182,13 +235,26 @@ class Recommend extends Controller
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
             $r_data = array();
-            $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->get();
-            foreach($links as $key=> $link){
-                $r_data[$key]['key'] = keys_encrypt($link->id);
-                $r_data[$key]['r_title'] = $link->title;
-                $r_data[$key]['r_link'] = $link->link;
+            $pages = 'none';
+            $count = DB::table('cms_recommend_links')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($links) > 0){
+                foreach($links as $key=> $link){
+                    $r_data[$key]['key'] = keys_encrypt($link->id);
+                    $r_data[$key]['r_title'] = $link->title;
+                    $r_data[$key]['r_link'] = $link->link;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'recommend',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['r_list'] = $r_data;
             $pageContent = view('judicial.manage.cms.recommendList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

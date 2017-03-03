@@ -50,7 +50,9 @@
     </div>
 </div>
 <script type="text/javascript">
-    var UE_Content = UE.getEditor('UE_Content');
+    var UE_Content = UE.getEditor('UE_Content', {
+        'readonly': true,
+    });
     UE_Content.ready(function(){
         var value = '{!! $department_detail['description'] !!}';
         UE_Content.execCommand('insertHtml',value);

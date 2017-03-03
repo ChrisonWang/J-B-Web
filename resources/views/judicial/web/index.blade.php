@@ -71,7 +71,7 @@
 <div class="w980 idx_vedio">
     <div class="vd_left">
         <span class="vd_tit">宣传视频</span>
-        <span class="vid_more">更多视频>></span>
+        <span class="vid_more"><a href="{{ URL::to('/video') }}">更多视频>></a></span>
         <video src="images/cs.mp4"  controls="controls" width="300" height="200"></video>
         <span style="display: block;">市公证协会举办全市公证业务培训</span>
     </div>

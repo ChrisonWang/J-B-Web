@@ -4,6 +4,18 @@
             用户管理/查看
         </h3>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-inline">
+                <div class="col col-md-1">
+                    <button type="button" class="btn btn-info btn-block" data-key="{{ $user_detail['key'] }}" data-type="{{ $user_detail['type_id'] }}" data-method="edit" onclick="userMethod($(this))">编辑</button>
+                </div>
+                <div class="col col-md-1">
+                    <button type="button" class="btn btn-danger btn-block" data-node="user-userMng" onclick="loadContent($(this))">返回</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="panel-body">
         <form class="form-horizontal" id="userEditForm">
             <input type="hidden" name="key" value="{{ $user_detail['key'] }}" />
@@ -82,12 +94,6 @@
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-3">
                     <p class="text-left hidden" id="userEditNotice" style="color: red"></p>
-                </div>
-            </div>
-            <div class="form-group">
-                <hr/>
-                <div class="col col-md-offset-1 col-md-1">
-                    <button type="button" class="btn btn-danger btn-block" data-node="user-userMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>
         </form>

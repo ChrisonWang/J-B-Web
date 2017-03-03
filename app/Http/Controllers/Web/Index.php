@@ -143,7 +143,7 @@ class Index extends Controller
         if(empty($keywords)){
             $this->page_date['page'] = array(
                 'count' => $count,
-                'page_count' => ($count>16) ? ($count % 16) + 1 : 1,
+                'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => 1,
             );
             $this->page_date['search_list'] = 'none';
@@ -169,7 +169,7 @@ class Index extends Controller
         }
         $this->page_date['page'] = array(
             'count' => $count,
-            'page_count' => ($count>16) ? ($count % 16) + 1 : 1,
+            'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
             'now_page' => 1,
         );
         $this->page_date['search_list'] = $search_list;
@@ -219,7 +219,7 @@ class Index extends Controller
             $this->page_date['page'] = array(
                 'channel_id'=> $channel_id,
                 'count' => $count,
-                'page_count' => ($count>16) ? ($count % 16) + 1 : 1,
+                'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => $page,
             );
             $this->page_date['article_list'] = $article_list;
@@ -259,7 +259,7 @@ class Index extends Controller
 
             $this->page_date['page'] = array(
                 'count' => $count,
-                'page_count' => ($count>9) ? ($count % 9) + 1 : 1,
+                'page_count' => ($count>9) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => $page,
             );
             $this->page_date['video_list'] = $video_list;
@@ -297,7 +297,7 @@ class Index extends Controller
 
             $this->page_date['page'] = array(
                 'count' => $count,
-                'page_count' => ($count>9) ? ($count % 9) + 1 : 1,
+                'page_count' => ($count>9) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => $page,
             );
             $this->page_date['article_list'] = $article_list;

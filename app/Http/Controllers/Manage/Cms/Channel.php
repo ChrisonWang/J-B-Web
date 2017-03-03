@@ -16,6 +16,40 @@ class Channel extends Controller
 {
     private $page_data = array();
 
+    public function index($page = 1)
+    {
+        //取出数据
+        $channel_data = array();
+        $pages = 'none';
+        $count = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip($offset)->take(30)->get();
+
+        if($channels > 0){
+            foreach($channels as $key=> $channel){
+                $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+                $channel_data[$key]['channel_title'] = $channel->channel_title;
+                $channel_data[$key]['is_recommend'] = $channel->is_recommend;
+                $channel_data[$key]['form_download'] = $channel->form_download;
+                $channel_data[$key]['zwgk'] = $channel->zwgk;
+                $channel_data[$key]['wsbs'] = $channel->wsbs;
+                $channel_data[$key]['sort'] = $channel->sort;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'channel',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['channel_list'] = $channel_data;
+        $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -81,18 +115,29 @@ class Channel extends Controller
         }
         DB::commit();
         //添加成功后刷新页面数据
+        //取出数据
         $channel_data = array();
-        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('create_date', 'desc')->get();
-        foreach($channels as $key=> $channel){
-            $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
-            $channel_data[$key]['channel_title'] = $channel->channel_title;
-            $channel_data[$key]['is_recommend'] = $channel->is_recommend;
-            $channel_data[$key]['form_download'] = $channel->form_download;
-            $channel_data[$key]['zwgk'] = $channel->zwgk;
-            $channel_data[$key]['wsbs'] = $channel->wsbs;
-            $channel_data[$key]['sort'] = $channel->sort;
+        $pages = 'none';
+        $count = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->count();
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take(5)->get();
+        if($channels > 0){
+            foreach($channels as $key=> $channel){
+                $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+                $channel_data[$key]['channel_title'] = $channel->channel_title;
+                $channel_data[$key]['is_recommend'] = $channel->is_recommend;
+                $channel_data[$key]['form_download'] = $channel->form_download;
+                $channel_data[$key]['zwgk'] = $channel->zwgk;
+                $channel_data[$key]['wsbs'] = $channel->wsbs;
+                $channel_data[$key]['sort'] = $channel->sort;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => ($count > 5)? ceil($count/5)  : 1,
+                'now_page' => 1,
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['channel_list'] = $channel_data;
         $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -287,18 +332,29 @@ class Channel extends Controller
             }
         }
         DB::commit();
+        //取出数据
         $channel_data = array();
-        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('create_date', 'desc')->get();
-        foreach($channels as $key=> $channel){
-            $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
-            $channel_data[$key]['channel_title'] = $channel->channel_title;
-            $channel_data[$key]['is_recommend'] = $channel->is_recommend;
-            $channel_data[$key]['form_download'] = $channel->form_download;
-            $channel_data[$key]['zwgk'] = $channel->zwgk;
-            $channel_data[$key]['wsbs'] = $channel->wsbs;
-            $channel_data[$key]['sort'] = $channel->sort;
+        $pages = 'none';
+        $count = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->count();
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take(5)->get();
+        if($channels > 0){
+            foreach($channels as $key=> $channel){
+                $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+                $channel_data[$key]['channel_title'] = $channel->channel_title;
+                $channel_data[$key]['is_recommend'] = $channel->is_recommend;
+                $channel_data[$key]['form_download'] = $channel->form_download;
+                $channel_data[$key]['zwgk'] = $channel->zwgk;
+                $channel_data[$key]['wsbs'] = $channel->wsbs;
+                $channel_data[$key]['sort'] = $channel->sort;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => ($count > 5)? ceil($count/5)  : 1,
+                'now_page' => 1,
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['channel_list'] = $channel_data;
         $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -321,18 +377,30 @@ class Channel extends Controller
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
         }
         DB::commit();
+
+        //取出数据
         $channel_data = array();
-        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('create_date', 'desc')->get();
-        foreach($channels as $key=> $channel){
-            $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
-            $channel_data[$key]['channel_title'] = $channel->channel_title;
-            $channel_data[$key]['is_recommend'] = $channel->is_recommend;
-            $channel_data[$key]['form_download'] = $channel->form_download;
-            $channel_data[$key]['zwgk'] = $channel->zwgk;
-            $channel_data[$key]['wsbs'] = $channel->wsbs;
-            $channel_data[$key]['sort'] = $channel->sort;
+        $pages = 'none';
+        $count = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->count();
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take(5)->get();
+        if($channels > 0){
+            foreach($channels as $key=> $channel){
+                $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
+                $channel_data[$key]['channel_title'] = $channel->channel_title;
+                $channel_data[$key]['is_recommend'] = $channel->is_recommend;
+                $channel_data[$key]['form_download'] = $channel->form_download;
+                $channel_data[$key]['zwgk'] = $channel->zwgk;
+                $channel_data[$key]['wsbs'] = $channel->wsbs;
+                $channel_data[$key]['sort'] = $channel->sort;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => ($count > 5)? ceil($count/5)  : 1,
+                'now_page' => 1,
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['channel_list'] = $channel_data;
         $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

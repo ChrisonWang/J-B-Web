@@ -17,6 +17,37 @@ class Video extends Controller
 {
     private $page_data = array();
 
+    public function index($page = 1)
+    {
+        //取出数据
+        $video_data = array();
+        $pages = 'none';
+        $count = DB::table('cms_video')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+        if(count($videos) > 0){
+            foreach($videos as $key=> $video){
+                $video_data[$key]['key'] = keys_encrypt($video->video_code);
+                $video_data[$key]['video_title'] = $video->title;
+                $video_data[$key]['video_link'] = $video->link;
+                $video_data[$key]['disabled'] = $video->disabled;
+                $video_data[$key]['sort'] = $video->sort;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'video',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['video_list'] = $video_data;
+        $pageContent = view('judicial.manage.cms.videoList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -71,15 +102,28 @@ class Video extends Controller
         else{
             //取出数据
             $video_data = array();
-            $videos = DB::table('cms_video')->orderBy('sort', 'desc')->get();
-            foreach($videos as $key=> $video){
-                $video_data[$key]['key'] = keys_encrypt($video->video_code);
-                $video_data[$key]['video_title'] = $video->title;
-                $video_data[$key]['video_link'] = $video->link;
-                $video_data[$key]['disabled'] = $video->disabled;
-                $video_data[$key]['sort'] = empty($video->sort) ? 0 : $video->sort;
+            $pages = 'none';
+            $count = DB::table('cms_video')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+            if(count($videos) > 0){
+                foreach($videos as $key=> $video){
+                    $video_data[$key]['key'] = keys_encrypt($video->video_code);
+                    $video_data[$key]['video_title'] = $video->title;
+                    $video_data[$key]['video_link'] = $video->link;
+                    $video_data[$key]['disabled'] = $video->disabled;
+                    $video_data[$key]['sort'] = $video->sort;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'video',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['video_list'] = $video_data;
             $pageContent = view('judicial.manage.cms.videoList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -180,15 +224,28 @@ class Video extends Controller
         }
         //修改成功则回调页面,取出数据
         $video_data = array();
-        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->get();
-        foreach($videos as $key=> $video){
-            $video_data[$key]['key'] = keys_encrypt($video->video_code);
-            $video_data[$key]['video_title'] = $video->title;
-            $video_data[$key]['video_link'] = $video->link;
-            $video_data[$key]['disabled'] = $video->disabled;
-            $video_data[$key]['sort'] = $video->sort;
+        $pages = 'none';
+        $count = DB::table('cms_video')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+        if(count($videos) > 0){
+            foreach($videos as $key=> $video){
+                $video_data[$key]['key'] = keys_encrypt($video->video_code);
+                $video_data[$key]['video_title'] = $video->title;
+                $video_data[$key]['video_link'] = $video->link;
+                $video_data[$key]['disabled'] = $video->disabled;
+                $video_data[$key]['sort'] = $video->sort;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'video',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['video_list'] = $video_data;
         $pageContent = view('judicial.manage.cms.videoList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -202,15 +259,28 @@ class Video extends Controller
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
             $video_data = array();
-            $videos = DB::table('cms_video')->orderBy('sort', 'desc')->get();
-            foreach($videos as $key=> $video){
-                $video_data[$key]['key'] = keys_encrypt($video->video_code);
-                $video_data[$key]['video_title'] = $video->title;
-                $video_data[$key]['video_link'] = $video->link;
-                $video_data[$key]['disabled'] = $video->disabled;
-                $video_data[$key]['sort'] = $video->sort;
+            $pages = 'none';
+            $count = DB::table('cms_video')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+            if(count($videos) > 0){
+                foreach($videos as $key=> $video){
+                    $video_data[$key]['key'] = keys_encrypt($video->video_code);
+                    $video_data[$key]['video_title'] = $video->title;
+                    $video_data[$key]['video_link'] = $video->link;
+                    $video_data[$key]['disabled'] = $video->disabled;
+                    $video_data[$key]['sort'] = $video->sort;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'video',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['video_list'] = $video_data;
             $pageContent = view('judicial.manage.cms.videoList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

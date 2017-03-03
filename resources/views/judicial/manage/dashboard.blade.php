@@ -20,7 +20,6 @@
 		@include('judicial.manage.layout.managerInfo')
 		</div>
 	</div><!-- 中间内容End -->
-
 </div>
 <!-- /#wrapper -->
 </body>
