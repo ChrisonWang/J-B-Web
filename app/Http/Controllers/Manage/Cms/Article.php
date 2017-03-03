@@ -143,6 +143,12 @@ class Article extends Controller
         elseif(empty($inputs['publish_date'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'发布时间不能为空！']);
         }
+        elseif(empty($inputs['channel_id'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
+        }
+        elseif(empty($inputs['sub_channel_id'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
+        }
         //处理上传的图片
         $file = $request->file('thumb');
         if(is_null($file) || !$file->isValid()){
@@ -163,8 +169,10 @@ class Article extends Controller
             }
         }
 
-        foreach($inputs['tags'] as $tag){
-            $save_tags[] = keys_decrypt($tag);
+        if(isset($inputs['tags']) && is_array($inputs['tags'])){
+            foreach($inputs['tags'] as $tag){
+                $save_tags[] = keys_decrypt($tag);
+            }
         }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
@@ -190,20 +198,19 @@ class Article extends Controller
         }
 
         //添加成功后刷新页面数据
-        //取出频道
         $channels_data = 'none';
         $sub_channels_data = 'none';
         $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
         if(count($channels) > 0){
             $channels_data = array();
             foreach($channels as $key => $channel){
-                $channels_data[$key] = array(
+                $channels_data[keys_encrypt($channel->channel_id)] = array(
                     'key'=> keys_encrypt($channel->channel_id),
                     'channel_title'=> $channel->channel_title,
                 );
             }
         }
-        $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+        $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
         if(count($sub_channels) > 0){
             $sub_channels_data = array();
             foreach($sub_channels as $sub_channel){
@@ -222,7 +229,7 @@ class Article extends Controller
         $count = DB::table('cms_article')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
         if(count($articles) > 0){
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;
@@ -236,7 +243,7 @@ class Article extends Controller
             $pages = array(
                 'count' => $count,
                 'count_page' => $count_page,
-                'now_page' => 1,
+                'now_page' => $page,
                 'type' => 'article',
             );
         }
@@ -445,20 +452,19 @@ class Article extends Controller
         }
 
         //修改成功后,取出频道
-        //取出频道
         $channels_data = 'none';
         $sub_channels_data = 'none';
         $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
         if(count($channels) > 0){
             $channels_data = array();
             foreach($channels as $key => $channel){
-                $channels_data[$key] = array(
+                $channels_data[keys_encrypt($channel->channel_id)] = array(
                     'key'=> keys_encrypt($channel->channel_id),
                     'channel_title'=> $channel->channel_title,
                 );
             }
         }
-        $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+        $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
         if(count($sub_channels) > 0){
             $sub_channels_data = array();
             foreach($sub_channels as $sub_channel){
@@ -517,20 +523,19 @@ class Article extends Controller
         }
         else{
             //删除完成后取出频道
-            //取出频道
             $channels_data = 'none';
             $sub_channels_data = 'none';
             $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
             if(count($channels) > 0){
                 $channels_data = array();
                 foreach($channels as $key => $channel){
-                    $channels_data[$key] = array(
+                    $channels_data[keys_encrypt($channel->channel_id)] = array(
                         'key'=> keys_encrypt($channel->channel_id),
                         'channel_title'=> $channel->channel_title,
                     );
                 }
             }
-            $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+            $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
             if(count($sub_channels) > 0){
                 $sub_channels_data = array();
                 foreach($sub_channels as $sub_channel){

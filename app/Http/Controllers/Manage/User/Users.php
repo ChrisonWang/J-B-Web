@@ -17,6 +17,61 @@ class Users extends Controller
 {
     private $page_data = array();
 
+    public function index($page = 1)
+    {
+        $user_list = array();
+        $managers = DB::table('user_manager')->get();
+        foreach($managers as $key=> $managers){
+            $user_list[$key]['key'] = $managers->manager_code;
+            $user_list[$key]['login_name'] = $managers->login_name;
+            $user_list[$key]['type_id'] = $managers->type_id;
+            $user_list[$key]['nickname'] = $managers->nickname;
+            $user_list[$key]['cell_phone'] = $managers->cell_phone;
+            $user_list[$key]['disabled'] = $managers->disabled;
+            $user_list[$key]['create_date'] = $managers->create_date;
+        }
+        //取出用户
+        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        $count = count($members);
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $members = array_slice($members, 0, $offset);
+        foreach($members as $member){
+            $user_list[] = array(
+                'key'=> $member->member_code,
+                'login_name'=> $member->login_name,
+                'type_id'=> $member->user_type,
+                'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                'cell_phone'=> $member->cell_phone,
+                'disabled'=> $member->disabled,
+                'create_date'=> $member->create_date,
+            );
+        }
+        $pages = array(
+            'count' => $count,
+            'count_page' => $count_page,
+            'now_page' => 1,
+            'type' => 'users',
+        );
+        //取出用户类型
+        $user_type = DB::table('user_type')->get();
+        foreach($user_type as $type){
+            $type_list[$type->type_id] = $type->type_name;
+        }
+        //取出科室
+        $user_office = DB::table('user_office')->get();
+        foreach($user_office as $office){
+            $office_list[keys_encrypt($office->id)] = $office->office_name;
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['type_list'] = $type_list;
+        $this->page_data['user_list'] = $user_list;
+        $this->page_data['office_list'] = $office_list;
+        $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -144,6 +199,10 @@ class Users extends Controller
         }
         //取出用户
         $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        $count = count($members);
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $members = array_slice($members, 0, $offset);
         foreach($members as $member){
             $user_list[] = array(
                 'key'=> $member->member_code,
@@ -155,14 +214,27 @@ class Users extends Controller
                 'create_date'=> $member->create_date,
             );
         }
+        $pages = array(
+            'count' => $count,
+            'count_page' => $count_page,
+            'now_page' => 1,
+            'type' => 'users',
+        );
         //取出用户类型
         $user_type = DB::table('user_type')->get();
         foreach($user_type as $type){
             $type_list[$type->type_id] = $type->type_name;
         }
+        //取出科室
+        $user_office = DB::table('user_office')->get();
+        foreach($user_office as $office){
+            $office_list[keys_encrypt($office->id)] = $office->office_name;
+        }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['type_list'] = $type_list;
         $this->page_data['user_list'] = $user_list;
+        $this->page_data['office_list'] = $office_list;
         $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -388,6 +460,10 @@ class Users extends Controller
         }
         //取出用户
         $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        $count = count($members);
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $members = array_slice($members, 0, $offset);
         foreach($members as $member){
             $user_list[] = array(
                 'key'=> $member->member_code,
@@ -399,14 +475,27 @@ class Users extends Controller
                 'create_date'=> $member->create_date,
             );
         }
+        $pages = array(
+            'count' => $count,
+            'count_page' => $count_page,
+            'now_page' => 1,
+            'type' => 'users',
+        );
         //取出用户类型
         $user_type = DB::table('user_type')->get();
         foreach($user_type as $type){
             $type_list[$type->type_id] = $type->type_name;
         }
+        //取出科室
+        $user_office = DB::table('user_office')->get();
+        foreach($user_office as $office){
+            $office_list[keys_encrypt($office->id)] = $office->office_name;
+        }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['type_list'] = $type_list;
         $this->page_data['user_list'] = $user_list;
+        $this->page_data['office_list'] = $office_list;
         $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -435,7 +524,6 @@ class Users extends Controller
             $row = DB::table('user_manager')->where('manager_code',$code)->delete();
         }
         if( $row > 0 ){
-            //删除成功则回调页面,取出数据
             $user_list = array();
             $managers = DB::table('user_manager')->get();
             foreach($managers as $key=> $managers){
@@ -449,6 +537,10 @@ class Users extends Controller
             }
             //取出用户
             $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+            $count = count($members);
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $members = array_slice($members, 0, $offset);
             foreach($members as $member){
                 $user_list[] = array(
                     'key'=> $member->member_code,
@@ -460,14 +552,27 @@ class Users extends Controller
                     'create_date'=> $member->create_date,
                 );
             }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'users',
+            );
             //取出用户类型
             $user_type = DB::table('user_type')->get();
             foreach($user_type as $type){
                 $type_list[$type->type_id] = $type->type_name;
             }
+            //取出科室
+            $user_office = DB::table('user_office')->get();
+            foreach($user_office as $office){
+                $office_list[keys_encrypt($office->id)] = $office->office_name;
+            }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['type_list'] = $type_list;
             $this->page_data['user_list'] = $user_list;
+            $this->page_data['office_list'] = $office_list;
             $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }

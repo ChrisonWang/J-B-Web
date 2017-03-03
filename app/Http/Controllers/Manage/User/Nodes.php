@@ -16,14 +16,41 @@ class Nodes extends Controller
 
 
 {
-    private $page_data = array(
-        'node_schema'=> array(
-            'A'=> 'roles(角色管理表)',
-            'B'=> 'channels(频道管理表)',
-            'C'=> 'department(科室管理表)',
-            'D'=> 'article(文章管理表)',
-        ),
-    );
+    private $page_data = array();
+
+    public function __construct()
+    {
+        $this->page_data['node_schema'] = config('app.permission');
+    }
+
+    public function index($page = 1)
+    {
+        //取出数据
+        $node_list = array();
+        $pages = 'none';
+        $count = DB::table('user_nodes')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $nodes = DB::table('user_nodes')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
+        if(count($nodes) > 0){
+            foreach($nodes as $key=> $node){
+                $node_list[$key]['key'] = keys_encrypt($node->id);
+                $node_list[$key]['node_name'] = $node->node_name;
+                $node_list[$key]['node_schema'] = $node->node_schema;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'nodes',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['node_list'] = $node_list;
+        $pageContent = view('judicial.manage.user.nodeList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -69,13 +96,26 @@ class Nodes extends Controller
         else{
             //取出数据
             $node_list = array();
-            $nodes = DB::table('user_nodes')->get();
-            foreach($nodes as $key=> $node){
-                $node_list[$key]['key'] = keys_encrypt($node->id);
-                $node_list[$key]['node_name'] = $node->node_name;
-                $node_list[$key]['node_schema'] = $node->node_schema;
+            $pages = 'none';
+            $count = DB::table('user_nodes')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $nodes = DB::table('user_nodes')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($nodes) > 0){
+                foreach($nodes as $key=> $node){
+                    $node_list[$key]['key'] = keys_encrypt($node->id);
+                    $node_list[$key]['node_name'] = $node->node_name;
+                    $node_list[$key]['node_schema'] = $node->node_schema;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'nodes',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['node_list'] = $node_list;
             $pageContent = view('judicial.manage.user.nodeList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -161,14 +201,28 @@ class Nodes extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
         }
         //修改成功则回调页面,取出数据
+        //取出数据
         $node_list = array();
-        $nodes = DB::table('user_nodes')->get();
-        foreach($nodes as $key=> $node){
-            $node_list[$key]['key'] = keys_encrypt($node->id);
-            $node_list[$key]['node_name'] = $node->node_name;
-            $node_list[$key]['node_schema'] = $node->node_schema;
+        $pages = 'none';
+        $count = DB::table('user_nodes')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $nodes = DB::table('user_nodes')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($nodes) > 0){
+            foreach($nodes as $key=> $node){
+                $node_list[$key]['key'] = keys_encrypt($node->id);
+                $node_list[$key]['node_name'] = $node->node_name;
+                $node_list[$key]['node_schema'] = $node->node_schema;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'nodes',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['node_list'] = $node_list;
         $pageContent = view('judicial.manage.user.nodeList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -181,14 +235,28 @@ class Nodes extends Controller
         $row = DB::table('user_nodes')->where('id',$id)->delete();
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
+            //取出数据
             $node_list = array();
-            $nodes = DB::table('user_nodes')->get();
-            foreach($nodes as $key=> $node){
-                $node_list[$key]['key'] = keys_encrypt($node->id);
-                $node_list[$key]['node_name'] = $node->node_name;
-                $node_list[$key]['node_schema'] = $node->node_schema;
+            $pages = 'none';
+            $count = DB::table('user_nodes')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $nodes = DB::table('user_nodes')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($nodes) > 0){
+                foreach($nodes as $key=> $node){
+                    $node_list[$key]['key'] = keys_encrypt($node->id);
+                    $node_list[$key]['node_name'] = $node->node_name;
+                    $node_list[$key]['node_schema'] = $node->node_schema;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'nodes',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['node_list'] = $node_list;
             $pageContent = view('judicial.manage.user.nodeList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

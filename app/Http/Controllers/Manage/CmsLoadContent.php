@@ -113,7 +113,7 @@ class CmsLoadContent extends Controller
         $count = DB::table('cms_department')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $departments = DB::table('cms_department')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $departments = DB::table('cms_department')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
         if(count($departments) > 0){
             foreach($departments as $key=> $department){
                 $department_data[$key]['key'] = keys_encrypt($department->id);
@@ -145,7 +145,7 @@ class CmsLoadContent extends Controller
         $count = DB::table('cms_leaders')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $leaders = DB::table('cms_leaders')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
         if(count($leaders) > 0){
             foreach($leaders as $key=> $leader){
                 $leaders_data[$key]['key'] = keys_encrypt($leader->id);
@@ -279,8 +279,8 @@ class CmsLoadContent extends Controller
         $flinks_data = array();
         $pages = 'none';
         $count = DB::table('cms_flinks')->where('pid',0)->count();
-        $count_page = ($count > 30)? ceil($count/30)  : 1;
-        $offset = 30;
+        $count_page = ($count > 5)? ceil($count/5)  : 1;
+        $offset = 5;
         $links = DB::table('cms_flinks')->where('pid',0)->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($links) > 0){
             foreach($links as $key=> $link){
@@ -383,13 +383,15 @@ class CmsLoadContent extends Controller
         if(count($channels) > 0){
             $channels_data = array();
             foreach($channels as $key => $channel){
-                $channels_data[$key] = array(
+                $channels_data[keys_encrypt($channel->channel_id)] = array(
                     'key'=> keys_encrypt($channel->channel_id),
                     'channel_title'=> $channel->channel_title,
                 );
             }
         }
-        $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+        reset($channels_data);
+        $c_id = current($channels_data);
+        $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
         if(count($sub_channels) > 0){
             $sub_channels_data = array();
             foreach($sub_channels as $sub_channel){

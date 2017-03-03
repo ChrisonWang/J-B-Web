@@ -5,7 +5,7 @@
         </h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" id="videoAddForm">
+        <form class="form-horizontal" id="videoEditForm">
             <input type="hidden" value="{{ $video_detail['key'] }}" name="key"/>
             <div class="form-group">
                 <label for="video_title" class="col-md-1 control-label">视频名称：</label>

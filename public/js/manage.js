@@ -114,7 +114,7 @@ function typeMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'node_id='+typeKey,
+        data: 'key='+typeKey,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -298,7 +298,6 @@ function editLeader(){
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        async: false,
         type: "POST",
         url: url,
         data: $('#leaderEditForm').serialize(),
@@ -1557,6 +1556,35 @@ function getSubChannel(c,sub){
     });
 }
 
+function getSubNode(c){
+    var sub = c.parent('td').parent('tr').find("select[name='nodes']");
+    sub.html('<option value="none" selected>暂无功能点</option>');
+    var url = '/manage/cms/roles/get_sub_node';
+    var menu_key = c.find("option:selected").val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: url,
+        method: "POST",
+        data: 'menu_key='+menu_key,
+        success:function(re){
+            if(re.status == 'succ'){
+                var list = jQuery.parseJSON(re.res);
+                var options = '';
+                $.each(list, function(i,sub){
+                    options += '<option value="'+sub.node_key+'">'+sub.node_name+'</option>';
+                });
+                sub.html(options);
+            }
+            else if(re.status == 'failed'){
+                return;
+            }
+            return;
+        }
+    });
+}
+
 //用户管理
 function userMethod(t){
     var key = t.data('key');
@@ -1708,3 +1736,4 @@ function list_page($type, $page){
         }
     });
 }
+

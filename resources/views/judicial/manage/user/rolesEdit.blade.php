@@ -10,7 +10,7 @@
             <tbody class="text-center">
             <tr>
                 <td>
-                    <select name="menus" class="form-control node-row">
+                    <select name="menus" class="form-control node-row" onchange="getSubNode($(this))">
                         @foreach($menu_list as $menu)
                             <option value="{{ $menu['key'] }}">{{ $menu['menu_name'] }}</option>
                         @endforeach
@@ -62,7 +62,7 @@
                             <tbody class="text-center" id="menu-nodes">
                             <tr>
                                 <td>
-                                    <select name="menus" class="form-control node-row">
+                                    <select name="menus" class="form-control node-row" onchange="getSubNode($(this))">
                                         @foreach($menu_list as $menu)
                                             <option value="{{ $menu['key'] }}">{{ $menu['menu_name'] }}</option>
                                         @endforeach

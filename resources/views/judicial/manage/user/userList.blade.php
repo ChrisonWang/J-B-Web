@@ -30,9 +30,9 @@
                         <div class="form-group col col-md-3">
                             <label for="search-status">状态：</label>
                             <select id="search-status" name="search-status" class="form-control">
-                                <option value="1">不限</option>
-                                <option value="2">正常</option>
-                                <option value="3">禁用</option>
+                                <option value="none">不限</option>
+                                <option value="no">正常</option>
+                                <option value="yes">禁用</option>
                             </select>
                         </div>
                         <div class="form-group col col-md-3">
@@ -55,7 +55,8 @@
                                 @endif
                             </select>
                         </div>
-                        <button type="button" class="btn btn-info" onclick="search_list($('#this-container'))">搜索</button>
+                        <input type="hidden" name="s_type" value="users"/>
+                        <button type="button" class="btn btn-info" onclick="search_list($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>
@@ -95,5 +96,9 @@
                 </tbody>
             </table>
         </div>
+        <!--分页-->
+        @if(isset($pages) && is_array($pages) && $pages != 'none')
+            @include('judicial.manage.chips.pages')
+        @endif
     </div>
 </div>

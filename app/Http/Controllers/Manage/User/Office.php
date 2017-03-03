@@ -17,6 +17,34 @@ class Office extends Controller
 {
     private $page_data = array();
 
+    public function index($page = 1)
+    {
+        //取出数据
+        $office_data = array();
+        $pages = 'none';
+        $count = DB::table('user_office')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $_office = DB::table('user_office')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
+        if(count($_office) > 0){
+            foreach($_office as $key=> $office){
+                $office_data[$key]['key'] = keys_encrypt($office->id);
+                $office_data[$key]['office_name'] = $office->office_name;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'office',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['office_list'] = $office_data;
+        $pageContent = view('judicial.manage.user.officeList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -60,12 +88,25 @@ class Office extends Controller
         else{
             //取出数据
             $office_data = array();
-            $_office = DB::table('user_office')->get();
-            foreach($_office as $key=> $office){
-                $office_data[$key]['key'] = keys_encrypt($office->id);
-                $office_data[$key]['office_name'] = $office->office_name;
+            $pages = 'none';
+            $count = DB::table('user_office')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $_office = DB::table('user_office')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($_office) > 0){
+                foreach($_office as $key=> $office){
+                    $office_data[$key]['key'] = keys_encrypt($office->id);
+                    $office_data[$key]['office_name'] = $office->office_name;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'office',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['office_list'] = $office_data;
             $pageContent = view('judicial.manage.user.officeList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -92,7 +133,24 @@ class Office extends Controller
         $office_detail['office_name'] = $office->office_name;
         $office_detail['create_date'] = $office->create_date;
 
+        //职员信息
+        $managers = DB::table('user_manager')->where('office_id', $id)->get();
+        $manager_list = 'none';
+        if(count($managers) > 0){
+            $manager_list = array();
+            foreach($managers as $manager){
+                $manager_list[] = array(
+                    'nickname'=> $manager->nickname,
+                    'login_name'=> $manager->login_name,
+                    'cell_phone'=> $manager->cell_phone,
+                    'email'=> $manager->email,
+                    'create_date'=> $manager->create_date,
+                );
+            }
+        }
+
         //页面中显示
+        $this->page_data['manager_list'] = $manager_list;
         $this->page_data['office_detail'] = $office_detail;
         $pageContent = view('judicial.manage.user.officeDetail',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -121,7 +179,7 @@ class Office extends Controller
 
         //页面中显示
         $this->page_data['office_detail'] = $office_detail;
-        $pageContent = view('judicial.manage.user.officeDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.user.officeEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -148,13 +206,27 @@ class Office extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
         }
         //修改成功则回调页面,取出数据
+        //取出数据
         $office_data = array();
-        $_office = DB::table('user_office')->get();
-        foreach($_office as $key=> $office){
-            $office_data[$key]['key'] = keys_encrypt($office->id);
-            $office_data[$key]['office_name'] = $office->office_name;
+        $pages = 'none';
+        $count = DB::table('user_office')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $_office = DB::table('user_office')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($_office) > 0){
+            foreach($_office as $key=> $office){
+                $office_data[$key]['key'] = keys_encrypt($office->id);
+                $office_data[$key]['office_name'] = $office->office_name;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'office',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['office_list'] = $office_data;
         $pageContent = view('judicial.manage.user.officeList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -171,13 +243,27 @@ class Office extends Controller
         $row = DB::table('user_office')->where('id',$id)->delete();
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
+            //取出数据
             $office_data = array();
-            $_office = DB::table('user_office')->get();
-            foreach($_office as $key=> $office){
-                $office_data[$key]['key'] = keys_encrypt($office->id);
-                $office_data[$key]['office_name'] = $office->office_name;
+            $pages = 'none';
+            $count = DB::table('user_office')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $_office = DB::table('user_office')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($_office) > 0){
+                foreach($_office as $key=> $office){
+                    $office_data[$key]['key'] = keys_encrypt($office->id);
+                    $office_data[$key]['office_name'] = $office->office_name;
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'office',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['office_list'] = $office_data;
             $pageContent = view('judicial.manage.user.officeList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

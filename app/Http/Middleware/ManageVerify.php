@@ -41,6 +41,7 @@ class ManageVerify
                 return view('judicial.manage.login',$page_date);
             }
         }
+        $menuList = $this->getPermission($managerCode);
         $request->attributes->add(['managerCode'=>$managerCode]);
 
         return $next($request);
@@ -49,7 +50,9 @@ class ManageVerify
     private function getPermission($managerCode)
     {
         if(!empty($managerCode) && strstr($managerCode, 'ADMIN_')){
-            return 'ROOT';
+            Session::put('permission','ROOT',120);
+            Session::save();
+            return true;
         }
         //权限
         $role_id = DB::table('user_manager')->select('role_id')->where('manager_code', $managerCode)->first();
@@ -57,9 +60,33 @@ class ManageVerify
         $permissions = json_decode($permissions->permission, true);
         $p_list = array();
         foreach($permissions as $permission){
-            $p_list[] = $permission;
+            $permission = explode('||', $permission);
+            $p_list[$permission[0]][] = array(
+                'menu_id' => $permission[0],
+                'node_id' => $permission[1],
+                'p' => $permission[2],
+            );
         }
-        return true;
+        if(count($p_list) > 0){
+            $menus = array();
+            foreach($p_list as $pms){
+                foreach($pms as $k=>$pm){
+                    $menu = DB::table('user_menus')->where('id', $pm['menu_id'])->first();
+                    if(count($menu) > 0){
+                        $nodes = DB::table('user_nodes')->where('id', $pm['node_id'])->first();
+                        $menus[$menu->id][$k]['menu_name'] = $menu->menu_name;
+                        $menus[$menu->id][$k]['node_name'] = $nodes->node_name;
+                        $menus[$menu->id][$k]['node_key'] = $nodes->node_schema;
+                        $menus[$menu->id][$k]['p'] = $pm['p'];
+                    }
+                }
+            }
+            Session::put('permission',$menus,120);
+            Session::save();
+        }
+        else{
+            return false;
+        }
     }
 
 }

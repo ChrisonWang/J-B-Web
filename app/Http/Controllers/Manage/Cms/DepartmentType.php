@@ -29,7 +29,7 @@ class DepartmentType extends Controller
         $count = DB::table('cms_department_type')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
         if(count($types) > 0){
             foreach($types as $key=> $type){
                 $type_data[$key]['type_key'] = keys_encrypt($type->type_id);
@@ -127,7 +127,7 @@ class DepartmentType extends Controller
     {
         $type_detail = array();
         $inputs = $request->input();
-        $type_id = keys_decrypt($inputs['type_key']);
+        $type_id = keys_decrypt($inputs['key']);
         $types = DB::table('cms_department_type')->where('type_id',$type_id)->first();
         if(is_null($types)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
@@ -153,7 +153,7 @@ class DepartmentType extends Controller
     {
         $type_detail = array();
         $inputs = $request->input();
-        $type_id = keys_decrypt($inputs['type_key']);
+        $type_id = keys_decrypt($inputs['key']);
         $types = DB::table('cms_department_type')->where('type_id',$type_id)->first();
         if(is_null($types)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
@@ -213,7 +213,7 @@ class DepartmentType extends Controller
     public function doDelete(Request $request)
     {
         $inputs = $request->input();
-        $type_id = keys_decrypt($inputs['type_key']);
+        $type_id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_department_type')->where('type_id',$type_id)->delete();
         if( $row > 0 ){
             $type_data = array();

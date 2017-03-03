@@ -22,9 +22,9 @@ class Flinks extends Controller
         $flinks_data = array();
         $pages = 'none';
         $count = DB::table('cms_flinks')->where('pid',0)->count();
-        $count_page = ($count > 30)? ceil($count/30)  : 1;
-        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $links = DB::table('cms_flinks')->where('pid',0)->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $count_page = ($count > 5)? ceil($count/5)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 5;
+        $links = DB::table('cms_flinks')->where('pid',0)->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
         if(count($links) > 0){
             foreach($links as $key=> $link){
                 $flinks_data[$key]['key'] = keys_encrypt($link->id);

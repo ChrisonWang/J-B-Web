@@ -47,11 +47,15 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('list/{cid}/{page?}','Web\Index@article_list');
 
+    Route::get('tagList/{tid}/{page?}','Web\Index@tag_list');
+
     Route::get('picture/{page?}','Web\Index@picture_list');
 
     Route::get('video/{page?}','Web\Index@video_list');
 
     Route::get('article/{article_code}','Web\Index@article_content');
+
+    Route::get('videoContent/{article_code}','Web\Index@video_content');
 
     Route::get('intro','Web\Index@introduction');
 
@@ -225,7 +229,7 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/user/office/delete','Manage\User\Office@doDelete');
 
-        Route::post('manage/cms/officeList/{page?}','Manage\Cms\Office@index');
+        Route::post('manage/cms/officeList/{page?}','Manage\User\Office@index');
 
         //功能点管理
         Route::get('manage/user/nodes/show','Manage\User\Nodes@show');
@@ -240,7 +244,7 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/user/nodes/delete','Manage\User\Nodes@doDelete');
 
-        Route::post('manage/cms/nodesList/{page?}','Manage\Cms\Nodes@index');
+        Route::post('manage/cms/nodesList/{page?}','Manage\User\Nodes@index');
 
         //用户管理
         Route::get('manage/user/users/show','Manage\User\Users@show');
@@ -255,7 +259,7 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/user/users/delete','Manage\User\Users@doDelete');
 
-        Route::post('manage/cms/usersList/{page?}','Manage\Cms\Users@index');
+        Route::post('manage/cms/usersList/{page?}','Manage\User\Users@index');
 
         //菜单管理
         Route::get('manage/user/menus/show','Manage\User\Menus@show');
@@ -270,7 +274,7 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/user/menus/delete','Manage\User\Menus@doDelete');
 
-        Route::post('manage/cms/menusList/{page?}','Manage\Cms\Menus@index');
+        Route::post('manage/cms/menusList/{page?}','Manage\User\Menus@index');
 
         //角色管理
         Route::get('manage/user/roles/show','Manage\User\Roles@show');
@@ -285,7 +289,9 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/user/roles/delete','Manage\User\Roles@doDelete');
 
-        Route::post('manage/cms/rolesList/{page?}','Manage\Cms\Roles@index');
+        Route::post('manage/cms/rolesList/{page?}','Manage\User\Roles@index');
+
+        Route::post('manage/cms/roles/get_sub_node','Manage\User\Roles@getSubNode');
 
         //频道管理
         Route::get('manage/cms/channel/show','Manage\Cms\Channel@show');

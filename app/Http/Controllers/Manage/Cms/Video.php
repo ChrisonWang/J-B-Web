@@ -25,7 +25,7 @@ class Video extends Controller
         $count = DB::table('cms_video')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip($offset)->take(30)->get();
         if(count($videos) > 0){
             foreach($videos as $key=> $video){
                 $video_data[$key]['key'] = keys_encrypt($video->video_code);

@@ -32,3 +32,8 @@ function jumpToFlink(s){
         window.open(url);
     }
 }
+
+function changeFontSize(s){
+    var s = s||'12px';
+    $("#content").css("font-size", s);
+}

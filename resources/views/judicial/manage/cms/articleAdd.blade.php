@@ -61,7 +61,7 @@
             <div class="form-group">
                 <label for="channel_id" class="col-md-1 control-label">频道：</label>
                 <div class="col-md-3">
-                    <select name="channel_id" class="form-control">
+                    <select name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
                         @foreach($channel_list as $channel)
                         <option value="{{ $channel['channel_key'] }}">{{ $channel['channel_title'] }}</option>
                         @endforeach
@@ -71,7 +71,7 @@
             <div class="form-group">
                 <label for="sub_channel_id" class="col-md-1 control-label">二级频道：</label>
                 <div class="col-md-3">
-                    <select name="sub_channel_id" class="form-control">
+                    <select name="sub_channel_id" class="form-control" id="sub_channel_id">
                         @foreach($sub_channel_list as $sub_channel)
                             <option value="{{ $sub_channel['channel_key'] }}">{{ $sub_channel['channel_title'] }}</option>
                         @endforeach

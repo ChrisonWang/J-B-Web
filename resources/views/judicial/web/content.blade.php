@@ -23,16 +23,21 @@
                     <div class="wztd_left">
                         <span>{{ $article_detail['publish_date'] }}</span>
                         <span>浏览数：{{ $article_detail['clicks'] }}</span>
+                        <span>字号：[
+                            <a href="javascript:void(0)" onclick="changeFontSize('12px')" >小</a>
+                            <a href="javascript:void(0)" onclick="changeFontSize('14px')" >中</a>
+                            <a href="javascript:void(0)" onclick="changeFontSize('16px')" >大</a>
+                            ]</span>
                     </div>
                     <div class="wztd_right">
                         @foreach($article_detail['tags'] as $tag)
-                            <span style="margin-right: 0!important;">#{{ $tag_list[$tag] }}</span>
+                            <span style="margin-right: 0!important;"><a href="{{ URL::to('/tagList').'/'.$tag }}">#{{ $tag_list[$tag] }}</a></span>
                         @endforeach
                     </div>
                 </div>
             </div>
             <div class="wz_txt">
-                <div class="wz_mg">
+                <div class="wz_mg" id="content">
                     {!! $article_detail['content'] !!}
                 </div>
             </div>

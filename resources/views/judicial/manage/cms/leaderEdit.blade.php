@@ -34,6 +34,7 @@
             </div>
             @if( isset($leaderDetail['photo']) && $leaderDetail['photo'] != "none" )
                 <div class="form-group" id="image-thumbnail">
+                    <input type="hidden" name="have_photo" value="yes">
                     <label for="leader_photo" class="col-md-1 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder">
                         <img src="{{ $leaderDetail['photo'] }}" class="img-thumbnail img-responsive">

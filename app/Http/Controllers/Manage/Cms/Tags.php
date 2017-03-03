@@ -29,7 +29,7 @@ class Tags extends Controller
         $count = DB::table('cms_tags')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $tags = DB::table('cms_tags')->select('id','tag_title','tag_color','create_date')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
         if(count($tags) > 0){
             foreach($tags as $key=> $tag){
                 $tag_data[$key]['tag_key'] = keys_encrypt($tag->id);

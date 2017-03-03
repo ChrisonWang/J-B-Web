@@ -10,14 +10,14 @@
             <tbody class="text-center">
             <tr>
                 <td>
-                    <select name="menus" class="form-control node-row">
+                    <select name="menus" class="form-control node-row" onchange="getSubNode($(this))">
                         @foreach($menu_list as $menu)
                             <option value="{{ $menu['key'] }}">{{ $menu['menu_name'] }}</option>
                         @endforeach
                     </select>
                 </td>
                 <td>
-                    <select name="nodes" class="form-control node-row">
+                    <select id="nodes" name="nodes" class="form-control node-row">
                         @foreach($node_list as $node)
                             <option value={{ $node['node_key'] }}>{{ $node['node_name'] }}</option>
                         @endforeach
@@ -61,7 +61,7 @@
                             <tbody class="text-center" id="menu-nodes">
                             <tr>
                                 <td>
-                                    <select name="menus" class="form-control node-row">
+                                    <select name="menus" class="form-control node-row" onchange="getSubNode($(this))">
                                         @foreach($menu_list as $menu)
                                             <option value="{{ $menu['key'] }}">{{ $menu['menu_name'] }}</option>
                                         @endforeach

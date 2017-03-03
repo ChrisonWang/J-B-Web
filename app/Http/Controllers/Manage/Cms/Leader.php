@@ -26,7 +26,7 @@ class Leader extends Controller
         $count = DB::table('cms_leaders')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
         if(count($leaders) > 0){
             foreach($leaders as $key=> $leader){
                 $leaders_data[$key]['key'] = keys_encrypt($leader->id);
@@ -119,7 +119,7 @@ class Leader extends Controller
             $count = DB::table('cms_leaders')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            $leaders = DB::table('cms_leaders')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
             if(count($leaders) > 0){
                 foreach($leaders as $key=> $leader){
                     $leaders_data[$key]['key'] = keys_encrypt($leader->id);
@@ -224,7 +224,9 @@ class Leader extends Controller
         $file = $request->file('leader_photo');
         if(is_null($file) || !$file->isValid()){
             $photo_path = '';
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传头像照片！']);
+            if(!isset($inputs['have_photo']) || $inputs['have_photo'] != 'yes'){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传头像照片！']);
+            }
         }
         else{
             $destPath = realpath(public_path('uploads/images'));
@@ -251,6 +253,9 @@ class Leader extends Controller
             'photo'=> empty($photo_path) ? '' : $photo_path,
             'update_date'=> $now
         );
+        if(isset($inputs['have_photo']) && $inputs['have_photo'] == 'yes'){
+            unset($save_data['photo']);
+        }
         $rs = DB::table('cms_leaders')->where('id',$id)->update($save_data);
         if($rs === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
@@ -261,7 +266,7 @@ class Leader extends Controller
         $count = DB::table('cms_leaders')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $leaders = DB::table('cms_leaders')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
         if(count($leaders) > 0){
             foreach($leaders as $key=> $leader){
                 $leaders_data[$key]['key'] = keys_encrypt($leader->id);
@@ -293,7 +298,7 @@ class Leader extends Controller
             $count = DB::table('cms_leaders')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $leaders = DB::table('cms_leaders')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            $leaders = DB::table('cms_leaders')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
             if(count($leaders) > 0){
                 foreach($leaders as $key=> $leader){
                     $leaders_data[$key]['key'] = keys_encrypt($leader->id);

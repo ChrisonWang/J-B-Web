@@ -119,7 +119,9 @@ class Channel extends Controller
         $channel_data = array();
         $pages = 'none';
         $count = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->count();
-        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take(5)->get();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
         if($channels > 0){
             foreach($channels as $key=> $channel){
                 $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
@@ -132,8 +134,9 @@ class Channel extends Controller
             }
             $pages = array(
                 'count' => $count,
-                'count_page' => ($count > 5)? ceil($count/5)  : 1,
+                'count_page' => $count_page,
                 'now_page' => 1,
+                'type' => 'channel',
             );
         }
         //返回到前段界面
@@ -333,10 +336,13 @@ class Channel extends Controller
         }
         DB::commit();
         //取出数据
+        //取出数据
         $channel_data = array();
         $pages = 'none';
         $count = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->count();
-        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take(5)->get();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
         if($channels > 0){
             foreach($channels as $key=> $channel){
                 $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
@@ -349,8 +355,9 @@ class Channel extends Controller
             }
             $pages = array(
                 'count' => $count,
-                'count_page' => ($count > 5)? ceil($count/5)  : 1,
+                'count_page' => $count_page,
                 'now_page' => 1,
+                'type' => 'channel',
             );
         }
         //返回到前段界面
@@ -379,10 +386,13 @@ class Channel extends Controller
         DB::commit();
 
         //取出数据
+        //取出数据
         $channel_data = array();
         $pages = 'none';
         $count = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->count();
-        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take(5)->get();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $channels = DB::table('cms_channel')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
         if($channels > 0){
             foreach($channels as $key=> $channel){
                 $channel_data[$key]['key'] = keys_encrypt($channel->channel_id);
@@ -395,8 +405,9 @@ class Channel extends Controller
             }
             $pages = array(
                 'count' => $count,
-                'count_page' => ($count > 5)? ceil($count/5)  : 1,
+                'count_page' => $count_page,
                 'now_page' => 1,
+                'type' => 'channel',
             );
         }
         //返回到前段界面

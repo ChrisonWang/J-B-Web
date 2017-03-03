@@ -16,6 +16,30 @@ class Roles extends Controller
 {
     private $page_data = array();
 
+    public function index($page = 1)
+    {
+        $role_list = array();
+        $count = DB::table('user_roles')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $roles = DB::table('user_roles')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
+        foreach($roles as $key=> $role){
+            $role_list[$key]['key'] = keys_encrypt($role->id);
+            $role_list[$key]['name'] = $role->name;
+        }
+        $pages = array(
+            'count' => $count,
+            'count_page' => $count_page,
+            'now_page' => $page,
+            'type' => 'roles',
+        );
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['role_list'] = $role_list;
+        $pageContent = view('judicial.manage.user.rolesList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -85,12 +109,22 @@ class Roles extends Controller
         else{
             //取出数据
             $role_list = array();
-            $roles = DB::table('user_roles')->get();
+            $count = DB::table('user_roles')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $roles = DB::table('user_roles')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
             foreach($roles as $key=> $role){
                 $role_list[$key]['key'] = keys_encrypt($role->id);
                 $role_list[$key]['name'] = $role->name;
             }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'roles',
+            );
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['role_list'] = $role_list;
             $pageContent = view('judicial.manage.user.rolesList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -261,12 +295,22 @@ class Roles extends Controller
         }
         //修改成功则回调页面,取出数据
         $role_list = array();
-        $roles = DB::table('user_roles')->get();
+        $count = DB::table('user_roles')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $roles = DB::table('user_roles')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         foreach($roles as $key=> $role){
             $role_list[$key]['key'] = keys_encrypt($role->id);
             $role_list[$key]['name'] = $role->name;
         }
+        $pages = array(
+            'count' => $count,
+            'count_page' => $count_page,
+            'now_page' => 1,
+            'type' => 'roles',
+        );
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['role_list'] = $role_list;
         $pageContent = view('judicial.manage.user.rolesList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -280,18 +324,48 @@ class Roles extends Controller
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
             $role_list = array();
-            $roles = DB::table('user_roles')->get();
+            $count = DB::table('user_roles')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $roles = DB::table('user_roles')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
             foreach($roles as $key=> $role){
                 $role_list[$key]['key'] = keys_encrypt($role->id);
                 $role_list[$key]['name'] = $role->name;
             }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'roles',
+            );
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['role_list'] = $role_list;
             $pageContent = view('judicial.manage.user.rolesList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
         else{
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
+        }
+    }
+
+    public function getSubNode(Request $request)
+    {
+        $menu_key = keys_decrypt($request->input('menu_key'));
+        $nodes = DB::table('user_menus')->select('nodes')->where('id', $menu_key)->first();
+        if(!is_null($nodes->nodes)){
+            $nodes = json_decode($nodes->nodes ,true);
+            $node_list = array();
+            foreach($nodes as $key=>$node){
+                $node_list[] = array(
+                    'node_key'=> keys_encrypt($key),
+                    'node_name'=> $node,
+                );
+            }
+            json_response(['status'=>'succ', 'res'=>json_encode($node_list)]);
+        }
+        else{
+            json_response(['status'=>'failed']);
         }
     }
 

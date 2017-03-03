@@ -3,7 +3,7 @@
         <li>
             <div>司法局介绍<i class="r_awry"></i></div>
             <div class="law_body">
-                <span><a href="{{ URL::to('/intro')}}">司法局介绍</a></span>
+                <span><a href="{{ URL::to('intro')}}">司法局介绍</a></span>
                 <span><a href="{{ URL::to('/leader')}}">领导介绍</a></span>
                 <span><a href="{{ URL::to('/department')}}">机构设置</a></span>
             </div>

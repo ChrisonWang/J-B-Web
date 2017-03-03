@@ -20,12 +20,12 @@
                 <ul>
                     @foreach($video_list as $video)
                         <li>
-                            <a href="{{ URL::to('/article').'/'.$video['key'] }}">
+                            <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}">
                                 <img src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="250" height="167">
                             </a>
                             <a class="vd_btn"><img src="{{ asset('/images/btn_play_50x50.png') }}" width="50" height="50"></a>
                             <span class="zwv_txt">
-                                <a href="{{ URL::to('/article').'/'.$video['key'] }}">{{ $video['title'] }}</a>
+                                <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}">{{ $video['title'] }}</a>
                             </span>
                         </li>
                     @endforeach

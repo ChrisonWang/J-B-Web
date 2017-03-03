@@ -29,6 +29,7 @@ class Dashboard extends Controller
             'loadContent' => URL::to('manage/loadContent'),
         );
         $this->manager_code = $this->checkLoginStatus();
+        $this->_getLeft();
     }
 
     /**
@@ -48,6 +49,18 @@ class Dashboard extends Controller
             //获取用户信息
             $managerInfo = $this->_getManagerInfo($managerCode);
             $this->page_data['managerInfo'] = $managerInfo;
+
+            //推荐链接
+            $r_data = array();
+            $links = DB::table('cms_recommend_links')->orderBy('create_date', 'desc')->get();
+            if(count($links) > 0){
+                foreach($links as $key=> $link){
+                    $r_data[$key]['key'] = keys_encrypt($link->id);
+                    $r_data[$key]['r_title'] = $link->title;
+                    $r_data[$key]['r_link'] = $link->link;
+                }
+                $this->page_data['r_list'] = $r_data;
+            }
         }
         return view('judicial.manage.dashboard',$this->page_data);
     }
@@ -517,6 +530,75 @@ class Dashboard extends Controller
                 }
 
                 break;
+
+            case 'users':
+                $table = '`user_members`';
+                $where = 'WHERE';
+                if(isset($inputs['search-login-name']) && !empty($inputs['search-login-name'])){
+                    $where .= ' `login_name` LIKE "%'.$inputs['search-login-name'].'%" AND';
+                }
+                if(isset($inputs['search-nickname']) && !empty($inputs['search-nickname']) && $inputs['search-nickname']=='1111111'){
+                    $where .= ' `nickname` = "'.$inputs['search-nickname'].'" AND';
+                }
+                if(isset($inputs['search-cell-phone']) && !empty($inputs['search-cell-phone'])){
+                    $where .= ' `cell_phone` = "'.$inputs['search-cell-phone'].'"AND ';
+                }
+                if(isset($inputs['search-status']) && $inputs['search-status']!='none' && !empty($inputs['search-status'])){
+                    $where .= ' `status` = "'.$inputs['search-status'].'"AND ';
+                }
+                if(isset($inputs['search-type']) && !empty($inputs['search-type']) && $inputs['search-type'] == 2){
+                    if(isset($inputs['search-office']) && !empty($inputs['search-office'])){
+                        $where .= ' `office_id` = "'.keys_decrypt($inputs['search-office']).'"AND ';
+                    }
+                    $table = '`user_manager`';
+                }
+
+                $sql = 'SELECT * FROM '.$table.' '.$where.' 1';
+                $members = DB::select($sql);
+                if($members && count($members) > 0){
+                    $count = count($members);
+                    $count_page = ($count > 30)? ceil($count/30)  : 1;
+                    $offset = 30;
+                    $members = array_slice($members, 0, $offset);
+                    foreach($members as $member){
+                        $user_list[] = array(
+                            'key'=> $inputs['search-type'] == 2 ? $member->manager_code : $member->member_code,
+                            'login_name'=> $member->login_name,
+                            'type_id'=> $inputs['search-type'] == 2 ? $member->type_id : $member->user_type,
+                            'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                            'cell_phone'=> $member->cell_phone,
+                            'disabled'=> $member->disabled,
+                            'create_date'=> $member->create_date,
+                        );
+                    }
+                    $pages = array(
+                        'count' => $count,
+                        'count_page' => $count_page,
+                        'now_page' => 1,
+                        'type' => 'users',
+                    );
+                    //取出用户类型
+                    $user_type = DB::table('user_type')->get();
+                    foreach($user_type as $type){
+                        $type_list[$type->type_id] = $type->type_name;
+                    }
+                    //取出科室
+                    $user_office = DB::table('user_office')->get();
+                    foreach($user_office as $office){
+                        $office_list[keys_encrypt($office->id)] = $office->office_name;
+                    }
+
+                    //返回到前段界面
+                    $this->page_data['pages'] = $pages;
+                    $this->page_data['type_list'] = $type_list;
+                    $this->page_data['user_list'] = $user_list;
+                    $this->page_data['office_list'] = $office_list;
+                    $pageContent = view('judicial.manage.cms.ajaxSearch.usersSearch',$this->page_data)->render();
+                    json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+                }
+                else{
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
+                }
         }
     }
 
@@ -530,12 +612,25 @@ class Dashboard extends Controller
     {
         //取出数据
         $office_data = array();
-        $_office = DB::table('user_office')->orderBy('create_date', 'desc')->get();
-        foreach($_office as $key=> $office){
-            $office_data[$key]['key'] = keys_encrypt($office->id);
-            $office_data[$key]['office_name'] = $office->office_name;
+        $pages = 'none';
+        $count = DB::table('user_office')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $_office = DB::table('user_office')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($_office) > 0){
+            foreach($_office as $key=> $office){
+                $office_data[$key]['key'] = keys_encrypt($office->id);
+                $office_data[$key]['office_name'] = $office->office_name;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'office',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['office_list'] = $office_data;
         $pageContent = view('judicial.manage.user.officeList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -549,21 +644,29 @@ class Dashboard extends Controller
      */
     private function _content_NodesMng($request)
     {
-        $this->page_data['node_schema'] = array(
-                'A'=> 'roles(角色管理表)',
-                'B'=> 'channels(频道管理表)',
-                'C'=> 'department(科室管理表)',
-                'D'=> 'article(文章管理表)',
-        );
+        $this->page_data['node_schema'] = config('app.permission');
         //取出数据
         $node_list = array();
-        $nodes = DB::table('user_nodes')->orderBy('create_date', 'desc')->get();
-        foreach($nodes as $key=> $node){
-            $node_list[$key]['key'] = keys_encrypt($node->id);
-            $node_list[$key]['node_name'] = $node->node_name;
-            $node_list[$key]['node_schema'] = $node->node_schema;
+        $pages = 'none';
+        $count = DB::table('user_nodes')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $nodes = DB::table('user_nodes')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($nodes) > 0){
+            foreach($nodes as $key=> $node){
+                $node_list[$key]['key'] = keys_encrypt($node->id);
+                $node_list[$key]['node_name'] = $node->node_name;
+                $node_list[$key]['node_schema'] = $node->node_schema;
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'nodes',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['node_list'] = $node_list;
         $pageContent = view('judicial.manage.user.nodeList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -579,13 +682,26 @@ class Dashboard extends Controller
     {
         //取出数据
         $menu_list = array();
-        $menus = DB::table('user_menus')->orderBy('create_date', 'desc')->get();
-        foreach($menus as $key=> $menu){
-            $menu_list[$key]['key'] = keys_encrypt($menu->id);
-            $menu_list[$key]['menu_name'] = $menu->menu_name;
-            $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+        $pages = 'none';
+        $count = DB::table('user_menus')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $menus = DB::table('user_menus')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($menus) > 0){
+            foreach($menus as $key=> $menu){
+                $menu_list[$key]['key'] = keys_encrypt($menu->id);
+                $menu_list[$key]['menu_name'] = $menu->menu_name;
+                $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'menus',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['menu_list'] = $menu_list;
         $pageContent = view('judicial.manage.user.menuList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -601,12 +717,22 @@ class Dashboard extends Controller
     {
         //取出数据
         $role_list = array();
-        $roles = DB::table('user_roles')->orderBy('create_date', 'desc')->get();
+        $count = DB::table('user_roles')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $roles = DB::table('user_roles')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         foreach($roles as $key=> $role){
             $role_list[$key]['key'] = keys_encrypt($role->id);
             $role_list[$key]['name'] = $role->name;
         }
+        $pages = array(
+            'count' => $count,
+            'count_page' => $count_page,
+            'now_page' => 1,
+            'type' => 'roles',
+        );
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['role_list'] = $role_list;
         $pageContent = view('judicial.manage.user.rolesList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -634,6 +760,10 @@ class Dashboard extends Controller
         }
         //取出用户
         $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        $count = count($members);
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $members = array_slice($members, 0, $offset);
         foreach($members as $member){
             $user_list[] = array(
                 'key'=> $member->member_code,
@@ -645,6 +775,12 @@ class Dashboard extends Controller
                 'create_date'=> $member->create_date,
             );
         }
+        $pages = array(
+            'count' => $count,
+            'count_page' => $count_page,
+            'now_page' => 1,
+            'type' => 'users',
+        );
         //取出用户类型
         $user_type = DB::table('user_type')->get();
         foreach($user_type as $type){
@@ -656,10 +792,31 @@ class Dashboard extends Controller
             $office_list[keys_encrypt($office->id)] = $office->office_name;
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['type_list'] = $type_list;
         $this->page_data['user_list'] = $user_list;
         $this->page_data['office_list'] = $office_list;
         $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _getLeft()
+    {
+        $nodes = session('permission');
+        if($nodes == 'ROOT'){
+            $this->page_data['left_tree'] = 'ROOT';
+        }
+        else{
+            foreach($nodes as $k=> $node){
+                foreach($node as $j=>$n){
+                    $list[$k]['name'] = $n['menu_name'];
+                    $list[$k]['subs'][$j] = array(
+                        'node_name'=> $n['node_name'],
+                        'node_key'=> $n['node_key'],
+                    );
+                }
+            }
+            $this->page_data['left_tree'] = $list;
+        }
     }
 }

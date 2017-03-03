@@ -17,7 +17,7 @@
 	<!-- 中间容器 -->
 	<div id="page-wrapper" style="padding-top: 15px">
 		<div class="container-fluid" id="manageContainer">
-		@include('judicial.manage.layout.managerInfo')
+		@include('judicial.manage.layout.indexRecommends')
 		</div>
 	</div><!-- 中间内容End -->
 </div>

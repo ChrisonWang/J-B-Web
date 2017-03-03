@@ -44,26 +44,23 @@
                     <li @if($k == 0)class="idbr_topsd"@endif>{{ $recommend['channel_title'] }}</li>
                 @endforeach
             </ul>
-            <a href="javascript:void(0)">更多>></a>
+            <a href="{{ URL::to('/list').'/'.$recommend_list[0]['key']}}">更多>></a>
         </div>
         <div class="idbr_down">
-            暂无文章
-            {{--@foreach($recommend_list as $k=> $recommend)
-                @if($recommend['article_list'] != 'none' && is_array($recommend['article_list']))
-                    <ul>
-                        @foreach($recommend['article_list'] as $k=> $recommend)
-                            <li>
+            @if($r_article_list != 'none' && is_array($r_article_list))
+                <ul>
+                    @foreach($r_article_list as $r_article)
+                        <li>
                                 <span class="idbrd_l">
-                                    <a href="{{ URL::to('/article').'/'.$recommend['key'] }}" target="_blank">{{ $recommend['article_title'] }}</a>
+                                    <a href="{{ URL::to('/article').'/'.$r_article['key'] }}" target="_blank">{{ $r_article['article_title'] }}</a>
                                 </span>
-                                <span class="idbrd_r">{{ $recommend['publish_date'] }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                @else
-                    暂无文章
-                @endif
-            @endforeach--}}
+                            <span class="idbrd_r">{{ $r_article['publish_date'] }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                暂无文章
+            @endif
         </div>
     </div>
 </div>
@@ -110,10 +107,8 @@
                 <li class="idbr_topsd">热点新闻</li>
                 <li>业务动态</li>
                 <li>公告通知</li>
-                <li>公告通知</li>
-                <li>公告通知</li>
-                <li>公告通知</li>
             </ul>
+            <a href="{{ URL::to('/list').'/'.$recommend_list[0]['key']}}">更多>></a>
         </div>
         <div class="idbr_down">
             <ul>

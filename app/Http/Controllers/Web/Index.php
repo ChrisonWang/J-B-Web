@@ -71,27 +71,26 @@ class Index extends Controller
             }
         }
         //拿出首页推荐的频道
-        $rc_data = DB::table('cms_channel')->where(['zwgk'=>'yes', 'is_recommend'=>'yes'])->orderBy('sort', 'desc')->skip(0)->take(3)->get();
+        $rc_data = DB::table('cms_channel')->where(['is_recommend'=>'yes'])->orderBy('sort', 'desc')->skip(0)->take(3)->get();
         $recommend_list = 'none';
         if(count($rc_data) > 0){
             $recommend_list = array();
-            foreach($rc_data as $k=> $rc){
-                $recommend_list[$k] = array(
+            foreach($rc_data as $rc){
+                $recommend_list[] = array(
                     'key'=> $rc->channel_id,
                     'channel_title'=> $rc->channel_title,
                 );
-                $atricles = DB::table('cms_article')->where(['disabled'=>'no', 'channel_id'=>$rc->channel_id])->orWhere(['disabled'=>'no', 'sub_channel'=>$rc->channel_id])->orderBy('publish_date', 'desc')->get();
-                if(count($atricles) > 0 ){
-                    foreach($atricles as $atricle){
-                        $recommend_list[$k]['article_list'] = array(
-                            'key'=> $atricle->article_code,
-                            'article_title'=> $atricle->article_title,
-                            'publish_date'=> $atricle->publish_date,
-                        );
-                    }
-                }
-                else{
-                    $recommend_list[$k]['article_list'] = 'none';
+            }
+            $r_article = DB::table('cms_article')->where('channel_id',$recommend_list[0]['key'])->orWhere('sub_channel',$recommend_list[0]['key'])->orderBy('publish_date','desc')->skip(0)->take(6)->get();
+            $r_article_list = 'none';
+            if(count($r_article) > 0){
+                $r_article_list = array();
+                foreach($r_article as $r_ar){
+                    $r_article_list[] = array(
+                        'key'=> $r_ar->article_code,
+                        'article_title'=> $r_ar->article_title,
+                        'publish_date'=> $r_ar->publish_date,
+                    );
                 }
             }
         }
@@ -130,9 +129,11 @@ class Index extends Controller
         }
 
         $this->page_date['recommend_list'] = $recommend_list;
+        $this->page_date['r_article_list'] = $r_article_list;
         $this->page_date['pic_article_list'] = $pic_article_list;
         $this->page_date['flink_type_list'] = $flink_type_list;
         $this->page_date['flinks_list'] = $flinks_list;
+        $this->page_date['img_flink_list'] = $img_flink_list;
         return view('judicial.web.index', $this->page_date);
     }
 
@@ -154,6 +155,11 @@ class Index extends Controller
         $res = DB::table('cms_article')->where('article_title', 'like', '%'.$keywords.'%')->get();
         $count = count($res);
         if(count($res) == 0){
+            $this->page_date['page'] = array(
+                'count' => $count,
+                'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
+                'now_page' => 1,
+            );
             $this->page_date['search_list'] = 'none';
             return view('judicial.web.search', $this->page_date);
         }
@@ -268,6 +274,49 @@ class Index extends Controller
     }
 
     /**
+     * 返回标签列表
+     * @param Request $request
+     * @return View
+     */
+    public function tag_list($tid, $page = 1)
+    {
+        //文章
+        $article_list = array();
+        $sql = 'SELECT * FROM `cms_article` WHERE `tags` LIKE "%'.$tid.'%"';
+        $articles = DB::select($sql);
+        $tag_name = DB::table('cms_tags')->where('id', $tid)->first();
+        if((count($articles)==0)){
+            return view('errors.404');
+        }
+        $offset = 16 * ($page-1);
+        $count = count($articles);
+        if($count < 1){
+            $article_list = 'none';
+            $this->page_date['article_list'] = $article_list;
+            return view('judicial.web.tagList', $this->page_date);
+        }
+        else{
+            $articles = array_slice($articles, $offset, 16);
+            foreach($articles as $article){
+                $article_list[$article->article_code] = array(
+                    'key'=> $article->article_code,
+                    'article_title'=> $article->article_title,
+                    'clicks'=> $article->clicks,
+                    'publish_date'=> date('Y-m-d',strtotime($article->publish_date)),
+                );
+            }
+            $this->page_date['page'] = array(
+                'count' => $count,
+                'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
+                'now_page' => $page,
+                'tag_name' => is_null($tag_name) ? '' : $tag_name->tag_title,
+            );
+            $this->page_date['article_list'] = $article_list;
+            return view('judicial.web.tagList', $this->page_date);
+        }
+    }
+
+    /**
      * 返回图片新闻列表
      * @param Request $request
      * @return View
@@ -341,10 +390,39 @@ class Index extends Controller
             $this->page_date['title'] = isset($channel->channel_title) ? $channel->channel_title : '频道已被删除';
             $this->page_date['sub_title'] = isset($channel->sub_title) ? $channel->sub_title : '频道已被删除';
         }
-
+        //更新访问
+        $clicks = (isset($article->clicks)) ? $article->clicks + 1 : 1;
+        DB::table('cms_article')->where('article_code', $article_code)->update(['clicks'=> $clicks]);
         $this->page_date['tag_list'] = $tag_list;
         $this->page_date['article_detail'] = $article_detail;
         return view('judicial.web.content', $this->page_date);
+    }
+
+    /**
+     * 返回视频正文
+     * @param Request $request
+     * @return View
+     */
+    public function video_content($video_code)
+    {
+        if(empty($video_code)){
+            return view('errors.404');
+        }
+        //获取正文
+        $video = DB::table('cms_video')->where(['video_code'=>$video_code, 'disabled'=>'no'])->first();
+        if(is_null($video)){
+            return view('errors.404');
+        }
+        else{
+            $video_detail = array(
+                'title'=> $video->title,
+                'link'=> $video->link,
+                'create_date'=> $video->create_date,
+                'update_date'=> $video->update_date,
+            );
+        }
+        $this->page_date['video_detail'] = $video_detail;
+        return view('judicial.web.videoContent', $this->page_date);
     }
 
     /**

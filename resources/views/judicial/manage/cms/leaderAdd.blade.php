@@ -49,7 +49,7 @@
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-1">
-                    <button type="submit" class="btn btn-info btn-block" onclick="addLeader()">确认</button>
+                    <button type="button" class="btn btn-info btn-block" onclick="addLeader()">确认</button>
                 </div>
                 <div class="col col-md-1">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-leaderIntroduction" onclick="loadContent($(this))">返回列表</button>

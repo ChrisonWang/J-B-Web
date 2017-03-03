@@ -6,7 +6,7 @@
     </div>
     <div class="panel-body">
         <form class="form-horizontal" id="recommendEditForm">
-            <input type="hidden" value="{{ $video_detail['key'] }}" name="key"/>
+            <input type="hidden" value="{{ $r_detail['key'] }}" name="key"/>
             <div class="form-group">
                 <label for="r_title" class="col-md-1 control-label">标题：</label>
                 <div class="col-md-3">

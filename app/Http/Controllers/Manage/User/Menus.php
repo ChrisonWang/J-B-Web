@@ -16,6 +16,34 @@ class Menus extends Controller
 {
     private $page_data = array();
 
+    public function index($page = 1)
+    {
+        $menu_list = array();
+        $pages = 'none';
+        $count = DB::table('user_menus')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $menus = DB::table('user_menus')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
+        if(count($menus) > 0){
+            foreach($menus as $key=> $menu){
+                $menu_list[$key]['key'] = keys_encrypt($menu->id);
+                $menu_list[$key]['menu_name'] = $menu->menu_name;
+                $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'menus',
+            );
+        }
+        //返回到前段界面
+        $this->page_data['pages'] = $pages;
+        $this->page_data['menu_list'] = $menu_list;
+        $pageContent = view('judicial.manage.user.menuList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -83,13 +111,26 @@ class Menus extends Controller
         else{
             //取出数据
             $menu_list = array();
-            $menus = DB::table('user_menus')->get();
-            foreach($menus as $key=> $menu){
-                $menu_list[$key]['key'] = keys_encrypt($menu->id);
-                $menu_list[$key]['menu_name'] = $menu->menu_name;
-                $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+            $pages = 'none';
+            $count = DB::table('user_menus')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $menus = DB::table('user_menus')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($menus) > 0){
+                foreach($menus as $key=> $menu){
+                    $menu_list[$key]['key'] = keys_encrypt($menu->id);
+                    $menu_list[$key]['menu_name'] = $menu->menu_name;
+                    $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'menus',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['menu_list'] = $menu_list;
             $pageContent = view('judicial.manage.user.menuList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -168,8 +209,8 @@ class Menus extends Controller
         //加密节点id
         if(!empty($node->nodes)){
             $menu_nodes = array();
-            foreach(json_decode($node->nodes, true) as $_node){
-                $menu_nodes[][keys_encrypt($key)] = $_node;
+            foreach(json_decode($node->nodes, true) as $key=> $_node){
+                $menu_nodes[keys_encrypt($key)] = $_node;
             }
         }
         else{
@@ -183,7 +224,7 @@ class Menus extends Controller
         //页面中显示
         $this->page_data['node_list'] = $node_list;
         $this->page_data['menu_detail'] = $menu_detail;
-        $pageContent = view('judicial.manage.user.menuDetail',$this->page_data)->render();
+        $pageContent = view('judicial.manage.user.menuEdit',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -228,13 +269,26 @@ class Menus extends Controller
         }
         //修改成功则回调页面,取出数据
         $menu_list = array();
-        $menus = DB::table('user_menus')->get();
-        foreach($menus as $key=> $menu){
-            $menu_list[$key]['key'] = keys_encrypt($menu->id);
-            $menu_list[$key]['menu_name'] = $menu->menu_name;
-            $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+        $pages = 'none';
+        $count = DB::table('user_menus')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $menus = DB::table('user_menus')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($menus) > 0){
+            foreach($menus as $key=> $menu){
+                $menu_list[$key]['key'] = keys_encrypt($menu->id);
+                $menu_list[$key]['menu_name'] = $menu->menu_name;
+                $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'menus',
+            );
         }
         //返回到前段界面
+        $this->page_data['pages'] = $pages;
         $this->page_data['menu_list'] = $menu_list;
         $pageContent = view('judicial.manage.user.menuList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
@@ -248,13 +302,26 @@ class Menus extends Controller
         if( $row > 0 ){
             //删除成功则回调页面,取出数据
             $menu_list = array();
-            $menus = DB::table('user_menus')->get();
-            foreach($menus as $key=> $menu){
-                $menu_list[$key]['key'] = keys_encrypt($menu->id);
-                $menu_list[$key]['menu_name'] = $menu->menu_name;
-                $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+            $pages = 'none';
+            $count = DB::table('user_menus')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $menus = DB::table('user_menus')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($menus) > 0){
+                foreach($menus as $key=> $menu){
+                    $menu_list[$key]['key'] = keys_encrypt($menu->id);
+                    $menu_list[$key]['menu_name'] = $menu->menu_name;
+                    $menu_list[$key]['nodes'] = empty($menu->nodes) ? 'none' : json_decode($menu->nodes,true);
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'menus',
+                );
             }
             //返回到前段界面
+            $this->page_data['pages'] = $pages;
             $this->page_data['menu_list'] = $menu_list;
             $pageContent = view('judicial.manage.user.menuList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

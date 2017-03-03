@@ -24,7 +24,7 @@ class FlinksImg extends Controller
         $count = DB::table('cms_image_flinks')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $links = DB::table('cms_image_flinks')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $links = DB::table('cms_image_flinks')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
         if(count($links) > 0){
             foreach($links as $key=> $link){
                 $flink_data[$key]['key'] = keys_encrypt($link->id);

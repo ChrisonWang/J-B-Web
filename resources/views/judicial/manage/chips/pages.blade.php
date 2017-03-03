@@ -10,13 +10,13 @@
             </li>
             @for ($i = 1; $i <= $pages['count_page']; $i++)
                 <li @if($pages['now_page'] == $i)class="active"@endif>
-                    <a href="javascript: void(0); " onclick="list_page('{{$pages['type']}}', {{$i}});" data-pageno="{{ $i }}">
+                    <a href="javascript: void(0); " @if($pages['now_page'] != $i)onclick="list_page('{{$pages['type']}}', {{$i}});"@endif data-pageno="{{ $i }}" >
                         {{ $i }}
                         @if($pages['now_page'] == $i)<span class="sr-only">(current)</span>@endif
                     </a>
                 </li>
             @endfor
-            <li @if($pages['now_page'] == $pages['count'])class="disabled"@endif>
+            <li @if($pages['now_page'] == $pages['count_page'])class="disabled"@endif>
                 <a href="javascript: void(0); " onclick="list_page('{{$pages['type']}}', {{$pages['now_page']+1}})"; data-pageno="{{ $pages['now_page'] + 1 }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
