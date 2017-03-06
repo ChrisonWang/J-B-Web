@@ -57,6 +57,10 @@ class Channel extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-channelMng'] || $node_p['cms-channelMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.cms.channelAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -208,6 +212,11 @@ class Channel extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-channelMng'] || $node_p['cms-channelMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
+
         $channel_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
@@ -369,8 +378,21 @@ class Channel extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-channelMng'] || $node_p['cms-channelMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
+        //检查是否存在不能删除的频道
+        $subs = DB::table('cms_channel')->where('pid',$id)->get();
+        if(count($subs)){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含子频道不能删除！']);
+        }
+        $article = DB::table('cms_article')->where('channel_id',$id)->orWhere('sub_channel',$id)->get();
+        if(count($article)){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含文章不能删除！']);
+        }
         //事物方式删除
         DB::beginTransaction();
         $row = DB::table('cms_channel')->where('pid',$id)->delete();

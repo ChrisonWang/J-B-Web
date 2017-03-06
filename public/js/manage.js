@@ -358,6 +358,7 @@ function upload_img(t){
         image_thumbnail.removeClass("hidden");
         image_holder.show();
         reader.readAsDataURL(t[0].files[0]);
+        $('input[name="have_photo"]').val('no');
     }
     else {
         alert("您的浏览器不支持控件，无法预览图片！");
@@ -1528,6 +1529,34 @@ function addArticle(){
     });
 }
 
+function ajax_upload_file(t, type){
+    var url = '/manage/cms/article/upload';
+    var form = t.parents('form');
+    form.ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                t.parent("tr").find("input[name='file-name']").val(re.filenames);
+                if(type == 'add'){
+                    $("#articleAddForm").append('<input type="hidden" value='+re.files+' name="files[]"><input type="hidden" value='+re.filenames+' name="file-names[]">');
+
+                }
+                else if(type == 'edit'){
+                    $("#articleEditForm").append('<input type="hidden" value='+re.files+' name="files[]"><input type="hidden" value='+re.filenames+' name="file-names[]">');
+                }
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#add-row-notice'));
+            }
+        }
+    });
+}
+
 function getSubChannel(c,sub){
     sub.html('<option value="none" selected>暂无分类</option>');
     var url = '/manage/cms/article/get_sub_channel';
@@ -1543,6 +1572,34 @@ function getSubChannel(c,sub){
             if(re.status == 'succ'){
                 var list = jQuery.parseJSON(re.res);
                 var options = '';
+                $.each(list, function(i,sub){
+                    options += '<option value="'+sub.channel_key+'">'+sub.channel_title+'</option>';
+                });
+                sub.html(options);
+            }
+            else if(re.status == 'failed'){
+                return;
+            }
+            return;
+        }
+    });
+}
+
+function getSubChannel_S(c,sub){
+    sub.html('<option value="none" selected>暂无分类</option>');
+    var url = '/manage/cms/article/get_sub_channel';
+    var channel_key = c.find("option:selected").val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: url,
+        method: "POST",
+        data: 'channel_key='+channel_key,
+        success:function(re){
+            if(re.status == 'succ'){
+                var list = jQuery.parseJSON(re.res);
+                var options = '<option value="none" selected>不限二级分类</option>';
                 $.each(list, function(i,sub){
                     options += '<option value="'+sub.channel_key+'">'+sub.channel_title+'</option>';
                 });

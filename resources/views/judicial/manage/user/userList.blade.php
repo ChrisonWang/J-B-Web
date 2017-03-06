@@ -49,6 +49,7 @@
                             <label for="search-office">科室：</label>
                             <select id="search-office" name="search-office" class="form-control">
                                 @if(isset($office_list))
+                                    <option value="none">不限科室</option>
                                     @foreach($office_list as $key=> $name)
                                         <option value="{{ $key }}">{{ $name }}</option>
                                     @endforeach

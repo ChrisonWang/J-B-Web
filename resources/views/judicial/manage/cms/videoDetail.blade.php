@@ -10,25 +10,25 @@
             <div class="form-group">
                 <label for="video_title" class="col-md-1 control-label">视频名称：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="video_title" name="video_title" value="{{ $video_detail['video_title'] }}" placeholder="请输入视频名称" />
+                    <input disabled type="text" class="form-control" id="video_title" name="video_title" value="{{ $video_detail['video_title'] }}" placeholder="请输入视频名称" />
                 </div>
             </div>
             <div class="form-group">
                 <label for="video_link" class="col-md-1 control-label">视频链接：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="video_link" name="video_link" value="{{ $video_detail['video_link'] }}" placeholder="请输入视频链接地址" />
+                    <input disabled type="text" class="form-control" id="video_link" name="video_link" value="{{ $video_detail['video_link'] }}" placeholder="请输入视频链接地址" />
                 </div>
             </div>
             <div class="form-group">
                 <label for="disabled" class="col-md-1 control-label">是否发布：</label>
                 <div class="col-md-3">
-                    <h3><input type="checkbox" name="disabled" id="disabled" value="no" @if($video_detail['disabled']=='no') checked @endif /></h3>
+                    <h3><input disabled type="checkbox" name="disabled" id="disabled" value="no" @if($video_detail['disabled']=='no') checked @endif /></h3>
                 </div>
             </div>
             <div class="form-group">
                 <label for="sort" class="col-md-1 control-label">排序：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="sort" name="sort" value="{{ $video_detail['sort'] }}" placeholder="请输入权重（数字越大越靠前）" />
+                    <input disabled type="text" class="form-control" id="sort" name="sort" value="{{ $video_detail['sort'] }}" placeholder="请输入权重（数字越大越靠前）" />
                 </div>
             </div>
             <div class="form-group">

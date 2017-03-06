@@ -60,18 +60,19 @@
                             </tr>
                             </thead>
                             <tbody class="text-center" id="menu-nodes">
-                            <tr>
+                            @foreach($role_detail['permissions'] as $p)
+                                <tr>
                                 <td>
                                     <select name="menus" class="form-control node-row" onchange="getSubNode($(this))">
                                         @foreach($menu_list as $menu)
-                                            <option value="{{ $menu['key'] }}">{{ $menu['menu_name'] }}</option>
+                                            <option value="{{ $menu['key'] }}" @if($p['menus'] == $menu['key']) selected @endif>{{ $menu['menu_name'] }}</option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td>
                                     <select name="nodes" class="form-control node-row">
                                         @foreach($f_node_list as $node)
-                                            <option value={{ $node['node_key'] }}>{{ $node['node_name'] }}</option>
+                                            <option value="{{ $node['node_key'] }}" @if($p['nodes'] == $node['node_key']) selected @endif>{{ $node['node_name'] }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -85,6 +86,7 @@
                                     <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
                                 </td>
                             </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

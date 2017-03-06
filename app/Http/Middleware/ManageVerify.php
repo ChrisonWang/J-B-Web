@@ -50,6 +50,26 @@ class ManageVerify
     private function getPermission($managerCode)
     {
         if(!empty($managerCode) && strstr($managerCode, 'ADMIN_')){
+            $node_p = array(
+                'user-nodesMng'                => 'rw',
+                'user-menuMng'                 => 'rw',
+                'user-roleMng'                 => 'rw',
+                'user-userMng'                 => 'rw',
+                'user-officeMng'               => 'rw',
+                'cms-channelMng'               => 'rw',
+                'cms-tagsMng'                  => 'rw',
+                'cms-articleMng'               => 'rw',
+                'cms-videoMng'                 => 'rw',
+                'cms-flink1Mng'                => 'rw',
+                'cms-flink2Mng'                => 'rw',
+                'cms-formMng'                  => 'rw',
+                'cms-justiceIntroduction'    => 'rw',
+                'cms-leaderIntroduction'     => 'rw',
+                'cms-department'              => 'rw',
+                'cms-departmentType'          => 'rw',
+                'cms-recommendLink'           => 'rw',
+            );
+            Session::put('node_p',$node_p,120);
             Session::put('permission','ROOT',120);
             Session::save();
             return true;
@@ -67,6 +87,7 @@ class ManageVerify
                 'p' => $permission[2],
             );
         }
+        $node_p = array();
         if(count($p_list) > 0){
             $menus = array();
             foreach($p_list as $pms){
@@ -78,9 +99,11 @@ class ManageVerify
                         $menus[$menu->id][$k]['node_name'] = $nodes->node_name;
                         $menus[$menu->id][$k]['node_key'] = $nodes->node_schema;
                         $menus[$menu->id][$k]['p'] = $pm['p'];
+                        $node_p[$nodes->node_schema] = $pm['p'];
                     }
                 }
             }
+            Session::put('node_p',$node_p,120);
             Session::put('permission',$menus,120);
             Session::save();
         }

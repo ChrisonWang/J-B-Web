@@ -53,6 +53,10 @@ class FlinksImg extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-flink1Mng'] || $node_p['cms-flink1Mng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.cms.flinksImgAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -178,6 +182,10 @@ class FlinksImg extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-flink1Mng'] || $node_p['cms-flink1Mng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $flink_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
@@ -240,7 +248,7 @@ class FlinksImg extends Controller
             'image'=> $photo_path,
             'update_date'=> $now
         );
-        if($photo_path == 'image'){
+        if($inputs['have_photo'] == 'yes'){
             unset($save_data['image']);
         }
         $rs = DB::table('cms_image_flinks')->where('id',$id)->update($save_data);
@@ -277,6 +285,10 @@ class FlinksImg extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-flink1Mng'] || $node_p['cms-flink1Mng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_image_flinks')->where('id',$id)->delete();

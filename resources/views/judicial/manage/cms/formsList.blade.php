@@ -21,6 +21,7 @@
                             <label for="search-channel-key">频道：</label>
                             <select id="search-channel-key" name="search-channel-key" class="form-control">
                                 @if(isset($channel_list))
+                                    <option value="none" selected>不限频道</option>
                                     @foreach($channel_list as $key=> $name)
                                         <option value="{{ $key }}">{{ $name }}</option>
                                     @endforeach

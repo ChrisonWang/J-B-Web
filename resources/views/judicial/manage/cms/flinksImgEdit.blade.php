@@ -27,7 +27,7 @@
                 </div>
             </div>
             @if( isset($flink_detail['fi_image']) && $flink_detail['fi_image'] != "none" )
-                <input type="hidden" name="is_image" value="yes"/>
+                <input type="hidden" name="have_photo" value="yes"/>
                 <div class="form-group" id="image-thumbnail">
                     <label for="leader_photo" class="col-md-1 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder">

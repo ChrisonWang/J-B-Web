@@ -10,19 +10,19 @@
             <div class="form-group">
                 <label for="title" class="col-md-1 control-label">标题：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="title" name="title" value="{{ $form_detail['title'] }}" placeholder="请输入标题" />
+                    <input disabled type="text" class="form-control" id="title" name="title" value="{{ $form_detail['title'] }}" placeholder="请输入标题" />
                 </div>
             </div>
             <div class="form-group">
                 <label for="disabled" class="col-md-1 control-label">是否官网显示：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="disabled" value="no" name="disabled" @if($form_detail['disabled'] == 'no') checked @endif/>
+                    <input disabled type="checkbox" class="form-control" id="disabled" value="no" name="disabled" @if($form_detail['disabled'] == 'no') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="channel" class="col-md-1 control-label">频道：</label>
                 <div class="col-md-3">
-                    <select class="form-control" id="channel_id" name="channel_id">
+                    <select disabled class="form-control" id="channel_id" name="channel_id">
                         @foreach($channel_list as $key=> $channel)
                             <option value="{{ $key }}" @if($form_detail['channel_id'] == $key) selected @endif>{{ $channel }}</option>
                         @endforeach
@@ -32,10 +32,7 @@
             <div class="form-group">
                 <label for="leader_photo" class="col-md-1 control-label">附件：</label>
                 @if($form_detail['file'] == 'none')
-                    <div class="col-md-3">
-                        <i class="fa fa-paperclip"></i>上传附件
-                        <input type="file" id="upload_photo" class="btn btn-default btn-file" name="file"/>
-                    </div>
+                    无附件！
                 @else
                     <div class="col-md-3" id="change_box">
                         <input class="btn btn-default" type="button" value="修改附件(会删除原有附件)" onclick="changeFile()">
@@ -49,7 +46,7 @@
             <div class="form-group">
                 <label for="description" class="col-md-1 control-label">简介：</label>
                 <div class="col-md-8">
-                    <textarea name="description" id="description">
+                    <textarea disabled name="description" id="description">
                         {{ $form_detail['description'] }}
                     </textarea>
                 </div>

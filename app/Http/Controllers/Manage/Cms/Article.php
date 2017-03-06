@@ -95,6 +95,10 @@ class Article extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-articleMng'] || $node_p['cms-articleMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         //取出一级频道
         $first_channel = DB::table('cms_channel')->where('pid', 0)->first();
         $channels = DB::table('cms_channel')->where('pid', 0)->get();
@@ -174,6 +178,20 @@ class Article extends Controller
                 $save_tags[] = keys_decrypt($tag);
             }
         }
+
+        $file_list = array();
+        if(isset($inputs['files']) && is_array($inputs['files'])){
+            foreach($inputs['files'] as $key=> $file){
+                $file_list[$key] = array(
+                    'filename'=> $inputs['file-names'][$key],
+                    'file'=> $file,
+                );
+            }
+        }
+        else{
+            $file_list = '';
+        }
+
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
@@ -183,6 +201,7 @@ class Article extends Controller
             'sub_channel'=> keys_decrypt($inputs['sub_channel_id']),
             'content'=> $inputs['content'],
             'clicks'=> 0,
+            'files'=> empty($file_list) ? '' : json_encode($file_list),
             'thumb'=> $photo_path,
             'manager_code'=> $this->page_data['manager']['manager_code'],
             'disabled'=> (isset($inputs['disabled'])&&$inputs['disabled']=='no') ? 'no' : 'yes',
@@ -198,6 +217,7 @@ class Article extends Controller
         }
 
         //添加成功后刷新页面数据
+        //取出频道
         $channels_data = 'none';
         $sub_channels_data = 'none';
         $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
@@ -210,6 +230,8 @@ class Article extends Controller
                 );
             }
         }
+        reset($channels_data);
+        $c_id = current($channels_data);
         $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
         if(count($sub_channels) > 0){
             $sub_channels_data = array();
@@ -229,7 +251,7 @@ class Article extends Controller
         $count = DB::table('cms_article')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
+        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($articles) > 0){
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;
@@ -243,7 +265,7 @@ class Article extends Controller
             $pages = array(
                 'count' => $count,
                 'count_page' => $count_page,
-                'now_page' => $page,
+                'now_page' => 1,
                 'type' => 'article',
             );
         }
@@ -268,23 +290,6 @@ class Article extends Controller
         $inputs = $request->input();
         $article_code = $inputs['key'];
 
-        //取出一级频道
-        $first_channel = DB::table('cms_channel')->where('pid', 0)->first();
-        $channels = DB::table('cms_channel')->where('pid', 0)->get();
-        foreach($channels as $channel){
-            $channel_list[] = array(
-                'channel_key'=> keys_encrypt($channel->channel_id),
-                'channel_title'=> $channel->channel_title
-            );
-        }
-        //取出二级频道
-        $sub_channels = DB::table('cms_channel')->where('pid', $first_channel->channel_id)->get();
-        foreach($sub_channels as $sub_channel){
-            $sub_channel_list[] = array(
-                'channel_key'=> keys_encrypt($sub_channel->channel_id),
-                'channel_title'=> $sub_channel->channel_title
-            );
-        }
         //取出标签
         $tags = DB::table('cms_tags')->get();
         foreach($tags as $tag){
@@ -295,10 +300,22 @@ class Article extends Controller
         }
         //取出数据
         $article = DB::table('cms_article')->where('article_code', $article_code)->first();
-        $a_tags = json_decode($article->tags);
-        $article_tags = array();
-        foreach($a_tags as $a_tag){
-            $article_tags[keys_encrypt($a_tag)] = $a_tag;
+        if(!empty($article->tags)){
+            $a_tags = json_decode($article->tags, true);
+            $article_tags = array();
+            foreach($a_tags as $a_tag){
+                $article_tags[keys_encrypt($a_tag)] = $a_tag;
+            }
+        }
+        else{
+            $article_tags = 'none';
+        }
+        //文件
+        if(!empty($article->files)){
+            $files = json_decode($article->files, true);
+        }
+        else{
+            $files = 'none';
         }
         $article_detail = array(
             'key'=> $article->article_code,
@@ -309,11 +326,30 @@ class Article extends Controller
             'sub_channel_id'=> keys_encrypt($article->sub_channel),
             'thumb'=> empty($article->thumb)? 'none' :$article->thumb,
             'tags'=> $article_tags,
+            'files'=> $files,
             'content'=> $article->content,
             'publish_date'=> $article->publish_date ,
             'create_date'=> $article->create_date,
             'update_date'=> $article->update_date,
         );
+
+        //取出一级频道
+        $first_channel = DB::table('cms_channel')->where('pid', 0)->first();
+        $channels = DB::table('cms_channel')->where('pid', 0)->get();
+        foreach($channels as $channel){
+            $channel_list[] = array(
+                'channel_key'=> keys_encrypt($channel->channel_id),
+                'channel_title'=> $channel->channel_title
+            );
+        }
+        //取出二级频道
+        $sub_channels = DB::table('cms_channel')->where('pid', $article->channel_id)->get();
+        foreach($sub_channels as $sub_channel){
+            $sub_channel_list[] = array(
+                'channel_key'=> keys_encrypt($sub_channel->channel_id),
+                'channel_title'=> $sub_channel->channel_title
+            );
+        }
 
         //页面中显示
         $this->page_data['tag_list'] = $tag_list;
@@ -333,26 +369,13 @@ class Article extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-articleMng'] || $node_p['cms-articleMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $article_code = $inputs['key'];
 
-        //取出一级频道
-        $first_channel = DB::table('cms_channel')->where('pid', 0)->first();
-        $channels = DB::table('cms_channel')->where('pid', 0)->get();
-        foreach($channels as $channel){
-            $channel_list[] = array(
-                'channel_key'=> keys_encrypt($channel->channel_id),
-                'channel_title'=> $channel->channel_title
-            );
-        }
-        //取出二级频道
-        $sub_channels = DB::table('cms_channel')->where('pid', $first_channel->channel_id)->get();
-        foreach($sub_channels as $sub_channel){
-            $sub_channel_list[] = array(
-                'channel_key'=> keys_encrypt($sub_channel->channel_id),
-                'channel_title'=> $sub_channel->channel_title
-            );
-        }
         //取出标签
         $tags = DB::table('cms_tags')->get();
         foreach($tags as $tag){
@@ -365,8 +388,17 @@ class Article extends Controller
         $article = DB::table('cms_article')->where('article_code', $article_code)->first();
         $a_tags = json_decode($article->tags);
         $article_tags = array();
-        foreach($a_tags as $a_tag){
-            $article_tags[keys_encrypt($a_tag)] = $a_tag;
+        if(is_array($a_tags)){
+            foreach($a_tags as $a_tag){
+                $article_tags[keys_encrypt($a_tag)] = $a_tag;
+            }
+        }
+        //文件
+        if(!empty($article->files)){
+            $files = json_decode($article->files, true);
+        }
+        else{
+            $files = 'none';
         }
         $article_detail = array(
             'key'=> $article->article_code,
@@ -376,12 +408,29 @@ class Article extends Controller
             'channel_id'=> keys_encrypt($article->channel_id),
             'sub_channel_id'=> keys_encrypt($article->sub_channel),
             'thumb'=> empty($article->thumb)? 'none' :$article->thumb,
-            'tags'=> $article_tags,
             'content'=> $article->content,
+            'files'=> $files,
             'publish_date'=> $article->publish_date ,
             'create_date'=> $article->create_date,
             'update_date'=> $article->update_date,
         );
+        //取出一级频道
+        $first_channel = DB::table('cms_channel')->where('pid', 0)->first();
+        $channels = DB::table('cms_channel')->where('pid', 0)->get();
+        foreach($channels as $channel){
+            $channel_list[] = array(
+                'channel_key'=> keys_encrypt($channel->channel_id),
+                'channel_title'=> $channel->channel_title
+            );
+        }
+        //取出二级频道
+        $sub_channels = DB::table('cms_channel')->where('pid', $article->channel_id)->get();
+        foreach($sub_channels as $sub_channel){
+            $sub_channel_list[] = array(
+                'channel_key'=> keys_encrypt($sub_channel->channel_id),
+                'channel_title'=> $sub_channel->channel_title
+            );
+        }
 
         //页面中显示
         $this->page_data['tag_list'] = $tag_list;
@@ -405,9 +454,9 @@ class Article extends Controller
         $article_code = $inputs['key'];
         $sql = 'SELECT `article_code` FROM cms_article WHERE `article_title` = "'.$inputs['article_title'].'" AND `article_code` != "'.$article_code.'"';
         $res = DB::select($sql);
-        if(count($res) != 0){
+        /*if(count($res) != 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['article_title'].'的文章']);
-        }
+        }*/
         //处理上传的图片
         $file = $request->file('thumb');
         if(is_null($file) || !$file->isValid()){
@@ -427,8 +476,27 @@ class Article extends Controller
                 $photo_path = URL::to('/').'/uploads/images/'.$filename;
             }
         }
-        foreach($inputs['tags'] as $tag){
-            $save_tags[] = keys_decrypt($tag);
+        if(isset($inputs['tags']) && count($inputs['tags'])>0){
+            foreach($inputs['tags'] as $tag){
+                $save_tags[] = keys_decrypt($tag);
+            }
+        }
+        else{
+            $save_tags = '';
+        }
+
+        //处理上传文件
+        $file_list = array();
+        if(isset($inputs['files']) && is_array($inputs['files'])){
+            foreach($inputs['files'] as $key=> $file){
+                $file_list[$key] = array(
+                    'filename'=> $inputs['file-names'][$key],
+                    'file'=> $file,
+                );
+            }
+        }
+        else{
+            $file_list = '';
         }
         $save_data = array(
             'article_title'=> $inputs['article_title'],
@@ -436,10 +504,11 @@ class Article extends Controller
             'sub_channel'=> keys_decrypt($inputs['sub_channel_id']),
             'content'=> $inputs['content'],
             'clicks'=> 0,
+            'files'=> empty($file_list) ? '' : json_encode($file_list),
             'thumb'=> $photo_path,
             'manager_code'=> $this->page_data['manager']['manager_code'],
             'disabled'=> (isset($inputs['disabled'])&&$inputs['disabled']=='no') ? 'no' : 'yes',
-            'tags'=> isset($save_tags) ? json_encode($save_tags) : '',
+            'tags'=> $save_tags,
             'publish_date'=> $inputs['publish_date'],
             'update_date'=> date('Y-m-d H:i:s',time())
         );
@@ -452,6 +521,7 @@ class Article extends Controller
         }
 
         //修改成功后,取出频道
+        //取出频道
         $channels_data = 'none';
         $sub_channels_data = 'none';
         $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
@@ -464,6 +534,8 @@ class Article extends Controller
                 );
             }
         }
+        reset($channels_data);
+        $c_id = current($channels_data);
         $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
         if(count($sub_channels) > 0){
             $sub_channels_data = array();
@@ -513,16 +585,19 @@ class Article extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-articleMng'] || $node_p['cms-articleMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $article_code = $inputs['key'];
-        //事物方式删除
-        DB::beginTransaction();
         $row = DB::table('cms_article')->where('article_code',$article_code)->delete();
         if($row == false ){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
         }
         else{
             //删除完成后取出频道
+            //取出频道
             $channels_data = 'none';
             $sub_channels_data = 'none';
             $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
@@ -535,6 +610,8 @@ class Article extends Controller
                     );
                 }
             }
+            reset($channels_data);
+            $c_id = current($channels_data);
             $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
             if(count($sub_channels) > 0){
                 $sub_channels_data = array();
@@ -599,6 +676,32 @@ class Article extends Controller
                 );
             }
             json_response(['status'=>'succ', 'res'=>json_encode($sub_channel_list)]);
+        }
+    }
+
+    public function uploadFiles(Request $request)
+    {
+        $inputs = $request->input();
+        $file = $request->file('file');
+        if(is_null($file) || !$file->isValid()){
+            $photo_path = '';
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的文件！']);
+        }
+        else{
+            $destPath = realpath(public_path('uploads/files'));
+            if(!file_exists($destPath)){
+                mkdir($destPath, 0755, true);
+            }
+            $extension = $file->getClientOriginalExtension();
+            $filename = gen_unique_code('FILE_').'.'.$extension;
+            if(!$file->move($destPath,$filename)){
+                $photo_path = '';
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'文件上传失败！']);
+            }
+            else{
+                $photo_path = URL::to('/').'/uploads/files/'.$filename;
+                json_response(['status'=>'succ','type'=>'notice', 'files'=>$photo_path, 'filenames'=>$filename]);
+            }
         }
     }
 

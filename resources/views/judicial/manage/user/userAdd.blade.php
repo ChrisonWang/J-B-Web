@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label for="login_name" class="col-md-1 control-label">账号：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="login_name" name="login_name" placeholder="请输菜单名称" required=true/>
+                    <input type="text" class="form-control" id="login_name" name="login_name" placeholder="请输入账号" required=true/>
                 </div>
             </div>
             <div class="form-group">

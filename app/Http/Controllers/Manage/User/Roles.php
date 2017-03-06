@@ -47,6 +47,10 @@ class Roles extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-roleMng'] || $node_p['user-roleMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $menu_list = array();
         $menus = DB::table('user_menus')->get();
         //取出菜单
@@ -205,6 +209,10 @@ class Roles extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-roleMng'] || $node_p['user-roleMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $role_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
@@ -230,8 +238,8 @@ class Roles extends Controller
             $permissions = json_decode($roles->permission,true);
             foreach($permissions as $key=> $permission){
                 $permission = explode("||", $permission);
-                $p_list[$key]['menus'] = $permission[0];
-                $p_list[$key]['nodes'] = $permission[1];
+                $p_list[$key]['menus'] = keys_encrypt($permission[0]);
+                $p_list[$key]['nodes'] = keys_encrypt($permission[1]);
                 $p_list[$key]['permission'] = $permission[2];
                 $p_list[$key]['node_list'] = $menu_nodes[$permission[0]];
             }
@@ -318,6 +326,10 @@ class Roles extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-roleMng'] || $node_p['user-roleMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         $row = DB::table('user_roles')->where('id',$id)->delete();

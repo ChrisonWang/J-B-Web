@@ -46,17 +46,17 @@
             @else
                 <div class="zwr_ft">
                     <div class="fy_left">
-                        <span><a href="/picture/1">首页</a></span>
-                        <span>@if(($page['now_page'] - 1) > 0)<a href="/picture/{{$page['now_page'] - 1}}">@endif上一页</a></span>
-                        <span>@if(($page['now_page'] + 1) <= $page['page_count'])<a href="/picture/{{$page['now_page'] + 1}}">@endif下一页</a></span>
-                        <span><a href="/picture/{{$page['page_count']}}">尾页</a></span>
+                        <span><a href="/video/1">首页</a></span>
+                        <span>@if(($page['now_page'] - 1) > 0)<a href="/video/{{$page['now_page'] - 1}}">@endif上一页</a></span>
+                        <span>@if(($page['now_page'] + 1) <= $page['page_count'])<a href="/video/{{$page['now_page'] + 1}}">@endif下一页</a></span>
+                        <span><a href="/video/{{$page['page_count']}}">尾页</a></span>
                     </div>
                     <div class="fy_right">
                         <span>总记录数：{{ $page['count'] }}</span>
                         <span>显示 9 条记录</span>
                         <span>当前页{{ $page['now_page'] }}/{{ $page['page_count'] }}</span>
-                        <span>跳转至第<input type="text" value="1">页</span>
-                        <span class="fy_btn">跳转</span>
+                        <span>跳转至第<input id="page_no" type="text" value="">页</span>
+                        <span class="fy_btn" onclick="">跳转</span>
                     </div>
                 </div>
             @endif

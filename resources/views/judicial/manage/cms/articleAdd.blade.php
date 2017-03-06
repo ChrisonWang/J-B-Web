@@ -8,17 +8,19 @@
     <div id="node-row" hidden >
         <table class="table table-bordered table-hover table-condensed">
             <tbody class="text-center">
-            <tr>
-                <td>
-                    <input type="text" class="form-control" name="file-name[]" placeholder="请输入附件名称" />
-                </td>
-                <td>
-                    <input type="file" class="btn btn-default form-control" name="file[]"/>
-                </td>
-                <td>
-                    <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                </td>
-            </tr>
+            <form id="upload_files" method="post">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
+                    </td>
+                    <td>
+                        <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'add')"/>
+                    </td>
+                    <td>
+                        <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                    </td>
+                </tr>
+            </form>
             </tbody>
         </table>
     </div>
@@ -102,17 +104,19 @@
                             </tr>
                             </thead>
                             <tbody class="text-center" id="menu-nodes">
+                            <form id="upload_files" method="post">
                             <tr>
-                                <td>
-                                    <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
-                                </td>
-                                <td>
-                                    <input type="file" class="btn btn-default form-control" name="file"/>
-                                </td>
-                                <td>
-                                    <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                                </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
+                                    </td>
+                                    <td>
+                                        <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'add')"/>
+                                    </td>
+                                    <td>
+                                        <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                                    </td>
                             </tr>
+                            </form>
                             </tbody>
                         </table>
                     </div>

@@ -8,17 +8,19 @@
     <div id="node-row" hidden >
         <table class="table table-bordered table-hover table-condensed">
             <tbody class="text-center">
-            <tr>
-                <td>
-                    <input type="text" class="form-control" name="file-name[]" placeholder="请输入附件名称" />
-                </td>
-                <td>
-                    <input type="file" class="btn btn-default form-control" name="file[]"/>
-                </td>
-                <td>
-                    <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                </td>
-            </tr>
+            <form method="post">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
+                    </td>
+                    <td>
+                        <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'edit')"/>
+                    </td>
+                    <td>
+                        <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                    </td>
+                </tr>
+            </form>
             </tbody>
         </table>
     </div>
@@ -74,7 +76,7 @@
                 <div class="col-md-3">
                     <select id="sub_channel_id" name="sub_channel_id" class="form-control">
                         @foreach($sub_channel_list as $sub_channel)
-                            <option value="{{ $sub_channel['channel_key'] }}" @if($article_detail['sub_channel_id'] == $channel['channel_key']) selected @endif>{{ $sub_channel['channel_title'] }}</option>
+                            <option value="{{ $sub_channel['channel_key'] }}" @if($article_detail['sub_channel_id'] == $sub_channel['channel_key']) selected @endif>{{ $sub_channel['channel_title'] }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -103,7 +105,8 @@
                 <label class="col-md-1 control-label">附件：</label>
                 <div class="col-md-8">
                     <div class="container-fluid">
-                        <table class="table table-bordered table-hover table-condensed">
+                        @if(is_array($article_detail['files']) && $article_detail['files'] != 'none')
+                            <table class="table table-bordered table-hover table-condensed">
                             <thead>
                             <tr>
                                 <th class="text-center">标题</th>
@@ -112,26 +115,54 @@
                             </tr>
                             </thead>
                             <tbody class="text-center" id="menu-nodes">
-                            <tr>
-                                <td>
-                                    <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
-                                </td>
-                                <td>
-                                    <input type="file" class="btn btn-default form-control" name="file"/>
-                                </td>
-                                <td>
-                                    <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                                </td>
-                            </tr>
+                            @foreach($article_detail['files'] as $files)
+                                <form method="post">
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="form-control" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
+                                        </td>
+                                        <td>
+                                            <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'edit')"/>
+                                        </td>
+                                        <td>
+                                            <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                                        </td>
+                                    </tr>
+                                </form>
+                            @endforeach
                             </tbody>
                         </table>
+                        @else
+                            <table class="table table-bordered table-hover table-condensed">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">标题</th>
+                                    <th class="text-center">附件</th>
+                                    <th width="10%" class="text-center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center" id="menu-nodes">
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
+                                        </td>
+                                        <td>
+                                            <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'edit')"/>
+                                        </td>
+                                        <td>
+                                            <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
                     <div class="container-fluid">
                         <p class="text-left hidden" id="add-row-notice" style="color: red"></p>
                     </div>
                     <div class="container-fluid">
                         <hr/>
-                        <div class="col-md-2">
+                        <div class="col-md-2" hidden>
                             <a class="btn btn-default btn-block" onclick="addRow()">
                                 添加
                             </a>

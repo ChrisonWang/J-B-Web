@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label for="office_name" class="col-md-1 control-label">科室名称：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="office_name" name="office_name" value="{{ $office_detail['office_name'] }}" placeholder="请输入科室名称" />
+                    <input disabled type="text" class="form-control" id="office_name" name="office_name" value="{{ $office_detail['office_name'] }}" placeholder="请输入科室名称" />
                 </div>
             </div>
             <div class="form-group">
@@ -49,11 +49,6 @@
                     </div>
                     <div class="container-fluid">
                         <hr/>
-                        <div class="col-md-2">
-                            <a class="btn btn-default btn-block" onclick="addRow()">
-                                添加
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

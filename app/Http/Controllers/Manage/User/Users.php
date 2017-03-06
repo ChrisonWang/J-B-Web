@@ -79,6 +79,10 @@ class Users extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-userMng'] || $node_p['user-userMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $type_list = array();
         $types = DB::table('user_type')->get();
         //取出用户类型
@@ -221,7 +225,7 @@ class Users extends Controller
             'type' => 'users',
         );
         //取出用户类型
-        $user_type = DB::table('user_type')->get();
+        $user_type = DB::table('user_type')->where('is_admin','no')->orderBy('sort', 'desc')->get();
         foreach($user_type as $type){
             $type_list[$type->type_id] = $type->type_name;
         }
@@ -314,6 +318,10 @@ class Users extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-userMng'] || $node_p['user-userMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $code = $inputs['key'];
         //取出用户类型
@@ -482,7 +490,7 @@ class Users extends Controller
             'type' => 'users',
         );
         //取出用户类型
-        $user_type = DB::table('user_type')->get();
+        $user_type = DB::table('user_type')->where('is_admin','no')->orderBy('sort', 'desc')->get();
         foreach($user_type as $type){
             $type_list[$type->type_id] = $type->type_name;
         }
@@ -502,6 +510,10 @@ class Users extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-userMng'] || $node_p['user-userMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $code = $inputs['key'];
         $type = $inputs['type'];
@@ -559,7 +571,7 @@ class Users extends Controller
                 'type' => 'users',
             );
             //取出用户类型
-            $user_type = DB::table('user_type')->get();
+            $user_type = DB::table('user_type')->where('is_admin','no')->orderBy('sort', 'desc')->get();
             foreach($user_type as $type){
                 $type_list[$type->type_id] = $type->type_name;
             }

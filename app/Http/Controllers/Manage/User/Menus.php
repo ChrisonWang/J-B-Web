@@ -51,6 +51,10 @@ class Menus extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-menuMng'] || $node_p['user-menuMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $node_list = array();
         $nodes = DB::table('user_nodes')->get();
         foreach($nodes as $key=> $node){
@@ -191,6 +195,10 @@ class Menus extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-menuMng'] || $node_p['user-menuMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $menu_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
@@ -296,6 +304,10 @@ class Menus extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['user-menuMng'] || $node_p['user-menuMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         $row = DB::table('user_menus')->where('id',$id)->delete();

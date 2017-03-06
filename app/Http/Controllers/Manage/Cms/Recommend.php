@@ -51,6 +51,10 @@ class Recommend extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-recommendLink'] || $node_p['cms-recommendLink']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.cms.recommendAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -153,6 +157,10 @@ class Recommend extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-recommendLink'] || $node_p['cms-recommendLink']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $r_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
@@ -229,6 +237,10 @@ class Recommend extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-recommendLink'] || $node_p['cms-recommendLink']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_recommend_links')->where('id',$id)->delete();

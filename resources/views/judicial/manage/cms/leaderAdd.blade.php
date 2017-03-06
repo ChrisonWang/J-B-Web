@@ -21,7 +21,7 @@
             <div class="form-group">
                 <label for="sort" class="col-md-1 control-label">排序权重：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="sort" name="sort" placeholder="请输入权重（数字越大越靠前）" />
+                    <input type="text" class="form-control" id="sort" name="sort" value="0" placeholder="请输入权重（数字越大越靠前）" />
                 </div>
             </div>
             <div class="form-group">

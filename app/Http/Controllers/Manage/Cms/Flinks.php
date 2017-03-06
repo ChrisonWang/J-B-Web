@@ -52,6 +52,10 @@ class Flinks extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-flink2Mng'] || $node_p['cms-flink2Mng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.cms.flinksAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -181,7 +185,7 @@ class Flinks extends Controller
         //页面中显示
         $this->page_data['flinks_detail'] = $flinks_detail;
         $this->page_data['flinks_detail']['sub_links'] = $_sub_links;
-        $pageContent = view('judicial.manage.cms.flinksEdit',$this->page_data)->render();
+        $pageContent = view('judicial.manage.cms.flinksDetail',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -194,6 +198,10 @@ class Flinks extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-flink2Mng'] || $node_p['cms-flink2Mng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $flinks_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
@@ -331,6 +339,10 @@ class Flinks extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-flink2Mng'] || $node_p['cms-flink2Mng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_flinks')->where('id',$id)->delete();

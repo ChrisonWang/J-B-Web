@@ -65,6 +65,8 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('department/intro/{key?}','Web\Index@departmentIntro');
 
+    Route::post('index/loadArticle','Web\Index@loadArticleList');
+
 //后台相关路由
     Route::group(['middleware' => ['manage.verify']], function () {
 
@@ -335,6 +337,8 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/cms/article/edit','Manage\Cms\Article@doEdit');
 
         Route::get('manage/cms/article/delete','Manage\Cms\Article@doDelete');
+
+        Route::post('manage/cms/article/upload','Manage\Cms\Article@uploadFiles');
 
         Route::post('manage/cms/articleList/{page?}','Manage\Cms\Article@index');
 

@@ -41,14 +41,14 @@
         <div class="idbr_top">
             <ul>
                 @foreach($recommend_list as $k=> $recommend)
-                    <li @if($k == 0)class="idbr_topsd"@endif>{{ $recommend['channel_title'] }}</li>
+                    <li @if($k == 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#sfdt_c'))"data-channel="sfdt" data-key="{{ $recommend['key'] }}">{{ $recommend['channel_title'] }}</li>
                 @endforeach
             </ul>
             <a href="{{ URL::to('/list').'/'.$recommend_list[0]['key']}}">更多>></a>
         </div>
         <div class="idbr_down">
             @if($r_article_list != 'none' && is_array($r_article_list))
-                <ul>
+                <ul id="sfdt_c">
                     @foreach($r_article_list as $r_article)
                         <li>
                                 <span class="idbrd_l">
@@ -104,19 +104,26 @@
     <div class="new2_left">
         <div class="idbr_top">
             <ul>
-                <li class="idbr_topsd">热点新闻</li>
-                <li>业务动态</li>
-                <li>公告通知</li>
+                @foreach($zwgk_list as $k=> $zwgk_l)
+                    <li @if($k == 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#zwgk_c'))"data-channel="zwgk" data-key="{{ $zwgk_l['key'] }}">{{ $zwgk_l['channel_title'] }}</li>
+                @endforeach
             </ul>
-            <a href="{{ URL::to('/list').'/'.$recommend_list[0]['key']}}">更多>></a>
+            <a href="{{ URL::to('/list').'/'.$zwgk_list[0]['key']}}" style="color: #000">更多>></a>
         </div>
         <div class="idbr_down">
-            <ul>
-                暂无数据
-                {{--<li>
-                    <span class="idbrd_l">中信公证处积极开展公证宣传活动</span>
-                    <span class="idbrd_r">2017-01-14</span>
-                </li>--}}
+            <ul id="zwgk_c">
+                @if($zwgk_article_list != 'none' && is_array($zwgk_article_list))
+                    @foreach($zwgk_article_list as $zwgk)
+                    <li>
+                        <a href="{{ URL::to('/article').'/'.$zwgk['key']}}">
+                            <span class="idbrd_l">{{ $zwgk['article_title'] }}</span>
+                            <span class="idbrd_r">{{ $zwgk['publish_date'] }}</span>
+                        </a>
+                    </li>
+                    @endforeach
+                @else
+                    暂无数据
+                @endif
             </ul>
         </div>
     </div>
@@ -145,7 +152,15 @@
     <span class="vd_tit">图片中心</span>
     <div class="ft_sid swiper-container w980">
         <ul class="swiper-wrapper">
-            {{--<li class="swiper-slide"><img src="images/csftsd.png"><span>风雨历程二十载 同心同德铸辉煌</span></li>--}}
+            @if(isset($pic_list) && is_array($pic_list))
+                @foreach($pic_list as $pic)
+                <li class="swiper-slide">
+                    <a href="{{ URL::to('/article').'/'.$pic['key'] }}" target="_blank">
+                        <img src="{{ $pic['thumb'] }}"><span>{{ $pic['article_title'] }}</span>
+                    </a>
+                </li>
+                @endforeach
+            @endif
         </ul>
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>

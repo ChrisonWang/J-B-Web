@@ -19,8 +19,9 @@
                         </div>
                         <div class="form-group">
                             <label for="search-channel-key">频道：</label>
-                            <select id="search-channel-key" name="search-channel-key" class="form-control" onchange="getSubChannel($(this),$('#search-sub-channel-key'))">
+                            <select id="search-channel-key" name="search-channel-key" class="form-control" onchange="getSubChannel_S($(this),$('#search-sub-channel-key'))">
                                 @if(isset($channel_list))
+                                    <option value="none">不限一级频道</option>
                                     @foreach($channel_list as $channel)
                                         <option value="{{ $channel['key'] }}">{{ $channel['channel_title'] }}</option>
                                     @endforeach
@@ -31,6 +32,7 @@
                             <label for="search-sub-channel-key">二级频道：</label>
                             <select id="search-sub-channel-key" name="search-sub-channel-key" class="form-control">
                                 @if(isset($sub_channel_list))
+                                    <option value="none">不限二级频道</option>
                                     @foreach($sub_channel_list as $key=> $name)
                                         <option value="{{ $key }}">{{ $name }}</option>
                                     @endforeach
@@ -41,6 +43,7 @@
                             <label for="search-tags-key">标签：</label>
                             <select id="search-tags-key" name="search-tags-key" class="form-control">
                                 @if(isset($tag_list))
+                                    <option value="none">不限标签</option>
                                     @foreach($tag_list as $key=> $name)
                                         <option value="{{ $key }}">{{ $name }}</option>
                                     @endforeach
@@ -80,8 +83,8 @@
                     <td>{{ $article['article_title'] }}</td>
                     <td>{{ $article['publish_date'] }}</td>
                     <td>@if($article['disabled'] == 'no') 是 @else 否 @endif</td>
-                    <td>{{ $channel_list[$article['channel_id']]['channel_title'] }}</td>
-                    <td>{{ $sub_channel_list[$article['sub_channel_id']] }}</td>
+                    <td>{{ isset($channel_list[$article['channel_id']]['channel_title']) ? $channel_list[$article['channel_id']]['channel_title'] : '无频道' }}</td>
+                    <td>{{ isset($sub_channel_list[$article['sub_channel_id']])? $sub_channel_list[$article['sub_channel_id']] : '无频道' }}</td>
                     <td>{{ $article['clicks'] }}</td>
                 </tr>
                 @endforeach

@@ -29,7 +29,7 @@
             <div class="form-group">
                 <label for="article_title" class="col-md-1 control-label">标题：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="article_title" name="article_title" value="{{ $article_detail['article_title'] }}" placeholder="请输入文章标题" />
+                    <input type="text" disabled class="form-control" id="article_title" name="article_title" value="{{ $article_detail['article_title'] }}" placeholder="请输入文章标题" />
                 </div>
             </div>
             <div class="form-group">
@@ -41,7 +41,7 @@
             <div class="form-group">
                 <label for="publish_date" class="col-md-1 control-label">发布时间：</label>
                 <div class="col-md-3">
-                    <input id="publish_date" class="form-control" name="publish_date" type="text" >
+                    <input id="publish_date" class="form-control" name="publish_date" type="text" disabled>
                 </div>
             </div>
             <div class="form-group">
@@ -54,7 +54,7 @@
                 <label for="tags" class="col-md-1 control-label">关联标签：</label>
                 <div class="col-md-3">
                     @foreach($tag_list as $tag)
-                        <input type="checkbox" id="tags" name="tags[]" value="{{ $tag['tag_key'] }}" @if(isset($article_detail['tags'][$tag['tag_key']])) checked @endif/>
+                        <input disabled type="checkbox" id="tags" name="tags[]" value="{{ $tag['tag_key'] }}" @if(isset($article_detail['tags'][$tag['tag_key']])) checked @endif/>
                         {{ $tag['tag_title'] }}&nbsp;&nbsp;
                     @endforeach
                 </div>
@@ -62,7 +62,7 @@
             <div class="form-group">
                 <label for="channel_id" class="col-md-1 control-label">频道：</label>
                 <div class="col-md-3">
-                    <select name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
+                    <select disabled name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
                         @foreach($channel_list as $channel)
                             <option value="{{ $channel['channel_key'] }}" @if($article_detail['channel_id'] == $channel['channel_key']) selected @endif>{{ $channel['channel_title'] }}</option>
                         @endforeach
@@ -72,18 +72,11 @@
             <div class="form-group">
                 <label for="sub_channel_id" class="col-md-1 control-label">二级频道：</label>
                 <div class="col-md-3">
-                    <select id="sub_channel_id" name="sub_channel_id" class="form-control">
+                    <select disabled id="sub_channel_id" name="sub_channel_id" class="form-control">
                         @foreach($sub_channel_list as $sub_channel)
-                            <option value="{{ $sub_channel['channel_key'] }}" @if($article_detail['sub_channel_id'] == $channel['channel_key']) selected @endif>{{ $sub_channel['channel_title'] }}</option>
+                            <option value="{{ $sub_channel['channel_key'] }}" @if($article_detail['sub_channel_id'] == $sub_channel['channel_key']) selected @endif>{{ $sub_channel['channel_title'] }}</option>
                         @endforeach
                     </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="thumb" class="col-md-1 control-label">封面图片（480 * 360）：</label>
-                <div class="col-md-3">
-                    <i class="fa fa-paperclip"></i>上传头像图片
-                    <input type="file" id="upload_photo" class="btn btn-default btn-file" name="thumb" onchange="upload_img($(this))"/>
                 </div>
             </div>
             @if( isset($article_detail['thumb']) && $article_detail['thumb'] != "none" )
@@ -103,39 +96,36 @@
                 <label class="col-md-1 control-label">附件：</label>
                 <div class="col-md-8">
                     <div class="container-fluid">
-                        <table class="table table-bordered table-hover table-condensed">
-                            <thead>
-                            <tr>
-                                <th class="text-center">标题</th>
-                                <th class="text-center">附件</th>
-                                <th width="10%" class="text-center">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-center" id="menu-nodes">
-                            <tr>
-                                <td>
-                                    <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
-                                </td>
-                                <td>
-                                    <input type="file" class="btn btn-default form-control" name="file"/>
-                                </td>
-                                <td>
-                                    <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        @if($article_detail['files'] != 'none' && is_array($article_detail['files']))
+                            <table class="table table-bordered table-hover table-condensed">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">标题</th>
+                                    <th class="text-center">附件</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center" id="menu-nodes">
+                                @foreach($article_detail['files'] as $files)
+                                    <tr>
+                                        <td>
+                                            <input type="text" disabled class="form-control" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
+                                        </td>
+                                        <td>
+                                            <input type="file" class="btn btn-default form-control" name="file"/>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            无附件！
+                        @endif
                     </div>
                     <div class="container-fluid">
                         <p class="text-left hidden" id="add-row-notice" style="color: red"></p>
                     </div>
                     <div class="container-fluid">
                         <hr/>
-                        <div class="col-md-2">
-                            <a class="btn btn-default btn-block" onclick="addRow()">
-                                添加
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

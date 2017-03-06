@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label for="title" class="col-md-1 control-label">菜单名称：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="title" name="title" placeholder="请输角色名称" value="{{ $role_detail['title'] }}"/>
+                    <input disabled type="text" class="form-control" id="title" name="title" placeholder="请输角色名称" value="{{ $role_detail['title'] }}"/>
                 </div>
             </div>
             <div class="form-group">
@@ -55,35 +55,33 @@
                                 <th class="text-center">菜单名称</th>
                                 <th class="text-center">功能点</th>
                                 <th class="text-center">权限</th>
-                                <th width="10%" class="text-center">操作</th>
                             </tr>
                             </thead>
                             <tbody class="text-center" id="menu-nodes">
-                            <tr>
-                                <td>
-                                    <select name="menus" class="form-control node-row">
-                                        @foreach($menu_list as $menu)
-                                            <option value="{{ $menu['key'] }}">{{ $menu['menu_name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="nodes" class="form-control node-row">
-                                        @foreach($f_node_list as $node)
-                                            <option value={{ $node['node_key'] }}>{{ $node['node_name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="permission" class="form-control node-row">
-                                        <option value="r">查看</option>
-                                        <option value="rw">编辑</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                                </td>
-                            </tr>
+                            @foreach($role_detail['permissions'] as $p)
+                                <tr>
+                                    <td>
+                                        <select disabled name="menus" class="form-control node-row" onchange="getSubNode($(this))">
+                                            @foreach($menu_list as $menu)
+                                                <option value="{{ $menu['key'] }}" @if($p['menus'] == $menu['key']) selected @endif>{{ $menu['menu_name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select disabled name="nodes" class="form-control node-row">
+                                            @foreach($f_node_list as $node)
+                                                <option value="{{ $node['node_key'] }}" @if($p['nodes'] == $node['node_key']) selected @endif>{{ $node['node_name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select disabled name="permission" class="form-control node-row">
+                                            <option value="r" selected>查看</option>
+                                            <option value="rw">编辑</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -92,11 +90,6 @@
                     </div>
                     <div class="container-fluid">
                         <hr/>
-                        <div class="col-md-2">
-                            <a href="javascript: void(0) ;" class="btn btn-default btn-block" onclick="addRow()">
-                                添加
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

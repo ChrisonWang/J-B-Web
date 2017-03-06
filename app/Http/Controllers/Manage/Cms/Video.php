@@ -55,6 +55,10 @@ class Video extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-videoMng'] || $node_p['cms-videoMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.cms.videoAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -167,6 +171,10 @@ class Video extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-videoMng'] || $node_p['cms-videoMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $video_detail = array();
         $inputs = $request->input();
         $video_code = keys_decrypt($inputs['key']);
@@ -253,6 +261,10 @@ class Video extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-videoMng'] || $node_p['cms-videoMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $video_code = keys_decrypt($inputs['key']);
         $row = DB::table('cms_video')->where('video_code',$video_code)->delete();

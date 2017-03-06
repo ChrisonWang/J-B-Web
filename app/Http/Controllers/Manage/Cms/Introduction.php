@@ -24,6 +24,10 @@ class Introduction extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-justiceIntroduction'] || $node_p['cms-justiceIntroduction']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.cms.introAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -105,6 +109,10 @@ class Introduction extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-justiceIntroduction'] || $node_p['cms-justiceIntroduction']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $intro = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
@@ -157,6 +165,10 @@ class Introduction extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-justiceIntroduction'] || $node_p['cms-justiceIntroduction']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_justice_bureau_introduce')->where('id',$id)->delete();

@@ -56,6 +56,10 @@ class DepartmentType extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-departmentType'] || $node_p['cms-departmentType']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.cms.departmentTypeAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -151,6 +155,10 @@ class DepartmentType extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-departmentType'] || $node_p['cms-departmentType']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $type_detail = array();
         $inputs = $request->input();
         $type_id = keys_decrypt($inputs['key']);
@@ -212,6 +220,10 @@ class DepartmentType extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-departmentType'] || $node_p['cms-departmentType']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $type_id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_department_type')->where('type_id',$type_id)->delete();

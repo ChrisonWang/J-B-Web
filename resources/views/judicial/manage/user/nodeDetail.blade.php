@@ -10,13 +10,13 @@
             <div class="form-group">
                 <label for="node_name" class="col-md-1 control-label">功能点名称：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="node_name" name="node_name" value="{{ $node_detail['node_name'] }}" placeholder="请输入功能点名称" />
+                    <input disabled type="text" class="form-control" id="node_name" name="node_name" value="{{ $node_detail['node_name'] }}" placeholder="请输入功能点名称" />
                 </div>
             </div>
             <div class="form-group">
                 <label for="node_schema" class="col-md-1 control-label">分类：</label>
                 <div class="col-md-3">
-                    <select id="node_schema" name="node_schema" class="form-control">
+                    <select disabled id="node_schema" name="node_schema" class="form-control">
                         @foreach ($node_schema as $key=> $schema)
                             <option value="{{ $key }}" @if($node_detail['node_schema'] == $key) selected @endif>{{ $schema }}</option>
                         @endforeach

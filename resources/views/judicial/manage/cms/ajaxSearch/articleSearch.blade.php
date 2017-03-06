@@ -23,8 +23,8 @@
             <td>{{ $article['article_title'] }}</td>
             <td>{{ $article['publish_date'] }}</td>
             <td>@if($article['disabled'] == 'no') 是 @else 否 @endif</td>
-            <td>{{ $channel_list[$article['channel_id']] }}</td>
-            <td>{{ $channel_list[$article['sub_channel_id']] }}</td>
+            <td>{{ isset($channel_list[$article['channel_id']]['channel_title']) ? $channel_list[$article['channel_id']]['channel_title'] : '无频道' }}</td>
+            <td>{{ isset($sub_channel_list[$article['sub_channel_id']])? $sub_channel_list[$article['sub_channel_id']] : '无频道' }}</td>
             <td>{{ $article['clicks'] }}</td>
         </tr>
     @endforeach

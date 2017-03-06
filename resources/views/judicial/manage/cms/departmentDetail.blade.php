@@ -10,13 +10,13 @@
             <div class="form-group">
                 <label for="department_name" class="col-md-1 control-label">名称：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" value="{{ $department_detail['department_name'] }}" id="department_name" name="department_name" placeholder="请输入分类名称" />
+                    <input disabled type="text" class="form-control" value="{{ $department_detail['department_name'] }}" id="department_name" name="department_name" placeholder="请输入分类名称" />
                 </div>
             </div>
             <div class="form-group">
                 <label for="type_id" class="col-md-1 control-label">分类：</label>
                 <div class="col-md-3">
-                    <select id="type_id" name="type_id" class="form-control">
+                    <select id="type_id" name="type_id" class="form-control" disabled>
                         @foreach ($type_list as $type)
                             <option value="{{ $type['type_id'] }}" @if($type['checked']=='yes') selected @endif>{{ $type['type_name'] }}</option>
                         @endforeach
@@ -26,7 +26,7 @@
             <div class="form-group">
                 <label for="typeName" class="col-md-1 control-label">排序：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" value="{{ $department_detail['sort'] }}" id="sort" name="sort" placeholder="请输入权重（数字越大越靠前）" />
+                    <input disabled type="text" class="form-control" value="{{ $department_detail['sort'] }}" id="sort" name="sort" placeholder="请输入权重（数字越大越靠前）" />
                 </div>
             </div>
             <div class="form-group">

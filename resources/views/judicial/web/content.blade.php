@@ -24,15 +24,17 @@
                         <span>{{ $article_detail['publish_date'] }}</span>
                         <span>浏览数：{{ $article_detail['clicks'] }}</span>
                         <span>字号：[
-                            <a href="javascript:void(0)" onclick="changeFontSize('12px')" >小</a>
-                            <a href="javascript:void(0)" onclick="changeFontSize('14px')" >中</a>
-                            <a href="javascript:void(0)" onclick="changeFontSize('16px')" >大</a>
+                            <a href="javascript:void(0)" onclick="changeFontSize('15px')" >小</a>
+                            <a href="javascript:void(0)" onclick="changeFontSize('17px')" >中</a>
+                            <a href="javascript:void(0)" onclick="changeFontSize('19px')" >大</a>
                             ]</span>
                     </div>
                     <div class="wztd_right">
-                        @foreach($article_detail['tags'] as $tag)
-                            <span style="margin-right: 0!important;"><a href="{{ URL::to('/tagList').'/'.$tag }}">#{{ $tag_list[$tag] }}</a></span>
-                        @endforeach
+                        @if(is_array($article_detail['tags']) && $article_detail['tags']!='none')
+                            @foreach($article_detail['tags'] as $tag)
+                                <span style="margin-right: 0!important;"><a href="{{ URL::to('/tagList').'/'.$tag }}">#{{ $tag_list[$tag] }}</a></span>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
@@ -44,8 +46,9 @@
             <div class="wz_link">
                 @if($article_detail['files'] != 'none' && is_array($article_detail['files']))
                     <span class="vd_tit">相关附件</span>
-                        <span class="wz_btn">个人信息采集表.docx<i>点击下载</i></span>
-                        <span class="wz_btn">三门峡市个人资料申请登记表.docx<i>点击下载</i></span>
+                        @foreach($article_detail['files'] as $file)
+                        <span class="wz_btn">{{ $file['filename'] }}<i><a href="{{ $file['file'] }}" target="_blank">点击下载</a></i></span>
+                        @endforeach
                 @else
                     <span class="vd_tit">无附件</span>
                 @endif

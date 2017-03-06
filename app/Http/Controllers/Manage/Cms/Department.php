@@ -61,6 +61,10 @@ class Department extends Controller
      */
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-department'] || $node_p['cms-department']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $type_data = array();
         $types = DB::table('cms_department_type')->get();
         foreach($types as $key=> $type){
@@ -194,6 +198,10 @@ class Department extends Controller
      */
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-department'] || $node_p['cms-department']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $department_detail = array();
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
@@ -293,6 +301,10 @@ class Department extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['cms-department'] || $node_p['cms-department']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         $row = DB::table('cms_department')->where('id',$id)->delete();

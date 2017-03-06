@@ -429,12 +429,14 @@ class Dashboard extends Controller
         $inputs = $request->input();
         switch($inputs['s_type']){
             case 'forms':
+                $where = 'WHERE';
                 if(isset($inputs['search-title']) && !empty($inputs['search-title'])){
-                    $sql = 'SELECT * FROM `cms_forms` WHERE `channel_id` = '.keys_decrypt($inputs['search-channel-key']).' AND `title` LIKE "%'.$inputs['search-title'].'%"';
+                    $where .= ' `title` LIKE "%'.$inputs['search-title'].'%" AND ';
                 }
-                else{
-                    $sql = 'SELECT * FROM `cms_forms` WHERE `channel_id` = '.keys_decrypt($inputs['search-channel-key']);
+                if(isset($inputs['search-channel-key']) && $inputs['search-channel-key']!='none'){
+                    $where .= '`channel_id` = '.keys_decrypt($inputs['search-channel-key']).' AND ';
                 }
+                $sql = 'SELECT * FROM `cms_forms` '.$where.'1';
                 $forms = DB::select($sql);
                 if($forms && count($forms) > 0){
                     //取出频道
@@ -468,13 +470,13 @@ class Dashboard extends Controller
                 if(isset($inputs['search-title']) && !empty($inputs['search-title'])){
                     $where .= ' `article_title` LIKE "%'.$inputs['search-title'].'%" AND';
                 }
-                if(isset($inputs['search-channel-key']) && !empty($inputs['search-channel-key'])){
+                if(isset($inputs['search-channel-key']) && !empty($inputs['search-channel-key']) && $inputs['search-channel-key']!='none'){
                     $where .= ' `channel_id` = "'.keys_decrypt($inputs['search-channel-key']).'" AND';
                 }
-                if(isset($inputs['search-sub-channel-key']) && !empty($inputs['search-sub-channel-key'])){
+                if(isset($inputs['search-sub-channel-key']) && !empty($inputs['search-sub-channel-key']) && $inputs['search-sub-channel-key']!='none'){
                     $where .= ' `sub_channel` = "'.keys_decrypt($inputs['search-sub-channel-key']).'"AND ';
                 }
-                if(isset($inputs['search-tags-key']) && !empty($inputs['search-tags-key'])){
+                if(isset($inputs['search-tags-key']) && !empty($inputs['search-tags-key']) && $inputs['search-tags-key']!='none'){
                     $where .= ' `tags` = "'.keys_decrypt($inputs['search-tags-key']).'"AND ';
                 }
                 $sql = 'SELECT * FROM `cms_article` '.$where.' 1';
@@ -487,13 +489,15 @@ class Dashboard extends Controller
                     if(count($channels) > 0){
                         $channels_data = array();
                         foreach($channels as $key => $channel){
-                            $channels_data[$key] = array(
+                            $channels_data[keys_encrypt($channel->channel_id)] = array(
                                 'key'=> keys_encrypt($channel->channel_id),
                                 'channel_title'=> $channel->channel_title,
                             );
                         }
                     }
-                    $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channels_data[0]['key']))->orderBy('create_date', 'desc')->get();
+                    reset($channels_data);
+                    $c_id = current($channels_data);
+                    $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
                     if(count($sub_channels) > 0){
                         $sub_channels_data = array();
                         foreach($sub_channels as $sub_channel){
@@ -537,7 +541,7 @@ class Dashboard extends Controller
                 if(isset($inputs['search-login-name']) && !empty($inputs['search-login-name'])){
                     $where .= ' `login_name` LIKE "%'.$inputs['search-login-name'].'%" AND';
                 }
-                if(isset($inputs['search-nickname']) && !empty($inputs['search-nickname']) && $inputs['search-nickname']=='1111111'){
+                if(isset($inputs['search-nickname']) && !empty($inputs['search-nickname'])){
                     $where .= ' `nickname` = "'.$inputs['search-nickname'].'" AND';
                 }
                 if(isset($inputs['search-cell-phone']) && !empty($inputs['search-cell-phone'])){
@@ -547,7 +551,7 @@ class Dashboard extends Controller
                     $where .= ' `status` = "'.$inputs['search-status'].'"AND ';
                 }
                 if(isset($inputs['search-type']) && !empty($inputs['search-type']) && $inputs['search-type'] == 2){
-                    if(isset($inputs['search-office']) && !empty($inputs['search-office'])){
+                    if(isset($inputs['search-office']) && !empty($inputs['search-office']) && $inputs['search-office']!='none'){
                         $where .= ' `office_id` = "'.keys_decrypt($inputs['search-office']).'"AND ';
                     }
                     $table = '`user_manager`';
@@ -748,7 +752,7 @@ class Dashboard extends Controller
     {
         //取出管理员
         $user_list = array();
-        $managers = DB::table('user_manager')->get();
+        $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
         foreach($managers as $key=> $managers){
             $user_list[$key]['key'] = $managers->manager_code;
             $user_list[$key]['login_name'] = $managers->login_name;
@@ -759,7 +763,7 @@ class Dashboard extends Controller
             $user_list[$key]['create_date'] = $managers->create_date;
         }
         //取出用户
-        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_member_info.create_date', 'desc')->get();
         $count = count($members);
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
@@ -782,7 +786,7 @@ class Dashboard extends Controller
             'type' => 'users',
         );
         //取出用户类型
-        $user_type = DB::table('user_type')->get();
+        $user_type = DB::table('user_type')->where('is_admin','no')->orderBy('sort', 'desc')->get();
         foreach($user_type as $type){
             $type_list[$type->type_id] = $type->type_name;
         }

@@ -10,20 +10,13 @@
             <div class="form-group">
                 <label for="fi_title" class="col-md-1 control-label">标题：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="fi_title" name="fi_title" value="{{ $flink_detail['fi_title'] }}" placeholder="请输入链接标题" />
+                    <input disabled type="text" class="form-control" id="fi_title" name="fi_title" value="{{ $flink_detail['fi_title'] }}" placeholder="请输入链接标题" />
                 </div>
             </div>
             <div class="form-group">
                 <label for="fi_links" class="col-md-1 control-label">链接：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="fi_links" name="fi_links" value="{{ $flink_detail['fi_links'] }}" placeholder="请输入链接地址" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="upload_photo" class="col-md-1 control-label">图片(120 * 50)：</label>
-                <div class="col-md-3">
-                    <i class="fa fa-paperclip"></i>上传图片
-                    <input type="file" id="upload_photo" class="btn btn-default btn-file" name="fi_photo" onchange="upload_img($(this))"/>
+                    <input disabled type="text" class="form-control" id="fi_links" name="fi_links" value="{{ $flink_detail['fi_links'] }}" placeholder="请输入链接地址" />
                 </div>
             </div>
             @if( isset($flink_detail['fi_image']) && $flink_detail['fi_image'] != "none" )
