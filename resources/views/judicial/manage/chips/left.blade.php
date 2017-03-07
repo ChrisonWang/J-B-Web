@@ -64,6 +64,18 @@
                             </li>
                         </ul><!-- 子菜单End -->
                     </li><!-- 内容管理End -->
+                    <!-- 律师服务管理 -->
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>律师服务管理<span class="fa arrow"></span></a>
+                        <!-- 子菜单 -->
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0);" data-node="service-areaMng" >区域管理</a>
+                                <a href="javascript:void(0);" data-node="service-lawyerMng">律师管理</a>
+                                <a href="javascript:void(0);" data-node="service-lawyerOfficeMng">事务所管理</a>
+                            </li>
+                        </ul><!-- 子菜单End -->
+                    </li><!-- 律师服务管理End -->
             @endif
         </ul>
     </div>

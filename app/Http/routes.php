@@ -83,6 +83,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/userLoadContent','Manage\Dashboard@loadContent');
 
+        Route::post('manage/serviceLoadContent','Manage\ServiceLoadContent@loadContent');
+
         //CMS标签标签管理
         Route::get('manage/cms/tags/show','Manage\Cms\Tags@show');
 
@@ -346,6 +348,36 @@ Route::group(['middleware' => ['web']], function () {
 
         //后台ajax搜索列表
         Route::post('manage/searchList','Manage\Dashboard@ajaxSearchList');
+
+        //律师服务管理,区域管理
+        Route::get('manage/service/area/show','Manage\Service\Area@show');
+
+        Route::get('manage/service/area/add','Manage\Service\Area@create');
+
+        Route::post('manage/service/area/add','Manage\Service\Area@store');
+
+        Route::get('manage/service/area/edit','Manage\Service\Area@edit');
+
+        Route::post('manage/service/area/edit','Manage\Service\Area@doEdit');
+
+        Route::get('manage/service/area/delete','Manage\Service\Area@doDelete');
+
+        Route::post('manage/service/area/{page?}','Manage\Service\Area@index');
+
+        //事务所管理
+        Route::get('manage/service/lawyerOffice/show','Manage\Service\LawyerOffice@show');
+
+        Route::get('manage/service/lawyerOffice/add','Manage\Service\LawyerOffice@create');
+
+        Route::post('manage/service/lawyerOffice/add','Manage\Service\LawyerOffice@store');
+
+        Route::get('manage/service/lawyerOffice/edit','Manage\Service\LawyerOffice@edit');
+
+        Route::post('manage/service/lawyerOffice/edit','Manage\Service\LawyerOffice@doEdit');
+
+        Route::get('manage/service/lawyerOffice/delete','Manage\Service\LawyerOffice@doDelete');
+
+        Route::post('manage/service/lawyerOffice/{page?}','Manage\Service\LawyerOffice@index');
 
     });
 

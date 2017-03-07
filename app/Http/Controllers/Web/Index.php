@@ -76,7 +76,7 @@ class Index extends Controller
         $pic_list = $pic_article_list;
         $pic_article_list = array_slice($pic_article_list,0,6);
         //拿出首页推荐的频道
-        $rc_data = DB::table('cms_channel')->where('pid', 49)->orderBy('sort', 'desc')->skip(0)->take(3)->get();
+        $rc_data = DB::table('cms_channel')->where(['pid'=>49, 'is_recommend'=> 'yes'])->orderBy('sort', 'desc')->skip(0)->take(3)->get();
         $recommend_list = 'none';
         if(count($rc_data) > 0){
             $recommend_list = array();
