@@ -1909,7 +1909,7 @@ function lawyerMethod(t){
 
 function editLawyer(){
     var url = '/manage/service/lawyer/edit';
-    $.ajax({
+    $('#editLawyerForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -1931,7 +1931,7 @@ function editLawyer(){
 
 function addLawyer(){
     var url = '/manage/service/lawyer/add';
-    $.ajax({
+    $('#addLawyerForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -2023,6 +2023,83 @@ function addLawyerOffice(){
             }
             else if(re.status == 'failed') {
                 ajaxResult(re,$('#addLawyerOfficeNotice'));
+            }
+        }
+    });
+}
+
+//证书持有人管理
+function certificateMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/certificate/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editCertificate(){
+    var url = '/manage/service/certificate/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editCertificateForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editCertificateNotice'));
+            }
+        }
+    });
+}
+
+function addCertificate(){
+    var url = '/manage/service/certificate/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addCertificateForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addCertificateNotice'));
             }
         }
     });

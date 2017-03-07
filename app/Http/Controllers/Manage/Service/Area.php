@@ -100,7 +100,7 @@ class Area extends Controller
                     'count' => $count,
                     'count_page' => $count_page,
                     'now_page' => 1,
-                    'type' => 'tags',
+                    'type' => 'area',
                 );
             }
             $this->page_data['pages'] = $pages;

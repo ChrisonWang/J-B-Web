@@ -362,7 +362,7 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/service/area/delete','Manage\Service\Area@doDelete');
 
-        Route::post('manage/service/area/{page?}','Manage\Service\Area@index');
+        Route::post('manage/service/areaList/{page?}','Manage\Service\Area@index');
 
         //事务所管理
         Route::get('manage/service/lawyerOffice/show','Manage\Service\LawyerOffice@show');
@@ -377,7 +377,37 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/service/lawyerOffice/delete','Manage\Service\LawyerOffice@doDelete');
 
-        Route::post('manage/service/lawyerOffice/{page?}','Manage\Service\LawyerOffice@index');
+        Route::post('manage/service/lawyerOfficeList/{page?}','Manage\Service\LawyerOffice@index');
+
+        //律师管理
+        Route::get('manage/service/lawyer/show','Manage\Service\Lawyer@show');
+
+        Route::get('manage/service/lawyer/add','Manage\Service\Lawyer@create');
+
+        Route::post('manage/service/lawyer/add','Manage\Service\Lawyer@store');
+
+        Route::get('manage/service/lawyer/edit','Manage\Service\Lawyer@edit');
+
+        Route::post('manage/service/lawyer/edit','Manage\Service\Lawyer@doEdit');
+
+        Route::get('manage/service/lawyer/delete','Manage\Service\Lawyer@doDelete');
+
+        Route::post('manage/service/lawyerList/{page?}','Manage\Service\Lawyer@index');
+
+        //证书持有人管理
+        Route::get('manage/service/certificate/show','Manage\Service\Certificate@show');
+
+        Route::get('manage/service/certificate/add','Manage\Service\Certificate@create');
+
+        Route::post('manage/service/certificate/add','Manage\Service\Certificate@store');
+
+        Route::get('manage/service/certificate/edit','Manage\Service\Certificate@edit');
+
+        Route::post('manage/service/certificate/edit','Manage\Service\Certificate@doEdit');
+
+        Route::get('manage/service/certificate/delete','Manage\Service\Certificate@doDelete');
+
+        Route::post('manage/service/certificateList/{page?}','Manage\Service\Certificate@index');
 
     });
 

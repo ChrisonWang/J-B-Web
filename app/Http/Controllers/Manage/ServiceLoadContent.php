@@ -55,7 +55,7 @@ class ServiceLoadContent extends Controller
                 'count' => $count,
                 'count_page' => $count_page,
                 'now_page' => 1,
-                'type' => 'tags',
+                'type' => 'area',
             );
         }
         $this->page_data['pages'] = $pages;
@@ -69,38 +69,44 @@ class ServiceLoadContent extends Controller
         $this->page_data['thisPageName'] = '律师管理';
         //加载列表数据
         $lawyer_list = array();
+        $office_list = array();
         $pages = '';
         $count = DB::table('service_lawyer')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $office = DB::table('service_lawyer')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
-        if(count($office) > 0){
+        $lawyers = DB::table('service_lawyer')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($lawyers) > 0){
+            //取出事务所
+            $office = DB::table('service_lawyer_office')->get();
+            if(count($office) > 0){
+                foreach($office as $o){
+                    $office_list[keys_encrypt($o->id)] = $o->name;
+                }
+            }
             //格式化数据
-            foreach($office as $o){
+            foreach($lawyers as $lawyer){
                 $lawyer_list[] = array(
-                    'key' => keys_encrypt($o->id),
-                    'lawyer_name'=> $o->lawyer_name,
-                    'sex'=> $o->sex,
-                    'certificate_code'=> $o->certificate_code,
-                    'type'=> $o->type,
-                    'area_id'=> keys_encrypt($o->area_id),
-                    'status'=> $o->status,
-                    'create_date'=> $o->create_date,
-                    'update_date'=> $o->update_date,
+                    'key' => keys_encrypt($lawyer->id),
+                    'name'=> $lawyer->name,
+                    'sex'=> $lawyer->sex,
+                    'type'=> $lawyer->type,
+                    'certificate_code'=> $lawyer->certificate_code,
+                    'lawyer_office'=> keys_encrypt($lawyer->lawyer_office),
+                    'status'=> $lawyer->status,
                 );
             }
             $pages = array(
                 'count' => $count,
                 'count_page' => $count_page,
                 'now_page' => 1,
-                'type' => 'tags',
+                'type' => 'lawyer',
             );
         }
         $this->page_data['pages'] = $pages;
-        $this->page_data['type_list'] = array('head'=>'总所', 'branch'=>'分所', 'personal'=>'个人');
-        $this->page_data['area_list'] = $area_list;
+        $this->page_data['type_list'] = ['full_time'=>'专职', 'part_time'=>'兼职', 'company'=>'公司', 'officer'=>'公职'];
         $this->page_data['office_list'] = $office_list;
-        $pageContent = view('judicial.manage.service.lawyerOfficeList',$this->page_data)->render();
+        $this->page_data['lawyer_list'] = $lawyer_list;
+        $pageContent = view('judicial.manage.service.lawyerList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
@@ -142,7 +148,7 @@ class ServiceLoadContent extends Controller
                 'count' => $count,
                 'count_page' => $count_page,
                 'now_page' => 1,
-                'type' => 'tags',
+                'type' => 'lawyerOffice',
             );
         }
         $this->page_data['pages'] = $pages;
@@ -150,6 +156,43 @@ class ServiceLoadContent extends Controller
         $this->page_data['area_list'] = $area_list;
         $this->page_data['office_list'] = $office_list;
         $pageContent = view('judicial.manage.service.lawyerOfficeList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_CertificateMng($request)
+    {
+        $this->page_data['thisPageName'] = '证书持有人管理';
+        //加载列表数据
+        $certificate_list = array();
+        $pages = '';
+        $count = DB::table('service_certificate')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $certificates = DB::table('service_certificate')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($certificates) > 0){
+            //格式化数据
+            foreach($certificates as $certificate){
+                $certificate_list[] = array(
+                    'key' => keys_encrypt($certificate->id),
+                    'name'=> $certificate->name,
+                    'citizen_code'=> $certificate->citizen_code,
+                    'certi_code'=> $certificate->certi_code,
+                    'certificate_date'=> date('Y-m-d', strtotime($certificate->certificate_date)),
+                    'phone'=> $certificate->phone,
+                    'last_status'=> $certificate->last_status,
+                    'create_date'=> $certificate->create_date,
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'certificate',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['certificate_list'] = $certificate_list;
+        $pageContent = view('judicial.manage.service.certificateList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 

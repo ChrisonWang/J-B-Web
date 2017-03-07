@@ -76,6 +76,16 @@
                             </li>
                         </ul><!-- 子菜单End -->
                     </li><!-- 律师服务管理End -->
+                    <!-- 司法考试管理 -->
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>司法考试管理<span class="fa arrow"></span></a>
+                        <!-- 子菜单 -->
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0);" data-node="service-certificateMng" >证书持有人管理</a>
+                            </li>
+                        </ul><!-- 子菜单End -->
+                    </li><!-- 司法考试管理End -->
             @endif
         </ul>
     </div>

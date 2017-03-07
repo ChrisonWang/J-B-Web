@@ -6,7 +6,7 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <a type="button" data-key='none' data-method="add" onclick="lawyerOfficeMethod($(this))" class="btn btn-primary">新增</a>
+            <a type="button" data-key='none' data-method="add" onclick="lawyerMethod($(this))" class="btn btn-primary">新增</a>
         </div>
         <hr/>
         <div class="container-fluid" id="this-container">
@@ -14,30 +14,31 @@
                 <thead>
                     <tr>
                         <th width="20%" class="text-center">操作</th>
-                        <th class="text-center">名称</th>
-                        <th class="text-center">负责人</th>
-                        <th class="text-center">统一社会信用代码</th>
+                        <th class="text-center">姓名</th>
+                        <th class="text-center">性别</th>
                         <th class="text-center">类型</th>
-                        <th class="text-center">区域</th>
+                        <th class="text-center">职业证编号</th>
+                        <th class="text-center">机构名称</th>
                         <th class="text-center">状态</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                @foreach($office_list as $office)
+                @foreach($lawyer_list as $lawyer)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $office['key'] }}" data-method="show" onclick="lawyerOfficeMethod($(this))">查看</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $lawyer['key'] }}" data-method="show" onclick="lawyerMethod($(this))">查看</a>
                         &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $office['key'] }}" data-method="edit" onclick="lawyerOfficeMethod($(this))">编辑</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $lawyer['key'] }}" data-method="edit" onclick="lawyerMethod($(this))">编辑</a>
                         &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $office['key'] }}" data-method="delete" data-title="{{ $office['name'] }}" onclick="lawyerOfficeMethod($(this))">删除</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $lawyer['key'] }}" data-method="delete" data-title="{{ $lawyer['name'] }}" onclick="lawyerMethod($(this))">删除</a>
                     </td>
-                    <td>{{ $office['name'] }}</td>
-                    <td>{{ isset($office['director']) ? $office['director'] : '-' }}</td>
-                    <td>{{ isset($office['usc_code']) ? $office['usc_code'] : '-' }}</td>
-                    <td>{{ isset($area_list)&&is_array($area_list) ? $area_list[$office['area_id']] : '-' }}</td>
-                    <td>{{ isset($type_list[$office['type']]) ? $type_list[$office['type']] : '-'}}</td>
-                    <td>{{ $office['status']=='normal' ? '正常' : '注销' }}</td>
+                    <td>{{ $lawyer['name'] }}</td>
+                    <td>{{ $lawyer['sex']=='female'? '女' : '男' }}</td>
+                    <td>{{ isset($type_list[$lawyer['type']]) ? $type_list[$lawyer['type']] : '-' }}</td>
+                    <td>{{ $lawyer['certificate_code'] }}</td>
+                    <td>{{ isset($office_list[$lawyer['lawyer_office']]) ? $office_list[$lawyer['lawyer_office']] : '-' }}</td>
+                    <td>{{ $lawyer['status']=='normal' ? '正常' : '注销' }}</td>
+
                 </tr>
                 @endforeach
                 </tbody>
