@@ -12,12 +12,7 @@ use App\Http\Controllers\Controller;
 
 class ServiceLoadContent extends Controller
 {
-    /**
-     * 加载CMS模块页面的入口函数
-     * @param Request $request
-     * @throws \Exception
-     * @throws \Throwable
-     */
+
     public function loadContent(Request $request)
     {
         $inputs = $request->input();
@@ -370,7 +365,7 @@ class ServiceLoadContent extends Controller
     private function _content_ConsultionsMng($request)
     {
         $this->page_data['thisPageName'] = '问题咨询管理';
-        $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+        $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         //加载列表数据
         $consultion_list = array();
         $pages = '';
@@ -399,6 +394,78 @@ class ServiceLoadContent extends Controller
         $this->page_data['pages'] = $pages;
         $this->page_data['consultion_list'] = $consultion_list;
         $pageContent = view('judicial.manage.service.consultionsList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_AidApplyMng($request)
+    {
+        $this->page_data['thisPageName'] = '群众预约援助管理';
+        $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
+        //加载列表数据
+        $apply_list = array();
+        $pages = '';
+        $count = DB::table('service_legal_aid_apply')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $applys = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($applys) > 0){
+            foreach($applys as $apply){
+                $apply_list[] = array(
+                    'key'=> keys_encrypt($apply->id),
+                    'record_code'=> $apply->record_code,
+                    'status'=> $apply->status,
+                    'apply_name'=> $apply->apply_name,
+                    'apply_phone'=> $apply->apply_phone,
+                    'type'=> $apply->type,
+                    'salary_dispute'=> $apply->salary_dispute=='yes' ? 'yes' : 'no',
+                    'apply_date'=> date('Y-m-d',strtotime($apply->apply_date)),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'aidApply',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['apply_list'] = $apply_list;
+        $pageContent = view('judicial.manage.service.aidApplyList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_AidDispatchMng($request)
+    {
+        $this->page_data['thisPageName'] = '公检法指派管理';
+        //加载列表数据
+        $apply_list = array();
+        $pages = '';
+        $count = DB::table('service_legal_aid_dispatch')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $applys = DB::table('service_legal_aid_dispatch')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($applys) > 0){
+            foreach($applys as $apply){
+                $apply_list[] = array(
+                    'key'=> keys_encrypt($apply->id),
+                    'record_code'=> $apply->record_code,
+                    'status'=> $apply->status,
+                    'apply_office'=> $apply->apply_office,
+                    'apply_aid_office'=> $apply->apply_aid_office,
+                    'case_name'=> $apply->case_name,
+                    'apply_date'=> date('Y-m-d',strtotime($apply->apply_date)),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'aidDispatch',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['apply_list'] = $apply_list;
+        $pageContent = view('judicial.manage.service.aidDispatchList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 

@@ -107,7 +107,18 @@
                                 <a href="javascript:void(0);" data-node="service-expertiseApplyMng" >司法鉴定申请管理</a>
                             </li>
                         </ul><!-- 子菜单End -->
-                    </li><!-- 司法考试管理End -->
+                    </li><!-- 司法鉴定管理End -->
+                    <!-- 法律援助信息管理 -->
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>法律援助信息管理<span class="fa arrow"></span></a>
+                        <!-- 子菜单 -->
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0);" data-node="service-aidApplyMng" >群众预约援助管理</a>
+                                <a href="javascript:void(0);" data-node="service-aidDispatchMng" >公检法指派援助管理</a>
+                            </li>
+                        </ul><!-- 子菜单End -->
+                    </li><!-- 法律援助信息管理End -->
                     <!-- 民政互动管理 -->
                     <li>
                         <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>民政互动管理<span class="fa arrow"></span></a>

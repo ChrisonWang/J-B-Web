@@ -122,6 +122,7 @@ class Lawyer extends Controller
                     $photo_path = URL::to('/').'/uploads/system/lawyer/'.$filename;
                 }
             }
+            $lawyer_office_name = DB::table('service_lawyer_office')->where('id', keys_decrypt($inputs['lawyer_office']))->first();
             $now = date('Y-m-d H:i:s', time());
             $save_data = array(
                 'name'=> $inputs['certificate_code'],
@@ -144,6 +145,7 @@ class Lawyer extends Controller
                 'type'=> $inputs['type'],
                 'status'=> $inputs['status']=='cancel' ? 'cancel' : 'normal',
                 'lawyer_office'=> keys_decrypt($inputs['lawyer_office']),
+                'lawyer_office_name'=> (isset($lawyer_office_name->name) && !empty($lawyer_office_name->name)) ? $lawyer_office_name->name : '',
                 'position'=> $inputs['position'],
                 'certificate_code'=> $inputs['certificate_code'],
                 'create_date'=> $now,
@@ -345,6 +347,7 @@ class Lawyer extends Controller
                     }
                 }
             }
+            $lawyer_office_name = DB::table('service_lawyer_office')->where('id', keys_decrypt($inputs['lawyer_office']))->first();
             $now = date('Y-m-d H:i:s', time());
             $save_data = array(
                 'name'=> $inputs['certificate_code'],
@@ -367,6 +370,7 @@ class Lawyer extends Controller
                 'type'=> $inputs['type'],
                 'status'=> $inputs['status']=='cancel' ? 'cancel' : 'normal',
                 'lawyer_office'=> keys_decrypt($inputs['lawyer_office']),
+                'lawyer_office_name'=> (isset($lawyer_office_name->name) && !empty($lawyer_office_name->name)) ? $lawyer_office_name->name : '',
                 'position'=> $inputs['position'],
                 'certificate_code'=> $inputs['certificate_code'],
                 'update_date'=> $now,
@@ -474,6 +478,60 @@ class Lawyer extends Controller
         }
         else{
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        $inputs = $request->input();
+        $where = 'WHERE';
+        if(isset($inputs['name']) && trim($inputs['name'])!==''){
+            $where .= ' `name` LIKE "%'.$inputs['name'].'%" AND ';
+        }
+        if(isset($inputs['certificate_code']) && trim($inputs['certificate_code'])!==''){
+            $where .= ' `certificate_code` LIKE "%'.$inputs['certificate_code'].'%" AND ';
+        }
+        if(isset($inputs['lawyer_office_name']) && trim($inputs['lawyer_office_name'])!==''){
+            $where .= ' `lawyer_office_name` LIKE "%'.$inputs['lawyer_office_name'].'%" AND ';
+        }
+        if(isset($inputs['type']) &&($inputs['type'])!='none'){
+            $where .= ' `type` = "'.$inputs['type'].'" AND ';
+        }
+        if(isset($inputs['status']) &&($inputs['status'])!='none'){
+            $where .= ' `status` = "'.$inputs['status'].'" AND ';
+        }
+        $sql = 'SELECT * FROM `service_lawyer` '.$where.'1';
+        $res = DB::select($sql);
+        if($res && count($res) > 0){
+            $lawyer_list = array();
+            $office_list = array();
+            //搜索结果取出事务所
+            $office = DB::table('service_lawyer_office')->get();
+            if(count($office) > 0){
+                foreach($office as $o){
+                    $office_list[keys_encrypt($o->id)] = $o->name;
+                }
+            }
+            //格式化数据
+            foreach($res as $lawyer){
+                $lawyer_list[] = array(
+                    'key' => keys_encrypt($lawyer->id),
+                    'name'=> $lawyer->name,
+                    'sex'=> $lawyer->sex,
+                    'type'=> $lawyer->type,
+                    'certificate_code'=> $lawyer->certificate_code,
+                    'lawyer_office'=> keys_encrypt($lawyer->lawyer_office),
+                    'status'=> $lawyer->status,
+                );
+            }
+            $this->page_data['type_list'] = ['full_time'=>'专职', 'part_time'=>'兼职', 'company'=>'公司', 'officer'=>'公职'];
+            $this->page_data['office_list'] = $office_list;
+            $this->page_data['lawyer_list'] = $lawyer_list;
+            $pageContent = view('judicial.manage.service.ajaxSearch.lawyerSearchList',$this->page_data)->render();
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
         }
     }
 

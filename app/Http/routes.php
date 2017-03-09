@@ -486,6 +486,36 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/consultionsList/{page?}','Manage\Service\Consultions@index');
 
+        //群众预约援助管理
+        Route::get('manage/service/aidApply/show','Manage\Service\AidApply@show');
+
+        Route::get('manage/service/aidApply/edit','Manage\Service\AidApply@edit');
+
+        Route::post('manage/service/aidApply/edit','Manage\Service\AidApply@doEdit');
+
+        Route::post('manage/service/aidApply/pass','Manage\Service\AidApply@doPass');
+
+        Route::post('manage/service/aidApply/reject','Manage\Service\AidApply@doReject');
+
+        Route::post('manage/service/aidApply/search','Manage\Service\AidApply@search');
+
+        Route::post('manage/service/aidApplyList/{page?}','Manage\Service\AidApply@index');
+
+        //公检法指派管理
+        Route::get('manage/service/aidDispatch/show','Manage\Service\AidDispatch@show');
+
+        Route::get('manage/service/aidDispatch/edit','Manage\Service\AidDispatch@edit');
+
+        Route::post('manage/service/aidDispatch/edit','Manage\Service\AidDispatch@doEdit');
+
+        Route::post('manage/service/aidDispatch/pass','Manage\Service\AidDispatch@doPass');
+
+        Route::post('manage/service/aidDispatch/reject','Manage\Service\AidDispatch@doReject');
+
+        Route::post('manage/service/aidDispatch/search','Manage\Service\AidDispatch@search');
+
+        Route::post('manage/service/aidDispatchList/{page?}','Manage\Service\AidDispatch@index');
+
     });
 
     Route::get('manage', 'Manage\Login@index');

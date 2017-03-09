@@ -434,4 +434,62 @@ class LawyerOffice extends Controller
         }
     }
 
+    public function search(Request $request)
+    {
+        $inputs = $request->input();
+        $where = 'WHERE';
+        if(isset($inputs['name']) && trim($inputs['name'])!==''){
+            $where .= ' `name` LIKE "%'.$inputs['name'].'%" AND ';
+        }
+        if(isset($inputs['usc_code']) && trim($inputs['usc_code'])!==''){
+            $where .= ' `usc_code` LIKE "%'.$inputs['usc_code'].'%" AND ';
+        }
+        if(isset($inputs['director']) && trim($inputs['director'])!==''){
+            $where .= ' `director` LIKE "%'.$inputs['director'].'%" AND ';
+        }
+        if(isset($inputs['type']) &&($inputs['type'])!='none'){
+            $where .= ' `type` = "'.$inputs['type'].'" AND ';
+        }
+        if(isset($inputs['area_id']) &&($inputs['area_id'])!='none'){
+            $where .= ' `area_id` = "'.keys_decrypt($inputs['area_id']).'" AND ';
+        }
+        $sql = 'SELECT * FROM `service_lawyer_office` '.$where.'1';
+        $res = DB::select($sql);
+        if($res && count($res) > 0){
+            //加载列表数据
+            $office_list = array();
+            $area_list = array();
+            //取出区域
+            $areas = DB::table('service_area')->get();
+            if(count($areas) > 0){
+                foreach($areas as $area){
+                    $area_list[keys_encrypt($area->id)] = $area->area_name;
+                }
+            }
+
+            //格式化数据
+            foreach($res as $o){
+                $office_list[] = array(
+                    'key' => keys_encrypt($o->id),
+                    'name'=> $o->name,
+                    'director'=> $o->director,
+                    'usc_code'=> $o->usc_code,
+                    'type'=> $o->type,
+                    'area_id'=> keys_encrypt($o->area_id),
+                    'status'=> $o->status,
+                    'create_date'=> $o->create_date,
+                    'update_date'=> $o->update_date,
+                );
+            }
+            $this->page_data['type_list'] = array('head'=>'总所', 'branch'=>'分所', 'personal'=>'个人');
+            $this->page_data['area_list'] = $area_list;
+            $this->page_data['office_list'] = $office_list;
+            $pageContent = view('judicial.manage.service.ajaxSearch.lawyerOfficeSearchList',$this->page_data)->render();
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
+        }
+    }
+
 }

@@ -354,4 +354,76 @@ class Certificate extends Controller
         }
     }
 
+    public function search(Request $request)
+    {
+        $inputs = $request->input();
+        $where = 'WHERE';
+        if(isset($inputs['name']) && trim($inputs['name'])!==''){
+            $where .= ' `name` LIKE "%'.$inputs['name'].'%" AND ';
+        }
+        if(isset($inputs['citizen_code']) && trim($inputs['citizen_code'])!==''){
+            $where .= ' `citizen_code` LIKE "%'.$inputs['citizen_code'].'%" AND ';
+        }
+        if(isset($inputs['certi_code']) && trim($inputs['certi_code'])!==''){
+            $where .= ' `certi_code` LIKE "%'.$inputs['certi_code'].'%" AND ';
+        }
+        if(isset($inputs['phone']) && trim($inputs['phone'])!==''){
+            $where .= ' `phone` LIKE "%'.$inputs['phone'].'%" AND ';
+        }
+        if(isset($inputs['last_status']) &&($inputs['last_status'])!='none'){
+            $where .= ' `last_status` = "'.$inputs['last_status'].'" AND ';
+        }
+        $sql = 'SELECT * FROM `service_certificate` '.$where.'1';
+        $res = DB::select($sql);
+        if($res && count($res) > 0){
+            $certificate_list = array();
+            //搜索结果
+            foreach($res as $certificate){
+                $certificate_list[] = array(
+                    'key' => keys_encrypt($certificate->id),
+                    'name'=> $certificate->name,
+                    'citizen_code'=> $certificate->citizen_code,
+                    'certi_code'=> $certificate->certi_code,
+                    'certificate_date'=> date('Y-m-d', strtotime($certificate->certificate_date)),
+                    'phone'=> $certificate->phone,
+                    'last_status'=> $certificate->last_status,
+                    'create_date'=> $certificate->create_date,
+                );
+            }
+            $this->page_data['certificate_list'] = $certificate_list;
+            $pageContent = view('judicial.manage.service.ajaxSearch.certificateSearchList',$this->page_data)->render();
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
+        }
+    }
+
+    public function doImport(Request $request)
+    {
+        $batch_file = $request->file('batch_file');
+        if(is_null($batch_file) || !$batch_file->isValid()){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'请上传正确的文件！']);
+        }
+        else{
+            $destPath = realpath(public_path('uploads/system/batch_files'));
+            if(!file_exists($destPath)){
+                mkdir($destPath, 0755, true);
+            }
+            $extension = $batch_file->getClientOriginalExtension();
+            if($extension!='csv'){
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'请上传csv格式的文件！']);
+            }
+            $filename = date('Ymd',time()).gen_unique_code('BATCH_').'.'.$extension;
+            $file_path = URL::to('/').'/uploads/system/batch_files/'.$filename;
+            if(!$batch_file->move($destPath,$filename)){
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'上传文件失败，请检查目录权限！']);
+            }
+            $tmp_file = fopen($file_path,'r');
+            while($data = fgetcsv($tmp_file)){
+                $data_list[] = iconv('GBK','UTF-8',$data);
+            }
+        }
+    }
+
 }

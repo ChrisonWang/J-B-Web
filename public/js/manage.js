@@ -1951,6 +1951,29 @@ function addLawyer(){
     });
 }
 
+function search_lawyer(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/service/lawyer/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
+}
+
 //事务所管理
 function lawyerOfficeMethod(t){
     var key = t.data('key');
@@ -2026,6 +2049,29 @@ function addLawyerOffice(){
             }
         }
     });
+}
+
+function search_lawyerOffice(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/service/lawyerOffice/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
 }
 
 //短信发送管理
@@ -2257,6 +2303,29 @@ function addCertificate(){
             }
         }
     });
+}
+
+function search_certificate(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/service/certificate/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
 }
 
 //司法鉴定类型管理
@@ -2540,6 +2609,188 @@ function editConsultions(){
 function search_consultions(t, c){
     var data = t.parents('form').serialize()
     var url = '/manage/service/consultions/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
+}
+
+//群众预约援助管理
+function aidApplyMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/aidApply/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editAidApply(t){
+    var method = t.data('method');
+    if(method == 'pass'){
+        var c = confirm("确认通过这条法律援助申请？");
+        if(c != true){
+            return false;
+        }
+    }
+    if(method == 'reject'){
+        var c = confirm("确认驳回这条法律援助申请？");
+        if(c != true){
+            return false;
+        }
+    }
+    var url = '/manage/service/aidApply/'+method;
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editAidApplyForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editAidApplyNotice'));
+            }
+        }
+    });
+}
+
+function search_aidApply(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/service/aidApply/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
+}
+
+//公检法指派管理
+function aidDispatchMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/aidDispatch/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editAidDispatch(t){
+    var method = t.data('method');
+    if(method == 'pass'){
+        var c = confirm("确认通过这条法律援助申请？");
+        if(c != true){
+            return false;
+        }
+    }
+    if(method == 'reject'){
+        var c = confirm("确认驳回这条法律援助申请？");
+        if(c != true){
+            return false;
+        }
+    }
+    var url = '/manage/service/aidDispatch/'+method;
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editAidDispatchForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editAidDispatchNotice'));
+            }
+        }
+    });
+}
+
+function search_aidDispatch(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/service/aidDispatch/search'
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
