@@ -2028,6 +2028,160 @@ function addLawyerOffice(){
     });
 }
 
+//短信发送管理
+function messageSendMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/messageSend/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editMessageSend(){
+    var url = '/manage/service/messageSend/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editMessageSendForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editMessageSendNotice'));
+            }
+        }
+    });
+}
+
+function addMessageSend(){
+    var url = '/manage/service/messageSend/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addMessageSendForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addMessageSendNotice'));
+            }
+        }
+    });
+}
+
+//短信模板管理
+function messageTmpMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/messageTmp/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editMessageTmp(){
+    var url = '/manage/service/messageTmp/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editMessageTmpForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editMessageTmpNotice'));
+            }
+        }
+    });
+}
+
+function addMessageTmp(){
+    var url = '/manage/service/messageTmp/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addMessageTmpForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addMessageTmpNotice'));
+            }
+        }
+    });
+}
+
 //证书持有人管理
 function certificateMethod(t){
     var key = t.data('key');
@@ -2105,3 +2259,303 @@ function addCertificate(){
     });
 }
 
+//司法鉴定类型管理
+function expertiseTypeMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/expertiseType/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editExpertiseType(){
+    var url = '/manage/service/expertiseType/edit';
+    $('#editExpertiseTypeForm').ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editExpertiseTypeForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editExpertiseTypeNotice'));
+            }
+        }
+    });
+}
+
+function addExpertiseType(){
+    var url = '/manage/service/expertiseType/add';
+    $('#addExpertiseTypeForm').ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addExpertiseTypeForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addExpertiseTypeNotice'));
+            }
+        }
+    });
+}
+
+//司法鉴定申请管理
+function expertiseApplyMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/expertiseApply/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editExpertiseApply(t){
+    var method = t.data('method');
+    if(method == 'pass'){
+        var c = confirm("确认通过这条司法鉴定请求？");
+        if(c != true){
+            return false;
+        }
+    }
+    if(method == 'reject'){
+        var c = confirm("确认驳回这条司法鉴定请求？");
+        if(c != true){
+            return false;
+        }
+    }
+    var url = '/manage/service/expertiseApply/'+method;
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editExpertiseApplyForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editExpertiseApplyNotice'));
+            }
+        }
+    });
+}
+
+//征求意见管理
+function suggestionsMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/suggestions/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editSuggestions(){
+    var url = '/manage/service/suggestions/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editSuggestionsForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editSuggestionsNotice'));
+            }
+        }
+    });
+}
+
+function search_suggestions(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/service/suggestions/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
+}
+
+//问题咨询管理
+function consultionsMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/consultions/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editConsultions(){
+    var url = '/manage/service/consultions/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editConsultionsForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editConsultionsNotice'));
+            }
+        }
+    });
+}
+
+function search_consultions(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/service/consultions/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
+}

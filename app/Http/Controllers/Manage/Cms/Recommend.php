@@ -68,10 +68,10 @@ class Recommend extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['r_title'])){
+        if(trim($inputs['r_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['r_link'])){
+        elseif(trim($inputs['r_link'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'链接不能为空！']);
         }
 
@@ -183,10 +183,10 @@ class Recommend extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['r_title'])){
+        if(trim($inputs['r_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['r_link'])){
+        elseif(trim($inputs['r_link'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'链接不能为空！']);
         }
 

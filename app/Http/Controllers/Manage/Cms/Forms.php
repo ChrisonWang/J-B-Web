@@ -87,7 +87,7 @@ class Forms extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['title'])){
+        if(trim($inputs['title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
 
@@ -251,7 +251,7 @@ class Forms extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['title'])){
+        if(trim($inputs['title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
 

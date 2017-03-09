@@ -377,6 +377,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/service/lawyerOffice/delete','Manage\Service\LawyerOffice@doDelete');
 
+        Route::post('manage/service/lawyerOffice/search','Manage\Service\LawyerOffice@search');
+
         Route::post('manage/service/lawyerOfficeList/{page?}','Manage\Service\LawyerOffice@index');
 
         //律师管理
@@ -392,7 +394,24 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/service/lawyer/delete','Manage\Service\Lawyer@doDelete');
 
+        Route::post('manage/service/lawyer/search','Manage\Service\Lawyer@search');
+
         Route::post('manage/service/lawyerList/{page?}','Manage\Service\Lawyer@index');
+
+        //短信模板管理
+        Route::get('manage/service/messageTmp/show','Manage\Service\MessageTmp@show');
+
+        Route::get('manage/service/messageTmp/add','Manage\Service\MessageTmp@create');
+
+        Route::post('manage/service/messageTmp/add','Manage\Service\MessageTmp@store');
+
+        Route::get('manage/service/messageTmp/edit','Manage\Service\MessageTmp@edit');
+
+        Route::post('manage/service/messageTmp/edit','Manage\Service\MessageTmp@doEdit');
+
+        Route::get('manage/service/messageTmp/delete','Manage\Service\MessageTmp@doDelete');
+
+        Route::post('manage/service/messageTmpList/{page?}','Manage\Service\MessageTmp@index');
 
         //证书持有人管理
         Route::get('manage/service/certificate/show','Manage\Service\Certificate@show');
@@ -407,7 +426,65 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/service/certificate/delete','Manage\Service\Certificate@doDelete');
 
+        Route::post('manage/service/certificate/search','Manage\Service\Certificate@search');
+
         Route::post('manage/service/certificateList/{page?}','Manage\Service\Certificate@index');
+
+        //司法鉴定类型管理
+        Route::get('manage/service/expertiseType/show','Manage\Service\ExpertiseType@show');
+
+        Route::get('manage/service/expertiseType/add','Manage\Service\ExpertiseType@create');
+
+        Route::post('manage/service/expertiseType/add','Manage\Service\ExpertiseType@store');
+
+        Route::get('manage/service/expertiseType/edit','Manage\Service\ExpertiseType@edit');
+
+        Route::post('manage/service/expertiseType/edit','Manage\Service\ExpertiseType@doEdit');
+
+        Route::get('manage/service/expertiseType/delete','Manage\Service\ExpertiseType@doDelete');
+
+        Route::post('manage/service/expertiseTypeList/{page?}','Manage\Service\ExpertiseType@index');
+
+        //司法鉴定申请管理
+        Route::get('manage/service/expertiseApply/show','Manage\Service\ExpertiseApply@show');
+
+        Route::get('manage/service/expertiseApply/edit','Manage\Service\ExpertiseApply@edit');
+
+        Route::post('manage/service/expertiseApply/edit','Manage\Service\ExpertiseApply@doEdit');
+
+        Route::post('manage/service/expertiseApply/pass','Manage\Service\ExpertiseApply@doPass');
+
+        Route::post('manage/service/expertiseApply/reject','Manage\Service\ExpertiseApply@doReject');
+
+        Route::post('manage/service/expertiseApply/search','Manage\Service\ExpertiseApply@search');
+
+        Route::post('manage/service/expertiseApplyList/{page?}','Manage\Service\ExpertiseApply@index');
+
+        //征求意见管理
+        Route::get('manage/service/suggestions/show','Manage\Service\Suggestions@show');
+
+        Route::get('manage/service/suggestions/edit','Manage\Service\Suggestions@edit');
+
+        Route::post('manage/service/suggestions/edit','Manage\Service\Suggestions@doEdit');
+
+        Route::post('manage/service/suggestions/answer','Manage\Service\Suggestions@doAnswer');
+
+        Route::post('manage/service/suggestions/search','Manage\Service\Suggestions@search');
+
+        Route::post('manage/service/suggestionsList/{page?}','Manage\Service\Suggestions@index');
+
+        //问题咨询管理
+        Route::get('manage/service/consultions/show','Manage\Service\Consultions@show');
+
+        Route::get('manage/service/consultions/edit','Manage\Service\Consultions@edit');
+
+        Route::post('manage/service/consultions/edit','Manage\Service\Consultions@doEdit');
+
+        Route::post('manage/service/consultions/answer','Manage\Service\Consultions@doAnswer');
+
+        Route::post('manage/service/consultions/search','Manage\Service\Consultions@search');
+
+        Route::post('manage/service/consultionsList/{page?}','Manage\Service\Consultions@index');
 
     });
 

@@ -72,10 +72,10 @@ class Video extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['video_title'])){
+        if(trim($inputs['video_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['video_link'])){
+        elseif(trim($inputs['video_link'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频地址不能为空！']);
         }
         $disabled = 'no';
@@ -199,10 +199,10 @@ class Video extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['video_title'])){
+        if(trim($inputs['video_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['video_link'])){
+        elseif(trim($inputs['video_link'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频地址不能为空！']);
         }
 

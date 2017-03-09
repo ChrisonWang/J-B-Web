@@ -31,21 +31,43 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">司法考试参加时间：</label>
-                <div class="col-md-8">
+                <label for="exam_date" class="col-md-1 control-label">司法考试参加时间：</label>
+                <div class="col-md-3">
                     <p>{{ $certificate_detail['exam_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">取得证书时间：</label>
-                <div class="col-md-8">
+                <label for="certificate_date" class="col-md-1 control-label">取得证书时间：</label>
+                <div class="col-md-3">
                     <p>{{ $certificate_detail['certificate_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="create_date" class="col-md-1 control-label">备案记录：</label>
-                <div class="col-md-8">
+                <div class="col-md-10">
                     @if(is_array($certificate_detail['register_log']) && $certificate_detail['register_log']!='none')
+                        <div class="container-fluid">
+                            <table class="table table-bordered table-hover table-condensed">
+                                <thead>
+                                <tr>
+                                    <th width="10%" class="text-center">备案年份</th>
+                                    <th class="text-center">备注</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center" id="menu-nodes">
+                                @foreach($certificate_detail['register_log'] as $year=> $notice)
+                                <tr>
+                                    <td width="20%">
+                                        <input disabled type="text" value="{{ $year }}" class="form-control" name="register_log['year'][]" />
+                                    </td>
+                                    <td>
+                                        <input disabled type="text" value="{{ $notice }}" class="form-control" name="register_log['notice'][]"/>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         暂无记录
                     @endif
@@ -74,7 +96,7 @@
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-1">
-                    <button type="button" class="btn btn-danger btn-block" data-node="service-areaMng" onclick="loadContent($(this))">返回列表</button>
+                    <button type="button" class="btn btn-danger btn-block" data-node="service-certificateMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>
         </form>

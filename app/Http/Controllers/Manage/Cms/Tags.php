@@ -74,7 +74,7 @@ class Tags extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['tagTitle'])){
+        if(trim($inputs['tagTitle'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
 
@@ -184,7 +184,7 @@ class Tags extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['tagTitle'])){
+        if(trim($inputs['tagTitle'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
 

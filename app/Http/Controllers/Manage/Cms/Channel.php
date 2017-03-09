@@ -74,7 +74,7 @@ class Channel extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['channel_title'])){
+        if(trim($inputs['channel_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
         //判断子链接是否有没有填写的
@@ -265,7 +265,7 @@ class Channel extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['channel_title'])){
+        if(trim($inputs['channel_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
         $id = keys_decrypt($inputs['key']);

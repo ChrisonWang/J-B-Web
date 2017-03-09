@@ -141,16 +141,16 @@ class Article extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['article_title'])){
+        if(trim($inputs['article_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['publish_date'])){
+        elseif(trim($inputs['publish_date'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'发布时间不能为空！']);
         }
-        elseif(empty($inputs['channel_id'])){
+        elseif(trim($inputs['channel_id'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
         }
-        elseif(empty($inputs['sub_channel_id'])){
+        elseif(trim($inputs['sub_channel_id'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
         }
         //处理上传的图片
@@ -444,10 +444,10 @@ class Article extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['article_title'])){
+        if(trim($inputs['article_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['publish_date'])){
+        elseif(trim($inputs['publish_date'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'发布时间不能为空！']);
         }
 

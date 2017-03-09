@@ -41,7 +41,7 @@ class Introduction extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['intro'])){
+        if(trim($inputs['intro'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写简介正文！！']);
         }
 
@@ -134,7 +134,7 @@ class Introduction extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['intro'])){
+        if(trim($inputs['intro'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写简介正文！！']);
         }
 

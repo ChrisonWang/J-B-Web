@@ -75,7 +75,7 @@ class Menus extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['menu_name'])){
+        if(trim($inputs['menu_name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
         }
         //判断是否有重名的
@@ -239,7 +239,7 @@ class Menus extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['menu_name'])){
+        if(trim($inputs['menu_name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
         }
         $id = keys_decrypt($inputs['key']);

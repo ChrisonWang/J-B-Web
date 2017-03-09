@@ -89,7 +89,7 @@ class LawyerOffice extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['name'])){
+        if(trim($inputs['name']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'事务所名称不能为空！']);
         }
         //判断是否有重名的

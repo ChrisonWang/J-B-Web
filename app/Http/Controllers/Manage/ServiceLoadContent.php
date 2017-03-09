@@ -196,4 +196,210 @@ class ServiceLoadContent extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    private function _content_MessageTmpMng($request)
+    {
+        $this->page_data['thisPageName'] = '短信模板管理';
+        //加载列表数据
+        $tmp_list = array();
+        $pages = '';
+        $count = DB::table('service_message_temp')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $tmps = DB::table('service_message_temp')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($tmps) > 0){
+            //格式化数据
+            foreach($tmps as $tmp){
+                $tmp_list[] = array(
+                    'key' => $tmp->temp_code,
+                    'title'=> $tmp->title,
+                    'content'=> $tmp->content,
+                    'create_date'=> $tmp->create_date,
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'messageTmp',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['tmp_list'] = $tmp_list;
+        $pageContent = view('judicial.manage.service.messageTmpList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_MessageSendMng($request)
+    {
+        $this->page_data['thisPageName'] = '短信发送管理';
+        //加载列表数据
+        $send_list = array();
+        $pages = '';
+        $count = DB::table('service_message_list')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $list = DB::table('service_message_list')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($list) > 0){
+            //格式化数据
+            foreach($list as $l){
+                $send_list[] = array(
+                    'key' => keys_encrypt($l->id),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'messageSend',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['send_list'] = $send_list;
+        $pageContent = view('judicial.manage.service.messageSendList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_ExpertiseTypeMng($request)
+    {
+        $this->page_data['thisPageName'] = '司法鉴定类型管理';
+        //加载列表数据
+        $type_list = array();
+        $pages = '';
+        $count = DB::table('service_judicial_expertise_type')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $types = DB::table('service_judicial_expertise_type')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($types) > 0){
+            foreach($types as $type){
+                $type_list[] = array(
+                    'key' => keys_encrypt($type->id),
+                    'name'=> $type->name,
+                    'create_date'=> $type->create_date,
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'expertiseType',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['type_list'] = $type_list;
+        $pageContent = view('judicial.manage.service.expertiseTypeList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_ExpertiseApplyMng($request)
+    {
+        $this->page_data['thisPageName'] = '司法鉴定申请管理';
+        //加载列表数据
+        $apply_list = array();
+        $type_list = array();
+        $pages = '';
+        $count = DB::table('service_judicial_expertise')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $applies = DB::table('service_judicial_expertise')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($applies) > 0){
+            $types = DB::table('service_judicial_expertise_type')->get();
+            if(count($types) > 0){
+                foreach($types as $type){
+                    $type_list[keys_encrypt($type->id)] = $type->name;
+                }
+            }
+            foreach($applies as $apply){
+                $apply_list[] = array(
+                    'key' => keys_encrypt($apply->id),
+                    'record_code'=> $apply->record_code,
+                    'apply_name'=> $apply->apply_name,
+                    'approval_result'=> $apply->approval_result,
+                    'cell_phone'=> $apply->cell_phone,
+                    'type_id'=> keys_encrypt($apply->type_id),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'expertiseApply',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['type_list'] = $type_list;
+        $this->page_data['apply_list'] = $apply_list;
+        $pageContent = view('judicial.manage.service.expertiseApplyList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_SuggestionsMng($request)
+    {
+        $this->page_data['thisPageName'] = '征求意见管理';
+        $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+        //加载列表数据
+        $suggestion_list = array();
+        $pages = '';
+        $count = DB::table('service_suggestions')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $suggestions = DB::table('service_suggestions')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($suggestions) > 0){
+            foreach($suggestions as $suggestion){
+                $suggestion_list[] = array(
+                    'key' => keys_encrypt($suggestion->id),
+                    'record_code' => $suggestion->record_code,
+                    'title' => $suggestion->title,
+                    'type' => $suggestion->type,
+                    'status' => $suggestion->status,
+                    'create_date' => date('Y-m-d', strtotime($suggestion->create_date)),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'suggestion',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['suggestion_list'] = $suggestion_list;
+        $pageContent = view('judicial.manage.service.suggestionList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+    private function _content_ConsultionsMng($request)
+    {
+        $this->page_data['thisPageName'] = '问题咨询管理';
+        $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+        //加载列表数据
+        $consultion_list = array();
+        $pages = '';
+        $count = DB::table('service_consultions')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $consultions = DB::table('service_consultions')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($consultions) > 0){
+            foreach($consultions as $consultion){
+                $consultion_list[] = array(
+                    'key'=> keys_encrypt($consultion->id),
+                    'record_code'=> $consultion->record_code,
+                    'title'=> $consultion->title,
+                    'type'=> $consultion->type,
+                    'status'=> $consultion->status,
+                    'create_date'=> date('Y-m-d',strtotime($consultion->create_date)),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'consultions',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['consultion_list'] = $consultion_list;
+        $pageContent = view('judicial.manage.service.consultionsList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
 }

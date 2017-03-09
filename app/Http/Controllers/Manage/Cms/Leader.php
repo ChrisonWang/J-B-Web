@@ -71,13 +71,13 @@ class Leader extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['leader_name'])){
+        if(trim($inputs['leader_name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
         }
-        elseif(empty($inputs['leader_job'])){
+        elseif(trim($inputs['leader_job'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'职务不能为空！']);
         }
-        elseif(empty($inputs['description'])){
+        elseif(trim($inputs['description'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
         }
         //处理图片上传
@@ -217,13 +217,13 @@ class Leader extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['leader_name'])){
+        if(trim($inputs['leader_name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
         }
-        elseif(empty($inputs['leader_job'])){
+        elseif(trim($inputs['leader_job'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'职务不能为空！']);
         }
-        elseif(empty($inputs['description'])){
+        elseif(trim($inputs['description'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
         }
 

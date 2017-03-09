@@ -73,7 +73,7 @@ class DepartmentType extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['typeName'])){
+        if(trim($inputs['typeName'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'分类名称不能为空！']);
         }
 
@@ -178,7 +178,7 @@ class DepartmentType extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['typeName'])){
+        if(trim($inputs['typeName'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'分类名称不能为空！']);
         }
 

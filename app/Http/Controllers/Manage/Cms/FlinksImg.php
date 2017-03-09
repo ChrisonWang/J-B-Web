@@ -70,10 +70,10 @@ class FlinksImg extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['fi_title'])){
+        if(trim($inputs['fi_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['fi_links'])){
+        elseif(trim($inputs['fi_links'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'链接不能为空！']);
         }
 

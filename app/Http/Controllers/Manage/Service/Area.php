@@ -60,7 +60,7 @@ class Area extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['area_name'])){
+        if(trim($inputs['area_name']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'区域名称不能为空！']);
         }
         //判断是否有重名的
@@ -155,7 +155,7 @@ class Area extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['area_name'])){
+        if(trim($inputs['area_name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'区域名称不能为空！']);
         }
         $id = keys_decrypt($inputs['key']);

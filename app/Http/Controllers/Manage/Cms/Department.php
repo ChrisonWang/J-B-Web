@@ -85,10 +85,10 @@ class Department extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['department_name'])){
+        if(trim($inputs['department_name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['description'])){
+        elseif(trim($inputs['description'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
         }
 
@@ -236,10 +236,10 @@ class Department extends Controller
     public function doEdit(Request $request)
     {
         $inputs = $request->input();
-        if(empty($inputs['department_name'])){
+        if(trim($inputs['department_name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
-        elseif(empty($inputs['description'])){
+        elseif(trim($inputs['description'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
         }
 

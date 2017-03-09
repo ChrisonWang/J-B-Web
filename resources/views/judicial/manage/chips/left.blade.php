@@ -76,6 +76,17 @@
                             </li>
                         </ul><!-- 子菜单End -->
                     </li><!-- 律师服务管理End -->
+                    <!-- 短信管理 -->
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>短信管理<span class="fa arrow"></span></a>
+                        <!-- 子菜单 -->
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0);" data-node="service-messageTmpMng" >短信模板管理</a>
+                                <a href="javascript:void(0);" data-node="service-messageSendMng" >短信发送管理</a>
+                            </li>
+                        </ul><!-- 子菜单End -->
+                    </li><!-- 短信管理End -->
                     <!-- 司法考试管理 -->
                     <li>
                         <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>司法考试管理<span class="fa arrow"></span></a>
@@ -83,6 +94,28 @@
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="javascript:void(0);" data-node="service-certificateMng" >证书持有人管理</a>
+                            </li>
+                        </ul><!-- 子菜单End -->
+                    </li><!-- 司法考试管理End -->
+                    <!-- 司法鉴定管理 -->
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>司法鉴定管理<span class="fa arrow"></span></a>
+                        <!-- 子菜单 -->
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0);" data-node="service-expertiseTypeMng" >司法鉴定类型管理</a>
+                                <a href="javascript:void(0);" data-node="service-expertiseApplyMng" >司法鉴定申请管理</a>
+                            </li>
+                        </ul><!-- 子菜单End -->
+                    </li><!-- 司法考试管理End -->
+                    <!-- 民政互动管理 -->
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>民政互动管理<span class="fa arrow"></span></a>
+                        <!-- 子菜单 -->
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0);" data-node="service-consultionsMng" >问题咨询管理</a>
+                                <a href="javascript:void(0);" data-node="service-suggestionsMng" >征求意见管理</a>
                             </li>
                         </ul><!-- 子菜单End -->
                     </li><!-- 司法考试管理End -->
