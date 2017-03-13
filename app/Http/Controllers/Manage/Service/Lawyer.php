@@ -125,7 +125,7 @@ class Lawyer extends Controller
             $lawyer_office_name = DB::table('service_lawyer_office')->where('id', keys_decrypt($inputs['lawyer_office']))->first();
             $now = date('Y-m-d H:i:s', time());
             $save_data = array(
-                'name'=> $inputs['certificate_code'],
+                'name'=> $inputs['name'],
                 'thumb'=> $photo_path,
                 'sex'=> $inputs['sex']=='female' ? 'female' : 'male',
                 'nationality'=> $inputs['nationality'],

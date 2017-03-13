@@ -185,6 +185,19 @@ class ServiceLoadContent extends Controller
                 'type' => 'certificate',
             );
         }
+        //模板
+        $temp_list = array();
+        $temps = DB::table('service_message_temp')->get();
+        if(count($temps)>0){
+            foreach($temps as $temp){
+                $temp_list[] = array(
+                    'title'=> $temp->title,
+                    'temp_code'=> $temp->temp_code,
+                    'content'=> $temp->content,
+                );
+            }
+        }
+        $this->page_data['temp_list'] = $temp_list;
         $this->page_data['pages'] = $pages;
         $this->page_data['certificate_list'] = $certificate_list;
         $pageContent = view('judicial.manage.service.certificateList',$this->page_data)->render();

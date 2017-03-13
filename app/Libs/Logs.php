@@ -24,7 +24,7 @@ class Logs
         $log = array(
             'receiver'=>$info['receiver'],
             'send_date'=>date('Y-m-d H:i:s', time()),
-            'send_status'=>$status[0]=='OK' ? 'succ' : 'failed',
+            'send_status'=>strtolower($status[0])=='ok' ? 'succ' : 'failed',
             'request_time'=>$info['start'],
             'result_time'=>$info['end'],
             'result_info'=>$status[1]

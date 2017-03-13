@@ -15,6 +15,8 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/verify', 'Web\Index@verify');
 
+    Route::get('user/verify/{tmp?}','Web\User@captcha');
+
     Route::get('user/login','Web\User@login');
 
     Route::get('user/logout', 'Web\User@logout');
@@ -76,6 +78,9 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('service/expertise/doApply', 'Service\Expertise@store');
 
     });
+
+    //司法鉴定表格下载
+    Route::get('service/expertise/downloadForm/{page?}', 'Service\Expertise@downloadForm');
 
     //网上办事路由
     Route::get('service','Service\Index@index');
@@ -514,6 +519,8 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/service/messageSendList/{page?}','Manage\Service\MessageSend@index');
 
         //证书持有人管理
+        Route::post('manage/service/certificate/send','Manage\Service\Certificate@sendMessage');
+
         Route::get('manage/service/certificate/show','Manage\Service\Certificate@show');
 
         Route::get('manage/service/certificate/add','Manage\Service\Certificate@create');

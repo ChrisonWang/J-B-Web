@@ -194,6 +194,7 @@
     </div>
 </div>
 <script type="text/javascript">
+    $.datetimepicker.setLocale('zh');
     var logic = function( currentDateTime ){
         if (currentDateTime && currentDateTime.getDay() == 6){
             this.setOptions({
@@ -206,23 +207,29 @@
     };
     $('#partnership_date').datetimepicker({
         lang: 'zh',
-        format: "Y-m-d H:i",
+        format: "Y-m-d",
+        formatDate: "Y-m-d",
         todayButton: true,
+        timepicker:false,
         onChangeDateTime: logic,
         onShow: logic
-    }).setLocale('zh');
+    });
     $('#certificate_date').datetimepicker({
         lang: 'zh',
-        format: "Y-m-d H:i",
+        format: "Y-m-d",
+        formatDate: "Y-m-d",
         todayButton: true,
+        timepicker:false,
         onChangeDateTime: logic,
         onShow: logic
-    }).setLocale('zh');
+    });
     $('#job_date').datetimepicker({
         lang: 'zh',
-        format: "Y-m-d H:i",
+        format: "Y-m-d",
+        formatDate: "Y-m-d",
         todayButton: true,
+        timepicker:false,
         onChangeDateTime: logic,
         onShow: logic
-    }).setLocale('zh');
+    });
 </script>

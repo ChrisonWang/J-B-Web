@@ -24,6 +24,30 @@
             @endforeach
             </tbody>
         </table>
+
+        <!--分页-->
+        <div class="zwr_ft">
+            <div class="fy_left">
+                <span>
+                    <a href="{{ URL::to('suggestions/list/') }}"> 首页</a>
+                </span>
+                <span>
+                    <a href="{{ URL::to('suggestions/list/') }}">上一页</a>
+                </span>
+                <span>
+                    <a href="{{ URL::to('suggestions/list/') }}">下一页</a>
+                </span>
+                <span>
+                    <a href="{{ URL::to('suggestions/list/')}}"> 尾页</a>
+                </span>
+                <div class="fy_right">
+                    <span>总记录数：{{ $suggestions_count }}</span>
+                    <span>每页显示10条记录</span>
+                    <span>当前页1/{{ ceil($suggestions_count/10) }}</span>
+                </div>
+            </div>
+        </div>
+
     @else
         <p class="lead text-center">无记录</p>
     @endif

@@ -55,6 +55,19 @@ class Certificate extends Controller
                 'type' => 'certificate',
             );
         }
+        //模板
+        $temp_list = array();
+        $temps = DB::table('service_message_temp')->get();
+        if(count($temps)>0){
+            foreach($temps as $temp){
+                $temp_list[] = array(
+                    'title'=> $temp->title,
+                    'temp_code'=> $temp->temp_code,
+                    'content'=> $temp->content,
+                );
+            }
+        }
+        $this->page_data['temp_list'] = $temp_list;
         $this->page_data['pages'] = $pages;
         $this->page_data['certificate_list'] = $certificate_list;
         $pageContent = view('judicial.manage.service.certificateList',$this->page_data)->render();
@@ -144,6 +157,19 @@ class Certificate extends Controller
                     'type' => 'certificate',
                 );
             }
+            //模板
+            $temp_list = array();
+            $temps = DB::table('service_message_temp')->get();
+            if(count($temps)>0){
+                foreach($temps as $temp){
+                    $temp_list[] = array(
+                        'title'=> $temp->title,
+                        'temp_code'=> $temp->temp_code,
+                        'content'=> $temp->content,
+                    );
+                }
+            }
+            $this->page_data['temp_list'] = $temp_list;
             $this->page_data['pages'] = $pages;
             $this->page_data['certificate_list'] = $certificate_list;
             $pageContent = view('judicial.manage.service.certificateList',$this->page_data)->render();
@@ -308,6 +334,19 @@ class Certificate extends Controller
                     'type' => 'certificate',
                 );
             }
+            //模板
+            $temp_list = array();
+            $temps = DB::table('service_message_temp')->get();
+            if(count($temps)>0){
+                foreach($temps as $temp){
+                    $temp_list[] = array(
+                        'title'=> $temp->title,
+                        'temp_code'=> $temp->temp_code,
+                        'content'=> $temp->content,
+                    );
+                }
+            }
+            $this->page_data['temp_list'] = $temp_list;
             $this->page_data['pages'] = $pages;
             $this->page_data['certificate_list'] = $certificate_list;
             $pageContent = view('judicial.manage.service.certificateList',$this->page_data)->render();
@@ -349,6 +388,19 @@ class Certificate extends Controller
                     'type' => 'certificate',
                 );
             }
+            //模板
+            $temp_list = array();
+            $temps = DB::table('service_message_temp')->get();
+            if(count($temps)>0){
+                foreach($temps as $temp){
+                    $temp_list[] = array(
+                        'title'=> $temp->title,
+                        'temp_code'=> $temp->temp_code,
+                        'content'=> $temp->content,
+                    );
+                }
+            }
+            $this->page_data['temp_list'] = $temp_list;
             $this->page_data['pages'] = $pages;
             $this->page_data['certificate_list'] = $certificate_list;
             $pageContent = view('judicial.manage.service.certificateList',$this->page_data)->render();
@@ -496,6 +548,60 @@ class Certificate extends Controller
     public function downloadTemp(){
         $url = public_path('uploads/system/temp').'/batch.csv';
         return response()->download($url,'批量导入证书持有人模板文件.csv');
+    }
+
+    public function sendMessage(Request $request){
+        $inputs = $request->input();
+        if(!isset($inputs['temp_code']) || trim($inputs['temp_code'])=='none'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'请选择短信模板！']);
+        }
+        if(!isset($inputs['to_message']) && $inputs['to_message']=='no' && trim($inputs['year'])===''){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'发送对象为“未备案人员”时，请填写4位数备案年份！']);
+        }
+        //内容
+        $content = DB::table('service_message_temp')->where('temp_code', $inputs['temp_code'])->first();
+        if(!isset($content->content) || trim($content->content)===''){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'短信模板内容为空！请检查']);
+        }
+        else{
+            $content = $content->content;
+        }
+        //取出手机号
+        if($inputs['to_message']=='no'){
+            $phone_list = '';
+            $certificates = DB::table('service_certificate')->get();
+            if(count($certificates)>0){
+                foreach($certificates as $certificate){
+                    $phone_list .= ','.$certificate->phone;
+                }
+                $phone_list = substr($phone_list, 1, (strlen($phone_list)-1));
+            }
+            else{
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'没有录入司法考试持证人员']);
+            }
+        }
+        elseif($inputs['to_message']=='all'){
+            $phone_list = '';
+            $certificates = DB::table('service_certificate')->get();
+            if(count($certificates)>0){
+                foreach($certificates as $certificate){
+                    $phone_list .= ','.$certificate->phone;
+                }
+                $phone_list = substr($phone_list, 1, (strlen($phone_list)-1));
+            }
+            else{
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'没有录入司法考试持证人员']);
+            }
+        }
+        //发送
+        $rs = Massage::send($phone_list, $content);
+        $rs = explode(':',$rs['res']);
+        if(strtolower($rs[0]) == "ok"){
+            json_response(['status'=>'succ','type'=>'alert', 'res'=>'']);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'手机号码有误！请查看短信日志']);
+        }
     }
 
 }

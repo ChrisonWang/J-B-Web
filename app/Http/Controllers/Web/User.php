@@ -20,6 +20,8 @@ use App\Models\Web\User\Members;
 
 use App\Libs\Massage;
 
+use Gregwar\Captcha\CaptchaBuilder;
+
 class User extends Controller
 {
     public function __construct()
@@ -120,6 +122,27 @@ class User extends Controller
         else{
             return redirect('user');
         }
+    }
+
+    /**
+     * 验证码
+     * @param $tmp
+     */
+    public function captcha($tmp=1)
+    {
+        //生成验证码图片的Builder对象，配置相应属性
+        $builder = new CaptchaBuilder();
+        //可以设置图片宽高及字体
+        $builder->build($width = 150, $height = 40, $font = null);
+        //获取验证码的内容
+        $phrase = $builder->getPhrase();
+
+        //把内容存入session
+        Session::flash('img_code', $phrase);
+        //生成图片
+        header("Cache-Control: no-cache, must-revalidate");
+        header('Content-Type: image/jpeg');
+        $builder->output();
     }
 
     public function signup(Request $request)
@@ -474,22 +497,33 @@ class User extends Controller
 
     private function _checkSignupInput($input)
     {
+        $code = Session('verify_code');
+        $code = explode('|', $code);
+        if(trim($input['msgVerifyCode'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入短信验证码"]);
+        }
+        if($input['msgVerifyCode']!=$code[0]){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"短信验证码错误！"]);
+        }
+        if(((time()-$code[1])/60 > 15)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"短信验证码已过期！"]);
+        }
         if($input['password'] != $input['passwordConfirm']){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"两次密码输入不一致"]);
         }
-        elseif(!preg_phone($input['cellPhone'])){
+        if(!preg_phone($input['cellPhone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入正确的手机号！"]);
         }
-        elseif($this->_phoneExist($input['cellPhone'])){
+        if($this->_phoneExist($input['cellPhone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cellPhone']." 已经被注册过了"]);
         }
-        elseif(!preg_login_name($input['loginName'])){
+        if(!preg_login_name($input['loginName'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名应为8-20位字符"]);
         }
-        elseif($this->_loginNameExist($input['loginName'])){
+        if($this->_loginNameExist($input['loginName'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名已存在！"]);
         }
-        elseif(!preg_password($input['passwordConfirm'])){
+        if(!preg_password($input['passwordConfirm'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);
         }
         else{
@@ -554,7 +588,8 @@ class User extends Controller
     private function getServiceList($member_code){
         $expertise_type = array();
         //司法鉴定
-        $expertise_list = DB::table('service_judicial_expertise')->where('member_code', $member_code)->skip(0)->take(10)->get();
+        $expertise_list = DB::table('service_judicial_expertise')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
+        $expertise_count = DB::table('service_judicial_expertise')->where('member_code', $member_code)->count();
         $types = DB::table('service_judicial_expertise_type')->get();
         if(count($types)>0){
             $expertise_type = array();
@@ -564,31 +599,63 @@ class User extends Controller
         }
         //问题咨询
         $consultions_list = DB::table('service_consultions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
+        $consultions_count = DB::table('service_consultions')->where('member_code', $member_code)->count();
         //征求意见
         $suggestions_list = DB::table('service_suggestions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
+        $suggestions_count = DB::table('service_suggestions')->where('member_code', $member_code)->count();
         //法律援助
         $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
+        $apply_count = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->count();
         //公检法指派
         $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
+        $dispatch_count = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->count();
 
         $this->page_date['expertise_type'] = $expertise_type;
         $this->page_date['expertise_list'] = $expertise_list;
+        $this->page_date['expertise_count'] = $expertise_count;
 
         $this->page_date['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_date['consultions_list'] = json_decode(json_encode($consultions_list), true);
+        $this->page_date['consultions_count'] = $consultions_count;
 
         $this->page_date['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
         $this->page_date['suggestions_list'] = json_decode(json_encode($suggestions_list), true);
+        $this->page_date['suggestions_count'] = $suggestions_count;
 
         $this->page_date['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
         $this->page_date['apply_list'] = $apply_list;
+        $this->page_date['apply_count'] = $apply_count;
 
         $this->page_date['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_date['dispatch_list'] = $dispatch_list;
+        $this->page_date['dispatch_count'] = $dispatch_count;
     }
 
     public function sendVerify(Request $request){
         $phone = $request->input('phone');
-        Massage::send($phone,'你的验证码是：998721');
+        $img_code = $request->input('img');
+        if(trim($img_code)===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写图形验证码！']);
+        }
+        if(strtolower(trim($img_code))!=Session('img_code')){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'图形验证码错误！']);
+        }
+        if(trim($phone)==='' || !preg_phone($phone)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写合法的手机号码！']);
+        }
+        $code = rand(0,9);
+        for($i=1; $i<=5; $i++){
+            $code .= rand(0,9);
+        }
+        Session::put('verify_code',$code.'|'.time(),30);
+        Session::save();
+        $re = Massage::send($phone,'你的验证码是：'.$code.',验证码15分钟内有效！');
+        $re = explode(':', $re['res']);
+        if($re[0]=='OK'){
+            json_response(['status'=>'succ','type'=>'notice', 'res'=>'！']);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'短信发送失败！']);
+        }
     }
 }

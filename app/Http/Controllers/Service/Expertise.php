@@ -59,7 +59,7 @@ class Expertise extends Controller
         $count = DB::table('service_judicial_expertise')->where('member_code', $member_code)->count();
         $count_page = ($count > 16)? ceil($count/16)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 16;
-        $records = DB::table('service_judicial_expertise')->where('member_code', $member_code)->skip($offset)->take(16)->get();
+        $records = DB::table('service_judicial_expertise')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(16)->get();
         if(count($records) > 0){
             foreach($records as $record){
                 $record_list[] = array(
@@ -219,6 +219,34 @@ class Expertise extends Controller
         $this->page_data['type_list'] = $type_list;
         $this->page_data['record_detail'] = $record_detail;
         return view('judicial.web.service.expertiseApplyEdit', $this->page_data);
+    }
+
+    public function downloadForm($page = 1){
+        $pages = '';
+        $form_list = 'none';
+        $count = DB::table('cms_forms')->where(['channel_id'=>84, 'disabled'=>'no'])->count();
+        $count_page = ($count > 16)? ceil($count/16)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 16;
+        $forms = DB::table('cms_forms')->where(['channel_id'=>84, 'disabled'=>'no'])->orderBy('create_date', 'desc')->skip($offset)->take(16)->get();
+        if(count($forms) > 0){
+            $form_list = array();
+            foreach($forms as $form){
+                $form_list[] = array(
+                    'title'=> $form->title,
+                    'file'=> $form->file,
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'expertise/downloadForm',
+            );
+        }
+
+        $this->page_data['pages'] = $pages;
+        $this->page_data['form_list'] = $form_list;
+        return view('judicial.web.service.expertiseForm', $this->page_data);
     }
 
     private function _checkInput($inputs)

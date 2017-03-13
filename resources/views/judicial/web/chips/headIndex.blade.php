@@ -16,4 +16,7 @@
     <script type="text/javascript" src="{{ asset('js/index.js') }}"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+    <!-- datetimepicker Core CSS and JS -->
+    <link href="{{ asset('/css/jquery.datetimepicker.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ asset('/js/jquery.datetimepicker.full.js') }}"></script>
 </head>

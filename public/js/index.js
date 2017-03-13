@@ -25,6 +25,7 @@ $(function(){
     $(".closed").click(function(){
         $(".alert_sh").hide();
     })
+
 });
 
 function file_download(t){
@@ -47,16 +48,34 @@ function file_download(t){
 function sendVerify(){
     var nu = $('#cellPhone').val();
     var url = '/user/sendVerify';
+    var imgVerifyCode = $('#imgVerifyCode').val();
+    $("#message_notice").addClass('hidden');
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         url: url,
         method: "POST",
-        data: {phone:nu},
+        data: {phone:nu, img:imgVerifyCode},
         success: function(re){
             if(re.status == 'succ'){
-
+                alert("已发送，请注意查收");
+                var count = 60;
+                var countdown = setInterval(CountDown, 1000);
+                function CountDown() {
+                    $("#sendVerifyBtn").attr("disabled", true);
+                    $("#sendVerifyBtn").val(count + "秒");
+                    if (count == 0) {
+                        $("#sendVerifyBtn").removeAttr("disabled");
+                        $("#sendVerifyBtn").val('获取验证码');
+                        clearInterval(countdown);
+                    }
+                    count--;
+                }
+            }
+            else if(re.status == 'failed'){
+                $("#message_notice").removeClass('hidden');
+                $("#message_notice").find("p").text(re.res);
             }
         }
     });

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-@include('judicial.web.chips.headIndex')
+@include('judicial.web.chips.headIndexWB')
 <body>
 <!--头部导航-->
 @include('judicial.web.chips.nav')

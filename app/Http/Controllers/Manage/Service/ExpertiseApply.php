@@ -86,6 +86,7 @@ class ExpertiseApply extends Controller
                 'approval_count'=> intval($apply->approval_count),
                 'type_id'=> keys_encrypt($apply->type_id),
                 'apply_table'=> $apply->apply_table,
+                'apply_table_name'=> $apply->apply_table_name,
                 'approval_opinion'=> $apply->approval_opinion,
             );
         }
@@ -122,6 +123,7 @@ class ExpertiseApply extends Controller
                 'approval_count'=> intval($apply->approval_count),
                 'type_id'=> keys_encrypt($apply->type_id),
                 'apply_table'=> $apply->apply_table,
+                'apply_table_name'=> $apply->apply_table_name,
                 'approval_opinion'=> $apply->approval_opinion,
             );
         }
@@ -199,7 +201,7 @@ class ExpertiseApply extends Controller
         $save_data = array(
             'approval_opinion'=> $inputs['approval_opinion'],
             'approval_result'=> 'reject',
-            intval($approval_count->approval_count) + 1,
+            'approval_count'=> intval($approval_count->approval_count) + 1,
             'approval_date'=> date('Y-m-d H:i:s', time()),
         );
         $rs = DB::table('service_judicial_expertise')->where('id',$id)->update($save_data);

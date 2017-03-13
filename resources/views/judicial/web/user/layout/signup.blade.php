@@ -5,11 +5,13 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-offset-1 col-md-7">
+        <div class="col-md-offset-1 col-md-6">
             <input type="text" class="form-control" id="imgVerifyCode" name="imgVerifyCode" placeholder="图形验证码">
         </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-default btn-block">验证码</button>
+        <div class="col-md-4">
+            <a onclick="javascript:re_captcha();" >
+                <img src="{{ URL('user/verify') }}"  alt="验证码" title="刷新图片" width="100" height="40" id="code_img" border="0">
+            </a>
         </div>
     </div>
     <div class="form-group">
@@ -17,7 +19,12 @@
             <input type="text" class="form-control" id="msgVerifyCode" name="msgVerifyCode" placeholder="请输入短信验证码">
         </div>
         <div class="col-md-3">
-            <button type="button" class="btn btn-danger btn-block" onclick="sendVerify()">获取验证码</button>
+            <input type="button" value="获取验证码" class="btn btn-danger btn-block" onclick="sendVerify()" id="sendVerifyBtn">
+        </div>
+    </div>
+    <div class="form-group hidden" id="message_notice">
+        <div class="col-md-offset-1 col-md-10">
+            <p></p>
         </div>
     </div>
     <div class="form-group">
@@ -42,7 +49,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-1 col-md-10">
-            <button type="button"onclick="signup()" class="btn btn-danger btn-block">注册</button>
+            <button type="button" onclick="signup()" class="btn btn-danger btn-block">注册</button>
         </div>
     </div>
     <div class="form-group" style="padding-top: 20px">
@@ -51,3 +58,10 @@
         </div>
     </div>
 </form>
+<script>
+    function re_captcha(){
+        var url = "{{ URL::to('user/verify') }}";
+        url = url + "/" + Math.random();
+        document.getElementById('code_img').src=url;
+    }
+</script>

@@ -32,13 +32,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">相关附件：</label>
-                <div class="col-md-8">
-                    @if(!empty($apply_detail['apply_table']) && $apply_detail['apply_table'] != 'none')
-                        <p>{{ $apply_detail['apply_table'] }}</p>
-                    @else
-                        <p>未上传附件！！！</p>
-                    @endif
+                <label for="name" class="col-md-1 control-label">附件：</label>
+                <div class="col-md-3">
+                    <p>
+                        @if((empty($apply_detail['apply_table_name'])||empty($apply_detail['apply_table'])))
+                            未上传附件！
+                        @else
+                            <a href="{{$apply_detail['apply_table']}}" target="_blank">{{$apply_detail['apply_table_name']}}</a>
+                        @endif
+                    </p>
                 </div>
             </div>
             <div class="form-group">

@@ -2368,6 +2368,32 @@ function batchImport(){
     });
 }
 
+function sendMessage(){
+    var c = confirm("确认发送?");
+    if(c != true){
+        return false;
+    }
+    var url = '/manage/service/certificate/send';
+    var data = $("#send_form").serialize();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("成功添加到短信队列！");
+                $('#sendMessage_modal').modal('hide');
+            }
+            else if(re.status == 'failed') {
+                alert("发送失败！"+re.res);
+            }
+        }
+    });
+}
+
 function loadContentC(){
     $('#import_modal').modal('hide');
     var url ='/manage/serviceLoadContent';

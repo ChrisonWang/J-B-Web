@@ -12,6 +12,8 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
+use App\Libs\Massage;
+
 class Consultions extends Controller
 {
     var $page_data = array();
@@ -132,6 +134,10 @@ class Consultions extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'答复失败']);
         }
         else{
+            $phone = DB::table('service_consultions')->where('id',$id)->first();
+            if(isset($phone->cell_phone)){
+                Massage::send($phone->cell_phone, '管理员回复了你在民政互动中的问题咨询');
+            }
             //答复成功，加载列表数据
             $consultion_list = array();
             $pages = '';

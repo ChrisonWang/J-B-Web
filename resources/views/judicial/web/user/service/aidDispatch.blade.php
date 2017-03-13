@@ -38,6 +38,30 @@
             @endforeach
             </tbody>
         </table>
+
+        <!--分页-->
+        <div class="zwr_ft">
+            <div class="fy_left">
+                <span>
+                    <a href="{{ URL::to('service/aid/list/') }}"> 首页</a>
+                </span>
+                <span>
+                    <a href="{{ URL::to('service/aid/list/') }}">上一页</a>
+                </span>
+                <span>
+                    <a href="{{ URL::to('service/aid/list/') }}">下一页</a>
+                </span>
+                <span>
+                    <a href="{{ URL::to('service/aid/list/')}}"> 尾页</a>
+                </span>
+                <div class="fy_right">
+                    <span>总记录数：{{ $dispatch_count }}</span>
+                    <span>每页显示10条记录</span>
+                    <span>当前页1/{{ ceil($dispatch_count/10) }}</span>
+                </div>
+            </div>
+        </div>
+
     @else
         <p class="lead text-center">无记录</p>
     @endif

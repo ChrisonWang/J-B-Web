@@ -117,7 +117,7 @@
                     <li>
                         <span class="wsc_txt">发生时间</span>
                         <div class="cx_inp">
-                            <input type="text" name="happened_date" placeholder="例：YYYY-MM-DD" />
+                            <input type="text" id="happened_date" name="happened_date" placeholder="例：YYYY-MM-DD" />
                         </div>
                     </li>
                     <li>
@@ -191,3 +191,24 @@
 @include('judicial.web.chips.foot')
 </body>
 </html>
+<script>
+    var logic = function( currentDateTime ){
+        if (currentDateTime && currentDateTime.getDay() == 6){
+            this.setOptions({
+                minTime:'11:00'
+            });
+        }else
+            this.setOptions({
+                minTime:'8:00'
+            });
+    };
+    $('#happened_date').datetimepicker({
+        lang: 'zh',
+        format: "Y-m-d",
+        formatDate: "Y-m-d",
+        todayButton: true,
+        timepicker:false,
+        onChangeDateTime: logic,
+        onShow: logic
+    }).setLocale('zh');
+</script>

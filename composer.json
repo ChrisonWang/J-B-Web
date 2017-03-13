@@ -10,7 +10,7 @@
         "maatwebsite/excel": "~2.0.0",
         "predis/predis": "1.0.*",
         "mews/captcha": "^2.1",
-        "gregwar/captcha": "1.*",
+        "gregwar/captcha": "dev-master",
         "stevenyangecho/laravel-u-editor": "~1.1",
         "barryvdh/laravel-ide-helper": "^2.3",
         "tom-lingham/searchy" : "2.*",

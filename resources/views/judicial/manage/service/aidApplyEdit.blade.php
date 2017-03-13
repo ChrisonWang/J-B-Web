@@ -127,7 +127,13 @@
             <div class="form-group">
                 <label for="name" class="col-md-1 control-label">附件：</label>
                 <div class="col-md-3">
-                    <p>{{ (empty($apply_detail['file_name'])||empty($apply_detail['file']))? '未上传' : $apply_detail['file_name'] }}</p>
+                    <p>
+                        @if((empty($apply_detail['file_name'])||empty($apply_detail['file'])))
+                            未上传附件！
+                        @else
+                            <a href="{{$apply_detail['file']}}" target="_blank">{{$apply_detail['file_name']}}</a>
+                        @endif
+                    </p>
                 </div>
             </div>
 
