@@ -17,7 +17,7 @@
             <input type="text" class="form-control" id="msgVerifyCode" name="msgVerifyCode" placeholder="请输入短信验证码">
         </div>
         <div class="col-md-3">
-            <button type="submit" class="btn btn-danger btn-block">获取验证码</button>
+            <button type="button" class="btn btn-danger btn-block" onclick="sendVerify()">获取验证码</button>
         </div>
     </div>
     <div class="form-group">

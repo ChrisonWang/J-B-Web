@@ -6,7 +6,38 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <a type="button" data-key='none' data-method="add" onclick="certificateMethod($(this))" class="btn btn-primary">新增</a>
+            <div class="col col-md-4">
+                <a type="button" data-key='none' data-method="add" onclick="certificateMethod($(this))" class="btn btn-primary">新增</a>
+            </div>
+            <div class="col col-md-8">
+                <form class="form-inline" id="batch-form">
+                    <div class="form-group">
+                        <i class="fa fa-paperclip"></i>导入文件
+                        <input type="file" class="form-control btn btn-default btn-file" id="batch_file" name="batch_file" />
+                        <a href="{{URL::to('manage/service/certificate/download')}}" target="_blank">下载模板文件</a>
+                    </div>
+                    <button type="button" class="btn btn-default" onclick="batchImport()">导入</button>
+                </form>
+            </div>
+            <!--模态框-->
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="import_modal">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="gridSystemModalLabel">导入</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4 class="text-center" id="import_notic">
+                                持证人资料导入中...
+                            </h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div><!--模态框End-->
         </div>
         <hr/>
         <div class="container-fluid">

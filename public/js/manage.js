@@ -2151,6 +2151,25 @@ function addMessageSend(){
     });
 }
 
+function getTempContent(t){
+    var url = '/manage/service/messageSend/getContent'
+    var temp_code = t.find("option:selected").val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'temp_code='+temp_code,
+        success: function(re){
+            if(re.status == 'succ'){
+                $('#temp_content').text(re.res);
+            }
+        }
+    });
+}
+
 //短信模板管理
 function messageTmpMethod(t){
     var key = t.data('key');
@@ -2326,6 +2345,46 @@ function search_certificate(t, c){
         }
     });
     return;
+}
+
+function batchImport(){
+    var url = '/manage/service/certificate/import';
+    $('#import_modal').modal('show');
+    $('#batch-form').ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "POST",
+        url: url,
+        data: $('#batch-form').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                $("#import_notic").text(re.res);
+            }
+            else if(re.status == 'failed') {
+                $("#import_notic").text(re.res);
+            }
+        }
+    });
+}
+
+function loadContentC(){
+    $('#import_modal').modal('hide');
+    var url ='/manage/serviceLoadContent';
+    var container = $("#page-wrapper");
+    //获取模板
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: 'node_id=certificateMng',
+        success: function(re){
+            ajaxResult(re);
+        }
+    });
 }
 
 //司法鉴定类型管理

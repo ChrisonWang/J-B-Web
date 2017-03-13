@@ -229,6 +229,7 @@ class ServiceLoadContent extends Controller
         $this->page_data['thisPageName'] = '短信发送管理';
         //加载列表数据
         $send_list = array();
+        $temp_list = array();
         $pages = '';
         $count = DB::table('service_message_list')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
@@ -239,7 +240,21 @@ class ServiceLoadContent extends Controller
             foreach($list as $l){
                 $send_list[] = array(
                     'key' => keys_encrypt($l->id),
+                    'temp_code' => $l->temp_code,
+                    'send_date'=> $l->send_date,
+                    'receiver_type'=> $l->receiver_type,
+                    'received_office'=> $l->received_office,
+                    'received_person'=> $l->received_person,
+                    'create_date'=> $l->create_date,
+                    'update_date'=> $l->update_date,
                 );
+            }
+            //模板主题
+            $temps = DB::table('service_message_temp')->get();
+            if(count($temps)>0){
+                foreach($temps as $temp){
+                    $temp_list[$temp->temp_code] = $temp->title;
+                }
             }
             $pages = array(
                 'count' => $count,
@@ -247,8 +262,10 @@ class ServiceLoadContent extends Controller
                 'now_page' => 1,
                 'type' => 'messageSend',
             );
+
         }
         $this->page_data['pages'] = $pages;
+        $this->page_data['temp_list'] = $temp_list;
         $this->page_data['send_list'] = $send_list;
         $pageContent = view('judicial.manage.service.messageSendList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

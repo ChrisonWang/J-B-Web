@@ -45,11 +45,11 @@ class Lawyer extends Controller
             foreach($lawyers as $lawyer){
                 $lawyer_list[] = array(
                     'key' => keys_encrypt($lawyer->id),
-                    'name'=> $lawyer->lawyer_name,
+                    'name'=> $lawyer->name,
                     'sex'=> $lawyer->sex,
                     'type'=> $lawyer->type,
                     'certificate_code'=> $lawyer->certificate_code,
-                    'law_office'=> keys_encrypt($lawyer->law_office),
+                    'lawyer_office'=> keys_encrypt($lawyer->lawyer_office),
                     'status'=> $lawyer->status,
                 );
             }
@@ -231,7 +231,7 @@ class Lawyer extends Controller
                 'is_pra'=> $lawyer->is_pra,
                 'type'=> $lawyer->type,
                 'status'=> $lawyer->status,
-                'lawyer_office'=> $lawyer->lawyer_office,
+                'lawyer_office'=> keys_encrypt($lawyer->lawyer_office),
                 'department'=> $lawyer->department,
                 'position'=> $lawyer->position,
                 'certificate_code'=> $lawyer->certificate_code,
@@ -283,7 +283,7 @@ class Lawyer extends Controller
                 'is_pra'=> $lawyer->is_pra,
                 'type'=> $lawyer->type,
                 'status'=> $lawyer->status,
-                'lawyer_office'=> $lawyer->lawyer_office,
+                'lawyer_office'=> keys_encrypt($lawyer->lawyer_office),
                 'department'=> $lawyer->department,
                 'position'=> $lawyer->position,
                 'certificate_code'=> $lawyer->certificate_code,
@@ -350,7 +350,7 @@ class Lawyer extends Controller
             $lawyer_office_name = DB::table('service_lawyer_office')->where('id', keys_decrypt($inputs['lawyer_office']))->first();
             $now = date('Y-m-d H:i:s', time());
             $save_data = array(
-                'name'=> $inputs['certificate_code'],
+                'name'=> $inputs['name'],
                 'thumb'=> $photo_path,
                 'sex'=> $inputs['sex']=='female' ? 'female' : 'male',
                 'nationality'=> $inputs['nationality'],
@@ -371,6 +371,7 @@ class Lawyer extends Controller
                 'status'=> $inputs['status']=='cancel' ? 'cancel' : 'normal',
                 'lawyer_office'=> keys_decrypt($inputs['lawyer_office']),
                 'lawyer_office_name'=> (isset($lawyer_office_name->name) && !empty($lawyer_office_name->name)) ? $lawyer_office_name->name : '',
+                'department'=> $inputs['department'],
                 'position'=> $inputs['position'],
                 'certificate_code'=> $inputs['certificate_code'],
                 'update_date'=> $now,

@@ -17,6 +17,12 @@ class UserVerify
      */
     public function handle($request, Closure $next)
     {
+        $login_name = isset($_COOKIE['_token']) ? $_COOKIE['_token'] : '';
+        $managerCode = session($login_name);
+        if(!isset($managerCode) || !$managerCode || empty($managerCode)){
+            setcookie('s','',time()-3600*24);
+            return redirect('verify');
+        }
         return $next($request);
     }
 }

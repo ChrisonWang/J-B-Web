@@ -25,6 +25,11 @@ function preg_phone($str){
     return(preg_match($pattern, $str));
 }
 
+function preg_phone2($str){
+    $pattern = '/^(0\d{2}-\d{7,8}|0\d{3}-\d{7,8})$/';
+    return(preg_match($pattern, $str));
+}
+
 function preg_email($str){
     $pattern = '/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/';
     return(preg_match($pattern, $str));

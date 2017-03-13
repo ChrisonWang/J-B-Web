@@ -55,62 +55,33 @@
         </div>
         <div class="panel-member">
             <div class="panel-member-top">
-                <div class="panel-member-switch on"><a href="javascript:void(0);">司法鉴定申请记录</a></div>
-                <div class="panel-member-switch"><a href="javascript:void(0);">法律援助预约记录</a></div>
-                <div class="panel-member-switch"><a href="javascript:void(0);">公检法指派申请记录</a></div>
-                <div class="panel-member-switch"><a href="javascript:void(0);">问题咨询记录</a></div>
-                <div class="panel-member-switch"><a href="javascript:void(0);">征求意见记录</a></div>
+                <div class="panel-member-switch on">
+                    <a href="javascript:void(0);" data-key="expertise" onclick="switch_service($(this))">司法鉴定申请记录</a>
+                </div>
+                <div class="panel-member-switch">
+                    <a href="javascript:void(0);" data-key="apply" onclick="switch_service($(this))">法律援助预约记录</a>
+                </div>
+                <div class="panel-member-switch">
+                    <a href="javascript:void(0);" data-key="dispatch" onclick="switch_service($(this))">公检法指派申请记录</a>
+                </div>
+                <div class="panel-member-switch">
+                    <a href="javascript:void(0);" data-key="consultions" onclick="switch_service($(this))">问题咨询记录</a>
+                </div>
+                <div class="panel-member-switch">
+                    <a href="javascript:void(0);" data-key="suggestions" onclick="switch_service($(this))">征求意见记录</a>
+                </div>
             </div>
-            <div class="panel-member-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>提交标签</th>
-                        <th>审批编号</th>
-                        <th>鉴定类型</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>Mark</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <!--弹窗-->
+            <div class="alert_sh" style="display: none">
+                <a href="javascript:void(0)" class="closed">X</a>
+                <div class="als_top">审核不通过原因</div>
+                <div class="als_down">请按照流程填写申请表，重新提交审核。</div>
             </div>
+            @include('judicial.web.user.service.expertise')
+            @include('judicial.web.user.service.aidApply')
+            @include('judicial.web.user.service.aidDispatch')
+            @include('judicial.web.user.service.consultions')
+            @include('judicial.web.user.service.suggestions')
         </div>
     </div>
 

@@ -18,6 +18,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Web\User\Members;
 
+use App\Libs\Massage;
+
 class User extends Controller
 {
     public function __construct()
@@ -76,6 +78,8 @@ class User extends Controller
     {
 
         $loginStatus = $this->checkLoginStatus();
+        //网上办事
+        $this->getServiceList($loginStatus);
         if(!$loginStatus){
             $action = $request->input('action');
             return redirect()->action('Web\User@login',['action'=>$action]);
@@ -545,5 +549,46 @@ class User extends Controller
         }else{
             return true;
         }
+    }
+
+    private function getServiceList($member_code){
+        $expertise_type = array();
+        //司法鉴定
+        $expertise_list = DB::table('service_judicial_expertise')->where('member_code', $member_code)->skip(0)->take(10)->get();
+        $types = DB::table('service_judicial_expertise_type')->get();
+        if(count($types)>0){
+            $expertise_type = array();
+            foreach($types as $type){
+                $expertise_type[$type->id] = $type->name;
+            }
+        }
+        //问题咨询
+        $consultions_list = DB::table('service_consultions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
+        //征求意见
+        $suggestions_list = DB::table('service_suggestions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
+        //法律援助
+        $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
+        //公检法指派
+        $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
+
+        $this->page_date['expertise_type'] = $expertise_type;
+        $this->page_date['expertise_list'] = $expertise_list;
+
+        $this->page_date['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_date['consultions_list'] = json_decode(json_encode($consultions_list), true);
+
+        $this->page_date['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+        $this->page_date['suggestions_list'] = json_decode(json_encode($suggestions_list), true);
+
+        $this->page_date['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
+        $this->page_date['apply_list'] = $apply_list;
+
+        $this->page_date['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_date['dispatch_list'] = $dispatch_list;
+    }
+
+    public function sendVerify(Request $request){
+        $phone = $request->input('phone');
+        Massage::send($phone,'你的验证码是：998721');
     }
 }

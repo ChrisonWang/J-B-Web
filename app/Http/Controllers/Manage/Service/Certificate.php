@@ -14,6 +14,10 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
+use App\Libs\Massage;
+
+use App\Libs\Logs;
+
 class Certificate extends Controller
 {
     public function __construct()
@@ -401,6 +405,7 @@ class Certificate extends Controller
 
     public function doImport(Request $request)
     {
+        $data_list = array();
         $batch_file = $request->file('batch_file');
         if(is_null($batch_file) || !$batch_file->isValid()){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'请上传正确的文件！']);
@@ -414,16 +419,83 @@ class Certificate extends Controller
             if($extension!='csv'){
                 json_response(['status'=>'failed','type'=>'alert', 'res'=>'请上传csv格式的文件！']);
             }
-            $filename = date('Ymd',time()).gen_unique_code('BATCH_').'.'.$extension;
+            $filename = date('Ymd',time()).'_'.gen_unique_code('BATCH_').'.'.$extension;
             $file_path = URL::to('/').'/uploads/system/batch_files/'.$filename;
             if(!$batch_file->move($destPath,$filename)){
                 json_response(['status'=>'failed','type'=>'alert', 'res'=>'上传文件失败，请检查目录权限！']);
             }
             $tmp_file = fopen($file_path,'r');
             while($data = fgetcsv($tmp_file)){
-                $data_list[] = iconv('GBK','UTF-8',$data);
+                $data = eval('return '.iconv('gbk','utf-8',var_export($data,true)).';');
+                $data_list[] = $data;
             }
+            unset($data_list[0]);
+            ksort($data_list);
         }
+        if(count($data_list) < 1){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'请勿上传空文件！']);
+        }
+        else{
+            $save_date = array();
+            foreach($data_list as $data){
+                foreach($data as $i=> $d){
+                    if(trim($d) === '' && $i != 5){
+                        json_response(['status'=>'failed','type'=>'alert', 'res'=>'必填项为空！']);
+                    }
+                }
+                $register_log = array();
+                if($data[6]!=''){
+                    $logs = explode('&', $data[6]);
+                    if(!is_array($logs) ||$logs[0] === $data[5] || count($logs) < 1){
+                        json_response(['status'=>'failed','type'=>'alert', 'res'=>'备案年份格式错误，请检查！']);
+                    }
+                    foreach($logs as $log){
+                        $log = explode('|', $log);
+                        if(count($log) != 2){
+                            json_response(['status'=>'failed','type'=>'alert', 'res'=>'格式错误，年份与备注用‘|’分割']);
+                        }
+                        else{
+                            $register_log[$log[0]] = $log[1];
+                        }
+                    }
+                }
+                $save_date[] = array(
+                    'name'=>$data[0],
+                    'phone'=>$data[1],
+                    'certi_code'=>$data[2],
+                    'citizen_code'=>$data[3],
+                    'exam_date'=>$data[4],
+                    'certificate_date'=>$data[5],
+                    'register_log' => empty($register_log)? '' : json_encode($register_log),
+                    'update_date'=> date('Y-m-d H:i:s', time())
+                );
+            }
+            DB::beginTransaction();
+            foreach($save_date as $save){
+                $rs = DB::table('service_certificate')->where('certi_code', $save['certi_code'])->get();
+                if(count($rs) > 0){
+                    $id = DB::table('service_certificate')->where('certi_code', $save['certi_code'])->update($save);
+                    if(!$id){
+                        DB::rollBack();
+                        json_response(['status'=>'failed','type'=>'alert', 'res'=>'导入失败，请联系管理员！']);
+                    }
+                }
+                else{
+                    $id = DB::table('service_certificate')->insertGetId($save);
+                    if(!$id){
+                        DB::rollBack();
+                        json_response(['status'=>'failed','type'=>'alert', 'res'=>'导入失败，请联系管理员！']);
+                    }
+                }
+            }
+            DB::commit();
+            json_response(['status'=>'succ','type'=>'alert', 'res'=>'导入成功！']);
+        }
+    }
+
+    public function downloadTemp(){
+        $url = public_path('uploads/system/temp').'/batch.csv';
+        return response()->download($url,'批量导入证书持有人模板文件.csv');
     }
 
 }

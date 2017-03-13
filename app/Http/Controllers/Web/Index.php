@@ -59,6 +59,7 @@ class Index extends Controller
         if(!!$loginStatus){
             $this->page_date['is_signin'] = 'yes';
         }
+        $r_article_list = 'none';
         //拿出图片新闻
         $pic_articles = DB::table('cms_article')->where(['disabled'=>'no'])->where('thumb','!=','')->orderBy('publish_date', 'desc')->get();
         $pic_article_list = 'none';
@@ -87,7 +88,6 @@ class Index extends Controller
                 );
             }
             $r_article = DB::table('cms_article')->where('sub_channel',$recommend_list[0]['key'])->orderBy('publish_date','desc')->skip(0)->take(6)->get();
-            $r_article_list = 'none';
             if(count($r_article) > 0){
                 $r_article_list = array();
                 foreach($r_article as $r_ar){
@@ -628,6 +628,14 @@ class Index extends Controller
         else{
             json_response(['status'=>'failed']);
         }
+    }
+
+    public function download(Request $request){
+        return response()->download($request->input('file'));
+    }
+
+    public function verify(){
+        return view('judicial.web.verify');
     }
 
 }

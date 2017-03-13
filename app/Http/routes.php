@@ -11,25 +11,29 @@ Route::group(['middleware' => ['web']], function () {
 |
 */
 //前台相关路由
+    Route::get('/', 'Web\Index@index');
+
+    Route::get('/verify', 'Web\Index@verify');
+
+    Route::get('user/login','Web\User@login');
+
+    Route::get('user/logout', 'Web\User@logout');
+
+    Route::post('user/login',['as'=>'userLoginUrl', 'uses'=>'Web\User@doLogin']);
+
+    Route::post('user/signup',['as'=>'signupUrl', 'uses'=>'Web\User@signup']);
+
+    Route::get('user','Web\User@index');
+
+    Route::post('user/login/changeTab','Web\User@_ajax_changeTab');
+
+    Route::post('user/login/checkInput','Web\User@_ajax_checkInput');
+
+    Route::post('user/createMember','Web\User@createMember');
+
+    Route::post('user/sendVerify','Web\User@sendVerify');
+
     Route::group(['middleware' => ['user.verify']], function () {
-
-        Route::get('/', 'Web\Index@index');
-
-        Route::get('user','Web\User@index');
-
-        Route::get('user/login','Web\User@login');
-
-        Route::get('user/logout', 'Web\User@logout');
-
-        Route::post('user/login',['as'=>'userLoginUrl', 'uses'=>'Web\User@doLogin']);
-
-        Route::post('user/signup',['as'=>'signupUrl', 'uses'=>'Web\User@signup']);
-
-        Route::post('user/login/changeTab','Web\User@_ajax_changeTab');
-
-        Route::post('user/login/checkInput','Web\User@_ajax_checkInput');
-
-        Route::post('user/createMember','Web\User@createMember');
 
         Route::post('user/changePassword','Web\User@changePassword');
 
@@ -38,7 +42,84 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('user/changePhone','Web\User@changePhone');
 
         Route::post('user/changePhone','Web\User@doChangePhone');
+
+        //公检法指派
+
+        Route::get('service/aidDispatch/detail/{record_code}', 'Service\AidDispatch@show');
+
+        Route::get('service/aidDispatch/edit/{record_code}', 'Service\AidDispatch@edit');
+
+        Route::get('service/aidDispatch/apply', 'Service\AidDispatch@add');
+
+        Route::post('service/aidDispatch/doApply', 'Service\AidDispatch@store');
+
+        //群众预约法律援助
+        Route::get('service/aid/list/{page?}', 'Service\AidApply@index');
+
+        Route::get('service/aidApply/detail/{record_code}', 'Service\AidApply@show');
+
+        Route::get('service/aidApply/edit/{record_code}', 'Service\AidApply@edit');
+
+        Route::get('service/aidApply/apply', 'Service\AidApply@add');
+
+        Route::post('service/aidApply/doApply', 'Service\AidApply@store');
+
+        //司法鉴定
+        Route::get('service/expertise/list/{page?}', 'Service\Expertise@index');
+
+        Route::get('service/expertise/apply', 'Service\Expertise@add');
+
+        Route::get('service/expertise/edit/{record_code}', 'Service\Expertise@edit');
+
+        Route::get('service/expertise/detail/{record_code}', 'Service\Expertise@show');
+
+        Route::post('service/expertise/doApply', 'Service\Expertise@store');
+
     });
+
+    //网上办事路由
+    Route::get('service','Service\Index@index');
+
+    Route::post('service/getOpinion','Service\Index@getOpinion');
+
+    //征求意见
+    Route::get('suggestions/list/{page?}','Service\Suggestions@index');
+
+    Route::get('suggestions/detail/{record_code}','Service\Suggestions@show');
+
+    Route::get('suggestions/add','Service\Suggestions@add');
+
+    Route::post('suggestions/add','Service\Suggestions@doAdd');
+
+    Route::post('suggestions/search','Service\Suggestions@search');
+
+    //问题咨询
+    Route::get('consultions/list/{page?}','Service\Consultions@index');
+
+    Route::get('consultions/detail/{record_code}','Service\Consultions@show');
+
+    Route::get('consultions/add','Service\Consultions@add');
+
+    Route::post('consultions/add','Service\Consultions@doAdd');
+
+    Route::post('consultions/search','Service\Consultions@search');
+
+    //律师管理
+    Route::get('service/lawyer/{page?}','Service\Lawyer@index');
+
+    Route::get('service/lawyer/detail/{key}','Service\Lawyer@show');
+
+    Route::post('service/lawyer/search','Service\Lawyer@search');
+
+    //律所管理
+    Route::get('service/lawyerOffice/{page?}','Service\LawyerOffice@index');
+
+    Route::get('service/lawyerOffice/detail/{key}','Service\LawyerOffice@show');
+
+    Route::get('service/lawyerOffice/area/{key}','Service\LawyerOffice@area');
+
+    Route::post('service/lawyerOffice/search','Service\LawyerOffice@search');
+
 
     //前台CMS路由
     Route::post('search',['as'=>'search', 'uses'=>'Web\Index@search']);
@@ -66,6 +147,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('department/intro/{key?}','Web\Index@departmentIntro');
 
     Route::post('index/loadArticle','Web\Index@loadArticleList');
+
+    Route::post('download','Web\Index@download');
 
 //后台相关路由
     Route::group(['middleware' => ['manage.verify']], function () {
@@ -413,6 +496,23 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/messageTmpList/{page?}','Manage\Service\MessageTmp@index');
 
+        //短信发送管理
+        Route::get('manage/service/messageSend/show','Manage\Service\MessageSend@show');
+
+        Route::get('manage/service/messageSend/add','Manage\Service\MessageSend@create');
+
+        Route::post('manage/service/messageSend/add','Manage\Service\MessageSend@store');
+
+        Route::get('manage/service/messageSend/edit','Manage\Service\MessageSend@edit');
+
+        Route::post('manage/service/messageSend/edit','Manage\Service\MessageSend@doEdit');
+
+        Route::get('manage/service/messageSend/delete','Manage\Service\MessageSend@doDelete');
+
+        Route::get('manage/service/messageSend/getContent','Manage\Service\MessageSend@getTemp');
+
+        Route::post('manage/service/messageSendList/{page?}','Manage\Service\MessageSend@index');
+
         //证书持有人管理
         Route::get('manage/service/certificate/show','Manage\Service\Certificate@show');
 
@@ -426,7 +526,11 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/service/certificate/delete','Manage\Service\Certificate@doDelete');
 
+        Route::get('manage/service/certificate/download','Manage\Service\Certificate@downloadTemp');
+
         Route::post('manage/service/certificate/search','Manage\Service\Certificate@search');
+
+        Route::post('manage/service/certificate/import','Manage\Service\Certificate@doImport');
 
         Route::post('manage/service/certificateList/{page?}','Manage\Service\Certificate@index');
 

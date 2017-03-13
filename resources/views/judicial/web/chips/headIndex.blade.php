@@ -7,8 +7,13 @@
     <!-- Custom CSS -->
     <link href="{{ asset('/css/web-style.css') }}" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="{{ asset('css/swiper.min.css') }}">
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ asset('/css/bootstrap.min.css') }}" rel='stylesheet' type='text/css' />
     <!-- jQuery -->
     <script src="{{ asset('/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.form.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/swiper.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/index.js') }}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
 </head>

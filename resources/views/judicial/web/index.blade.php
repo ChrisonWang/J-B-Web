@@ -39,12 +39,14 @@
     </div>
     <div class="idb_right">
         <div class="idbr_top">
-            <ul>
-                @foreach($recommend_list as $k=> $recommend)
-                    <li @if($k == 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#sfdt_c'))"data-channel="sfdt" data-key="{{ $recommend['key'] }}">{{ $recommend['channel_title'] }}</li>
-                @endforeach
-            </ul>
-            <a href="{{ URL::to('/list').'/'.$recommend_list[0]['key']}}">更多>></a>
+            @if($recommend_list != 'none' && is_array($recommend_list))
+                <ul>
+                    @foreach($recommend_list as $k=> $recommend)
+                        <li @if($k == 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#sfdt_c'))"data-channel="sfdt" data-key="{{ $recommend['key'] }}">{{ $recommend['channel_title'] }}</li>
+                    @endforeach
+                </ul>
+                <a href="{{ URL::to('/list').'/'.$recommend_list[0]['key']}}">更多>></a>
+            @endif
         </div>
         <div class="idbr_down">
             @if($r_article_list != 'none' && is_array($r_article_list))

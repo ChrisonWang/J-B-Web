@@ -16,6 +16,7 @@
     <script src="{{ asset('/js/jquery.datetimepicker.full.js') }}"></script>
     <!-- Custom CSS -->
     <link href="{{ asset('/css/style.css') }}" rel='stylesheet' type='text/css' />
+    <link href="{{ asset('/css/orso.css') }}" rel='stylesheet' type='text/css' />
     <!-- Graph CSS -->
     <link href="{{ asset('/css/lines.css') }}" rel='stylesheet' type='text/css' />
     <link href="{{ asset('/css/font-awesome.css') }}" rel="stylesheet" type='text/css'>
@@ -30,4 +31,5 @@
     <script src="{{ asset('/js/rickshaw.js') }}"></script>
     <!-- 司法局后台js -->
     <script src="{{ asset('/js/manage.js') }}"></script>
+    <script src="{{ asset('/js/orso.js') }}"></script>
 </head>

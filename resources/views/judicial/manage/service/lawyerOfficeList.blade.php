@@ -28,7 +28,7 @@
                         </div>
                         <div class="form-group">
                             <label for="usc_code">社会统一信用代码：</label>
-                            <input type="text" class="form-usc_code" id="usc_code" name="usc_code" placeholder="请输入社会统一信用代码">
+                            <input type="text" class="form-control" id="usc_code" name="usc_code" placeholder="请输入社会统一信用代码">
                         </div>
                         <div class="form-group">
                             <label for="director">负责人：</label>
