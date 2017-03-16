@@ -12,6 +12,8 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
+use App\Libs\Massage;
+
 class ExpertiseApply extends Controller
 {
     var $page_data = array();
@@ -150,6 +152,11 @@ class ExpertiseApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //发短信
+            $phone = DB::table('service_judicial_expertise')->where('id',$id)->first();
+            if(isset($phone->cell_phone)){
+                Massage::send($phone->cell_phone,'管理员通过了您编号为“'.$phone->record_code.'”的司法鉴定请求！');
+            }
             //审批成功加载数据
             $apply_list = array();
             $type_list = array();
@@ -209,6 +216,11 @@ class ExpertiseApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //发短信
+            $phone = DB::table('service_judicial_expertise')->where('id',$id)->first();
+            if(isset($phone->cell_phone)){
+                Massage::send($phone->cell_phone,'管理员驳回了您编号为“'.$phone->record_code.'”的司法鉴定请求，请登录PC官网查看原因！');
+            }
             //审批成功加载数据
             $apply_list = array();
             $type_list = array();

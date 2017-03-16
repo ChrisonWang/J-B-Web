@@ -79,10 +79,10 @@
                                 @foreach($certificate_detail['register_log'] as $year=> $notice)
                                     <tr>
                                         <td width="20%">
-                                            <input type="text" value="{{ $year }}" class="form-control" name="register_log['year'][]" />
+                                            <input type="text" value="{{ $year }}" class="form-control" name="register-year[]" />
                                         </td>
                                         <td>
-                                            <input type="text" value="{{ $notice }}" class="form-control" name="register_log['notice'][]"/>
+                                            <input type="text" value="{{ $notice }}" class="form-control" name="register-notice[]"/>
                                         </td>
                                         <td>
                                             <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
@@ -186,20 +186,24 @@
             });
     };
     $('#exam_date').datetimepicker({
-        value: '{{ $certificate_detail['exam_date'] }}',
+        value:'{{ $certificate_detail['exam_date'] }}',
         lang: 'zh',
-        format: "Y-m-d H:i",
+        format: "Y-m-d",
+        formatDate: "Y-m-d",
         todayButton: true,
+        timepicker:false,
         onChangeDateTime: logic,
         onShow: logic
-    }).setLocale('zh');
+    });
 
     $('#certificate_date').datetimepicker({
-        value: '{{ $certificate_detail['certificate_date'] }}',
+        value:'{{ $certificate_detail['certificate_date'] }}',
         lang: 'zh',
-        format: "Y-m-d H:i",
+        format: "Y-m-d",
+        formatDate: "Y-m-d",
         todayButton: true,
+        timepicker:false,
         onChangeDateTime: logic,
         onShow: logic
-    }).setLocale('zh');
+    });
 </script>

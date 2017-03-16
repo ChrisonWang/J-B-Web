@@ -92,10 +92,20 @@ class LawyerOffice extends Controller
         if(trim($inputs['name']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'事务所名称不能为空！']);
         }
+        if(trim($inputs['usc_code']) === ''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不能为空！']);
+        }
+        if(trim($inputs['area']) === '' || trim($inputs['area'])=='none'){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的区域！']);
+        }
         //判断是否有重名的
         $id = DB::table('service_lawyer_office')->select('id')->where('name',$inputs['name'])->get();
         if(count($id) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['name'].'的区域']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['name'].'的事务所']);
+        }
+        $id = DB::table('service_lawyer_office')->select('id')->where('usc_code',$inputs['usc_code'])->get();
+        if(count($id) != 0){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在统一社会信用代码的：'.$inputs['usc_code'].'的事务所']);
         }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
@@ -291,7 +301,10 @@ class LawyerOffice extends Controller
         if(trim($inputs['name']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写事务所名称！']);
         }
-        elseif(trim($inputs['area']) === '' || trim($inputs['area'])=='none'){
+        if(trim($inputs['usc_code']) === ''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不能为空！']);
+        }
+        if(trim($inputs['area']) === '' || trim($inputs['area'])=='none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的区域！']);
         }
         $sql = 'SELECT `id` FROM `service_lawyer_office` WHERE `name` = "'.$inputs['name'].'" AND `id` != "'.$id.'"';
@@ -299,83 +312,86 @@ class LawyerOffice extends Controller
         if(count($rs) > 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['name'].'的事务所！']);
         }
+        $sql = 'SELECT `id` FROM `service_lawyer_office` WHERE `usc_code` = "'.$inputs['usc_code'].'" AND `id` != "'.$id.'"';
+        $rs = DB::select($sql);
+        if(count($rs) > 0){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在统一社会信用代码为：'.$inputs['usc_code'].'的事务所！']);
+        }
+        //执行修改数据操作
+        $save_data = array(
+            'name'=> $inputs['name'],
+            'en_name'=> $inputs['en_name'],
+            'address'=> $inputs['address'],
+            'zip_code'=> $inputs['zip_code'],
+            'area_id'=> keys_decrypt($inputs['area']),
+            'justice_bureau'=> $inputs['justice_bureau'],
+            'usc_code'=> $inputs['usc_code'],
+            'certificate_date'=> $inputs['certificate_date'],
+            'director'=> $inputs['director'],
+            'type'=> $inputs['type'],
+            'group_type'=> $inputs['group_type'],
+            'status'=> $inputs['status'],
+            'status_description'=> $inputs['status_description'],
+            'office_phone'=> $inputs['office_phone'],
+            'fax'=> $inputs['fax'],
+            'fund'=> $inputs['fund'],
+            'email'=> $inputs['email'],
+            'web_site'=> $inputs['web_site'],
+            'office_area'=> $inputs['office_area'],
+            'office_space_type'=> $inputs['office_space_type'],
+            'description'=> $inputs['description'],
+            'map_code'=> $inputs['map_code'],
+            'update_date'=> date('Y-m-d H:i:s', time()),
+        );
+        $rs = DB::table('service_lawyer_office')->where('id',$id)->update($save_data);
+        if($rs === false){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+        }
         else{
-            //执行修改数据操作
-            $save_data = array(
-                'name'=> $inputs['name'],
-                'en_name'=> $inputs['en_name'],
-                'address'=> $inputs['address'],
-                'zip_code'=> $inputs['zip_code'],
-                'area_id'=> keys_decrypt($inputs['area']),
-                'justice_bureau'=> $inputs['justice_bureau'],
-                'usc_code'=> $inputs['usc_code'],
-                'certificate_date'=> $inputs['certificate_date'],
-                'director'=> $inputs['director'],
-                'type'=> $inputs['type'],
-                'group_type'=> $inputs['group_type'],
-                'status'=> $inputs['status'],
-                'status_description'=> $inputs['status_description'],
-                'office_phone'=> $inputs['office_phone'],
-                'fax'=> $inputs['fax'],
-                'fund'=> $inputs['fund'],
-                'email'=> $inputs['email'],
-                'web_site'=> $inputs['web_site'],
-                'office_area'=> $inputs['office_area'],
-                'office_space_type'=> $inputs['office_space_type'],
-                'description'=> $inputs['description'],
-                'map_code'=> $inputs['map_code'],
-                'update_date'=> date('Y-m-d H:i:s', time()),
-            );
-            $rs = DB::table('service_lawyer_office')->where('id',$id)->update($save_data);
-            if($rs === false){
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
-            }
-            else{
-                //修改成功后的操作
-                $office_list = array();
-                $area_list = array();
-                $pages = '';
-                $count = DB::table('service_lawyer_office')->count();
-                $count_page = ($count > 30)? ceil($count/30)  : 1;
-                $offset = 30;
-                $office = DB::table('service_lawyer_office')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
-                if(count($office) > 0){
-                    //取出区域
-                    $areas = DB::table('service_area')->get();
-                    if(count($areas) > 0){
-                        foreach($areas as $area){
-                            $area_list[keys_encrypt($area->id)] = $area->area_name;
-                        }
+            //修改成功后的操作
+            $office_list = array();
+            $area_list = array();
+            $pages = '';
+            $count = DB::table('service_lawyer_office')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $office = DB::table('service_lawyer_office')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($office) > 0){
+                //取出区域
+                $areas = DB::table('service_area')->get();
+                if(count($areas) > 0){
+                    foreach($areas as $area){
+                        $area_list[keys_encrypt($area->id)] = $area->area_name;
                     }
+                }
 
-                    //格式化数据
-                    foreach($office as $o){
-                        $office_list[] = array(
-                            'key' => keys_encrypt($o->id),
-                            'name'=> $o->name,
-                            'director'=> $o->director,
-                            'usc_code'=> $o->usc_code,
-                            'type'=> $o->type,
-                            'area_id'=> keys_encrypt($o->area_id),
-                            'status'=> $o->status,
-                            'create_date'=> $o->create_date,
-                            'update_date'=> $o->update_date,
-                        );
-                    }
-                    $pages = array(
-                        'count' => $count,
-                        'count_page' => $count_page,
-                        'now_page' => 1,
-                        'type' => 'tags',
+                //格式化数据
+                foreach($office as $o){
+                    $office_list[] = array(
+                        'key' => keys_encrypt($o->id),
+                        'name'=> $o->name,
+                        'director'=> $o->director,
+                        'usc_code'=> $o->usc_code,
+                        'type'=> $o->type,
+                        'area_id'=> keys_encrypt($o->area_id),
+                        'status'=> $o->status,
+                        'create_date'=> $o->create_date,
+                        'update_date'=> $o->update_date,
                     );
                 }
-                $this->page_data['pages'] = $pages;
-                $this->page_data['type_list'] = array('head'=>'总所', 'branch'=>'分所', 'personal'=>'个人');
-                $this->page_data['area_list'] = $area_list;
-                $this->page_data['office_list'] = $office_list;
-                $pageContent = view('judicial.manage.service.lawyerOfficeList',$this->page_data)->render();
-                json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'tags',
+                );
             }
+            $this->page_data['pages'] = $pages;
+            $this->page_data['type_list'] = array('head'=>'总所', 'branch'=>'分所', 'personal'=>'个人');
+            $this->page_data['area_list'] = $area_list;
+            $this->page_data['office_list'] = $office_list;
+            $pageContent = view('judicial.manage.service.lawyerOfficeList',$this->page_data)->render();
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
     }
 

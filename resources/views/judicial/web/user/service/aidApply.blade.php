@@ -42,21 +42,21 @@
         <div class="zwr_ft">
             <div class="fy_left">
                 <span>
-                    <a href="{{ URL::to('service/aid/list/') }}"> 首页</a>
+                    <a href="javascript: void(0) ;" data-type="apply" data-method="first" data-now="{{ $apply_pages['now_page'] }}" data-c="s_apply" onclick="service_page($(this))"> 首页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/aid/list/') }}">上一页</a>
+                    <a href="javascript: void(0) ;" data-type="apply" data-method="per" data-now="{{ $apply_pages['now_page'] }}" data-c="s_apply" onclick="service_page($(this))">上一页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/aid/list/') }}">下一页</a>
+                    <a href="javascript: void(0) ;" data-type="apply" data-method="next" data-now="{{ $apply_pages['now_page'] }}" data-c="s_apply" onclick="service_page($(this))">下一页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/aid/list/')}}"> 尾页</a>
+                    <a href="javascript: void(0) ;" data-type="apply" data-method="last" data-now="{{ $apply_pages['now_page'] }}" data-c="s_apply" onclick="service_page($(this))"> 尾页</a>
                 </span>
                 <div class="fy_right">
-                    <span>总记录数：{{ $apply_count }}</span>
+                    <span>总记录数：{{ $apply_pages['count'] }}</span>
                     <span>每页显示10条记录</span>
-                    <span>当前页1/{{ ceil($apply_count/10) }}</span>
+                    <span>当前页: {{ $apply_pages['now_page'] }}/{{ $apply_pages['count_page'] }}</span>
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@
             <td>{{ $certificate['certi_code'] }}</td>
             <td>{{ $certificate['certificate_date'] }}</td>
             <td>{{ $certificate['phone'] }}</td>
-            <td>{{ $certificate['last_status'] }}</td>
+            <td>@if($certificate['last_status']=='waiting') 未发送 @else 发送成功！@endif</td>
         </tr>
     @endforeach
     </tbody>

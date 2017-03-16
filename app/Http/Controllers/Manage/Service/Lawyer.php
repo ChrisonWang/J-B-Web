@@ -104,22 +104,25 @@ class Lawyer extends Controller
         else{
             //处理图片上传
             $file = $request->file('thumb');
-            if(!$file->isValid()){
-                $photo_path = '';
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的律师照片！']);
-            }
-            else{
-                $destPath = realpath(public_path('uploads/system/lawyer'));
-                if(!file_exists($destPath)){
-                    mkdir($destPath, 0755, true);
-                }
-                $extension = $file->getClientOriginalExtension();
-                $filename = gen_unique_code('L_').'.'.$extension;
-                if(!$file->move($destPath,$filename)){
+            $photo_path = '';
+            if(!is_null($file)){
+                if(!$file->isValid()){
                     $photo_path = '';
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的律师照片！']);
                 }
                 else{
-                    $photo_path = URL::to('/').'/uploads/system/lawyer/'.$filename;
+                    $destPath = realpath(public_path('uploads/system/lawyer'));
+                    if(!file_exists($destPath)){
+                        mkdir($destPath, 0755, true);
+                    }
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = gen_unique_code('L_').'.'.$extension;
+                    if(!$file->move($destPath,$filename)){
+                        $photo_path = '';
+                    }
+                    else{
+                        $photo_path = URL::to('/').'/uploads/system/lawyer/'.$filename;
+                    }
                 }
             }
             $lawyer_office_name = DB::table('service_lawyer_office')->where('id', keys_decrypt($inputs['lawyer_office']))->first();
@@ -433,7 +436,7 @@ class Lawyer extends Controller
     public function doDelete(Request $request)
     {
         $id = keys_decrypt($request->input('key'));
-        $row = DB::table('service_lawyer_office')->where('id',$id)->delete();
+        $row = DB::table('service_lawyer')->where('id',$id)->delete();
         if($row > 0){
             //删除成功后刷新页面数据
             $lawyer_list = array();

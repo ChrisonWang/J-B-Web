@@ -57,6 +57,7 @@ class AidApply extends Controller
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['area_list'] = $area_list;
         $this->page_data['channel_list'] = $this->get_left_list();
+        $this->get_left_sub();
     }
 
     public function index($page = 1){
@@ -155,7 +156,7 @@ class AidApply extends Controller
         }
         else{
             $save_data = array(
-                'record_code' => gen_unique_code('AD_'),
+                'record_code' => $this->get_record_code('QZ'),
                 'apply_name' => $inputs['apply_name'],
                 'political' => $inputs['political'],
                 'sex' => $inputs['sex']=='female' ? 'famale' : 'male',

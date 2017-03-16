@@ -21,7 +21,7 @@ class Consultions extends Controller
     public function __construct()
     {
         $this->page_data['thisPageName'] = '问题咨询管理';
-        $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+        $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
     }
 
     public function index($page = 1)
@@ -38,10 +38,10 @@ class Consultions extends Controller
                 $consultion_list[] = array(
                     'key'=> keys_encrypt($consultion->id),
                     'record_code'=> $consultion->record_code,
-                    'title'=> $consultion->title,
+                    'title'=> spilt_title($consultion->title, 30),
                     'type'=> $consultion->type,
                     'status'=> $consultion->status,
-                    'create_date'=> date('Y-m-d',strtotime($consultion->create_date)),
+                    'create_date'=> date('Y-m-d H:i',strtotime($consultion->create_date)),
                 );
             }
             $pages = array(
@@ -130,13 +130,14 @@ class Consultions extends Controller
             'answer_date'=> date('Y-m-d H:i:s', time()),
         );
         $rs = DB::table('service_consultions')->where('id',$id)->update($save_data);
+        $record_code = DB::table('service_consultions')->where('id',$id)->first();
         if($rs === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'答复失败']);
         }
         else{
             $phone = DB::table('service_consultions')->where('id',$id)->first();
             if(isset($phone->cell_phone)){
-                Massage::send($phone->cell_phone, '管理员回复了你在民政互动中的问题咨询');
+                Massage::send($phone->cell_phone,'您在三门峡司法局提交的问题咨询（编号:'.$record_code->record_code.'）已经回复，去登录网站查看吧');
             }
             //答复成功，加载列表数据
             $consultion_list = array();
@@ -150,10 +151,10 @@ class Consultions extends Controller
                     $consultion_list[] = array(
                         'key'=> keys_encrypt($consultion->id),
                         'record_code'=> $consultion->record_code,
-                        'title'=> $consultion->title,
+                        'title'=> spilt_title($consultion->title, 30),
                         'type'=> $consultion->type,
                         'status'=> $consultion->status,
-                        'create_date'=> date('Y-m-d',strtotime($consultion->create_date)),
+                        'create_date'=> date('Y-m-d H:i',strtotime($consultion->create_date)),
                     );
                 }
                 $pages = array(
@@ -193,7 +194,7 @@ class Consultions extends Controller
                 $consultion_list[] = array(
                     'key'=> keys_encrypt($re->id),
                     'record_code'=> $re->record_code,
-                    'title'=> $re->title,
+                    'title'=> spilt_title($re->title, 30),
                     'type'=> $re->type,
                     'status'=> $re->status,
                     'create_date'=> date('Y-m-d',strtotime($re->create_date)),

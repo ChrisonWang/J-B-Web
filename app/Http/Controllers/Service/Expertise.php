@@ -48,18 +48,26 @@ class Expertise extends Controller
         }
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['channel_list'] = $this->get_left_list();
+        $this->get_left_sub();
     }
 
     public function index($page = 1)
     {
         $member_code = $this->checkLoginStatus();
         //取出列表
+        $types = DB::table('service_judicial_expertise_type')->get();
+        if(count($types)>0){
+            $type_list = array();
+            foreach($types as $type){
+                $type_list[keys_encrypt($type->id)] = $type->name;
+            }
+        }
         $record_list = array();
         $pages = '';
         $count = DB::table('service_judicial_expertise')->where('member_code', $member_code)->count();
-        $count_page = ($count > 16)? ceil($count/16)  : 1;
-        $offset = $page > $count_page ? 0 : ($page - 1) * 16;
-        $records = DB::table('service_judicial_expertise')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(16)->get();
+        $count_page = ($count > 10)? ceil($count/10)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 10;
+        $records = DB::table('service_judicial_expertise')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(10)->get();
         if(count($records) > 0){
             foreach($records as $record){
                 $record_list[] = array(
@@ -74,13 +82,6 @@ class Expertise extends Controller
                     'now_page' => $page,
                     'type' => 'expertise/list',
                 );
-            }
-            $types = DB::table('service_judicial_expertise_type')->get();
-            if(count($types)>0){
-                $type_list = array();
-                foreach($types as $type){
-                    $type_list[keys_encrypt($type->id)] = $type->name;
-                }
             }
         }
 
@@ -152,8 +153,9 @@ class Expertise extends Controller
             $re = DB::table('service_judicial_expertise')->where('record_code', $inputs['record_code'])->update($save_data);
         }
         else{
+            $record_code = $this->get_record_code('JD');
             $save_data = array(
-                'record_code' => gen_unique_code('EXP_'),
+                'record_code' => $record_code,
                 'apply_name' => $inputs['apply_name'],
                 'cell_phone' => $inputs['cell_phone'],
                 'type_id' => keys_decrypt($inputs['type_id']),

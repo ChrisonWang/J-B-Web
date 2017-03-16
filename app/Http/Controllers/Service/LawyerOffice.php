@@ -59,6 +59,7 @@ class LawyerOffice extends Controller
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->page_data['type_list'] = ['head'=>'总所', 'branch'=>'分所', 'personal'=>'个人'];
         $this->page_data['area_list'] = $area_list;
+        $this->get_left_sub();
     }
 
     public function index($page = 1)

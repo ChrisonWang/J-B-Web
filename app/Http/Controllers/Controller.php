@@ -40,6 +40,20 @@ class Controller extends BaseController
         return $channel_list;
     }
 
+    public function get_left_sub()
+    {
+        //左侧
+        $s_lsfw = DB::table('cms_channel')->where('pid', 74)->get();
+        $s_sfks = DB::table('cms_channel')->where('pid', 79)->get();
+        $s_sfjd = DB::table('cms_channel')->where('pid', 84)->get();
+        $s_flyz = DB::table('cms_channel')->where('pid', 89)->get();
+
+        $this->page_data['s_lsfw'] = json_decode(json_encode($s_lsfw), true);
+        $this->page_data['s_sfks'] = json_decode(json_encode($s_sfks), true);
+        $this->page_data['s_sfjd'] = json_decode(json_encode($s_sfjd), true);
+        $this->page_data['s_flyz'] = json_decode(json_encode($s_flyz), true);
+    }
+
     /**
      * 检查用户的登录状态
      * @return bool|mixed
@@ -59,5 +73,28 @@ class Controller extends BaseController
         else{
             return $managerCode;
         }
+    }
+
+    public function get_record_code($pre)
+    {
+        $table = DB::table('system_record_code');
+        $where = ['date'=>date('Ymd', time()), 'pre'=> $pre];
+        $id = $table->where($where)->first();
+        if(count($id)<1){
+            $record_code = $pre.date('Ymd', time()).'001';
+            $id = $table->insertGetId(['date'=>date('Ymd', time()), 'pre'=> $pre, 'code'=>'001']);
+        }
+        else{
+            $code = intval($id->code)+1;
+            if(strlen($code)==1){
+                $code = '00'.$code;
+            }
+            elseif(strlen($code)==2){
+                $code = '0'.$code;
+            }
+            $record_code = $pre.date('Ymd', time()).$code;
+            $id = $table->where(['date'=>date('Ymd', time()), 'pre'=> $pre])->update(['code'=>$code]);
+        }
+        return $record_code;
     }
 }

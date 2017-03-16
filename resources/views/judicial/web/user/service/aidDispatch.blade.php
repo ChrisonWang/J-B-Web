@@ -43,21 +43,21 @@
         <div class="zwr_ft">
             <div class="fy_left">
                 <span>
-                    <a href="{{ URL::to('service/aid/list/') }}"> 首页</a>
+                    <a href="javascript: void(0) ;" data-type="dispatch" data-method="first" data-now="{{ $dispatch_pages['now_page'] }}" data-c="s_dispatch" onclick="service_page($(this))"> 首页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/aid/list/') }}">上一页</a>
+                    <a href="javascript: void(0) ;" data-type="dispatch" data-method="per" data-now="{{ $dispatch_pages['now_page'] }}" data-c="s_dispatch" onclick="service_page($(this))">上一页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/aid/list/') }}">下一页</a>
+                    <a href="javascript: void(0) ;" data-type="dispatch" data-method="next" data-now="{{ $dispatch_pages['now_page'] }}" data-c="s_dispatch" onclick="service_page($(this))">下一页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/aid/list/')}}"> 尾页</a>
+                    <a href="javascript: void(0) ;" data-type="dispatch" data-method="last" data-now="{{ $dispatch_pages['now_page'] }}" data-c="s_dispatch" onclick="service_page($(this))"> 尾页</a>
                 </span>
                 <div class="fy_right">
-                    <span>总记录数：{{ $dispatch_count }}</span>
+                    <span>总记录数：{{ $dispatch_pages['count'] }}</span>
                     <span>每页显示10条记录</span>
-                    <span>当前页1/{{ ceil($dispatch_count/10) }}</span>
+                    <span>当前页: {{ $dispatch_pages['now_page'] }}/{{ $dispatch_pages['count_page'] }}</span>
                 </div>
             </div>
         </div>

@@ -45,10 +45,10 @@
                         <tr>
                             <td>{{ $record['record_code'] }}</td>
                             <td>{{ $type_list[$record['type']] }}</td>
-                            <td>{{ $record['title'] }}</td>
+                            <td>{{ spilt_title($record['title'], 50) }}</td>
                             <td>{{ $record['create_date'] }}</td>
                             <td>{{ $record['answer_date'] }}</td>
-                            <td><a href="{{ URL::to('consultions/detail').'/'.$record['record_code'] }}" class="tb_btn">查看</a></td>
+                            <td><a href="{{ URL::to('suggestions/detail').'/'.$record['record_code'] }}" class="tb_btn">查看</a></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -60,14 +60,14 @@
     </div>
     <div class="zwr_ft">
         <div class="fy_left">
-            <span>@if($pages['count_page']>1 )<a href="{{ URL::to('service/'.$pages['type']) }}"> 首页</a> @else 首页 @endif</span>
+            <span>@if($pages['count_page']>1 )<a href="{{ URL::to(''.$pages['type']) }}"> 首页</a> @else 首页 @endif</span>
                 <span>
-                    @if($pages['now_page'] >1 ) <a href="{{ URL::to('service/'.$pages['type']).'/'.($pages['now_page']-1) }}">上一页</a> @else 上一页 @endif
+                    @if($pages['now_page'] >1 ) <a href="{{ URL::to(''.$pages['type']).'/'.($pages['now_page']-1) }}">上一页</a> @else 上一页 @endif
                 </span>
                 <span>
-                    @if($pages['now_page']<$pages['count_page'] ) <a href="{{ URL::to('service/'.$pages['type']).'/'.($pages['now_page']+1) }}">下一页</a> @else 下一页 @endif
+                    @if($pages['now_page']<$pages['count_page'] ) <a href="{{ URL::to(''.$pages['type']).'/'.($pages['now_page']+1) }}">下一页</a> @else 下一页 @endif
                 </span>
-            <span>@if($pages['count_page']>1 && $pages['now_page']<$pages['count_page'] )<a href="{{ URL::to('service/'.$pages['type']).'/'.$pages['count_page'] }}"> 尾页</a> @else 尾页 @endif</span>
+            <span>@if($pages['count_page']>1 && $pages['now_page']<$pages['count_page'] )<a href="{{ URL::to(''.$pages['type']).'/'.$pages['count_page'] }}"> 尾页</a> @else 尾页 @endif</span>
         </div>
         <div class="fy_right">
             <span>总记录数：{{ $pages['count'] }}</span>

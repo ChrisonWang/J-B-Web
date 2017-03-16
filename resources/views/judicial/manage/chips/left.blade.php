@@ -129,6 +129,17 @@
                                 <a href="javascript:void(0);" data-node="service-suggestionsMng" >征求意见管理</a>
                             </li>
                         </ul><!-- 子菜单End -->
+                    </li><!-- 民政互动End -->
+                    <!-- 车辆管理管理 -->
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>车辆管理<span class="fa arrow"></span></a>
+                        <!-- 子菜单 -->
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0);" data-node="system-vehiclesMng" >车辆信息管理</a>
+                                <a href="javascript:void(0);" data-node="system-vehiclesLocationMng" >车辆位置管理</a>
+                            </li>
+                        </ul><!-- 子菜单End -->
                     </li><!-- 司法考试管理End -->
             @endif
         </ul>

@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="usc_code" class="col-md-1 control-label">统一社会信用代码：</label>
+                <label for="usc_code" class="col-md-1 control-label"><strong style="color: red">*</strong> 统一社会信用代码：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="usc_code" name="usc_code" placeholder="请输入统一社会信用代码" />
                 </div>

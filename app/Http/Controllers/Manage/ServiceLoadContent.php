@@ -373,10 +373,10 @@ class ServiceLoadContent extends Controller
                 $suggestion_list[] = array(
                     'key' => keys_encrypt($suggestion->id),
                     'record_code' => $suggestion->record_code,
-                    'title' => $suggestion->title,
+                    'title'=> spilt_title($suggestion->title, 30),
                     'type' => $suggestion->type,
                     'status' => $suggestion->status,
-                    'create_date' => date('Y-m-d', strtotime($suggestion->create_date)),
+                    'create_date' => date('Y-m-d H:i', strtotime($suggestion->create_date)),
                 );
             }
             $pages = array(
@@ -408,10 +408,10 @@ class ServiceLoadContent extends Controller
                 $consultion_list[] = array(
                     'key'=> keys_encrypt($consultion->id),
                     'record_code'=> $consultion->record_code,
-                    'title'=> $consultion->title,
+                    'title'=> spilt_title($consultion->title, 30),
                     'type'=> $consultion->type,
                     'status'=> $consultion->status,
-                    'create_date'=> date('Y-m-d',strtotime($consultion->create_date)),
+                    'create_date'=> date('Y-m-d H:i',strtotime($consultion->create_date)),
                 );
             }
             $pages = array(

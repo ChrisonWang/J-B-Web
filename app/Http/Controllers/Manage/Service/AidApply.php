@@ -12,6 +12,8 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
+use App\Libs\Massage;
+
 class AidApply extends Controller
 {
     var $page_data = array();
@@ -165,6 +167,11 @@ class AidApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //发短信
+            $phone = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+            if(isset($phone->apply_phone)){
+                Massage::send($phone->apply_phone,'管理员通过了您编号为“'.$phone->record_code.'”的法律援助申请！');
+            }
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';
@@ -218,6 +225,11 @@ class AidApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //发短信
+            $phone = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+            if(isset($phone->apply_phone)){
+                Massage::send($phone->apply_phone,'管理员驳回了您编号为“'.$phone->record_code.'”的法律援助申请，请登录PC官网查看原因！');
+            }
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';

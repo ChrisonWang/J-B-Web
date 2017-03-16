@@ -54,8 +54,8 @@
                         @if(isset($bszn_article_list[$bszn['channel_id']]) && is_array($bszn_article_list[$bszn['channel_id']]))
                             @foreach($bszn_article_list[$bszn['channel_id']] as $a)
                                 <li>
-                                    <a href="{{ URL::to('article').'/'.$a['article_code'] }}">
-                                        <i>{{ $a['article_title'] }}</i>
+                                    <a href="{{ URL::to('service/article').'/'.$a['article_code'] }}">
+                                        <i>{{ spilt_title($a['article_title'], 32) }}</i>
                                         <b>{{ date('Y-m-d', strtotime($a['publish_date'])) }}</b>
                                     </a>
                                 </li>
@@ -64,7 +64,7 @@
                             暂无文章！
                         @endif
                     </ul>
-                    <a href="{{ URL::to('list').'/'.$bszn['sub_channel'].'/1' }}" class="wsrb_mor">查看更多 > ></a>
+                    <a href="{{ URL::to('service/list').'/'.$bszn['sub_channel'].'/1' }}" class="wsrb_mor">查看更多 > ></a>
                 </div>
                 @endforeach
             </div>

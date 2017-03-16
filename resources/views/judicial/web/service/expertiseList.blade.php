@@ -77,7 +77,7 @@
             </div>
             <div class="fy_right">
                 <span>总记录数：{{ $pages['count'] }}</span>
-                <span>每页显示16条记录</span>
+                <span>每页显示10条记录</span>
                 <span>当前页{{ $pages['now_page'] }}/{{ $pages['count_page'] }}</span>
             </div>
         </div>

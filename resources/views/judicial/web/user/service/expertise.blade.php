@@ -43,21 +43,21 @@
         <div class="zwr_ft">
             <div class="fy_left">
                 <span>
-                    <a href="{{ URL::to('service/expertise/list/') }}"> 首页</a>
+                    <a href="javascript: void(0) ;" data-type="expertise" data-method="first" data-now="{{ $expertise_pages['now_page'] }}" data-c="s_expertise" onclick="service_page($(this))"> 首页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/expertise/list/') }}">上一页</a>
+                    <a href="javascript: void(0) ;" data-type="expertise" data-method="per" data-now="{{ $expertise_pages['now_page'] }}" data-c="s_expertise" onclick="service_page($(this))">上一页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/expertise/list/') }}">下一页</a>
+                    <a href="javascript: void(0) ;" data-type="expertise" data-method="next" data-now="{{ $expertise_pages['now_page'] }}" data-c="s_expertise" onclick="service_page($(this))">下一页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('service/expertise/list/')}}"> 尾页</a>
+                    <a href="javascript: void(0) ;" data-type="expertise" data-method="last" data-now="{{ $expertise_pages['now_page'] }}" data-c="s_expertise" onclick="service_page($(this))"> 尾页</a>
                 </span>
                 <div class="fy_right">
-                    <span>总记录数：{{ $expertise_count }}</span>
+                    <span>总记录数：{{ $expertise_pages['count'] }}</span>
                     <span>每页显示10条记录</span>
-                    <span>当前页1/{{ ceil($expertise_count/10) }}</span>
+                    <span>当前页: {{ $expertise_pages['now_page'] }}/{{ $expertise_pages['count_page'] }}</span>
                 </div>
             </div>
         </div>

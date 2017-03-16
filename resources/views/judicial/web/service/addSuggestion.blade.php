@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label for="type" class="col-md-2 control-label text-right">留言分类：</label>
                     <div class="col-md-3">
-                        <input name="type" type="radio" value="opinion"> 意见&nbsp;&nbsp;
+                        <input name="type" type="radio" value="opinion" checked> 意见&nbsp;&nbsp;
                         <input name="type" type="radio" value="suggest"> 建议&nbsp;&nbsp;
                         <input name="type" type="radio" value="complaint"> 投诉&nbsp;&nbsp;
                         <input name="type" type="radio" value="other"> 其他

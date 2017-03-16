@@ -32,9 +32,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="type" class="col-md-2 control-label text-right">留言分类：</label>
+                    <label for="type" class="col-md-2 control-label text-right">问题分类：</label>
                     <div class="col-md-9">
                         <select class="form-control" id="type" name="type">
+                            <option value="none" selected>请选择问题类型</option>
                             <option value="exam">司法考试</option>
                             <option value="lawyer">律师管理</option>
                             <option value="notary">司法公证</option>
@@ -45,15 +46,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="title" class="col-md-2 control-label text-right">留言主题：</label>
+                    <label for="title" class="col-md-2 control-label text-right">问题主题：</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" id="title" name="title" placeholder="请输入留言主题" />
+                        <input type="text" class="form-control" id="title" name="title" placeholder="请输入问题主题" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="content" class="col-md-2 control-label text-right">留言内容：</label>
+                    <label for="content" class="col-md-2 control-label text-right">问题内容：</label>
                     <div class="col-md-9">
-                        <textarea class="form-control" id="content" name="content" placeholder="请输入留言内容" style="height: 100px"></textarea>
+                        <textarea class="form-control" id="content" name="content" placeholder="请输入问题内容" style="height: 100px"></textarea>
                     </div>
                 </div>
                 <div class="form-group">

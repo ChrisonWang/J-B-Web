@@ -12,6 +12,8 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
+use App\Libs\Massage;
+
 class AidDispatch extends Controller
 {
     var $page_data = array();
@@ -27,7 +29,7 @@ class AidDispatch extends Controller
             }
         }
         $this->page_data['area_list'] = $area_list;
-        $this->page_data['thisPageName'] = '群众预约援助管理';
+        $this->page_data['thisPageName'] = '公检法指派管理';
         $this->page_data['political_list'] = ['citizen'=>'群众', 'cp'=>'党员', 'cyl'=>'团员'];
         $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
     }
@@ -148,6 +150,15 @@ class AidDispatch extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //发短信
+            $phone = array();
+            $member_code = DB::table('service_legal_aid_dispatch')->where('id',$id)->first();
+            if(isset($member_code->member_code) && !empty($member_code->member_code)){
+                $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
+            }
+            if(isset($phone->cell_phone)){
+                Massage::send($phone->cell_phone,'管理员通过了您编号为“'.$member_code->record_code.'”的公检法指派申请！');
+            }
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';
@@ -200,6 +211,15 @@ class AidDispatch extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //发短信
+            $phone = array();
+            $member_code = DB::table('service_legal_aid_dispatch')->where('id',$id)->first();
+            if(isset($member_code->member_code) && !empty($member_code->member_code)){
+                $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
+            }
+            if(isset($phone->cell_phone)){
+                Massage::send($phone->cell_phone,'管理员拒绝了您编号为“'.$member_code->record_code.'”的公检法指派申请，请登录PC官网查看原因！');
+            }
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';

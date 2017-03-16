@@ -136,3 +136,18 @@ function keys_decrypt($string = '', $skey = 'JusticeBureau') {
         $key <= $strCount  && isset($strArr[$key]) && $strArr[$key][1] === $value && $strArr[$key] = $strArr[$key][0];
     return base64_decode(join('', $strArr));
 }
+
+function spilt_title($str,$len){
+    if($str === ''){
+        return $str;
+    }
+    $str_len = strlen($str);
+    if($str_len < $len)
+    {
+        return $str;
+    }
+    else{
+        $title = mb_substr($str, 0, $len).'...';
+        return $title;
+    }
+}

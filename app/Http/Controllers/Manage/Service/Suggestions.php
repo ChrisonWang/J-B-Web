@@ -40,10 +40,10 @@ class Suggestions extends Controller
                 $suggestion_list[] = array(
                     'key' => keys_encrypt($suggestion->id),
                     'record_code' => $suggestion->record_code,
-                    'title' => $suggestion->title,
+                    'title'=> spilt_title($suggestion->title, 30),
                     'type' => $suggestion->type,
                     'status' => $suggestion->status,
-                    'create_date' => date('Y-m-d', strtotime($suggestion->create_date)),
+                    'create_date' => date('Y-m-d H:i', strtotime($suggestion->create_date)),
                 );
             }
             $pages = array(
@@ -132,13 +132,14 @@ class Suggestions extends Controller
             'answer_date'=> date('Y-m-d H:i:s', time()),
         );
         $rs = DB::table('service_suggestions')->where('id',$id)->update($save_data);
+        $record_code = DB::table('service_suggestions')->where('id',$id)->first();
         if($rs === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'答复失败']);
         }
         else{
             $phone = DB::table('service_suggestions')->where('id',$id)->first();
             if(isset($phone->cell_phone)){
-                Massage::send($phone->cell_phone,'管理员回复了你在民政互动中的征求意见');
+                Massage::send($phone->cell_phone,'您在三门峡司法局提交的征求意见（编号:'.$record_code->record_code.'）已经回复，去登录网站查看吧');
             }
             //答复成功，加载列表数据
             $suggestion_list = array();
@@ -152,10 +153,10 @@ class Suggestions extends Controller
                     $suggestion_list[] = array(
                         'key' => keys_encrypt($suggestion->id),
                         'record_code' => $suggestion->record_code,
-                        'title' => $suggestion->title,
+                        'title'=> spilt_title($suggestion->title, 30),
                         'type' => $suggestion->type,
                         'status' => $suggestion->status,
-                        'create_date' => date('Y-m-d', strtotime($suggestion->create_date)),
+                        'create_date' => date('Y-m-d H:i', strtotime($suggestion->create_date)),
                     );
                 }
                 $pages = array(
@@ -195,7 +196,7 @@ class Suggestions extends Controller
                 $suggestion_list[] = array(
                     'key'=> keys_encrypt($re->id),
                     'record_code'=> $re->record_code,
-                    'title'=> $re->title,
+                    'title'=> spilt_title($re->title, 30),
                     'type'=> $re->type,
                     'status'=> $re->status,
                     'create_date'=> date('Y-m-d',strtotime($re->create_date)),

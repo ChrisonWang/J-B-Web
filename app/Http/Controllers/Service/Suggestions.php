@@ -49,6 +49,7 @@ class Suggestions extends Controller
         $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['channel_list'] = $this->get_left_list();
+        $this->get_left_sub();
     }
 
     public function index($page = 1)
@@ -132,7 +133,7 @@ class Suggestions extends Controller
         $inputs = $request->input();
         $this->_checkInput($inputs);
         $save_data = array(
-            'record_code'=> 'Q'.date('Ymd',time()).mt_rand(100,999),
+            'record_code'=> $this->get_record_code('S'),
             'name'=> $inputs['name'],
             'cell_phone'=> $inputs['cell_phone'],
             'email'=> $inputs['email'],

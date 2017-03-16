@@ -26,6 +26,43 @@ $(function(){
         $(".alert_sh").hide();
     })
 
+    //网上办事hover
+    $('#ico_1').mouseover(function(){
+        $(this).hide();
+        $('#ico_1_sub').show();
+    });
+    $('#ico_1_sub').mouseout(function(){
+        $(this).hide();
+        $('#ico_1').show();
+    });
+
+    $('#ico_2').mouseover(function(){
+        $(this).hide();
+        $('#ico_2_sub').show();
+    });
+    $('#ico_2_sub').mouseout(function(){
+        $(this).hide();
+        $('#ico_2').show();
+    });
+
+    $('#ico_3').mouseover(function(){
+        $(this).hide();
+        $('#ico_3_sub').show();
+    });
+    $('#ico_3_sub').mouseout(function(){
+        $(this).hide();
+        $('#ico_3').show();
+    });
+
+    $('#ico_4').mouseover(function(){
+        $(this).hide();
+        $('#ico_4_sub').show();
+    });
+    $('#ico_4_sub').mouseout(function(){
+        $(this).hide();
+        $('#ico_4').show();
+    });
+
 });
 
 function file_download(t){
@@ -60,7 +97,7 @@ function sendVerify(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("已发送，请注意查收");
-                var count = 60;
+                var count = 90;
                 var countdown = setInterval(CountDown, 1000);
                 function CountDown() {
                     $("#sendVerifyBtn").attr("disabled", true);
@@ -142,6 +179,26 @@ function loadArticle(t,c){
 }
 
 function addSuggestion(){
+    var name = $("input[name='name']").val();
+    var email = $("input[name='email']").val();
+    var cell_phone = $("input[name='cell_phone']").val();
+    var title = $("input[name='title']").val();
+    var content = $("textarea[name='content']").val();
+    if(typeof(name)== 'undefined' || name == '' || name.length<20){
+
+    }
+    if(typeof(email)== 'undefined' || email == ''){
+
+    }
+    if(typeof(cell_phone) == 'undefined' || cell_phone == ''){
+
+    }
+    if(typeof(title)== 'undefined' || title == ''){
+
+    }
+    if(typeof(content)== 'undefined' || content == ''){
+
+    }
     var c = confirm("确认提交？");
     if(c != true){
         return false;
@@ -162,6 +219,7 @@ function addSuggestion(){
             }
             else if(re.status == 'succ'){
                 alert('提交成功！');
+                window.location.href='/suggestions/list/1'
             }
         }
     });
@@ -169,6 +227,28 @@ function addSuggestion(){
 }
 
 function addConsultion(){
+    var name = $("input[name='name']").val();
+    var email = $("input[name='email']").val();
+    var cell_phone = $("input[name='cell_phone']").val();
+    var title = $("input[name='title']").val();
+    var content = $("textarea[name='content']").val();
+    if(typeof(name)== 'undefined' || name == ''){
+        alert('name');
+    }else if( name.length>20 ){
+        alert('name');
+    }
+    if(typeof(email)== 'undefined' || email == ''){
+
+    }
+    if(typeof(cell_phone) == 'undefined' || cell_phone == ''){
+
+    }
+    if(typeof(title)== 'undefined' || title == ''){
+
+    }
+    if(typeof(content)== 'undefined' || content == ''){
+
+    }
     var c = confirm("确认提交？");
     if(c != true){
         return false;
@@ -190,6 +270,7 @@ function addConsultion(){
             }
             else if(re.status == 'succ'){
                 alert('提交成功！');
+                window.location.href='/consultions/list/1'
             }
         }
     });
@@ -313,6 +394,26 @@ function show_opinion(t){
             if(re.status == 'succ'){
                 $('.alert_sh').show();
                 $('.alert_sh').find('.als_down').text(re.res);
+            }
+        }
+    });
+}
+
+function service_page(t){
+    var method = t.data('method');
+    var type = t.data('type');
+    var c = t.data('c');
+    var url = '/user/service/list';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: url,
+        method: "POST",
+        data: {method: method, type: type},
+        success: function(re){
+            if(re.status == 'succ'){
+                $("#"+c).html(re.res);
             }
         }
     });

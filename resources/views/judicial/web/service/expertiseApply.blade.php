@@ -51,6 +51,7 @@
                     <div class="cx_inp">
                         <select name="type_id" style="width: 252px; height: 30px">
                             @if($type_list != 'none' && is_array($type_list))
+                                <option value="none">请选择类型！</option>
                                 @foreach($type_list as $k=>$name)
                                     <option value="{{ $k }}">{{ $name }}</option>
                                 @endforeach

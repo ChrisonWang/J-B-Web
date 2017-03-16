@@ -49,6 +49,7 @@ class AidDispatch extends Controller
         $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['channel_list'] = $this->get_left_list();
+        $this->get_left_sub();
     }
 
     public function index($page = 1){
@@ -166,7 +167,7 @@ class AidDispatch extends Controller
         }
         else{
             $save_data = array(
-                'record_code' => gen_unique_code('AD_'),
+                'record_code' => $this->get_record_code('GZ'),
                 'apply_office' => $inputs['apply_office'],
                 'apply_aid_office' => $inputs['apply_aid_office'],
                 'criminal_name' => $inputs['criminal_name'],
@@ -193,28 +194,28 @@ class AidDispatch extends Controller
 
     private function _checkInput($inputs){
         if(!isset($inputs['apply_office']) || trim($inputs['apply_office'])==='' || strlen(trim($inputs['apply_office'])) > 200){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“申请单位”应为长度200以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“申请单位”不能为空且长度200以内的字符串']);
         }
         if(!isset($inputs['apply_aid_office']) || trim($inputs['apply_aid_office'])==='' || strlen(trim($inputs['apply_aid_office'])) > 200){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“申请援助单位”应为长度200以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“申请援助单位”不能为空且长度200以内的字符串']);
         }
-        if(!isset($inputs['criminal_name']) || trim($inputs['criminal_name']) ==='' || strlen(strlen($inputs['criminal_name'])) > 20){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“犯罪人姓名”应为长度20以内的字符串']);
+        if(!isset($inputs['criminal_name']) || trim($inputs['criminal_name']) ==='' || strlen(trim($inputs['criminal_name'])) > 20){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“犯罪人姓名”不能为空且长度20以内的字符串']);
         }
         if(!isset($inputs['criminal_id']) || trim($inputs['criminal_id'])==='' || !preg_identity(trim($inputs['criminal_id'])) ){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写真实有效的“犯罪人身份证号码”！']);
         }
         if(!isset($inputs['case_name']) || trim($inputs['case_name'])==='' || strlen(trim($inputs['case_name'])) > 200){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“案件名称”应为长度200以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“案件名称”不能为空且长度200以内的字符串']);
         }
         if(!isset($inputs['case_description']) || trim($inputs['case_description'])==='' || strlen(trim($inputs['case_description'])) > 1000){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“涉嫌犯罪内容”应为长度1000以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“涉嫌犯罪内容”不能为空且长度1000以内的字符串']);
         }
         if(!isset($inputs['detention_location']) || trim($inputs['detention_location'])==='' || strlen(trim($inputs['detention_location'])) > 200){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“收押居住地”应为长度200以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“收押居住地”不能为空且长度200以内的字符串']);
         }
         if(!isset($inputs['judge_description']) || trim($inputs['judge_description'])==='' || strlen(trim($inputs['judge_description'])) > 1000){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“判刑处罚内容”应为长度1000以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'“判刑处罚内容”不能为空且长度1000以内的字符串']);
         }
         return true;
     }

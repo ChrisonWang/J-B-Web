@@ -49,6 +49,7 @@ class Consultions extends Controller
         $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['channel_list'] = $this->get_left_list();
+        $this->get_left_sub();
     }
 
     public function index($page = 1)
@@ -83,6 +84,44 @@ class Consultions extends Controller
         return view('judicial.web.service.consultionList', $this->page_data);
     }
 
+    public function search(Request $request){
+        $keywords = $request->input('keywords');
+        $sql = 'SELECT * FROM `service_consultions` WHERE `record_code` LIKE "%'.$keywords.'%" OR `title` LIKE "%'.$keywords.'%"';
+        $res = DB::select($sql);
+        $record_list = array();
+        if($res && count($res)>0){
+            $count = count($res);
+            $count_page = ($count > 16)? ceil($count/16)  : 1;
+            //格式化数据
+            foreach($res as $record){
+                $record_list[] = array(
+                    'record_code'=> $record->record_code,
+                    'type'=> $record->type,
+                    'title'=> $record->title,
+                    'create_date'=> date('Y-m-d H:i', strtotime($record->create_date)),
+                    'answer_date'=> $record->status=='waiting' ? '待回复' : date('Y-m-d H:i', strtotime($record->answer_date)),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'lawyer',
+            );
+        }
+        else{
+            $pages = array(
+                'count' => 0,
+                'count_page' => 1,
+                'now_page' => 1,
+                'type' => 'lawyer',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['record_list'] = $record_list;
+        return view('judicial.web.service.consultionList', $this->page_data);
+    }
+
     public function add()
     {
         return view('judicial.web.service.addConsultions', $this->page_data);
@@ -94,7 +133,7 @@ class Consultions extends Controller
         $inputs = $request->input();
         $this->_checkInput($inputs);
         $save_data = array(
-            'record_code'=> 'Q'.date('Ymd',time()).mt_rand(100,999),
+            'record_code'=> $this->get_record_code('Q'),
             'name'=> $inputs['name'],
             'cell_phone'=> $inputs['cell_phone'],
             'email'=> $inputs['email'],
@@ -146,6 +185,9 @@ class Consultions extends Controller
         }
         if(!preg_phone($inputs['cell_phone']) && !preg_phone2($inputs['cell_phone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写正确的联系电话！（13800000000 或 0398-1234567 或 010-12345678）']);
+        }
+        if(!isset($inputs['type']) || trim($inputs['type'])==='' || trim($inputs['type'])=='none'){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的问题分类！']);
         }
         if(!isset($inputs['title']) || trim($inputs['title'])==='' || strlen($inputs['title']) > 200){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'主题应为长度200以内的字符串']);

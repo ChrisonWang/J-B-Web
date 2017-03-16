@@ -597,38 +597,261 @@ class User extends Controller
                 $expertise_type[$type->id] = $type->name;
             }
         }
+        $expertise_pages = array(
+            'now_page'=>1,
+            'count'=>$expertise_count,
+            'count_page'=>($expertise_count<=10) ? 1 : ceil($expertise_count/10),
+        );
         //问题咨询
         $consultions_list = DB::table('service_consultions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
         $consultions_count = DB::table('service_consultions')->where('member_code', $member_code)->count();
+        $consultions_pages = array(
+            'now_page'=>1,
+            'count'=>$consultions_count,
+            'count_page'=>($consultions_count<=10) ? 1 : ceil($consultions_count/10),
+        );
         //征求意见
         $suggestions_list = DB::table('service_suggestions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
         $suggestions_count = DB::table('service_suggestions')->where('member_code', $member_code)->count();
+        $suggestions_pages = array(
+            'now_page'=>1,
+            'count'=>$suggestions_count,
+            'count_page'=>($suggestions_count<=10) ? 1 : ceil($suggestions_count/10),
+        );
         //法律援助
         $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
         $apply_count = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->count();
+        $apply_pages = array(
+            'now_page'=>1,
+            'count'=>$apply_count,
+            'count_page'=>($apply_count<=10) ? 1 : ceil($apply_count/10),
+        );
         //公检法指派
         $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
         $dispatch_count = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->count();
+        $dispatch_pages = array(
+            'now_page'=>1,
+            'count'=>$dispatch_count,
+            'count_page'=>($dispatch_count<=10) ? 1 : ceil($dispatch_count/10),
+        );
 
         $this->page_date['expertise_type'] = $expertise_type;
         $this->page_date['expertise_list'] = $expertise_list;
-        $this->page_date['expertise_count'] = $expertise_count;
+        $this->page_date['expertise_pages'] = $expertise_pages;
 
         $this->page_date['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_date['consultions_list'] = json_decode(json_encode($consultions_list), true);
-        $this->page_date['consultions_count'] = $consultions_count;
+        $this->page_date['consultions_pages'] = $consultions_pages;
 
         $this->page_date['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
         $this->page_date['suggestions_list'] = json_decode(json_encode($suggestions_list), true);
-        $this->page_date['suggestions_count'] = $suggestions_count;
+        $this->page_date['suggestions_pages'] = $suggestions_pages;
 
         $this->page_date['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
         $this->page_date['apply_list'] = $apply_list;
-        $this->page_date['apply_count'] = $apply_count;
+        $this->page_date['apply_pages'] = $apply_pages;
 
         $this->page_date['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_date['dispatch_list'] = $dispatch_list;
-        $this->page_date['dispatch_count'] = $dispatch_count;
+        $this->page_date['dispatch_pages'] = $dispatch_pages;
+    }
+
+    public function getServiceListPage(Request $request)
+    {
+        $inputs = $request->input();
+        $type = $inputs['type'];
+        $method = $inputs['method'];
+        $now_page = 1;
+        $member_code = $this->checkLoginStatus();
+        if(!$member_code){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'error']);
+        }
+        switch($type){
+            case 'expertise':
+                //司法鉴定
+                $count = DB::table('service_judicial_expertise')->where('member_code', $member_code)->count();
+                $count_page = ($count<=10) ? 1 : ceil($count/10);
+                switch($method){
+                    case 'first':
+                        $now_page = 1;
+                        $offset = 0;
+                        break;
+                    case 'last':
+                        $now_page = $count_page - 1;
+                        $offset = $now_page * 10;
+                        break;
+                    case 'per':
+                        $offset = $now_page ==1 ? 1 : $now_page-1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    case 'next':
+                        $offset = $now_page == $count_page ? $count_page : $now_page+1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    default:
+                        break;
+                }
+                $list = DB::table('service_judicial_expertise')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(10)->get();
+                $types = DB::table('service_judicial_expertise_type')->get();
+                if(count($types)>0){
+                    $expertise_type = array();
+                    foreach($types as $type){
+                        $expertise_type[$type->id] = $type->name;
+                    }
+                }
+                $pages = array(
+                    'now_page'=>$now_page,
+                    'count'=>$count,
+                    'count_page'=>$count_page,
+                    'method'=>'expertise'
+                );
+                break;
+
+            case 'consultions':
+                //问题咨询
+                $count = DB::table('service_consultions')->where('member_code', $member_code)->count();
+                $count_page = ($count<=10) ? 1 : ceil($count/10);
+                switch($method){
+                    case 'first':
+                        $now_page = 1;
+                        $offset = 0;
+                        break;
+                    case 'last':
+                        $now_page = $count_page - 1;
+                        $offset = $now_page * 10;
+                        break;
+                    case 'per':
+                        $offset = $now_page ==1 ? 1 : $now_page-1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    case 'next':
+                        $offset = $now_page == $count_page ? $count_page : $now_page+1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    default:
+                        break;
+                }
+                $list = DB::table('service_consultions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip($offset)->take(10)->get();
+                $list = json_decode(json_encode($list), true);
+                $pages = array(
+                    'now_page'=>$now_page,
+                    'count'=>$count,
+                    'count_page'=>$count_page,
+                    'method'=>'consultions'
+                );
+                break;
+
+            case 'suggestions':
+                //征求意见
+                $count = DB::table('service_suggestions')->where('member_code', $member_code)->count();
+                $count_page = ($count<=10) ? 1 : ceil($count/10);
+                switch($method){
+                    case 'first':
+                        $now_page = 1;
+                        $offset = 0;
+                        break;
+                    case 'last':
+                        $now_page = $count_page - 1;
+                        $offset = $now_page * 10;
+                        break;
+                    case 'per':
+                        $offset = $now_page ==1 ? 1 : $now_page-1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    case 'next':
+                        $offset = $now_page == $count_page ? $count_page : $now_page+1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    default:
+                        break;
+                }
+                $list = DB::table('service_suggestions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip($offset)->take(10)->get();
+                $list = json_decode(json_encode($list), true);
+                $pages = array(
+                    'now_page'=>$now_page,
+                    'count'=>$count,
+                    'count_page'=>$count_page,
+                    'method'=>'suggestions'
+                );
+                break;
+
+            case 'apply':
+                //法律援助
+                $count = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->count();
+                $count_page = ($count<=10) ? 1 : ceil($count/10);
+                switch($method){
+                    case 'first':
+                        $now_page = 1;
+                        $offset = 0;
+                        break;
+                    case 'last':
+                        $now_page = $count_page - 1;
+                        $offset = $now_page * 10;
+                        break;
+                    case 'per':
+                        $offset = $now_page ==1 ? 1 : $now_page-1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    case 'next':
+                        $offset = $now_page == $count_page ? $count_page : $now_page+1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    default:
+                        break;
+                }
+                $list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(10)->get();
+                $pages = array(
+                    'now_page'=>$now_page,
+                    'count'=>$count,
+                    'count_page'=>$count_page,
+                    'method'=>'apply'
+                );
+                break;
+
+            case 'dispatch':
+                //公检法指派
+                $count = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->count();
+                $count_page = ($count<=10) ? 1 : ceil($count/10);
+                switch($method){
+                    case 'first':
+                        $now_page = 1;
+                        $offset = 0;
+                        break;
+                    case 'last':
+                        $now_page = $count_page - 1;
+                        $offset = $now_page * 10;
+                        break;
+                    case 'per':
+                        $offset = $now_page ==1 ? 1 : $now_page-1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    case 'next':
+                        $offset = $now_page == $count_page ? $count_page : $now_page+1;
+                        $offset = ($offset-1) * 10;
+                        break;
+                    default:
+                        break;
+                }
+                $list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(10)->get();
+                $pages = array(
+                    'now_page'=>$now_page,
+                    'count'=>$count,
+                    'count_page'=>$count_page,
+                    'method'=>'dispatch'
+                );
+                break;
+
+            default:
+                break;
+        }
+        $this->page_date['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_date['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+        $this->page_date['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
+        $this->page_date['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_date['list'] = $list;
+        $this->page_date['pages'] = $pages;
+        $pageContent = view('judicial.web.user.service.'.$pages['method'].'Pages',$this->page_date)->render();
+        json_response(['status'=>'succ','type'=>'notice', 'res'=>$pageContent]);
     }
 
     public function sendVerify(Request $request){

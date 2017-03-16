@@ -101,7 +101,7 @@ class Certificate extends Controller
         else{
             $register_log = array();
             foreach($register_year as $key=> $year){
-                if(trim($year)==='' || trim($register_notice[$key]==='')){
+                if((trim($year)!='' && trim($register_notice[$key])==='') || (trim($year)==='' && trim($register_notice[$key])!='')){
                     json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写正确的备案信息！']);
                 }
                 else{
@@ -280,7 +280,7 @@ class Certificate extends Controller
         else{
             $register_log = array();
             foreach($register_year as $key=> $year){
-                if(trim($year)==='' || trim($register_notice[$key]==='')){
+                if((trim($year)!='' && trim($register_notice[$key])==='') || (trim($year)==='' && trim($register_notice[$key])!='')){
                     json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写正确的备案信息！']);
                 }
                 else{

@@ -77,6 +77,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('service/expertise/doApply', 'Service\Expertise@store');
 
+        Route::post('user/service/list/', 'Web\User@getServiceListPage');
+
     });
 
     //司法鉴定表格下载
@@ -125,6 +127,11 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('service/lawyerOffice/search','Service\LawyerOffice@search');
 
+    //网上办事
+    Route::get('service/list/{cid}/{page?}','Service\Index@article_list');
+
+    Route::get('service/article/{article_code}','Service\Index@article_content');
+
 
     //前台CMS路由
     Route::post('search',['as'=>'search', 'uses'=>'Web\Index@search']);
@@ -172,6 +179,8 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/userLoadContent','Manage\Dashboard@loadContent');
 
         Route::post('manage/serviceLoadContent','Manage\ServiceLoadContent@loadContent');
+
+        Route::post('manage/systemLoadContent','Manage\SystemLoadContent@loadContent');
 
         //CMS标签标签管理
         Route::get('manage/cms/tags/show','Manage\Cms\Tags@show');
@@ -627,6 +636,23 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/aidDispatchList/{page?}','Manage\Service\AidDispatch@index');
 
+        //车辆管理
+        Route::get('manage/system/vehicle/show','Manage\System\Vehicles@show');
+
+        Route::get('manage/system/vehicle/add','Manage\System\Vehicles@create');
+
+        Route::post('manage/system/vehicle/add','Manage\System\Vehicles@store');
+
+        Route::get('manage/system/vehicle/edit','Manage\System\Vehicles@edit');
+
+        Route::post('manage/system/vehicle/edit','Manage\System\Vehicles@doEdit');
+
+        Route::get('manage/system/vehicle/delete','Manage\System\Vehicles@doDelete');
+
+        Route::post('manage/system/vehicle/search','Manage\System\Vehicles@search');
+
+        Route::post('manage/system/vehicleList/{page?}','Manage\System\Vehicles@index');
+
     });
 
     Route::get('manage', 'Manage\Login@index');
@@ -634,7 +660,16 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('manage/logout', 'Manage\Login@logout');
 
     Route::post('manage/login',['as'=>'loginUrl', 'uses'=>'Manage\Login@doLogin']);
+
+    //微信路由
+    Route::get('wechat/login', 'Wechat\Index@login');
+
+    Route::post('wechat/login', 'Wechat\Index@doLogin');
+
 });
+
+
+
 
 /*
 |--------------------------------------------------------------------------

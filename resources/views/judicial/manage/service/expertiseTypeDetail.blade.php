@@ -16,7 +16,7 @@
                 <label for="create_date" class="col-md-1 control-label"><red>*</red>相关附件：</label>
                 <div class="col-md-8">
                     @if(!empty($type_detail['file_name']) && $type_detail['file_name'] != 'none')
-                        <p>{{ $type_detail['file_name'] }}</p>
+                        <p><a href="{{ $type_detail['file_url'] }}" target="_blank">{{ $type_detail['file_name'] }}</a></p>
                         @else
                         <p>未添加附件！！！</p>
                     @endif

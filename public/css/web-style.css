@@ -99,9 +99,11 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .news_2 .idbr_top ul li{color: #222222; width: 65px; margin-right: 25px;}
 .news_2 .idbr_topsd{background: #E23939; color: #fff!important;}
 .new2_right .ico_1{background: url("../images/default_律师事务.png") no-repeat center 28px; background-size: 50px 50px; background-color: #ececec;}
+.new2_right .ico_2{background: url("../images/default_律师事务.png") no-repeat center 28px; background-size: 50px 50px; background-color: #ececec;}
 .new2_right .ico_3{background: url("../images/default_司法鉴定.png") no-repeat center 28px; background-size: 50px 50px; background-color: #ececec; margin-top: 40px;}
 .new2_right .ico_4{background: url("../images/default_政民互动.png") no-repeat center 28px; background-size: 50px 50px; background-color: #ececec; margin-top: 40px;}
 .new2_right .ico_1:hover{background: url("../images/selected_律师事务.png") no-repeat center 28px; background-size: 50px 50px; background-color: #DD3938; color: #fff;}
+.new2_right .ico_2:hover{background: url("../images/selected_律师事务.png") no-repeat center 28px; background-size: 50px 50px; background-color: #DD3938; color: #fff;}
 .new2_right .ico_3:hover{background: url("../images/selected_司法鉴定.png") no-repeat center 28px; background-size: 50px 50px; background-color: #DD3938; color: #fff;}
 .new2_right .ico_4:hover{background: url("../images/selected_政民互动.png") no-repeat center 28px; background-size: 50px 50px; background-color: #DD3938; color: #fff;}
 .new2_right{float: right; width: 375px; height: 360px; padding-top: 33px;}

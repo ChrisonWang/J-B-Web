@@ -1794,6 +1794,36 @@ function list_page($type, $page){
     });
 }
 
+function list_page_service($type, $page){
+    var url = '/manage/service/'+$type+'List/'+$page;
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        success: function(re){
+            ajaxResult(re);
+        }
+    });
+}
+
+function list_page_system($type, $page){
+    var url = '/manage/system/'+$type+'List/'+$page;
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        success: function(re){
+            ajaxResult(re);
+        }
+    });
+}
+
 /**
  * 网上办事
  */
@@ -2876,6 +2906,106 @@ function editAidDispatch(t){
 function search_aidDispatch(t, c){
     var data = t.parents('form').serialize()
     var url = '/manage/service/aidDispatch/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
+}
+
+//车辆管理
+function vehicleMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/system/vehicle/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editVehicle(){
+    var url = '/manage/system/vehicle/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editVehicleForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editVehicleNotice'));
+            }
+        }
+    });
+}
+
+function addVehicle(){
+    var url = '/manage/system/vehicle/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addVehicleForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addVehicleNotice'));
+            }
+        }
+    });
+}
+
+function search_vehicle(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/system/vehicle/search'
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -35,7 +35,7 @@ class Index extends Controller
         if(!!$loginStatus)
             $this->page_date['is_signin'] = 'yes';
         //拿出政务公开
-        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
+        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->where('pid',0)->orderBy('sort', 'desc')->get();
         $zwgk_list = 'none';
         if(count($c_data) > 0){
             $zwgk_list = array();
@@ -77,7 +77,8 @@ class Index extends Controller
         $pic_list = $pic_article_list;
         $pic_article_list = array_slice($pic_article_list,0,6);
         //拿出首页推荐的频道
-        $rc_data = DB::table('cms_channel')->where(['pid'=>49, 'is_recommend'=> 'yes'])->orderBy('sort', 'desc')->skip(0)->take(3)->get();
+        $rc_channel = DB::table('cms_channel')->where(['is_recommend'=> 'yes', 'pid'=> 0])->orderBy('sort', 'desc')->first();
+        $rc_data = DB::table('cms_channel')->where('pid', $rc_channel->channel_id)->orderBy('sort', 'desc')->skip(0)->take(3)->get();
         $recommend_list = 'none';
         if(count($rc_data) > 0){
             $recommend_list = array();
@@ -133,7 +134,7 @@ class Index extends Controller
             }
         }
         //政务公开
-        $zwgk = DB::table('cms_channel')->where('zwgk', 'yes')->orderBy('create_date', 'desc')->skip(0)->take(5)->get();
+        $zwgk = DB::table('cms_channel')->where(['zwgk'=>'yes'])->where('wsbs','no')->where('pid',0)->orderBy('create_date', 'desc')->skip(0)->take(5)->get();
         $zwgk_list = 'none';
         if(count($zwgk) > 0) {
             $zwgk_list = array();
@@ -144,7 +145,7 @@ class Index extends Controller
                     'create_date'=> $zw->create_date,
                 );
             }
-            $zwgk_article = DB::table('cms_article')->where(['sub_channel'=> $zwgk_list[0]['key'], 'disabled'=> 'no'])->orderBy('publish_date','desc')->skip(0)->take(6)->get();
+            $zwgk_article = DB::table('cms_article')->where(['channel_id'=> $zwgk_list[0]['key'], 'disabled'=> 'no'])->orderBy('publish_date','desc')->skip(0)->take(6)->get();
             $zwgk_article_list = 'none';
             if(count($zwgk_article) > 0){
                 $zwgk_article_list = array();
@@ -435,7 +436,7 @@ class Index extends Controller
             $channel = DB::table('cms_channel')->where('channel_id', $article_detail['channel_id'])->orWhere('channel_id', $article_detail['sub_channel'])->first();
             $sub_channel = DB::table('cms_channel')->where('channel_id', $article_detail['sub_channel'])->first();
             $this->page_date['title'] = isset($channel->channel_title) ? $channel->channel_title : '频道已被删除';
-            $this->page_date['sub_title'] = isset($channel->sub_title) ? $channel->sub_title : '频道已被删除';
+            $this->page_date['sub_title'] = isset($sub_channel->channel_title) ? $sub_channel->channel_title : '频道已被删除';
         }
         //更新访问
         $clicks = (isset($article->clicks)) ? $article->clicks + 1 : 1;

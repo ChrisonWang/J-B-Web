@@ -28,7 +28,7 @@
                     @foreach($pic_article_list as $pic_article)
                         <div class="swiper-slide">
                             <a href="{{ URL::to('/article').'/'.$pic_article['key'] }}" alt="{{ $pic_article['article_title'] }}">
-                                <img src="{{ $pic_article['thumb'] }}">
+                                <img src="{{ $pic_article['thumb'] }}" width="550" height="350" alt="{{ $pic_article['article_title'] }}"/>
                             </a>
                         </div>
                     @endforeach
@@ -118,7 +118,7 @@
                     @foreach($zwgk_article_list as $zwgk)
                     <li>
                         <a href="{{ URL::to('/article').'/'.$zwgk['key']}}">
-                            <span class="idbrd_l">{{ $zwgk['article_title'] }}</span>
+                            <span class="idbrd_l">{{ spilt_title($zwgk['article_title'], 30) }}</span>
                             <span class="idbrd_r">{{ $zwgk['publish_date'] }}</span>
                         </a>
                     </li>
@@ -130,20 +130,37 @@
         </div>
     </div>
     <div class="new2_right vd_mid">
-        <span class="vd_tit">网上办事</span>
+        <span class="vd_tit" onclick="javascript: window.location.href='{{URL::to('service')}}';">网上办事</span>
         <ul>
-            <li class="ico_1">
+            <li class="ico_1" id="ico_1">
                 <span>律师事务</span>
             </li>
-            <li class="ico_btn">
-                <div class="ib_top">群众预约援助</div>
-                <div class="ib_down">公检法指派援助</div>
+            <li class="ico_btn" id="ico_1_sub" style="display: none">
+                <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/lawyer/1')}}';">律师查询</div>
+                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('service/lawyerOffice/1')}}';">事务所查询</div>
             </li>
-            <li class="ico_3">
+
+            <li class="ico_2" id="ico_2">
+                <span>法律援助</span>
+            </li>
+            <li class="ico_btn" id="ico_2_sub" style="display: none">
+                <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/aidApply/apply')}}';">群众预约援助</div>
+                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('service/aidDispatch/apply')}}';">公检法指派援助</div>
+            </li>
+
+            <li class="ico_3"  id="ico_3">
                 <span>司法鉴定</span>
             </li>
-            <li class="ico_4">
+            <li class="ico_btn" id="ico_3_sub" style="display: none">
+                <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/expertise/apply')}}';">司法鉴定申请</div>
+            </li>
+
+            <li class="ico_4" id="ico_4">
                 <span>政民互动</span>
+            </li>
+            <li class="ico_btn" id="ico_4_sub" style="display: none">
+                <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('suggestions/add')}}';">征求意见</div>
+                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('consultions/add')}}';">问题咨询</div>
             </li>
         </ul>
     </div>

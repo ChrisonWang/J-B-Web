@@ -85,7 +85,7 @@
         </div>
         <!--分页-->
         @if(isset($pages) && is_array($pages) && $pages != 'none')
-            @include('judicial.manage.chips.pages')
+            @include('judicial.manage.chips.servicePages')
         @endif
     </div>
 </div>

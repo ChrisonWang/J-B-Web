@@ -16,7 +16,7 @@
                 <tr>
                     <td>{{ $consultions['record_code'] }}</td>
                     <td>{{ $consultions_type[$consultions['type']] }}</td>
-                    <td>{{ $consultions['title'] }}</td>
+                    <td>{{ spilt_title($consultions['title'], 30) }}</td>
                     <td>{{ date("Y-m-d H:i", strtotime($consultions['create_date'])) }}</td>
                     <td>{{ empty(strtotime($consultions['answer_date']))?'待答复':date("Y-m-d H:i", strtotime($consultions['answer_date'])) }}</td>
                     <td><a href="{{ URL::to('consultions/detail').'/'.$consultions['record_code'] }}" class="tb_btn">查看</a></td>
@@ -29,21 +29,21 @@
         <div class="zwr_ft">
             <div class="fy_left">
                 <span>
-                    <a href="{{ URL::to('consultions/list/') }}"> 首页</a>
+                    <a href="javascript: void(0) ;" data-type="consultions" data-method="first" data-now="{{ $consultions_pages['now_page'] }}" data-c="s_consultions" onclick="service_page($(this))"> 首页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('consultions/list/') }}">上一页</a>
+                    <a href="javascript: void(0) ;" data-type="consultions" data-method="per" data-now="{{ $consultions_pages['now_page'] }}" data-c="s_consultions" onclick="service_page($(this))">上一页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('consultions/list/') }}">下一页</a>
+                    <a href="javascript: void(0) ;" data-type="consultions" data-method="next" data-now="{{ $consultions_pages['now_page'] }}" data-c="s_consultions" onclick="service_page($(this))">下一页</a>
                 </span>
                 <span>
-                    <a href="{{ URL::to('consultions/list/')}}"> 尾页</a>
+                    <a href="javascript: void(0) ;" data-type="consultions" data-method="last" data-now="{{ $consultions_pages['now_page'] }}" data-c="s_consultions" onclick="service_page($(this))"> 尾页</a>
                 </span>
                 <div class="fy_right">
-                    <span>总记录数：{{ $consultions_count }}</span>
+                    <span>总记录数：{{ $consultions_pages['count'] }}</span>
                     <span>每页显示10条记录</span>
-                    <span>当前页1/{{ ceil($consultions_count/10) }}</span>
+                    <span>当前页: {{ $consultions_pages['now_page'] }}/{{ $consultions_pages['count_page'] }}</span>
                 </div>
             </div>
         </div>

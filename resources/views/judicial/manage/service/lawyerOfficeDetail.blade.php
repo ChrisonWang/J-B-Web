@@ -150,9 +150,7 @@
             <div class="form-group">
                 <label for="map_code" class="col-md-1 control-label">地图代码：</label>
                 <div class="col-md-3">
-                    <textarea disabled id="map_code" name="map_code" class="form-control" placeholder="请输入事务地图代码">
-                        {{ $office_detail['map_code'] }}
-                    </textarea>
+                    {!! $office_detail['map_code'] !!}
                 </div>
             </div>
             <div class="form-group">
