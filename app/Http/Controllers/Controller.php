@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Session;
 
 use App\Models\Web\User\Members;
 
+use App\Models\Manage\User\Manager;
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -67,7 +69,30 @@ class Controller extends BaseController
         $managerCode = session($login_name);
         //验证用户
         $memberInfo = Members::where('member_code',$managerCode)->select('login_name','disabled')->first();
-        if(is_null($memberInfo) || md5($memberInfo['attributes']['login_name'])!=$login_name || $memberInfo['attributes']['disabled']=='yes'){
+        if(is_null($memberInfo) || $memberInfo['attributes']['disabled']=='yes'){
+            if(md5($memberInfo['attributes']['login_name'])!=$login_name && md5($memberInfo['attributes']['cell_phone'])!=$login_name){
+                return false;
+            }
+        }
+        else{
+            return $managerCode;
+        }
+    }
+
+    /**
+     * 检查管理员的登录状态
+     * @return bool|mixed
+     */
+    public function checkManagerStatus()
+    {
+        if(!isset($_COOKIE['s']) || empty($_COOKIE['s'])){
+            return false;
+        }
+        $login_name = $_COOKIE['s'];
+        $managerCode = session($login_name);
+        //验证用户
+        $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','disabled')->first();
+        if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name || $managerInfo['attributes']['disabled']=='yes'){
             return false;
         }
         else{

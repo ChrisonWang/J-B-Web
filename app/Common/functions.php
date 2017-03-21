@@ -142,7 +142,7 @@ function spilt_title($str,$len){
         return $str;
     }
     $str_len = strlen($str);
-    if($str_len < $len)
+    if($str_len <= $len)
     {
         return $str;
     }

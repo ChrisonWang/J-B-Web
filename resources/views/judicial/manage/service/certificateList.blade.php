@@ -118,7 +118,7 @@
                             <select class="form-control" name="last_status" id="last_status">
                                 <option value="none">不限</option>
                                 <option value="waiting">未发送</option>
-                                <option value="success">已发送</option>
+                                <option value="success">发送成功</option>
                                 <option value="failed">发送失败</option>
                             </select>
                         </div>

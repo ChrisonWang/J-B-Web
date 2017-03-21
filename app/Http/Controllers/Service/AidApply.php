@@ -68,9 +68,9 @@ class AidApply extends Controller
         $count_page = ($count > 5)? ceil($count/5)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 5;
         //法律援助
-        $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(5)->get();
+        $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->get();
         //公检法指派
-        $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(5)->get();
+        $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->get();
 
         $pages = array(
             'count' => $count,

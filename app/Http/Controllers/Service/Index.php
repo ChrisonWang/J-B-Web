@@ -49,6 +49,7 @@ class Index extends Controller
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->get_left_sub();
+        $this->get_left_sub();
     }
 
     public function index(Request $request)
@@ -92,13 +93,10 @@ class Index extends Controller
                         'channel_title'=> $channel->channel_title,
                         'sub_channel'=> $bszn->channel_id,
                     );
-                    $article = DB::table('cms_article')->where('sub_channel', $bszn->channel_id)->orderBy('publish_date', 'desc')->skip(0)->take(6)->get();
+                    $article = DB::table('cms_article')->where('sub_channel', $bszn->channel_id)->orderBy('publish_date', 'desc')->skip(0)->take(5)->get();
                     $bszn_article_list[$channel->channel_id] = json_decode(json_encode($article) ,true);
                 }
             }
-        }
-        if(count($bszn_list) > 0){
-            foreach($bszn_list as $b){}
         }
         $this->page_data['bszn_list'] = $bszn_list;
         $this->page_data['bszn_article_list'] = $bszn_article_list;

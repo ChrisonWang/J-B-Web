@@ -140,7 +140,19 @@
                                 <a href="javascript:void(0);" data-node="system-vehiclesLocationMng" >车辆位置管理</a>
                             </li>
                         </ul><!-- 子菜单End -->
-                    </li><!-- 司法考试管理End -->
+                    </li><!-- 车辆管理End -->
+                    <!-- 系统管理 -->
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>系统管理<span class="fa arrow"></span></a>
+                        <!-- 子菜单 -->
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:void(0);" data-node="system-logMng" >系统日志</a>
+                                <a href="javascript:void(0);" data-node="system-backupMng" >数据备份</a>
+                                <a href="javascript:void(0);" data-node="system-archivedMng" >归档管理</a>
+                            </li>
+                        </ul><!-- 子菜单End -->
+                    </li><!-- 系统管理End -->
             @endif
         </ul>
     </div>

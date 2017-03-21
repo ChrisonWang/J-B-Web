@@ -25,7 +25,7 @@ class Massage
 
     private static $password ='03138874';
 
-    public static function send($to, $content)
+    public static function send($to, $content, $presendTime='')
     {
         $base_url = 'http://gateway.iems.net.cn/GsmsHttp';
         if(is_array($to)){
@@ -35,8 +35,9 @@ class Massage
             }
             $to = substr($_to, 1, strlen($_to)-1);
         }
+        $presendTime = empty($presendTime) ? '' : '&presendTime='.$presendTime;
         $content = urlencode(iconv('utf-8', 'gbk', $content));
-        $send_url = $base_url.'?username='.self::$id.':'.self::$username.'&password='.self::$password.'&to='.$to.'&content='.$content;
+        $send_url = $base_url.'?username='.self::$id.':'.self::$username.'&password='.self::$password.'&to='.$to.'&content='.$content.$presendTime;
         $result = self::_send_get($send_url);
         $result['receiver'] = $to;
         //日志

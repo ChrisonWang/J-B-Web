@@ -12,20 +12,32 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
-class Video extends Controller
+use App\Libs\Logs;
 
+class Video extends Controller
 {
+    var $log_info = array();
     private $page_data = array();
+
+    public function __construct()
+    {
+        //日志信息
+        $this->log_info = array(
+            'manager' => $this->checkManagerStatus(),
+            'node'=> 'cms_video',
+            'resource'=> 'cms_video',
+        );
+    }
 
     public function index($page = 1)
     {
         //取出数据
         $video_data = array();
         $pages = 'none';
-        $count = DB::table('cms_video')->count();
+        $count = DB::table('cms_video')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip($offset)->take(30)->get();
+        $videos = DB::table('cms_video')->where('archived', 'no')->orderBy('sort', 'desc')->skip($offset)->take(30)->get();
         if(count($videos) > 0){
             foreach($videos as $key=> $video){
                 $video_data[$key]['key'] = keys_encrypt($video->video_code);
@@ -104,13 +116,21 @@ class Video extends Controller
         }
         //添加成功后刷新页面数据
         else{
+            //日志
+            $this->log_info['type'] = 'create';
+            $this->log_info['title'] = $save_data['title'];
+            $this->log_info['before'] = "";
+            $this->log_info['after'] = "标题:".$save_data['title'].'   链接：'.$save_data['link'].'   权重：'.$save_data['sort'];
+            $this->log_info['log_type'] = 'str';
+            Logs::manage_log($this->log_info);
+
             //取出数据
             $video_data = array();
             $pages = 'none';
-            $count = DB::table('cms_video')->count();
+            $count = DB::table('cms_video')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+            $videos = DB::table('cms_video')->where('archived', 'no')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
             if(count($videos) > 0){
                 foreach($videos as $key=> $video){
                     $video_data[$key]['key'] = keys_encrypt($video->video_code);
@@ -226,17 +246,26 @@ class Video extends Controller
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
             'update_date'=> $now
         );
+        $video = DB::table('cms_video')->where('video_code',$video_code)->first();
         $rs = DB::table('cms_video')->where('video_code',$video_code)->update($save_data);
         if($rs === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
         }
+        //日志
+        $this->log_info['type'] = 'edit';
+        $this->log_info['title'] = $save_data['title'];
+        $this->log_info['before'] = "标题:".$video->title.'   链接：'.$video->link.'   权重：'.$video->sort;
+        $this->log_info['after'] = "标题:".$save_data['title'].'   链接：'.$save_data['link'].'   权重：'.$save_data['sort'];
+        $this->log_info['log_type'] = 'str';
+        Logs::manage_log($this->log_info);
+
         //修改成功则回调页面,取出数据
         $video_data = array();
         $pages = 'none';
-        $count = DB::table('cms_video')->count();
+        $count = DB::table('cms_video')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+        $videos = DB::table('cms_video')->where('archived', 'no')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
         if(count($videos) > 0){
             foreach($videos as $key=> $video){
                 $video_data[$key]['key'] = keys_encrypt($video->video_code);
@@ -266,16 +295,27 @@ class Video extends Controller
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
         }
         $inputs = $request->input();
+        $this->page_data['archived'] = $request->input('archived');
+        $this->page_data['archived_key'] = $request->input('archived_key');
         $video_code = keys_decrypt($inputs['key']);
+        $video = DB::table('cms_video')->where('video_code',$video_code)->first();
         $row = DB::table('cms_video')->where('video_code',$video_code)->delete();
         if( $row > 0 ){
+            //日志
+            $this->log_info['type'] = 'delete';
+            $this->log_info['title'] = $video->title;
+            $this->log_info['before'] = "标题:".$video->title.'   链接：'.$video->link.'   权重：'.$video->sort;
+            $this->log_info['after'] = "完全删除";
+            $this->log_info['log_type'] = 'str';
+            Logs::manage_log($this->log_info);
+
             //删除成功则回调页面,取出数据
             $video_data = array();
             $pages = 'none';
-            $count = DB::table('cms_video')->count();
+            $count = DB::table('cms_video')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+            $videos = DB::table('cms_video')->where('archived', 'no')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
             if(count($videos) > 0){
                 foreach($videos as $key=> $video){
                     $video_data[$key]['key'] = keys_encrypt($video->video_code);

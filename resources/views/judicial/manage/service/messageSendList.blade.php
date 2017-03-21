@@ -6,7 +6,11 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <a type="button" data-key='none' data-method="add" onclick="messageSendMethod($(this))" class="btn btn-primary">新增</a>
+            @if(!isset($is_archived))
+                <a type="button" data-key='none' data-method="add" onclick="messageSendMethod($(this))" class="btn btn-primary">新增</a>
+            @else
+                <button type="button" class="btn btn-danger" data-node="system-archivedMng" onclick="loadContent($(this))">返回归档列表</button>
+            @endif
         </div>
         <hr/>
         <div class="container-fluid" id="this-container">
@@ -23,15 +27,25 @@
                 @foreach($send_list as $send)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="show" onclick="messageSendMethod($(this))">查看</a>
-                        &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="edit" onclick="messageSendMethod($(this))">编辑</a>
-                        &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="delete" data-title="{{ $temp_list[$send['temp_code']] }}" onclick="messageSendMethod($(this))">删除</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="show" data-archived_key="{{ $archived_key }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="messageSendMethod($(this))">查看</a>
+                        @if($apply['approval_result'] == 'waiting' && !isset($is_archived))
+                            &nbsp;&nbsp;
+                            <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="edit" onclick="messageSendMethod($(this))">编辑</a>
+                            &nbsp;&nbsp;
+                            <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="delete" data-title="{{ $temp_list[$send['temp_code']] }}" onclick="messageSendMethod($(this))">删除</a>
+                        @endif
                     </td>
                     <td>{{ $temp_list[$send['temp_code']] }}</td>
                     <td>{{ $send['send_date'] }}</td>
-                    <td>{{ $send['send_date'] }}</td>
+                    <td>
+                        @if( $send['receiver_type']=='member' )
+                            前台用户
+                        @elseif( $send['receiver_type']=='manager' )
+                            后台用户
+                        @else
+                            证书持有人
+                        @endif
+                    </td>
                 </tr>
                 @endforeach
                 </tbody>

@@ -15,7 +15,7 @@
         <tr>
             <td>
                 <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="show" onclick="aidDispatchMethod($(this))">查看</a>
-                @if($apply['status'] == 'waiting')
+                @if($apply['status'] == 'waiting' && !isset($is_archived))
                     &nbsp;&nbsp;
                     <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="edit" onclick="aidDispatchMethod($(this))">审批</a>
                     &nbsp;&nbsp;

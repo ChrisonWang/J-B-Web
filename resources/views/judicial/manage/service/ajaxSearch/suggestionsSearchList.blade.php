@@ -14,7 +14,7 @@
         <tr>
             <td>
                 <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="show" onclick="suggestionsMethod($(this))">查看</a>
-                @if($suggestion['status'] == 'waiting')
+                @if($suggestion['status'] == 'waiting' && !isset($is_archived))
                     &nbsp;&nbsp;
                     <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="edit" onclick="suggestionsMethod($(this))">答复</a>
                     &nbsp;&nbsp;

@@ -5,9 +5,16 @@
         </h3>
     </div>
     <div class="panel-body">
-        <div class="container-fluid">
+        @if(!isset($is_archived))
+            <div class="container-fluid">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <div class="container-fluid">
+                        @if(isset($is_archived))
+                            <button type="button" class="btn btn-danger" data-node="system-archivedMng" onclick="loadContent($(this))">返回归档列表</button>
+                        @endif
+                    </div>
+                    <hr/>
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="title">主题：</label>
@@ -39,6 +46,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <hr/>
         <div class="container-fluid" id="this-container">
             <table class="table table-bordered table-hover table-condensed">
@@ -56,11 +64,11 @@
                 @foreach($suggestion_list as $suggestion)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="show" onclick="suggestionsMethod($(this))">查看</a>
-                        @if($suggestion['status'] == 'waiting')
-                        &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="edit" onclick="suggestionsMethod($(this))">答复</a>
-                        &nbsp;&nbsp;
+                        <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="show" data-archived_key="{{ $archived_key }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="suggestionsMethod($(this))">查看</a>
+                        @if($suggestion['status'] == 'waiting' && !isset($is_archived))
+                                &nbsp;&nbsp;
+                                <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="edit" onclick="suggestionsMethod($(this))">答复</a>
+                                &nbsp;&nbsp;
                         @endif
                     </td>
                     <td>{{ $suggestion['record_code'] }}</td>

@@ -244,10 +244,10 @@ class ServiceLoadContent extends Controller
         $send_list = array();
         $temp_list = array();
         $pages = '';
-        $count = DB::table('service_message_list')->count();
+        $count = DB::table('service_message_list')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $list = DB::table('service_message_list')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $list = DB::table('service_message_list')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($list) > 0){
             //格式化数据
             foreach($list as $l){
@@ -290,7 +290,7 @@ class ServiceLoadContent extends Controller
         //加载列表数据
         $type_list = array();
         $pages = '';
-        $count = DB::table('service_judicial_expertise_type')->count();
+        $count = DB::table('service_judicial_expertise_type')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
         $types = DB::table('service_judicial_expertise_type')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
@@ -325,7 +325,7 @@ class ServiceLoadContent extends Controller
         $count = DB::table('service_judicial_expertise')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $applies = DB::table('service_judicial_expertise')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+        $applies = DB::table('service_judicial_expertise')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
         if(count($applies) > 0){
             $types = DB::table('service_judicial_expertise_type')->get();
             if(count($types) > 0){
@@ -364,10 +364,10 @@ class ServiceLoadContent extends Controller
         //加载列表数据
         $suggestion_list = array();
         $pages = '';
-        $count = DB::table('service_suggestions')->count();
+        $count = DB::table('service_suggestions')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $suggestions = DB::table('service_suggestions')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $suggestions = DB::table('service_suggestions')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($suggestions) > 0){
             foreach($suggestions as $suggestion){
                 $suggestion_list[] = array(
@@ -399,10 +399,10 @@ class ServiceLoadContent extends Controller
         //加载列表数据
         $consultion_list = array();
         $pages = '';
-        $count = DB::table('service_consultions')->count();
+        $count = DB::table('service_consultions')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $consultions = DB::table('service_consultions')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $consultions = DB::table('service_consultions')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($consultions) > 0){
             foreach($consultions as $consultion){
                 $consultion_list[] = array(
@@ -434,10 +434,10 @@ class ServiceLoadContent extends Controller
         //加载列表数据
         $apply_list = array();
         $pages = '';
-        $count = DB::table('service_legal_aid_apply')->count();
+        $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $applys = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+        $applys = DB::table('service_legal_aid_apply')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
         if(count($applys) > 0){
             foreach($applys as $apply){
                 $apply_list[] = array(
@@ -470,10 +470,10 @@ class ServiceLoadContent extends Controller
         //加载列表数据
         $apply_list = array();
         $pages = '';
-        $count = DB::table('service_legal_aid_dispatch')->count();
+        $count = DB::table('service_legal_aid_dispatch')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $applys = DB::table('service_legal_aid_dispatch')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+        $applys = DB::table('service_legal_aid_dispatch')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
         if(count($applys) > 0){
             foreach($applys as $apply){
                 $apply_list[] = array(

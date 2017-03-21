@@ -130,7 +130,7 @@ Route::group(['middleware' => ['web']], function () {
     //网上办事
     Route::get('service/list/{cid}/{page?}','Service\Index@article_list');
 
-    Route::get('service/article/{article_code}','Service\Index@article_content');
+    Route::get('/article/{article_code}','Service\Index@article_content');
 
 
     //前台CMS路由
@@ -526,6 +526,12 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('manage/service/messageSend/getContent','Manage\Service\MessageSend@getTemp');
 
         Route::post('manage/service/messageSendList/{page?}','Manage\Service\MessageSend@index');
+        //异步加载发送对象
+        Route::post('manage/service/messageSend/loadMembers','Manage\Service\MessageSend@loadMembers');
+
+        Route::post('manage/service/messageSend/searchMembers','Manage\Service\MessageSend@searchMembers');
+
+        Route::post('manage/service/messageSend/searchOffice','Manage\Service\MessageSend@searchOffice');
 
         //证书持有人管理
         Route::post('manage/service/certificate/send','Manage\Service\Certificate@sendMessage');
@@ -653,6 +659,33 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/system/vehicleList/{page?}','Manage\System\Vehicles@index');
 
+        //归档管理
+        Route::get('manage/system/archived/add','Manage\System\Archived@create');
+
+        Route::post('manage/system/archived/add','Manage\System\Archived@store');
+
+        Route::get('manage/system/archived/show','Manage\System\Archived@archivedList');
+
+        Route::get('manage/system/archived/delete','Manage\System\Archived@doDelete');
+
+        Route::post('manage/system/archivedList/{page?}','Manage\System\Archived@index');
+
+        //日志管理
+        Route::get('manage/system/log/show','Manage\System\Log@show');
+
+        Route::post('manage/system/log/search','Manage\System\Log@search');
+
+        Route::post('manage/system/logList/{page?}','Manage\System\Log@index');
+
+        //备份管理
+        Route::get('manage/system/backup/add','Manage\System\Backup@create');
+
+        Route::post('manage/system/backup/add','Manage\System\Backup@store');
+
+        Route::get('manage/system/backup/delete','Manage\System\Backup@doDelete');
+
+        Route::post('manage/system/backupList/{page?}','Manage\System\Backup@index');
+
     });
 
     Route::get('manage', 'Manage\Login@index');
@@ -665,6 +698,46 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('wechat/login', 'Wechat\Index@login');
 
     Route::post('wechat/login', 'Wechat\Index@doLogin');
+
+    //律师服务
+    Route::get('wechat/lawyer', 'Wechat\Lawyer@index');
+
+    Route::get('wechat/lawyer/detail/{key}', 'Wechat\Lawyer@lawyerDetail');
+
+    Route::get('wechat/lawyerList', 'Wechat\Lawyer@lawyerList');
+
+    Route::post('wechat/lawyerList', 'Wechat\Lawyer@lawyerSearch');
+
+    Route::get('wechat/lawyerSearch', 'Wechat\Lawyer@lawyerSearch');
+
+    Route::post('wechat/lawyerSearch', 'Wechat\Lawyer@lawyerDoSearch');
+
+    Route::post('wechat/scrollLoad', 'Wechat\Lawyer@scrollLoadLawyer');
+
+    //司法鉴定查询
+    Route::get('wechat/expertiseList', 'Wechat\Expertise@index');
+
+    Route::post('wechat/reason/expertise', 'Wechat\Expertise@reason');
+
+    //法律援助查询
+
+    Route::get('wechat/aid/list', 'Wechat\Aid@index');
+
+    Route::post('wechat/reason/apply', 'Wechat\Aid@applyReason');
+
+    Route::post('wechat/reason/dispatch', 'Wechat\Aid@DispatchReason');
+
+
+
+    Route::get('wechat/lawyerOffice/detail/{key}', 'Wechat\Lawyer@lawyerOfficeDetail');
+
+    Route::get('wechat/lawyerOfficeList', 'Wechat\Lawyer@lawyerOfficeList');
+
+    Route::get('wechat/lawyerOfficeSearch', 'Wechat\Lawyer@lawyerOfficeSearch');
+
+    Route::post('wechat/lawyerOfficeSearch', 'Wechat\Lawyer@lawyerOfficeDoSearch');
+
+    Route::get('wechat/lawyerOfficeArea/{area_id}', 'Wechat\Lawyer@lawyerOfficeArea');
 
 });
 

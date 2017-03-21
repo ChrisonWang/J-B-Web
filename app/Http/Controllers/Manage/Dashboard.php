@@ -479,6 +479,8 @@ class Dashboard extends Controller
                 if(isset($inputs['search-tags-key']) && !empty($inputs['search-tags-key']) && $inputs['search-tags-key']!='none'){
                     $where .= ' `tags` = "'.keys_decrypt($inputs['search-tags-key']).'"AND ';
                 }
+                //去掉已经归档的
+                $where .= '`archived` = "no" AND ';
                 $sql = 'SELECT * FROM `cms_article` '.$where.' 1';
                 $articles = DB::select($sql);
                 if($articles && count($articles) > 0){

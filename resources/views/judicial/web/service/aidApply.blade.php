@@ -23,7 +23,7 @@
         <div class="wsfy_tit">
             <span class="wfb_tit">群众预约援助流程</span>
             <ul>
-                <li><i>■</i>申请人填写《法律援助申请表》<a href="#">点击下载附件</a></li>
+                <li><i>■</i>申请人填写《法律援助申请表》<a href="{{ URL::to('/').'/uploads/system/files/群众预约援助表.xlsx'}}" target="_blank">点击下载附件</a></li>
                 <li><i>■</i>步骤二：待确认。</li>
                 <li><i>■</i>步骤三：待确认。</li>
                 <li><i>■</i>步骤四：待确认。</li>

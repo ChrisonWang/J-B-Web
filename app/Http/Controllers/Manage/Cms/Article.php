@@ -12,6 +12,8 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
+use App\Libs\Logs;
+
 class Article extends Controller
 
 {
@@ -19,6 +21,12 @@ class Article extends Controller
 
     public function __construct()
     {
+        //日志信息
+        $this->log_info = array(
+            'manager' => $this->checkManagerStatus(),
+            'node'=> 'cms_article',
+            'resource'=> 'cms_article',
+        );
         $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
         $managerCode = session($login_name);
         $manager = DB::table('user_manager')->where('manager_code', $managerCode)->first();
@@ -31,7 +39,7 @@ class Article extends Controller
         //取出频道
         $channels_data = 'none';
         $sub_channels_data = 'none';
-        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+        $channels = DB::table('cms_channel')->where('archived', 'no')->orderBy('create_date', 'desc')->get();
         if(count($channels) > 0){
             $channels_data = array();
             foreach($channels as $key => $channel){
@@ -60,7 +68,7 @@ class Article extends Controller
         $count = DB::table('cms_article')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($articles) > 0){
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;
@@ -217,7 +225,15 @@ class Article extends Controller
         }
 
         //添加成功后刷新页面数据
-        //取出频道
+        //日志
+        $this->log_info['type'] = 'create';
+        $this->log_info['title'] = $save_data['article_title'];
+        $this->log_info['before'] = "";
+        $this->log_info['after'] = "标题:".$save_data['article_title'].'   一级频道ID：'.$save_data['channel_id'].'   二级频道ID：'.$save_data['sub_channel'];
+        $this->log_info['after'] .= "正文:".$save_data['content'].'   标签：'.$save_data['tags'].'   缩略图：'.$save_data['thumb'].'   附件：'.$save_data['files'];
+        $this->log_info['log_type'] = 'str';
+        Logs::manage_log($this->log_info);
+
         $channels_data = 'none';
         $sub_channels_data = 'none';
         $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
@@ -248,10 +264,10 @@ class Article extends Controller
         //取出数据
         $article_data = array();
         $pages = 'none';
-        $count = DB::table('cms_article')->count();
+        $count = DB::table('cms_article')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($articles) > 0){
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;
@@ -289,7 +305,8 @@ class Article extends Controller
     {
         $inputs = $request->input();
         $article_code = $inputs['key'];
-
+        $this->page_data['archived'] = $request->input('archived');
+        $this->page_data['archived_key'] = $request->input('archived_key');
         //取出标签
         $tags = DB::table('cms_tags')->get();
         foreach($tags as $tag){
@@ -515,10 +532,22 @@ class Article extends Controller
         if(empty($photo_path)){
             unset($save_data['thumb']);
         }
+        $article = DB::table('cms_article')->where('article_code',$article_code)->first();
+        $article = json_decode(json_encode($article), true);
         $re = DB::table('cms_article')->where('article_code', $article_code)->update($save_data);
         if($re === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
         }
+
+        //日志
+        $this->log_info['type'] = 'edit';
+        $this->log_info['title'] = $article['article_title'];
+        $this->log_info['before'] = "标题:".$article['article_title'].'   一级频道ID：'.$article['channel_id'].'   二级频道ID：'.$article['sub_channel'];
+        $this->log_info['before'] .= "正文:".$article['content'].'   标签：'.$article['tags'].'   缩略图：'.$article['thumb'].'   附件：'.$article['files'];
+        $this->log_info['after'] = "标题:".$save_data['article_title'].'   一级频道ID：'.$save_data['channel_id'].'   二级频道ID：'.$save_data['sub_channel'];
+        $this->log_info['after'] .= "正文:".$save_data['content'].'   标签：'.$save_data['tags'];
+        $this->log_info['log_type'] = 'str';
+        Logs::manage_log($this->log_info);
 
         //修改成功后,取出频道
         //取出频道
@@ -552,10 +581,10 @@ class Article extends Controller
         //取出数据
         $article_data = array();
         $pages = 'none';
-        $count = DB::table('cms_article')->count();
+        $count = DB::table('cms_article')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($articles) > 0){
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;
@@ -591,11 +620,22 @@ class Article extends Controller
         }
         $inputs = $request->input();
         $article_code = $inputs['key'];
+        $article = DB::table('cms_article')->where('article_code',$article_code)->first();
+        $article = json_decode(json_encode($article), true);
         $row = DB::table('cms_article')->where('article_code',$article_code)->delete();
-        if($row == false ){
+        if($row === false ){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
         }
         else{
+            //日志
+            $this->log_info['type'] = 'delete';
+            $this->log_info['title'] = $article['article_title'];
+            $this->log_info['before'] = "标题:".$article['article_title'].'   一级频道ID：'.$article['channel_id'].'   二级频道ID：'.$article['sub_channel'];
+            $this->log_info['before'] .= "正文:".$article['content'].'   标签：'.$article['tags'];
+            $this->log_info['after'] = "完全删除";
+            $this->log_info['log_type'] = 'str';
+            Logs::manage_log($this->log_info);
+
             //删除完成后取出频道
             //取出频道
             $channels_data = 'none';
@@ -628,10 +668,10 @@ class Article extends Controller
             //取出数据
             $article_data = array();
             $pages = 'none';
-            $count = DB::table('cms_article')->count();
+            $count = DB::table('cms_article')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+            $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
             if(count($articles) > 0){
                 foreach($articles as $key=> $article){
                     $article_data[$key]['key'] = $article->article_code;

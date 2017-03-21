@@ -6,10 +6,15 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <a type="button" data-key='none' data-method="add" onclick="articleMethod($(this))" class="btn btn-primary">新增</a>
+            @if(!isset($is_archived))
+                <a type="button" data-key='none' data-method="add" onclick="articleMethod($(this))" class="btn btn-primary">新增</a>
+            @else
+                <button type="button" class="btn btn-danger" data-node="system-archivedMng" onclick="loadContent($(this))">返回归档列表</button>
+            @endif
         </div>
         <hr/>
-        <div class="container-fluid">
+        @if(!isset($is_archived))
+            <div class="container-fluid">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
@@ -56,6 +61,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <hr/>
         <div class="container-fluid" id="this-container">
             <table class="table table-bordered table-hover table-condensed">
@@ -74,11 +80,13 @@
                 @foreach($article_list as $article)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $article['key'] }}" data-method="show" onclick="articleMethod($(this))">查看</a>
-                        &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $article['key'] }}" data-method="edit" onclick="articleMethod($(this))">编辑</a>
-                        &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $article['key'] }}" data-method="delete" data-title="{{ $article['article_title'] }}" onclick="articleMethod($(this))">删除</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $article['key'] }}" data-method="show"  data-archived_key="{{ $archived_key }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="articleMethod($(this))">查看</a>
+                        @if(!isset($is_archived))
+                            &nbsp;&nbsp;
+                            <a href="javascript: void(0) ;" data-key="{{ $article['key'] }}" data-method="edit" onclick="articleMethod($(this))">编辑</a>
+                            &nbsp;&nbsp;
+                            <a href="javascript: void(0) ;" data-key="{{ $article['key'] }}" data-method="delete" data-title="{{ $article['article_title'] }}" onclick="articleMethod($(this))">删除</a>
+                        @endif
                     </td>
                     <td>{{ $article['article_title'] }}</td>
                     <td>{{ $article['publish_date'] }}</td>

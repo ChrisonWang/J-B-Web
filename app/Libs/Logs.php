@@ -33,4 +33,15 @@ class Logs
         return;
     }
 
+    public static function manage_log($log_info)
+    {
+        if($log_info['log_type'] == 'json'){
+            $log_info['before'] = json_encode($log_info['before']);
+            $log_info['after'] = json_encode($log_info['after']);
+        }
+        $log_info['create_date'] = date('Y:m:d H:i:s', time());
+        $id = DB::table('system_log')->insertGetId($log_info);
+        return true;
+    }
+
 }

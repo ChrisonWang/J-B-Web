@@ -14,12 +14,20 @@ use App\Http\Controllers\Controller;
 
 use App\Libs\Massage;
 
+use App\Libs\Logs;
+
 class ExpertiseApply extends Controller
 {
     var $page_data = array();
 
     public function __construct()
     {
+        //日志信息
+        $this->log_info = array(
+            'manager' => $this->checkManagerStatus(),
+            'node'=> 'service_judicial_expertise',
+            'resource'=> 'service_judicial_expertise',
+        );
         $this->page_data['thisPageName'] = '司法鉴定申请管理';
     }
 
@@ -28,10 +36,10 @@ class ExpertiseApply extends Controller
         $apply_list = array();
         $type_list = array();
         $pages = '';
-        $count = DB::table('service_judicial_expertise')->count();
+        $count = DB::table('service_judicial_expertise')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $applies = DB::table('service_judicial_expertise')->orderBy('apply_date', 'desc')->skip($offset)->take(0)->get();
+        $applies = DB::table('service_judicial_expertise')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip($offset)->take(0)->get();
         if(count($applies) > 0){
             $types = DB::table('service_judicial_expertise_type')->get();
             if(count($types) > 0){
@@ -68,6 +76,8 @@ class ExpertiseApply extends Controller
         $type_list = array();
         $apply_detail = array();
         $id = keys_decrypt($request->input('key'));
+        $this->page_data['archived'] = $request->input('archived');
+        $this->page_data['archived_key'] = $request->input('archived_key');
         //审批类型
         $types = DB::table('service_judicial_expertise_type')->get();
         if(count($types) > 0){
@@ -152,6 +162,12 @@ class ExpertiseApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //日志
+            $this->log_info['type'] = 'edit';
+            $this->log_info['before'] = "审批状态：待审批";
+            $this->log_info['after'] = "审批状态：通过    审批意见：".$save_data['approval_opinion'];
+            $this->log_info['log_type'] = 'str';
+            Logs::manage_log($this->log_info);
             //发短信
             $phone = DB::table('service_judicial_expertise')->where('id',$id)->first();
             if(isset($phone->cell_phone)){
@@ -161,10 +177,10 @@ class ExpertiseApply extends Controller
             $apply_list = array();
             $type_list = array();
             $pages = '';
-            $count = DB::table('service_judicial_expertise')->count();
+            $count = DB::table('service_judicial_expertise')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $applies = DB::table('service_judicial_expertise')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+            $applies = DB::table('service_judicial_expertise')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
             if(count($applies) > 0){
                 $types = DB::table('service_judicial_expertise_type')->get();
                 if(count($types) > 0){
@@ -216,6 +232,12 @@ class ExpertiseApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //日志
+            $this->log_info['type'] = 'edit';
+            $this->log_info['before'] = "审批状态：待审批";
+            $this->log_info['after'] = "审批状态：拒绝    审批意见：".$save_data['approval_opinion'];
+            $this->log_info['log_type'] = 'str';
+            Logs::manage_log($this->log_info);
             //发短信
             $phone = DB::table('service_judicial_expertise')->where('id',$id)->first();
             if(isset($phone->cell_phone)){
@@ -225,10 +247,10 @@ class ExpertiseApply extends Controller
             $apply_list = array();
             $type_list = array();
             $pages = '';
-            $count = DB::table('service_judicial_expertise')->count();
+            $count = DB::table('service_judicial_expertise')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $applies = DB::table('service_judicial_expertise')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+            $applies = DB::table('service_judicial_expertise')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
             if(count($applies) > 0){
                 $types = DB::table('service_judicial_expertise_type')->get();
                 if(count($types) > 0){

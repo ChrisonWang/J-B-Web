@@ -146,6 +146,30 @@
                 <label for="create_date" class="col-md-1 control-label">短信通知记录：</label>
                 <div class="col-md-8">
                     @if(is_array($certificate_detail['message_log']) && $certificate_detail['message_log']!='none')
+                        <div class="container-fluid">
+                            <table class="table table-bordered table-hover table-condensed">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">发送时间</th>
+                                    <th class="text-center">备注</th>
+                                    <th class="text-center">状态</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center" id="menu-nodes">
+                                <tr>
+                                    <td width="20%">
+                                        <input disabled type="text" value="{{ $certificate_detail['message_log']['date'] }}" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input disabled type="text" value="{{ $certificate_detail['message_log']['title'] }}" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input disabled type="text" value="发送成功" class="form-control" />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         暂无记录
                     @endif

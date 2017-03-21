@@ -58,11 +58,11 @@
 			var index=$(outside.boxr).children(idclass+outside.boxon).index();
 			var top=$(outside.boxr).children(outside.boxlrx).eq(index);
 			if(isno){
-				  if(index>0){
-				  	$(outside.boxr).children(outside.boxlrx).eq(index-1).before(top);
-				  }else{
-				  	alert("已经是第一个了！！")
-				  };
+				if(index>0){
+					$(outside.boxr).children(outside.boxlrx).eq(index-1).before(top);
+				}else{
+					alert("已经是第一个了！！")
+				};
 			}else{
 				alert("请选择一个！");
 			};
@@ -73,11 +73,11 @@
 			var index=$(outside.boxr).children(idclass+outside.boxon).index();
 			var top=$(outside.boxr).children(outside.boxlrx).eq(index);
 			if(isno){
-				 if(index+1<len){	
-				  	$(outside.boxr).children(outside.boxlrx).eq(index+1).after(top);
-				  }else{
-				  	alert("已经是最后一个了！！")
-				  };
+				if(index+1<len){
+					$(outside.boxr).children(outside.boxlrx).eq(index+1).after(top);
+				}else{
+					alert("已经是最后一个了！！")
+				};
 			}else{
 				alert("请选择一个！");
 			};
@@ -105,11 +105,11 @@
 			var index=$(outside.boxr).children(idclass+outside.boxon).index();
 			var top=$(outside.boxr).children(outside.boxlrx).eq(index);
 			if(isno){
-				  if(index>0){
-				  	$(outside.boxr).prepend(top);
-				  }else{
-				  	alert("当前已经是首个了！！")
-				  };
+				if(index>0){
+					$(outside.boxr).prepend(top);
+				}else{
+					alert("当前已经是首个了！！")
+				};
 			}else{
 				alert("请选择一个！");
 			}
@@ -120,11 +120,11 @@
 			var index=$(outside.boxr).children(idclass+outside.boxon).index();
 			var top=$(outside.boxr).children(outside.boxlrx).eq(index);
 			if(isno){
-				 if(index+1<len){	
-				  	$(outside.boxr).append(top);
-				  }else{
-				  	alert("当前已经是最后了！！")
-				  };
+				if(index+1<len){
+					$(outside.boxr).append(top);
+				}else{
+					alert("当前已经是最后了！！")
+				};
 			}else{
 				alert("请选择一个！");
 			};
@@ -148,18 +148,18 @@
 
 /**调用参数**/
 /**
-boxl:null,//左边大盒子
-boxr:null,//右边大盒子
-boxlrX:null,//移动小盒子
-boxon:null,//点击添加属性
-multiselect:false,//是否启用多选默认是false,启用时true;
-idclass:true,//添加的属性是否为class//true=class; false=id;
-boxlan:null,//单个向左移动按钮
-boxran:null,//单个向右移动按钮
-boxtan:null,//单个向上移动按钮
-boxban:null,//单个向下移动按钮
-boxalllan:null,//批量向左移动按钮
-boxallran:null,//批量向右移动按钮
-boxalltan:null,//移动第一个按钮
-boxallban:null//移动最后一个按钮
-**/
+ boxl:null,//左边大盒子
+ boxr:null,//右边大盒子
+ boxlrX:null,//移动小盒子
+ boxon:null,//点击添加属性
+ multiselect:false,//是否启用多选默认是false,启用时true;
+ idclass:true,//添加的属性是否为class//true=class; false=id;
+ boxlan:null,//单个向左移动按钮
+ boxran:null,//单个向右移动按钮
+ boxtan:null,//单个向上移动按钮
+ boxban:null,//单个向下移动按钮
+ boxalllan:null,//批量向左移动按钮
+ boxallran:null,//批量向右移动按钮
+ boxalltan:null,//移动第一个按钮
+ boxallban:null//移动最后一个按钮
+ **/

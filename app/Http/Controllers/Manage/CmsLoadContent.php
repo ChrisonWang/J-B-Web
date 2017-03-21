@@ -171,10 +171,10 @@ class CmsLoadContent extends Controller
         //取出数据
         $video_data = array();
         $pages = 'none';
-        $count = DB::table('cms_video')->count();
+        $count = DB::table('cms_video')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $videos = DB::table('cms_video')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
+        $videos = DB::table('cms_video')->where('archived', 'no')->orderBy('sort', 'desc')->skip(0)->take($offset)->get();
         if(count($videos) > 0){
             foreach($videos as $key=> $video){
                 $video_data[$key]['key'] = keys_encrypt($video->video_code);
@@ -407,10 +407,10 @@ class CmsLoadContent extends Controller
         //取出数据
         $article_data = array();
         $pages = 'none';
-        $count = DB::table('cms_article')->count();
+        $count = DB::table('cms_article')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $articles = DB::table('cms_article')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
         if(count($articles) > 0){
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;

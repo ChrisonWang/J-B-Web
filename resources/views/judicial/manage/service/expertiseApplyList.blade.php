@@ -5,6 +5,11 @@
         </h3>
     </div>
     <div class="panel-body">
+        <div class="container-fluid">
+            @if(isset($is_archived))
+                <button type="button" class="btn btn-danger" data-node="system-archivedMng" onclick="loadContent($(this))">返回归档列表</button>
+            @endif
+        </div>
         <div class="container-fluid" id="this-container">
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
@@ -21,8 +26,8 @@
                 @foreach($apply_list as $apply)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="show" onclick="expertiseApplyMethod($(this))">查看</a>
-                        @if($apply['approval_result'] == 'waiting')
+                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-archived_key="{{ $archived_key }}" data-method="show" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="expertiseApplyMethod($(this))">查看</a>
+                        @if($apply['approval_result'] == 'waiting' && !isset($is_archived))
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="edit" onclick="expertiseApplyMethod($(this))">审批</a>
                         &nbsp;&nbsp;

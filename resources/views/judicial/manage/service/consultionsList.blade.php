@@ -6,6 +6,12 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
+            @if(isset($is_archived))
+                <button type="button" class="btn btn-danger" data-node="system-archivedMng" onclick="loadContent($(this))">返回归档列表</button>
+            @endif
+        </div>
+        @if(!isset($is_archived))
+            <div class="container-fluid">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
@@ -39,6 +45,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <hr/>
         <div class="container-fluid" id="this-container">
             <table class="table table-bordered table-hover table-condensed">
@@ -56,11 +63,11 @@
                 @foreach($consultion_list as $consultion)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $consultion['key'] }}" data-method="show" onclick="consultionsMethod($(this))">查看</a>
-                        @if($consultion['status'] == 'waiting')
-                        &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $consultion['key'] }}" data-method="edit" onclick="consultionsMethod($(this))">答复</a>
-                        &nbsp;&nbsp;
+                        <a href="javascript: void(0) ;" data-key="{{ $consultion['key'] }}" data-method="show" data-archived_key="{{ $archived_key }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="consultionsMethod($(this))">查看</a>
+                        @if($consultion['status'] == 'waiting' && !isset($is_archived))
+                                &nbsp;&nbsp;
+                                <a href="javascript: void(0) ;" data-key="{{ $consultion['key'] }}" data-method="edit" onclick="consultionsMethod($(this))">答复</a>
+                                &nbsp;&nbsp;
                         @endif
                     </td>
                     <td>{{ $consultion['record_code'] }}</td>

@@ -10,7 +10,10 @@
     <!-- Bootstrap -->
     <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
     <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
-    <!--awesome.css-->
+    <!-- awesome.css -->
     <link href="{{ asset('/css/font-awesome.css') }}" rel="stylesheet" type='text/css'>
+
+    <!-- UserJS -->
+    <script src="{{ asset('/js/wechat.js') }}"></script>
 </head>
 <body>

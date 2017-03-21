@@ -369,6 +369,8 @@ function upload_img(t){
 function videoMethod(t){
     var key = t.data('key');
     var method = t.data('method');
+    var archived = t.data('archived');
+    var archived_key = t.data('archived_key');
     var url = '/manage/cms/video/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除视频："+ t.data('title')+"？");
@@ -383,7 +385,7 @@ function videoMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'key='+key,
+        data: 'key='+ key +'&archived=' + archived +'&archived_key=' + archived_key,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -1450,6 +1452,8 @@ function changeFile(){
 function articleMethod(t){
     var key = t.data('key');
     var method = t.data('method');
+    var archived = t.data('archived');
+    var archived_key = t.data('archived_key');
     var url = '/manage/cms/article/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除文章：《"+ t.data('title')+"》？");
@@ -1464,7 +1468,7 @@ function articleMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'key='+key,
+        data: 'key='+ key +'&archived=' + archived +'&archived_key=' + archived_key,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -2108,6 +2112,8 @@ function search_lawyerOffice(t, c){
 function messageSendMethod(t){
     var key = t.data('key');
     var method = t.data('method');
+    var archived = t.data('archived');
+    var archived_key = t.data('archived_key');
     var url = '/manage/service/messageSend/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除："+ t.data('title')+"？");
@@ -2122,7 +2128,7 @@ function messageSendMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'key='+key,
+        data: 'key='+ key +'&archived=' + archived +'&archived_key=' + archived_key,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -2161,6 +2167,34 @@ function editMessageSend(){
 
 function addMessageSend(){
     var url = '/manage/service/messageSend/add';
+    //参数
+    var temp_code = $("#temp_code option:selected").val();
+    var send_date = $("#send_date").val();
+    var receiver_type = $("#receiver_type").val();
+    var office_list = $(".box_r li");
+    var member_list = $(".box_r_2 li");
+    if(office_list!='' && typeof(office_list)!='undefined' ){
+        var _office_list = new Array();
+        $.each(office_list,function(i, o){
+            _office_list[i] = $(o).data('key');
+        });
+        office_list = JSON.stringify(_office_list);
+    }
+    if(member_list!='' && typeof(member_list)!='undefined' ){
+        var _member_list = new Array();
+        $.each(member_list,function(i, o){
+            _member_list[i] = $(o).data('phone');
+        });
+        member_list = JSON.stringify(_member_list);
+    }
+    //发送给后台的
+    var data = {
+        temp_code: temp_code,
+        send_date: send_date,
+        receiver_type: receiver_type,
+        office_list: office_list,
+        member_list: member_list
+    };
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2168,7 +2202,7 @@ function addMessageSend(){
         async: false,
         type: "POST",
         url: url,
-        data: $('#addMessageSendForm').serialize(),
+        data: data,
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
@@ -2195,6 +2229,155 @@ function getTempContent(t){
         success: function(re){
             if(re.status == 'succ'){
                 $('#temp_content').text(re.res);
+            }
+        }
+    });
+}
+
+//隐藏与现实科室
+function switch_hidden(){
+    var type = $("#receiver_type option:selected").val();
+    var url = "/manage/service/messageSend/loadMembers";
+    if(type == 'member'){
+        $(".office_switch").hide();
+        $(".box_l_2").html('');
+        $(".box_r_2").html('');
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: {type: type},
+            success: function(re){
+                if(re.status=='succ'){
+                    var str = "";
+                    $.each(re.res, function(i,v){
+                        str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name + v.login_name +' -> '+ v.cell_phone +'</li>'
+                    });
+                    $(".box_l_2").html(str);
+                }
+                else if(re.status=='failed'){
+                    $(".box_l_2").html('无结果！');
+                }
+            }
+        });
+        $(".member_switch").show();
+        return false;
+    }
+    if(type == 'manager'){
+        $(".office_switch").show();
+        $(".box_l_2").html('');
+        $(".box_r_2").html('');
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: {type: type},
+            success: function(re){
+                if(re.status=='succ'){
+                    var str = "";
+                    $.each(re.res, function(i,v){
+                        str += '<li data-key="'+ v.key +'" style="list-style: none">'+ v.name +'->'+ v.cell_phone +'</li>'
+                    });
+                    $(".box_l_2").html(str);
+                }
+                else if(re.status=='failed'){
+                    $(".box_l_2").html('无结果！');
+                }
+            }
+        });
+        $(".member_switch").show();
+        return false;
+    }
+    if(type == 'certificate'){
+        $(".office_switch").hide();
+        $(".box_l_2").html('');
+        $(".box_r_2").html('');
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "POST",
+            url: url,
+            data: {type: type},
+            success: function(re){
+                if(re.status=='succ'){
+                    var str = "";
+                    $.each(re.res, function(i,v){
+                        str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +'->'+ v.cell_phone +'</li>'
+                    });
+                    $(".box_l_2").html(str);
+                }
+                else if(re.status=='failed'){
+                    $(".box_l_2").html('无结果！');
+                }
+            }
+        });
+        $(".member_switch").show();
+        return false;
+    }
+    else {
+        $(".office_switch").hide();
+        $(".member_switch").hide();
+    }
+}
+
+//异步搜索科室
+function searchOffice(t){
+    var url = '/manage/service/messageSend/searchOffice';
+    var keywords = t.val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: {keywords: keywords},
+        success: function(re){
+            if(re.status=='succ'){
+                var str = "";
+                $.each(re.res, function(i,v){
+                    str += '<li data-key="'+ v.key +'" style="list-style: none">'+ v.name +'</li>'
+                });
+                $(".box_l").html(str);
+            }
+            else if(re.status=='failed'){
+                $(".box_l").html('无结果！');
+            }
+        }
+    });
+}
+
+//异步搜索用户
+function searchMembers(t){
+    var url = '/manage/service/messageSend/searchMembers';
+    var type = $("#receiver_type option:selected").val();
+    var keywords = t.val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: {keywords: keywords, type:type},
+        success: function(re){
+            if(re.status=='succ'){
+                var str = "";
+                $.each(re.res, function(i,v){
+                    str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +' -> '+ v.cell_phone +'</li>'
+                });
+                $(".box_l_2").html(str);
+            }
+            else if(re.status=='failed'){
+                $(".box_l_2").html('无结果！');
             }
         }
     });
@@ -2524,6 +2707,8 @@ function addExpertiseType(){
 function expertiseApplyMethod(t){
     var key = t.data('key');
     var method = t.data('method');
+    var archived = t.data('archived');
+    var archived_key = t.data('archived_key');
     var url = '/manage/service/expertiseApply/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除："+ t.data('title')+"？");
@@ -2538,7 +2723,7 @@ function expertiseApplyMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'key='+key,
+        data: 'key='+ key +'&archived=' + archived +'&archived_key=' + archived_key,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -2592,6 +2777,8 @@ function editExpertiseApply(t){
 function suggestionsMethod(t){
     var key = t.data('key');
     var method = t.data('method');
+    var archived = t.data('archived');
+    var archived_key = t.data('archived_key');
     var url = '/manage/service/suggestions/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除："+ t.data('title')+"？");
@@ -2606,7 +2793,7 @@ function suggestionsMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'key='+key,
+        data: 'key='+ key +'&archived=' + archived +'&archived_key=' + archived_key,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -2670,6 +2857,8 @@ function search_suggestions(t, c){
 function consultionsMethod(t){
     var key = t.data('key');
     var method = t.data('method');
+    var archived = t.data('archived');
+    var archived_key = t.data('archived_key');
     var url = '/manage/service/consultions/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除："+ t.data('title')+"？");
@@ -2684,7 +2873,7 @@ function consultionsMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'key='+key,
+        data: 'key='+ key +'&archived=' + archived +'&archived_key=' + archived_key,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -2748,6 +2937,8 @@ function search_consultions(t, c){
 function aidApplyMethod(t){
     var key = t.data('key');
     var method = t.data('method');
+    var archived = t.data('archived');
+    var archived_key = t.data('archived_key');
     var url = '/manage/service/aidApply/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除："+ t.data('title')+"？");
@@ -2762,7 +2953,7 @@ function aidApplyMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'key='+key,
+        data: 'key='+ key +'&archived=' + archived +'&archived_key=' + archived_key,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -2839,6 +3030,8 @@ function search_aidApply(t, c){
 function aidDispatchMethod(t){
     var key = t.data('key');
     var method = t.data('method');
+    var archived = t.data('archived');
+    var archived_key = t.data('archived_key');
     var url = '/manage/service/aidDispatch/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除："+ t.data('title')+"？");
@@ -2853,7 +3046,7 @@ function aidDispatchMethod(t){
         async: false,
         type: "GET",
         url: url,
-        data: 'key='+key,
+        data: 'key='+ key +'&archived=' + archived +'&archived_key=' + archived_key,
         success: function(re){
             if(re.status == 'succ'){
                 if(method == 'delete'){
@@ -3024,4 +3217,174 @@ function search_vehicle(t, c){
         }
     });
     return;
+}
+
+//归档管理
+function archivedMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/system/archived/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认还原？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('还原成功！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function addArchived(){
+    var url = '/manage/system/archived/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addArchivedForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("创建成功！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addArchivedNotice'));
+            }
+        }
+    });
+}
+
+//日志管理
+function logMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/system/log/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function search_log(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/system/log/search'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                if(re.type=='alert'){
+                    alert(re.res);
+                    return false;
+                }
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
+}
+
+//备份管理
+function backupMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/system/backup/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function addBackup(){
+    var url = '/manage/system/backup/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addBackupForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("创建成功！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addBackupNotice'));
+            }
+        }
+    });
 }

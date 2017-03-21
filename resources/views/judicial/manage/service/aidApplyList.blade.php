@@ -6,6 +6,12 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
+            @if(isset($is_archived))
+                <button type="button" class="btn btn-danger" data-node="system-archivedMng" onclick="loadContent($(this))">返回归档列表</button>
+            @endif
+        </div>
+        @if(!isset($is_archived))
+            <div class="container-fluid">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
@@ -44,6 +50,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <hr/>
         <div class="container-fluid" id="this-container">
             <table class="table table-bordered table-hover table-condensed">
@@ -62,8 +69,8 @@
                 @foreach($apply_list as $apply)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="show" onclick="aidApplyMethod($(this))">查看</a>
-                        @if($apply['status'] == 'waiting')
+                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-archived_key="{{ $archived_key }}" data-method="show" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="aidApplyMethod($(this))">查看</a>
+                        @if($apply['status'] == 'waiting' && !isset($is_archived))
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="edit" onclick="aidApplyMethod($(this))">审批</a>
                         &nbsp;&nbsp;

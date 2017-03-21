@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label for="temp_code" class="col-md-1 control-label"><strong style="color: red">*</strong> 模板：</label>
                 <div class="col-md-3">
-                    <select class="form-control" id="temp_code" name="temp_code" onchange="getTempContent($(this))">
+                    <select disabled class="form-control" id="temp_code" name="temp_code" onchange="getTempContent($(this))">
                         @if(!isset($temp_list) || count($temp_list)<1)
                             <option value="none">请先设置短信模板！</option>
                         @else
@@ -33,29 +33,37 @@
             <div class="form-group">
                 <label for="send_date" class="col-md-1 control-label"><strong style="color: red">*</strong> 发送时间：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="send_date" name="send_date" />
+                    <p>{{ $send_detail['send_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="receiver_type" class="col-md-1 control-label"> 发送用户类型：</label>
                 <div class="col-md-3">
-                    <select class="form-control" id="receiver_type" name="receiver_type">
-                        <option value="none">请选择收信人类型</option>
-                        <option value="member">前台用户</option>
-                        <option value="manager">后台用户</option>
-                    </select>
+                    <p>
+                        @if($send_detail['receiver_type'] == 'member')
+                            前台用户
+                        @elseif($send_detail['receiver_type'] == 'member')
+                            后台用户
+                        @else
+                            司法证书持有人
+                        @endif
+                    </p>
                 </div>
             </div>
             <div class="form-group">
                 <label for="create_date" class="col-md-1 control-label">创建时间：</label>
                 <div class="col-md-8">
-                    <p>{{ $message_detail['create_date'] }}</p>
+                    <p>{{ $send_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
                 <div class="col col-md-offset-1 col-md-1">
+                    @if($archived == 'yes')
+                        <button type="button" class="btn btn-danger btn-block" data-key="{{ $archived_key }}" data-method="show" onclick="archivedMethod($(this))">返回列表</button>
+                    @else
                     <button type="button" class="btn btn-danger btn-block" data-node="service-messageSendMng" onclick="loadContent($(this))">返回列表</button>
+                    @endif
                 </div>
             </div>
         </form>

@@ -14,12 +14,21 @@ use App\Http\Controllers\Controller;
 
 use App\Libs\Massage;
 
+use App\Libs\Logs;
+
 class AidApply extends Controller
 {
     var $page_data = array();
+    var $log_info = array();
 
     public function __construct()
     {
+        //日志信息
+        $this->log_info = array(
+            'manager' => $this->checkManagerStatus(),
+            'node'=> 'service_legal_aid_apply',
+            'resource'=> 'service_legal_aid_apply',
+        );
         //获取区域
         $area_list = array();
         $areas = DB::table('service_area')->get();
@@ -39,10 +48,10 @@ class AidApply extends Controller
         //加载列表数据
         $apply_list = array();
         $pages = '';
-        $count = DB::table('service_legal_aid_apply')->count();
+        $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $applys = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip($offset)->take(30)->get();
+        $applys = DB::table('service_legal_aid_apply')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip($offset)->take(30)->get();
         if(count($applys) > 0){
             foreach($applys as $apply){
                 $apply_list[] = array(
@@ -73,6 +82,8 @@ class AidApply extends Controller
     {
         $apply_detail = array();
         $id = keys_decrypt($request->input('key'));
+        $this->page_data['archived'] = $request->input('archived');
+        $this->page_data['archived_key'] = $request->input('archived_key');
         $apply = DB::table('service_legal_aid_apply')->where('id', $id)->first();
         if(is_null($apply)){
             json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
@@ -155,7 +166,7 @@ class AidApply extends Controller
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        $approval_count = DB::table('service_legal_aid_apply')->select('approval_count')->where('id', $id)->first();
+        $approval_count = DB::table('service_legal_aid_apply')->where('id', $id)->first();
         $save_data = array(
             'approval_opinion'=> trim($inputs['approval_opinion']),
             'status'=> 'pass',
@@ -167,6 +178,12 @@ class AidApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //日志
+            $this->log_info['type'] = 'edit';
+            $this->log_info['before'] = "审批状态：待审批";
+            $this->log_info['after'] = "审批状态：通过    审批意见：".$save_data['approval_opinion'];
+            $this->log_info['log_type'] = 'str';
+            Logs::manage_log($this->log_info);
             //发短信
             $phone = DB::table('service_legal_aid_apply')->where('id',$id)->first();
             if(isset($phone->apply_phone)){
@@ -175,10 +192,10 @@ class AidApply extends Controller
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';
-            $count = DB::table('service_legal_aid_apply')->count();
+            $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $applys = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+            $applys = DB::table('service_legal_aid_apply')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
             if(count($applys) > 0){
                 foreach($applys as $apply){
                     $apply_list[] = array(
@@ -213,7 +230,7 @@ class AidApply extends Controller
         if(trim($inputs['approval_opinion']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批意见不能为空！']);
         }
-        $approval_count = DB::table('service_legal_aid_apply')->select('approval_count')->where('id', $id)->first();
+        $approval_count = DB::table('service_legal_aid_apply')->where('id', $id)->first();
         $save_data = array(
             'approval_opinion'=> trim($inputs['approval_opinion']),
             'status'=> 'reject',
@@ -225,15 +242,21 @@ class AidApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
         else{
+            //日志
+            $this->log_info['type'] = 'edit';
+            $this->log_info['before'] = "审批状态：待审批";
+            $this->log_info['after'] = "审批状态：拒绝    审批意见：".$save_data['approval_opinion'];
+            $this->log_info['log_type'] = 'str';
+            Logs::manage_log($this->log_info);
             //发短信
-            $phone = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+            $phone = DB::table('service_legal_aid_apply')->where('archived', 'no')->where('id',$id)->first();
             if(isset($phone->apply_phone)){
                 Massage::send($phone->apply_phone,'管理员驳回了您编号为“'.$phone->record_code.'”的法律援助申请，请登录PC官网查看原因！');
             }
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';
-            $count = DB::table('service_legal_aid_apply')->count();
+            $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
             $applys = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
@@ -282,6 +305,8 @@ class AidApply extends Controller
         if(isset($inputs['status']) &&($inputs['status'])!='none'){
             $where .= ' `status` = "'.$inputs['status'].'" AND ';
         }
+        //去掉已经归档的
+        $where .= '`archived` = "no" AND ';
         $sql = 'SELECT * FROM `service_legal_aid_apply` '.$where.'1';
         $res = DB::select($sql);
         if($res && count($res) > 0){
@@ -305,5 +330,10 @@ class AidApply extends Controller
         else{
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
         }
+    }
+
+    public function __destruct()
+    {
+        unset($this->log_info);
     }
 }

@@ -103,7 +103,11 @@
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-1">
+                    @if($archived == 'yes')
+                        <button type="button" class="btn btn-danger btn-block" data-key="{{ $archived_key }}" data-method="show" onclick="archivedMethod($(this))">返回列表</button>
+                    @else
                     <button type="button" class="btn btn-danger btn-block" data-node="service-aidApplyMng" onclick="loadContent($(this))">返回列表</button>
+                    @endif
                 </div>
             </div>
         </form>
