@@ -63,7 +63,7 @@
                 @foreach($consultion_list as $consultion)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $consultion['key'] }}" data-method="show" data-archived_key="{{ $archived_key }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="consultionsMethod($(this))">查看</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $consultion['key'] }}" data-method="show" data-archived_key="{{ isset($archived_key)?$archived_key:'' }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="consultionsMethod($(this))">查看</a>
                         @if($consultion['status'] == 'waiting' && !isset($is_archived))
                                 &nbsp;&nbsp;
                                 <a href="javascript: void(0) ;" data-key="{{ $consultion['key'] }}" data-method="edit" onclick="consultionsMethod($(this))">答复</a>

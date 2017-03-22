@@ -86,10 +86,10 @@ class Archived extends Controller
         );
         DB::beginTransaction();
         if($inputs['type']=='service_judicial_expertise' || $inputs['type']=='service_legal_aid_apply' || $inputs['type']=='service_legal_aid_dispatch'){
-            $rs = DB::table($inputs['type'])->where('apply_date','<=',$inputs['date'])->update(['archived'=> 'yes']);
+            $rs = DB::table($inputs['type'])->where('apply_date','<=',$inputs['date'])->where('archived', 'no')->update(['archived'=> 'yes']);
         }
         else{
-            $rs = DB::table($inputs['type'])->where('create_date','<=',$inputs['date'])->update(['archived'=> 'yes']);
+            $rs = DB::table($inputs['type'])->where('create_date','<=',$inputs['date'])->where('archived', 'no')->update(['archived'=> 'yes']);
         }
         if($rs === false || $rs == 0){
             DB::rollBack();

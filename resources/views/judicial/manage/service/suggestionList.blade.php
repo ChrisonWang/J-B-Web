@@ -64,7 +64,7 @@
                 @foreach($suggestion_list as $suggestion)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="show" data-archived_key="{{ $archived_key }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="suggestionsMethod($(this))">查看</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="show" data-archived_key="{{ isset($archived_key)?$archived_key:'' }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="suggestionsMethod($(this))">查看</a>
                         @if($suggestion['status'] == 'waiting' && !isset($is_archived))
                                 &nbsp;&nbsp;
                                 <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="edit" onclick="suggestionsMethod($(this))">答复</a>

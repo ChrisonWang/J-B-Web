@@ -64,7 +64,7 @@
                 @foreach($apply_list as $apply)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-archived_key="{{ $archived_key }}" data-method="show" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="aidDispatchMethod($(this))">查看</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-archived_key="{{ isset($archived_key)?$archived_key:'' }}" data-method="show" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="aidDispatchMethod($(this))">查看</a>
                         @if($apply['status'] == 'waiting' && !isset($is_archived))
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="edit" onclick="aidDispatchMethod($(this))">审批</a>

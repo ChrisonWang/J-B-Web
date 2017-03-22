@@ -27,7 +27,7 @@
                 @foreach($send_list as $send)
                 <tr>
                     <td>
-                        <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="show" data-archived_key="{{ $archived_key }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="messageSendMethod($(this))">查看</a>
+                        <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="show" data-archived_key="{{ isset($archived_key)?$archived_key:'' }}" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="messageSendMethod($(this))">查看</a>
                         @if($apply['approval_result'] == 'waiting' && !isset($is_archived))
                             &nbsp;&nbsp;
                             <a href="javascript: void(0) ;" data-key="{{ $send['key'] }}" data-method="edit" onclick="messageSendMethod($(this))">编辑</a>
