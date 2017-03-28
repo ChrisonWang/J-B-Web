@@ -281,24 +281,33 @@ function aidDispatchApply(){
     if(c != true){
         return false;
     }
+    //弹窗提示
+    $(".alert_sh .als_down").text('附件上传中,请耐心等待……');
+    $(".alert_sh").show();
+
     $('#notice').attr('hidden',true);
     var url = '/service/aidDispatch/doApply';
     $('#aidDispatchForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        async:false,
         url: url,
         method: "POST",
         data: $('#aidDispatchForm').serialize(),
         success: function(re){
             if(re.status == 'failed'){
-                alert('提交错误：'+re.res+'！');
+                $(".alert_sh .als_top").text('提交错误！');
+                $(".alert_sh .als_down").text(re.res + '！');
             }
             else if(re.status == 'succ'){
+                $(".alert_sh").hide();
                 alert('提交成功！');
                 window.location.href=re.link;
             }
+        },
+        error:function(re,s,et){
+            $(".alert_sh .als_top").text('提交错误！');
+            $(".alert_sh .als_down").text('您上传的文件过大，服务器拒绝了您的请求');
         }
     });
 }
@@ -308,24 +317,33 @@ function aidApply(){
     if(c != true){
         return false;
     }
+    //弹窗提示
+    $(".alert_sh .als_down").text('附件上传中,请耐心等待……');
+    $(".alert_sh").show();
+
     $('#notice').attr('hidden',true);
     var url = '/service/aidApply/doApply';
     $('#aidApplyForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        async:false,
         url: url,
         method: "POST",
         data: $('#aidApplyForm').serialize(),
         success: function(re){
             if(re.status == 'failed'){
-                alert('提交错误：'+re.res+'！');
+                $(".alert_sh .als_top").text('提交错误！');
+                $(".alert_sh .als_down").text(re.res + '！');
             }
             else if(re.status == 'succ'){
+                $(".alert_sh").hide();
                 alert('提交成功！');
                 window.location.href=re.link;
             }
+        },
+        error:function(re,s,et){
+            $(".alert_sh .als_top").text('提交错误！');
+            $(".alert_sh .als_down").text('您上传的文件过大，服务器拒绝了您的请求');
         }
     });
 }
@@ -335,24 +353,33 @@ function expertiseApply(){
     if(c != true){
         return false;
     }
+    //弹窗提示
+    $(".alert_sh .als_down").text('附件上传中,请耐心等待……');
+    $(".alert_sh").show();
+
     $('#notice').attr('hidden',true);
     var url = '/service/expertise/doApply';
     $('#expertiseForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        async:false,
         url: url,
         method: "POST",
         data: $('#expertiseForm').serialize(),
         success: function(re){
             if(re.status == 'failed'){
-                alert('提交错误：'+re.res+'！');
+                $(".alert_sh .als_top").text('提交错误！');
+                $(".alert_sh .als_down").text(re.res + '！');
             }
             else if(re.status == 'succ'){
+                $(".alert_sh").hide();
                 alert('提交成功！');
                 window.location.href=re.link;
             }
+        },
+        error:function(re,s,et){
+            $(".alert_sh .als_top").text('提交错误！');
+            $(".alert_sh .als_down").text('您上传的文件过大，服务器拒绝了您的请求');
         }
     });
 }

@@ -52,15 +52,45 @@
                     <p>{{ $manager['nickname'] }}</p>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="tags" class="col-md-1 control-label">关联标签：</label>
-                <div class="col-md-3">
-                    @foreach($tag_list as $tag)
-                        <input type="checkbox" id="tags" name="tags[]" value="{{ $tag['tag_key'] }}" @if(isset($article_detail['tags'][$tag['tag_key']])) checked @endif/>
-                        {{ $tag['tag_title'] }}&nbsp;&nbsp;
-                    @endforeach
+            <!-- 标签选择器 -->
+            <div class="form-group office_switch">
+                <label for="search_tags" class="col-md-1 control-label">关联标签：</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="search_tags" name="search_tags" onkeyup="searchTags($(this))" placeholder="搜索标签"/>
                 </div>
             </div>
+            <div class="form-group office_switch">
+                <div class="col-md-8">
+                    <div class="box">
+                        <div class="box_l">
+                            @foreach($tag_list as $tag)
+                                <li style="list-style: none" data-key="{{ $tag['tag_key'] }}">
+                                    {{ $tag['tag_title'] }}
+                                    <input type="hidden" name="tags[]" value="" />
+                                </li>
+                            @endforeach
+                        </div>
+                        <div class="box_m" id="tags_selected">
+                            <a href="javascript:" id="left" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                            </a>
+                            <a href="javascript:" id="right" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                            </a>
+                        </div>
+                        <div class="box_r">
+                            @if(is_array($article_detail['tags']) && $article_detail['tags']!='')
+                                @foreach($article_detail['tags'] as $key=> $tag_title)
+                                    <li style="list-style: none" data-key="{{ $key }}">
+                                        {{ $tag_title }}
+                                        <input type="hidden" name="tags[]" value="{{ $key }}" />
+                                    </li>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div><!-- 标签选择器 End -->
             <div class="form-group">
                 <label for="channel_id" class="col-md-1 control-label">频道：</label>
                 <div class="col-md-3">
@@ -200,10 +230,31 @@
     </div>
 </div>
 <script type="text/javascript">
-    var UE_Content = UE.getEditor('UE_Content');
-    UE_Content.ready(function(){
-        var value = '{!! $article_detail['content'] !!}';
-        UE_Content.execCommand('insertHtml',value);
+    $(document).ready(function(){
+        $(".box").orso({
+            boxl:".box_l",//左边大盒子
+            boxr:".box_r",//右边大盒子
+            boxlrX:"li",//移动小盒子
+            boxon:"on",//点击添加属性
+            idclass:true,//添加的属性是否为class//true=class; false=id;
+            boxlan:"#left",//单个向左移动按钮
+            boxran:"#right",//单个向右移动按钮
+            boxtan:"#top",//单个向上移动按钮
+            boxban:"#bottom",//单个向下移动按钮
+            boxalllan:"#allleft",//批量向左移动按钮
+            boxallran:"#allright",//批量向右移动按钮
+            boxalltan:"#alltop",//移动第一个按钮
+            boxallban:"#allbottom"//移动最后一个按钮
+        });
+    });
+
+    jQuery(function($) {
+        UE.delEditor('UE_Content');
+        var UE_Content = UE.getEditor('UE_Content');
+        UE_Content.ready(function(){
+            var value = '{!! $article_detail['content'] !!}';
+            UE_Content.execCommand('insertHtml',value);
+        });
     });
 
     var logic = function( currentDateTime ){

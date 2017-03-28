@@ -74,6 +74,7 @@ class MessageSend extends Controller
                     'receiver_type'=> $l->receiver_type,
                     'received_office'=> $l->received_office,
                     'received_person'=> $l->received_person,
+                    'send_status'=> $l->send_status,
                     'create_date'=> $l->create_date,
                     'update_date'=> $l->update_date,
                 );

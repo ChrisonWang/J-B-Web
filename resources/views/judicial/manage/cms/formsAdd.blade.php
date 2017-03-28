@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="formsAddForm">
             <div class="form-group">
-                <label for="title" class="col-md-1 control-label">标题：</label>
+                <label for="title" class="col-md-1 control-label"><strong style="color: red">*</strong> 标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" placeholder="请输入标题" />
                 </div>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="channel_id" class="col-md-1 control-label">频道：</label>
+                <label for="channel_id" class="col-md-1 control-label"><strong style="color: red">*</strong> 频道：</label>
                 <div class="col-md-3">
                     <select class="form-control" id="channel_id" name="channel_id">
                         @foreach($channel_list as $key=> $channel)
@@ -66,5 +66,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    var UE_Content = UE.getEditor('UE_Content');
+    jQuery(function($) {
+        UE.delEditor('UE_Content');
+        var UE_Content = UE.getEditor('UE_Content');
+    });
 </script>

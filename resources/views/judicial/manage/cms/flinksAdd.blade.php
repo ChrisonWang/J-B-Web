@@ -26,13 +26,13 @@
     <div class="panel-body">
         <form class="form-horizontal" id="flinksAddForm">
             <div class="form-group">
-                <label for="title" class="col-md-1 control-label">菜单名称：</label>
+                <label for="title" class="col-md-1 control-label"><strong style="color: red">*</strong> 菜单名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" placeholder="请输菜单名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_links" class="col-md-1 control-label">子链接：</label>
+                <label for="sub_links" class="col-md-1 control-label"><strong style="color: red">*</strong> 子链接：</label>
                 <div class="col-md-5">
                     <div class="container-fluid">
                         <table class="table table-bordered table-hover table-condensed">

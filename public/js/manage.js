@@ -164,9 +164,6 @@ function addDepartmentType(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -222,9 +219,6 @@ function editDepartment(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -247,9 +241,6 @@ function addDepartment(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -304,9 +295,6 @@ function editLeader(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -329,9 +317,6 @@ function addLeader(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -402,7 +387,7 @@ function videoMethod(t){
 
 function editVideo(){
     var url = '/manage/cms/video/edit';
-    $.ajax({
+    $('#videoEditForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -413,9 +398,6 @@ function editVideo(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -427,7 +409,7 @@ function editVideo(){
 
 function addVideo(){
     var url = '/manage/cms/video/add';
-    $.ajax({
+    $('#videoAddForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -438,9 +420,6 @@ function addVideo(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -496,9 +475,6 @@ function editRecommend(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -521,9 +497,6 @@ function addRecommend(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -579,9 +552,6 @@ function editIntro(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -604,9 +574,6 @@ function addIntro(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -662,9 +629,6 @@ function editFlinkImg(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -687,9 +651,6 @@ function addFlinkImg(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -773,9 +734,6 @@ function editFlinks(){
             success: function(re){
                 if(re.status == 'succ'){
                     alert("修改成功！！！");
-                    if(typeof(UE_Content)=="object"){
-                        UE_Content.destroy();
-                    }
                     ajaxResult(re);
                 }
                 else if(re.status == 'failed') {
@@ -818,9 +776,6 @@ function addFlinks(){
             success: function(re){
                 if(re.status == 'succ'){
                     alert("添加成功！！！");
-                    if(typeof(UE_Content)=="object"){
-                        UE_Content.destroy();
-                    }
                     ajaxResult(re);
                 }
                 else if(re.status == 'failed') {
@@ -878,9 +833,6 @@ function editOffice(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -903,9 +855,6 @@ function addOffice(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -961,9 +910,6 @@ function editNode(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -986,9 +932,6 @@ function addNode(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -1044,9 +987,6 @@ function editMenu(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -1069,9 +1009,6 @@ function addMenu(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -1148,9 +1085,6 @@ function editRoles(){
             success: function(re){
                 if(re.status == 'succ'){
                     alert("修改成功！！！");
-                    if(typeof(UE_Content)=="object"){
-                        UE_Content.destroy();
-                    }
                     ajaxResult(re);
                 }
                 else if(re.status == 'failed') {
@@ -1194,9 +1128,6 @@ function addRoles(){
             success: function(re){
                 if(re.status == 'succ'){
                     alert("添加成功！！！");
-                    if(typeof(UE_Content)=="object"){
-                        UE_Content.destroy();
-                    }
                     ajaxResult(re);
                 }
                 else if(re.status == 'failed') {
@@ -1292,9 +1223,6 @@ function editChannel(){
             success: function(re){
                 if(re.status == 'succ'){
                     alert("修改成功！！！");
-                    if(typeof(UE_Content)=="object"){
-                        UE_Content.destroy();
-                    }
                     ajaxResult(re);
                 }
                 else if(re.status == 'failed') {
@@ -1346,9 +1274,6 @@ function addChannel(){
             success: function(re){
                 if(re.status == 'succ'){
                     alert("添加成功！！！");
-                    if(typeof(UE_Content)=="object"){
-                        UE_Content.destroy();
-                    }
                     ajaxResult(re);
                 }
                 else if(re.status == 'failed') {
@@ -1406,9 +1331,6 @@ function editForms(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -1431,9 +1353,6 @@ function addForms(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -1496,9 +1415,6 @@ function editArticle(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -1521,9 +1437,6 @@ function addArticle(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -1646,6 +1559,36 @@ function getSubNode(c){
     });
 }
 
+//异步搜索标签
+function searchTags(t){
+    var url = '/manage/cms/article/searchTags';
+    var keywords = t.val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: {keywords: keywords},
+        success: function(re){
+            if(re.status=='succ'){
+                var str = "";
+                $.each(re.res, function(i,v){
+                    str += '<li style="list-style: none" data-key="'+ v.key +'">'
+                        + v.name +
+                        '<input type="hidden" name="tags[]" />' +
+                        '</li>'
+                });
+                $(".box_l").html(str);
+            }
+            else if(re.status=='failed'){
+                $(".box_l").html('无结果！');
+            }
+        }
+    });
+}
+
 //用户管理
 function userMethod(t){
     var key = t.data('key');
@@ -1693,9 +1636,6 @@ function editUser(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("修改成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -1718,9 +1658,6 @@ function addUser(){
         success: function(re){
             if(re.status == 'succ'){
                 alert("添加成功！！！");
-                if(typeof(UE_Content)=="object"){
-                    UE_Content.destroy();
-                }
                 ajaxResult(re);
             }
             else if(re.status == 'failed') {
@@ -2254,7 +2191,8 @@ function switch_hidden(){
                 if(re.status=='succ'){
                     var str = "";
                     $.each(re.res, function(i,v){
-                        str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name + v.login_name +' -> '+ v.cell_phone +'</li>'
+                        str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name + v.login_name +' -> '+ v.cell_phone +'' +
+                            '<input type="hidden" name="member_list" value=""/></li>'
                     });
                     $(".box_l_2").html(str);
                 }
@@ -2282,7 +2220,8 @@ function switch_hidden(){
                 if(re.status=='succ'){
                     var str = "";
                     $.each(re.res, function(i,v){
-                        str += '<li data-key="'+ v.key +'" style="list-style: none">'+ v.name +'->'+ v.cell_phone +'</li>'
+                        str += '<li data-key="'+ v.key +'" style="list-style: none">'+ v.name +'->'+ v.cell_phone +'' +
+                            '<input type="hidden" name="member_list" value=""/></li>'
                     });
                     $(".box_l_2").html(str);
                 }
@@ -2310,7 +2249,8 @@ function switch_hidden(){
                 if(re.status=='succ'){
                     var str = "";
                     $.each(re.res, function(i,v){
-                        str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +'->'+ v.cell_phone +'</li>'
+                        str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +'->'+ v.cell_phone +'' +
+                            '<input type="hidden" name="member_list" value=""/></li>'
                     });
                     $(".box_l_2").html(str);
                 }
@@ -2344,7 +2284,8 @@ function searchOffice(t){
             if(re.status=='succ'){
                 var str = "";
                 $.each(re.res, function(i,v){
-                    str += '<li data-key="'+ v.key +'" style="list-style: none">'+ v.name +'</li>'
+                    str += '<li data-key="'+ v.key +'" style="list-style: none">'+ v.name +'' +
+                        '<input type="hidden" name="office_list" value=""/></li>'
                 });
                 $(".box_l").html(str);
             }
@@ -2372,7 +2313,8 @@ function searchMembers(t){
             if(re.status=='succ'){
                 var str = "";
                 $.each(re.res, function(i,v){
-                    str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +' -> '+ v.cell_phone +'</li>'
+                    str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +' -> '+ v.cell_phone +'' +
+                        '<input type="hidden" name="member_list" value=""/></li>'
                 });
                 $(".box_l_2").html(str);
             }

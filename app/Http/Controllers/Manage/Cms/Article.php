@@ -58,7 +58,7 @@ class Article extends Controller
         }
         //取出标签
         $tag_list = array();
-        $tags = DB::table('cms_tags')->get();
+        $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
         foreach($tags as $tag){
             $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
         }
@@ -125,7 +125,7 @@ class Article extends Controller
             );
         }
         //取出标签
-        $tags = DB::table('cms_tags')->get();
+        $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
         foreach($tags as $tag){
             $tag_list[] = array(
                 'tag_key'=> keys_encrypt($tag->id),
@@ -181,12 +181,6 @@ class Article extends Controller
             }
         }
 
-        if(isset($inputs['tags']) && is_array($inputs['tags'])){
-            foreach($inputs['tags'] as $tag){
-                $save_tags[] = keys_decrypt($tag);
-            }
-        }
-
         $file_list = array();
         if(isset($inputs['files']) && is_array($inputs['files'])){
             foreach($inputs['files'] as $key=> $file){
@@ -200,6 +194,17 @@ class Article extends Controller
             $file_list = '';
         }
 
+        //标签去重
+        $inputs['tags'] = array_unique($inputs['tags']);
+        $tags = '';
+        if(count($inputs['tags'])>1){
+            $tags = array();
+            foreach($inputs['tags'] as $tag){
+                if($tag != ''){
+                    $tags[] = keys_decrypt($tag);
+                }
+            }
+        }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
@@ -213,7 +218,7 @@ class Article extends Controller
             'thumb'=> $photo_path,
             'manager_code'=> $this->page_data['manager']['manager_code'],
             'disabled'=> (isset($inputs['disabled'])&&$inputs['disabled']=='no') ? 'no' : 'yes',
-            'tags'=> isset($save_tags) ? json_encode($save_tags) : '',
+            'tags'=> $tags!='' ? json_encode($tags) : '',
             'publish_date'=> $inputs['publish_date'],
             'create_date'=> $now,
             'update_date'=> $now
@@ -257,7 +262,7 @@ class Article extends Controller
         }
         //取出标签
         $tag_list = array();
-        $tags = DB::table('cms_tags')->get();
+        $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
         foreach($tags as $tag){
             $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
         }
@@ -307,26 +312,34 @@ class Article extends Controller
         $article_code = $inputs['key'];
         $this->page_data['archived'] = $request->input('archived');
         $this->page_data['archived_key'] = $request->input('archived_key');
-        //取出标签
-        $tags = DB::table('cms_tags')->get();
-        foreach($tags as $tag){
-            $tag_list[] = array(
-                'tag_key'=> keys_encrypt($tag->id),
-                'tag_title'=> $tag->tag_title
-            );
-        }
+
         //取出数据
         $article = DB::table('cms_article')->where('article_code', $article_code)->first();
-        if(!empty($article->tags)){
-            $a_tags = json_decode($article->tags, true);
-            $article_tags = array();
+        $a_tags = json_decode($article->tags);
+        $article_tags = array();
+        if(is_array($a_tags)){
             foreach($a_tags as $a_tag){
                 $article_tags[keys_encrypt($a_tag)] = $a_tag;
             }
         }
         else{
-            $article_tags = 'none';
+            $article_tags = '';
         }
+        //取出标签
+        $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
+        if(count($tags) > 0){
+            foreach($tags as $tag){
+                if(isset($article_tags[keys_encrypt($tag->id)])){
+                    $article_tags[keys_encrypt($tag->id)] = $tag->tag_title;
+                    continue;
+                }
+                $tag_list[] = array(
+                    'tag_key'=> keys_encrypt($tag->id),
+                    'tag_title'=> $tag->tag_title
+                );
+            }
+        }
+
         //文件
         if(!empty($article->files)){
             $files = json_decode($article->files, true);
@@ -393,14 +406,6 @@ class Article extends Controller
         $inputs = $request->input();
         $article_code = $inputs['key'];
 
-        //取出标签
-        $tags = DB::table('cms_tags')->get();
-        foreach($tags as $tag){
-            $tag_list[] = array(
-                'tag_key'=> keys_encrypt($tag->id),
-                'tag_title'=> $tag->tag_title
-            );
-        }
         //取出数据
         $article = DB::table('cms_article')->where('article_code', $article_code)->first();
         $a_tags = json_decode($article->tags);
@@ -410,6 +415,24 @@ class Article extends Controller
                 $article_tags[keys_encrypt($a_tag)] = $a_tag;
             }
         }
+        else{
+            $article_tags = '';
+        }
+        //取出标签
+        $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
+        if(count($tags) > 0){
+            foreach($tags as $tag){
+                if(isset($article_tags[keys_encrypt($tag->id)])){
+                    $article_tags[keys_encrypt($tag->id)] = $tag->tag_title;
+                    continue;
+                }
+                $tag_list[] = array(
+                    'tag_key'=> keys_encrypt($tag->id),
+                    'tag_title'=> $tag->tag_title
+                );
+            }
+        }
+
         //文件
         if(!empty($article->files)){
             $files = json_decode($article->files, true);
@@ -426,6 +449,7 @@ class Article extends Controller
             'sub_channel_id'=> keys_encrypt($article->sub_channel),
             'thumb'=> empty($article->thumb)? 'none' :$article->thumb,
             'content'=> $article->content,
+            'tags'=> $article_tags,
             'files'=> $files,
             'publish_date'=> $article->publish_date ,
             'create_date'=> $article->create_date,
@@ -493,14 +517,6 @@ class Article extends Controller
                 $photo_path = URL::to('/').'/uploads/images/'.$filename;
             }
         }
-        if(isset($inputs['tags']) && count($inputs['tags'])>0){
-            foreach($inputs['tags'] as $tag){
-                $save_tags[] = keys_decrypt($tag);
-            }
-        }
-        else{
-            $save_tags = '';
-        }
 
         //处理上传文件
         $file_list = array();
@@ -515,6 +531,19 @@ class Article extends Controller
         else{
             $file_list = '';
         }
+
+        //标签去重
+        $inputs['tags'] = array_unique($inputs['tags']);
+        $tags = '';
+        if(count($inputs['tags'])>1){
+            $tags = array();
+            foreach($inputs['tags'] as $tag){
+                if($tag != ''){
+                    $tags[] = keys_decrypt($tag);
+                }
+            }
+        }
+
         $save_data = array(
             'article_title'=> $inputs['article_title'],
             'channel_id'=> keys_decrypt($inputs['channel_id']),
@@ -525,7 +554,7 @@ class Article extends Controller
             'thumb'=> $photo_path,
             'manager_code'=> $this->page_data['manager']['manager_code'],
             'disabled'=> (isset($inputs['disabled'])&&$inputs['disabled']=='no') ? 'no' : 'yes',
-            'tags'=> $save_tags,
+            'tags'=> json_encode($tags),
             'publish_date'=> $inputs['publish_date'],
             'update_date'=> date('Y-m-d H:i:s',time())
         );
@@ -574,7 +603,7 @@ class Article extends Controller
         }
         //取出标签
         $tag_list = array();
-        $tags = DB::table('cms_tags')->get();
+        $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
         foreach($tags as $tag){
             $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
         }
@@ -661,7 +690,7 @@ class Article extends Controller
             }
             //取出标签
             $tag_list = array();
-            $tags = DB::table('cms_tags')->get();
+            $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
             foreach($tags as $tag){
                 $tag_list[keys_encrypt($tag->id)] = $tag->tag_title;
             }
@@ -742,6 +771,26 @@ class Article extends Controller
                 $photo_path = URL::to('/').'/uploads/files/'.$filename;
                 json_response(['status'=>'succ','type'=>'notice', 'files'=>$photo_path, 'filenames'=>$filename]);
             }
+        }
+    }
+
+    public function searchTags(Request $request)
+    {
+        $keywords = $request->input('keywords');
+        $sql = 'SELECT * FROM `cms_tags` WHERE `tag_title` LIKE "%'.$keywords.'%" ORDER BY `tag_title` ASC';
+        $res = DB::select($sql);
+        if(count($res) > 0){
+            $list = array();
+            foreach ($res as $re) {
+                $list[] = array(
+                    'key'=> keys_encrypt($re->id),
+                    'name'=> $re->tag_title
+                );
+            }
+            json_response(['status'=>'succ','type'=>'notice', 'res'=>$list]);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'']);
         }
     }
 

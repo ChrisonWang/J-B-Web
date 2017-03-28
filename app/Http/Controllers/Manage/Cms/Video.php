@@ -99,6 +99,30 @@ class Video extends Controller
         if(isset($inputs['disabled']) && $inputs['disabled']=='yes'){
             $disabled = 'yes';
         }
+
+        //处理图片上传
+        $photo_path = '';
+        $file = $request->file('thumb');
+        if(!is_null($file)){
+            if(!$file->isValid()){
+                $photo_path = '';
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的封面图！']);
+            }
+            else{
+                $destPath = realpath(public_path('uploads/images'));
+                if(!file_exists($destPath)){
+                    mkdir($destPath, 0755, true);
+                }
+                $extension = $file->getClientOriginalExtension();
+                $filename = gen_unique_code('IMG_').'.'.$extension;
+                if(!$file->move($destPath,$filename)){
+                    $photo_path = '';
+                }
+                else{
+                    $photo_path = URL::to('/').'/uploads/images/'.$filename;
+                }
+            }
+        }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
@@ -106,6 +130,7 @@ class Video extends Controller
             'title'=> $inputs['video_title'],
             'link'=> $inputs['video_link'],
             'disabled'=> $disabled,
+            'thumb'=> $photo_path,
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
             'create_date'=> $now,
             'update_date'=> $now
@@ -165,6 +190,8 @@ class Video extends Controller
         $video_detail = array();
         $inputs = $request->input();
         $video_code = keys_decrypt($inputs['key']);
+        $this->page_data['archived'] = $request->input('archived');
+        $this->page_data['archived_key'] = $request->input('archived_key');
         //取出详情
         $video = DB::table('cms_video')->where('video_code',$video_code)->first();
         if(is_null($video)){
@@ -175,6 +202,7 @@ class Video extends Controller
         $video_detail['video_link'] = $video->link;
         $video_detail['disabled'] = $video->disabled;
         $video_detail['sort'] = $video->sort;
+        $video_detail['thumb'] = empty($video->thumb) ? 'none' : $video->thumb;
         $video_detail['create_date'] = $video->create_date;
         //页面中显示
         $this->page_data['video_detail'] = $video_detail;
@@ -206,6 +234,7 @@ class Video extends Controller
         $video_detail['key'] = keys_encrypt($video->video_code);
         $video_detail['video_title'] = $video->title;
         $video_detail['video_link'] = $video->link;
+        $video_detail['thumb'] = empty($video->thumb) ? 'none' : $video->thumb;
         $video_detail['disabled'] = $video->disabled;
         $video_detail['sort'] = $video->sort;
         $video_detail['create_date'] = $video->create_date;
@@ -237,15 +266,43 @@ class Video extends Controller
         if(isset($inputs['disabled']) && $inputs['disabled']=='yes'){
             $disabled = 'yes';
         }
+
+        //处理图片上传
+        $photo_path = '';
+        $file = $request->file('thumb');
+        if(!is_null($file)){
+            if(!$file->isValid()){
+                $photo_path = '';
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的封面图！']);
+            }
+            else{
+                $destPath = realpath(public_path('uploads/images'));
+                if(!file_exists($destPath)){
+                    mkdir($destPath, 0755, true);
+                }
+                $extension = $file->getClientOriginalExtension();
+                $filename = gen_unique_code('IMG_').'.'.$extension;
+                if(!$file->move($destPath,$filename)){
+                    $photo_path = '';
+                }
+                else{
+                    $photo_path = URL::to('/').'/uploads/images/'.$filename;
+                }
+            }
+        }
         //执行更新数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
             'title'=> $inputs['video_title'],
             'link'=> $inputs['video_link'],
             'disabled'=> $disabled,
+            'thumb'=> $photo_path,
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
             'update_date'=> $now
         );
+        if(empty($photo_path)){
+            unset($save_data['thumb']);
+        }
         $video = DB::table('cms_video')->where('video_code',$video_code)->first();
         $rs = DB::table('cms_video')->where('video_code',$video_code)->update($save_data);
         if($rs === false){

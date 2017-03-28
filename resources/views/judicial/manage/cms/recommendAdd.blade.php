@@ -7,13 +7,13 @@
     <div class="panel-body">
         <form class="form-horizontal" id="recommendAddForm">
             <div class="form-group">
-                <label for="r_title" class="col-md-1 control-label">标题：</label>
+                <label for="r_title" class="col-md-1 control-label"><strong style="color: red">*</strong> 标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="r_title" name="r_title" placeholder="请输入链接标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="r_link" class="col-md-1 control-label">链接：</label>
+                <label for="r_link" class="col-md-1 control-label"><strong style="color: red">*</strong> 链接：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="r_link" name="r_link" placeholder="请输入链接地址" />
                 </div>

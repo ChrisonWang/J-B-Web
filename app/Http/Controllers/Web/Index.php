@@ -284,7 +284,7 @@ class Index extends Controller
             return view('judicial.web.videoList', $this->page_date);
         }
         else{
-            $videos = DB::table('cms_video')->where(['disabled'=>'no'])->where('archived', 'no')->skip($offset)->take(9)->get();
+            $videos = DB::table('cms_video')->where(['disabled'=>'no'])->where('archived', 'no')->orderBy('sort', 'desc')->skip($offset)->take(9)->get();
             if(count($videos) < 1){
                 return view('errors.404');
             }
@@ -293,6 +293,7 @@ class Index extends Controller
                     $video_list[$video->video_code] = array(
                         'key'=> $video->video_code,
                         'title'=> $video->title,
+                        'thumb'=> $video->thumb,
                         'link'=> $video->link,
                         'create_date'=> date('Y-m-d',strtotime($video->create_date)),
                     );

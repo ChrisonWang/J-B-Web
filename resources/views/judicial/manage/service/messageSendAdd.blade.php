@@ -59,7 +59,10 @@
                     <div class="box">
                         <div class="box_l">
                             @foreach($office_list as $key=> $office)
-                                <li data-key="{{ $key }}" style="list-style: none">{{ $office }}</li>
+                                <li data-key="{{ $key }}" style="list-style: none">
+                                    {{ $office }}
+                                    <input type="hidden" name="office_list" value=""/>
+                                </li>
                             @endforeach
                         </div>
                         <div class="box_m" id="office_selected">
@@ -139,7 +142,7 @@
             boxallran:"#allright",//批量向右移动按钮
             boxalltan:"#alltop",//移动第一个按钮
             boxallban:"#allbottom"//移动最后一个按钮
-        })
+        });
 
         $(".box_2").orso({
             boxl:".box_l_2",//左边大盒子

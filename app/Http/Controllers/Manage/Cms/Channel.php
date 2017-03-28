@@ -301,6 +301,10 @@ class Channel extends Controller
         //处理需要删除的
         foreach($sub_channel as $channel){
             if(!isset($edit_data[$channel->channel_id])){
+                $article = DB::table('cms_article')->where('channel_id',$channel->channel_id)->orWhere('sub_channel',$channel->channel_id)->get();
+                if(count($article) > 0){
+                    json_response(['status'=>'failed','type'=>'alert', 'res'=>'子频道频道包含文章不能删除！']);
+                }
                 $del_data[$channel->channel_id] = $channel->channel_id;
             }
         }
@@ -390,7 +394,7 @@ class Channel extends Controller
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含子频道不能删除！']);
         }
         $article = DB::table('cms_article')->where('channel_id',$id)->orWhere('sub_channel',$id)->get();
-        if(count($article)){
+        if(count($article) > 0){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含文章不能删除！']);
         }
         //事物方式删除

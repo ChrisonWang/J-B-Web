@@ -28,13 +28,13 @@
     <div class="panel-body">
         <form class="form-horizontal" id="articleAddForm">
             <div class="form-group">
-                <label for="article_title" class="col-md-1 control-label">标题：</label>
+                <label for="article_title" class="col-md-1 control-label"><strong style="color: red">*</strong> 标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="article_title" name="article_title" placeholder="请输入文章标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="disabled" class="col-md-1 control-label">是否发布：</label>
+                <label for="disabled" class="col-md-1 control-label"><strong style="color: red">*</strong> 是否发布：</label>
                 <div class="col-md-3">
                     <input type="checkbox" class="form-control" id="disabled" name="disabled" value="no" checked/>
                 </div>
@@ -51,17 +51,38 @@
                     <p>{{ $manager['nickname'] }}</p>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="tags" class="col-md-1 control-label">关联标签：</label>
-                <div class="col-md-3">
-                    @foreach($tag_list as $tag)
-                        <input type="checkbox" id="tags" name="tags[]" value="{{ $tag['tag_key'] }}" />
-                        {{ $tag['tag_title'] }}&nbsp;&nbsp;
-                    @endforeach
+            <!-- 标签选择器 -->
+            <div class="form-group office_switch">
+                <label for="search_tags" class="col-md-1 control-label">关联标签：</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="search_tags" name="search_tags" onkeyup="searchTags($(this))" placeholder="搜索标签"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="channel_id" class="col-md-1 control-label">频道：</label>
+                <div class="col-md-8">
+                    <div class="box">
+                        <div class="box_l">
+                            @foreach($tag_list as $tag)
+                                <li style="list-style: none" data-key="{{ $tag['tag_key'] }}">
+                                    {{ $tag['tag_title'] }}
+                                    <input type="hidden" name="tags[]" value="" />
+                                </li>
+                            @endforeach
+                        </div>
+                        <div class="box_m" id="tags_selected">
+                            <a href="javascript:" id="left" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                            </a>
+                            <a href="javascript:" id="right" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                            </a>
+                        </div>
+                        <div class="box_r"></div>
+                    </div>
+                </div>
+            </div><!-- 标签选择器 End -->
+            <div class="form-group">
+                <label for="channel_id" class="col-md-1 control-label"><strong style="color: red">*</strong> 频道：</label>
                 <div class="col-md-3">
                     <select name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
                         @foreach($channel_list as $channel)
@@ -71,7 +92,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_channel_id" class="col-md-1 control-label">二级频道：</label>
+                <label for="sub_channel_id" class="col-md-1 control-label"><strong style="color: red">*</strong> 二级频道：</label>
                 <div class="col-md-3">
                     <select name="sub_channel_id" class="form-control" id="sub_channel_id">
                         @foreach($sub_channel_list as $sub_channel)
@@ -134,7 +155,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="UE_Content" class="col-md-1 control-label">正文：</label>
+                <label for="UE_Content" class="col-md-1 control-label"><strong style="color: red">*</strong> 正文：</label>
                 <div class="col-md-10">
                     <script id="UE_Content" name="content" type="text/plain"></script>
                 </div>
@@ -163,7 +184,30 @@
     </div>
 </div>
 <script type="text/javascript">
-    var UE_Content = UE.getEditor('UE_Content');
+    $(document).ready(function(){
+        $(".box").orso({
+            boxl:".box_l",//左边大盒子
+            boxr:".box_r",//右边大盒子
+            boxlrX:"li",//移动小盒子
+            boxon:"on",//点击添加属性
+            idclass:true,//添加的属性是否为class//true=class; false=id;
+            boxlan:"#left",//单个向左移动按钮
+            boxran:"#right",//单个向右移动按钮
+            boxtan:"#top",//单个向上移动按钮
+            boxban:"#bottom",//单个向下移动按钮
+            boxalllan:"#allleft",//批量向左移动按钮
+            boxallran:"#allright",//批量向右移动按钮
+            boxalltan:"#alltop",//移动第一个按钮
+            boxallban:"#allbottom"//移动最后一个按钮
+        });
+    });
+
+    jQuery(function($) {
+        UE.delEditor('UE_Content');
+        var UE_Content = UE.getEditor('UE_Content');
+    });
+
+
     var logic = function( currentDateTime ){
         if (currentDateTime && currentDateTime.getDay() == 6){
             this.setOptions({

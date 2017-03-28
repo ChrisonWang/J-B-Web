@@ -78,9 +78,19 @@ class Archived extends Controller
         if(count($row) > 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在完全相同的归档']);
         }
+        $last_date = DB::table('system_archived')->where('type', $inputs['type'])->first();
+        if(isset($last_date->create_date) && intval(strtotime($last_date->create_date))!=0){
+            if(strtotime($last_date->date) > strtotime($inputs['date'])){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在晚于所选日期的归档，归档日期：'.$last_date->date]);
+            }
+            else{
+                $last_date = $last_date->date;
+            }
+        }
         $save_data = array(
             'type'=> $inputs['type'],
             'date'=> date('Y-m-d H:i:s', strtotime($inputs['date'])),
+            'last_date'=> is_null($last_date) ? '' : $last_date,
             'create_date'=> date('Y-m-d H:i:s', time()),
             'update_date'=> date('Y-m-d H:i:s', time()),
         );
@@ -141,10 +151,10 @@ class Archived extends Controller
         }
         DB::beginTransaction();
         if($archive->type=='service_judicial_expertise' || $archive->type=='service_legal_aid_apply' || $archive->type=='service_legal_aid_dispatch'){
-            $rs = DB::table($archive->type)->where('apply_date','<=',$archive->date)->update(['archived'=> 'no']);
+            $rs = DB::table($archive->type)->where('apply_date','<=',$archive->date)->where('apply_date','>',$archive->last_date)->update(['archived'=> 'no']);
         }
         else{
-            $rs = DB::table($archive->type)->where('create_date','<=',$archive->date)->update(['archived'=> 'no']);
+            $rs = DB::table($archive->type)->where('create_date','<=',$archive->date)->where('create_date','>',$archive->last_date)->update(['archived'=> 'no']);
         }
         if($rs === false){
             DB::rollBack();
@@ -201,7 +211,7 @@ class Archived extends Controller
                     $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
                     //加载列表数据
                     $consultion_list = array();
-                    $consultions = DB::table('service_consultions')->where('archived', 'yes')->where('create_date','<=',$archive->date)->orderBy('create_date', 'desc')->get();
+                    $consultions = DB::table('service_consultions')->where('archived', 'yes')->where('create_date','<=',$archive->date)->where('create_date','>',$archive->last_date)->orderBy('create_date', 'desc')->get();
                     if(count($consultions) > 0){
                         foreach($consultions as $consultion){
                             $consultion_list[] = array(
@@ -224,7 +234,7 @@ class Archived extends Controller
                     $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
                     //加载列表数据
                     $suggestion_list = array();
-                    $suggestions = DB::table('service_suggestions')->where('archived', 'yes')->where('create_date','<=',$archive->date)->get();
+                    $suggestions = DB::table('service_suggestions')->where('archived', 'yes')->where('create_date','<=',$archive->date)->where('create_date','>',$archive->last_date)->get();
                     if(count($suggestions) > 0){
                         foreach($suggestions as $suggestion){
                             $suggestion_list[] = array(
@@ -247,7 +257,7 @@ class Archived extends Controller
                     //加载列表数据
                     $apply_list = array();
                     $type_list = array();
-                    $applies = DB::table('service_judicial_expertise')->where('archived', 'yes')->where('apply_date','<=',$archive->date)->orderBy('apply_date', 'desc')->get();
+                    $applies = DB::table('service_judicial_expertise')->where('archived', 'yes')->where('apply_date','<=',$archive->date)->where('apply_date','>',$archive->last_date)->orderBy('apply_date', 'desc')->get();
                     if(count($applies) > 0){
                         $types = DB::table('service_judicial_expertise_type')->get();
                         if(count($types) > 0){
@@ -276,7 +286,7 @@ class Archived extends Controller
                     $this->page_data['thisPageName'] = '公检法指派管理';
                     //加载列表数据
                     $apply_list = array();
-                    $applys = DB::table('service_legal_aid_dispatch')->where('archived', 'yes')->where('apply_date','<=',$archive->date)->orderBy('apply_date', 'desc')->get();
+                    $applys = DB::table('service_legal_aid_dispatch')->where('archived', 'yes')->where('apply_date','<=',$archive->date)->where('apply_date','>',$archive->last_date)->where('apply_date','>',$archive->last_date)->orderBy('apply_date', 'desc')->get();
                     if(count($applys) > 0){
                         foreach($applys as $apply){
                             $apply_list[] = array(
@@ -300,7 +310,7 @@ class Archived extends Controller
                     $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
                     //加载列表数据
                     $apply_list = array();
-                    $applys = DB::table('service_legal_aid_apply')->where('archived', 'yes')->where('apply_date','<=',$archive->date)->orderBy('apply_date', 'desc')->get();
+                    $applys = DB::table('service_legal_aid_apply')->where('archived', 'yes')->where('apply_date','<=',$archive->date)->where('apply_date','>',$archive->last_date)->orderBy('apply_date', 'desc')->get();
                     if(count($applys) > 0){
                         foreach($applys as $apply){
                             $apply_list[] = array(
@@ -323,7 +333,7 @@ class Archived extends Controller
                 case 'cms_video':
                     //取出数据
                     $video_data = array();
-                    $videos = DB::table('cms_video')->where('archived', 'yes')->where('create_date','<=',$archive->date)->orderBy('sort', 'desc')->get();
+                    $videos = DB::table('cms_video')->where('archived', 'yes')->where('create_date','<=',$archive->date)->where('create_date','>',$archive->last_date)->orderBy('sort', 'desc')->get();
                     if(count($videos) > 0){
                         foreach($videos as $key=> $video){
                             $video_data[$key]['key'] = keys_encrypt($video->video_code);
@@ -370,7 +380,7 @@ class Archived extends Controller
                     }
                     //取出数据
                     $article_data = array();
-                    $articles = DB::table('cms_article')->where('archived', 'yes')->where('create_date','<=',$archive->date)->orderBy('create_date', 'desc')->get();
+                    $articles = DB::table('cms_article')->where('archived', 'yes')->where('create_date','<=',$archive->date)->where('create_date','>',$archive->last_date)->orderBy('create_date', 'desc')->get();
                     if(count($articles) > 0){
                         foreach($articles as $key=> $article){
                             $article_data[$key]['key'] = $article->article_code;
@@ -395,7 +405,7 @@ class Archived extends Controller
                     //取出数据
                     $send_list = array();
                     $temp_list = array();
-                    $list = DB::table('service_message_list')->where('archived', 'yes')->where('create_date','<=',$archive->date)->orderBy('create_date', 'desc')->get();
+                    $list = DB::table('service_message_list')->where('archived', 'yes')->where('create_date','<=',$archive->date)->where('create_date','>',$archive->last_date)->orderBy('create_date', 'desc')->get();
                     if(count($list) > 0){
                         foreach($list as $l){
                             $send_list[] = array(

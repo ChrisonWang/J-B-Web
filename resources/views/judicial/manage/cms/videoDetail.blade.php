@@ -13,6 +13,19 @@
                     <input disabled type="text" class="form-control" id="video_title" name="video_title" value="{{ $video_detail['video_title'] }}" placeholder="请输入视频名称" />
                 </div>
             </div>
+            @if( isset($video_detail['thumb']) && $video_detail['thumb'] != "none" )
+                <div class="form-group" id="image-thumbnail">
+                    <label for="thumb" class="col-md-1 control-label">预览：</label>
+                    <div class="col-md-3" id="image-holder">
+                        <img src="{{ $video_detail['thumb'] }}" class="img-thumbnail img-responsive">
+                    </div>
+                </div>
+            @else
+                <div class="form-group hidden" id="image-thumbnail">
+                    <label for="thumb" class="col-md-1 control-label">预览：</label>
+                    <div class="col-md-3" id="image-holder"></div>
+                </div>
+            @endif
             <div class="form-group">
                 <label for="video_link" class="col-md-1 control-label">视频链接：</label>
                 <div class="col-md-3">

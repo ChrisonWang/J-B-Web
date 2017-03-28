@@ -21,13 +21,13 @@ class Massage
 {
     private static $id ='70509';
 
-    private static $username ='admin';
+    private static $username ='vivianwu';
 
-    private static $password ='03138874';
+    private static $password ='sfj20170201';
 
     public static function send($to, $content, $presendTime='')
     {
-        $base_url = 'http://gateway.iems.net.cn/GsmsHttp';
+        $base_url = 'https://gateway.iems.net.cn/GsmsHttp';
         if(is_array($to)){
             $_to = '';
             foreach($to as $phone){

@@ -27,11 +27,13 @@
 		});
 		$(outside.boxl).mouseover(function(){
 			$(outside.boxl).find(outside.boxlrX).on("dblclick",function(){
+				$(this).find("input").val($(this).data('key'));
 				$(this).appendTo(outside.boxr).siblings().removeClass(outside.boxon);
 			});
 		});
 		$(outside.boxr).mouseover(function(){
 			$(outside.boxr).find(outside.boxlrX).on("dblclick",function(){
+				$(this).find("input").val('');
 				$(this).appendTo(outside.boxl).siblings().removeClass(outside.boxon);
 			});
 		});
@@ -39,6 +41,7 @@
 			var isno=$(outside.boxr).find(outside.boxlrX).hasClass(outside.boxon);
 			var find=$(outside.boxr).children(idclass+outside.boxon);
 			if(isno){
+				find.find("input").val('');
 				find.appendTo(outside.boxl).siblings().removeClass(outside.boxon);
 			}else{
 				alert("请选择一个！");
@@ -48,6 +51,7 @@
 			var isno=$(outside.boxl).find(outside.boxlrX).hasClass(outside.boxon);
 			var find=$(outside.boxl).children(idclass+outside.boxon);
 			if(isno){
+				find.find("input").val(find.data('key'));
 				find.appendTo(outside.boxr).siblings().removeClass(outside.boxon);
 			}else{
 				alert("请选择一个！");

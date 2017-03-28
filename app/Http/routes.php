@@ -439,6 +439,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/cms/article/upload','Manage\Cms\Article@uploadFiles');
 
+        Route::post('manage/cms/article/searchTags','Manage\Cms\Article@searchTags');
+
         Route::post('manage/cms/articleList/{page?}','Manage\Cms\Article@index');
 
         Route::post('manage/cms/article/get_sub_channel','Manage\Cms\Article@ajaxGetChannel');

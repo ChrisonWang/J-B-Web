@@ -53,10 +53,11 @@
             <div class="form-group">
                 <label for="tags" class="col-md-1 control-label">关联标签：</label>
                 <div class="col-md-3">
-                    @foreach($tag_list as $tag)
-                        <input disabled type="checkbox" id="tags" name="tags[]" value="{{ $tag['tag_key'] }}" @if(isset($article_detail['tags'][$tag['tag_key']])) checked @endif/>
-                        {{ $tag['tag_title'] }}&nbsp;&nbsp;
-                    @endforeach
+                    @if(is_array($article_detail['tags']) && $article_detail['tags']!='')
+                        @foreach($article_detail['tags'] as $tag_title)
+                            {{ $tag_title }}&nbsp;&nbsp;
+                        @endforeach
+                    @endif
                 </div>
             </div>
             <div class="form-group">
@@ -160,12 +161,15 @@
     </div>
 </div>
 <script type="text/javascript">
-    var UE_Content = UE.getEditor('UE_Content',{
-        'readonly': true,
-    });
-    UE_Content.ready(function(){
-        var value = '{!! $article_detail['content'] !!}';
-        UE_Content.execCommand('insertHtml',value);
+    jQuery(function($) {
+        UE.delEditor('UE_Content');
+        var UE_Content = UE.getEditor('UE_Content',{
+            'readonly': true,
+        });
+        UE_Content.ready(function(){
+            var value = '{!! $article_detail['content'] !!}';
+            UE_Content.execCommand('insertHtml',value);
+        });
     });
 
     var logic = function( currentDateTime ){

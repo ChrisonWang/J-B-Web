@@ -21,11 +21,9 @@
         <div class="wsfy_tit">
             <span class="wfb_tit">司法鉴定申请流程</span>
             <ul>
-                <li><i>■</i>步骤一：申请人需要准备材料《提供法律援助通知书》和案件材料（起诉书/证据）。</li>
-                <li><i>■</i>步骤二：待确认。</li>
-                <li><i>■</i>步骤三：待确认。</li>
-                <li><i>■</i>步骤四：待确认。</li>
-                <li><i>■</i>步骤五：待确认。</li>
+                <li><i>■</i>申请人根据司法鉴定类型下载对应表格。</li>
+                <li><i>■</i>申请人在本系统提交司法鉴定申请，并上传相关附件。</li>
+                <li><i>■</i>申请人在收到司法局审批通过短信通知后，携带所有资料到司法局一次性办理业务。</li>
             </ul>
         </div>
         <div class="xx_tit">
@@ -70,7 +68,7 @@
                     <input type="file" name="file">
 
                 <span class="mtb_m">
-                    <a href="#" target="_blank">下载表格</a>
+                    <a href="{{ URL::to('/').'/uploads/system/files/群众预约援助表.xlsx'}}" target="_blank">下载表格</a>
                 </span>
                 </div>
             <div class="last_btn" onclick="expertiseApply()">

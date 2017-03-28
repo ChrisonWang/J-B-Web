@@ -258,6 +258,7 @@ class ServiceLoadContent extends Controller
                     'receiver_type'=> $l->receiver_type,
                     'received_office'=> $l->received_office,
                     'received_person'=> $l->received_person,
+                    'send_status'=> $l->send_status,
                     'create_date'=> $l->create_date,
                     'update_date'=> $l->update_date,
                 );
@@ -352,7 +353,7 @@ class ServiceLoadContent extends Controller
         }
         $this->page_data['pages'] = $pages;
         $this->page_data['type_list'] = $type_list;
-        $this->page_data['apply_list'] = $apply_list;
+        $this->page_data['send_list'] = $apply_list;
         $pageContent = view('judicial.manage.service.expertiseApplyList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }

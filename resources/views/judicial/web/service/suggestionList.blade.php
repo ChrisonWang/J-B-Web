@@ -17,8 +17,8 @@
     </div>
     <!--搜索栏-->
     <div class="container-fluid">
-        <div class="id_sch_l">
-
+        <div class="left_title">
+            <span>征求意见列表</span>
         </div>
         <div class="id_sch_r">
             <form action="{{ URL::to('suggestions/search') }}" method="post">

@@ -16,9 +16,9 @@
         </div>
     </div>
     <!--搜索栏-->
-    <div class="container-fluid">
-        <div class="id_sch_l">
-
+    <div class="container-fluid" style="padding: 0px">
+        <div class="left_title">
+            <span>问题咨询列表</span>
         </div>
         <div class="id_sch_r">
             <form action="{{ URL::to('consultions/search') }}" method="post">

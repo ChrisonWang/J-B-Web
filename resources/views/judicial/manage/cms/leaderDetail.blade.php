@@ -59,11 +59,17 @@
     </div>
 </div>
 <script type="text/javascript">
-    var UE_Content = UE.getEditor('UE_Content',{
-        'readonly':true,
+    jQuery(function($) {
+        UE.delEditor('UE_Content');
+        var UE_Content = UE.getEditor('UE_Content',{
+            'readonly':true,
+        });
+
+        UE_Content.ready(function(){
+            var value = '{!! $leaderDetail['description'] !!}';
+            UE_Content.execCommand('insertHtml',value);
+        });
     });
-    UE_Content.ready(function(){
-        var value = '{!! $leaderDetail['description'] !!}';
-        UE_Content.execCommand('insertHtml',value);
-    });
+
+
 </script>

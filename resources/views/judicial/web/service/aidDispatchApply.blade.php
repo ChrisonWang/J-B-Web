@@ -21,11 +21,10 @@
         <div class="wsfy_tit">
             <span class="wfb_tit">公检法指派援助流程</span>
             <ul>
-                <li><i>■</i>步骤一：申请人需要准备材料《提供法律援助通知书》和案件材料（起诉书/证据）。</li>
-                <li><i>■</i>步骤二：待确认。</li>
-                <li><i>■</i>步骤三：待确认。</li>
-                <li><i>■</i>步骤四：待确认。</li>
-                <li><i>■</i>步骤五：待确认。</li>
+                <li><i>■</i>申请人需要准备材料《提供法律援助通知书》和案件材料（起诉书/证据）。</li>
+                <li><i>■</i>申请人在本系统提交公检法指派申请，并上传相关附件。</li>
+                <li><i>■</i>司法局法律援助科科长根据律师情况，在系统中指派律师对用户进行援助。</li>
+                <li><i>■</i>指派成功后系统短信通知申请人律师联系信息。</li>
             </ul>
         </div>
         <div class="xx_tit">
@@ -102,7 +101,13 @@
             </form>
         </div>
     </div>
+</div>
 
+<!--弹窗-->
+<div class="alert_sh" style="display: none">
+    <a href="javascript:void(0)" class="closed">X</a>
+    <div class="als_top">提交中</div>
+    <div class="als_down"></div>
 </div>
 
 

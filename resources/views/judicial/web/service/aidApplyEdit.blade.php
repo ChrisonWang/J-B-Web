@@ -23,11 +23,11 @@
         <div class="wsfy_tit">
             <span class="wfb_tit">群众预约援助流程</span>
             <ul>
-                <li><i>■</i>申请人填写《法律援助申请表》</li>
-                <li><i>■</i>步骤二：待确认。</li>
-                <li><i>■</i>步骤三：待确认。</li>
-                <li><i>■</i>步骤四：待确认。</li>
-                <li><i>■</i>步骤五：待确认。</li>
+                <li><i>■</i>申请人填写《法律援助申请表》<a href="{{ URL::to('/').'/uploads/system/files/群众预约援助表.xlsx'}}" target="_blank">点击下载附件</a></li>
+                <li><i>■</i>申请人填写《法律援助申请人经济情况证明表》，需证明单位签章（民工讨薪无需提供）<a href="{{ URL::to('/').'/uploads/system/files/群众预约援助表.xlsx'}}" target="_blank">点击下载附件</a></li>
+                <li><i>■</i>申请人在本系统提交群众预约申请，并上传扫描附件</li>
+                <li><i>■</i>法律援助科科长审核后，根据律师情况，在系统中指派律师对用户进行援助。</li>
+                <li><i>■</i>指派成功后系统短信通知申请人律师联系信息。</li>
             </ul>
         </div>
         <div class="xx_tit">
