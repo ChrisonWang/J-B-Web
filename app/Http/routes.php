@@ -362,6 +362,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/cms/usersList/{page?}','Manage\User\Users@index');
 
+        Route::post('manage/user/users/searchUser','Manage\User\Users@searchUser');
+
         //菜单管理
         Route::get('manage/user/menus/show','Manage\User\Menus@show');
 

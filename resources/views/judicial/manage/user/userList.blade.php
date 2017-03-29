@@ -38,18 +38,16 @@
                         <div class="form-group col col-md-3">
                             <label for="search-type">用户类型：</label>
                             <select id="search-type" name="search-type" class="form-control">
-                                @if(isset($type_list))
-                                    @foreach($type_list as $key=> $name)
-                                        <option value="{{ $key }}">{{ $name }}</option>
-                                    @endforeach
-                                @endif
+                                <option value="none">不限</option>
+                                <option value="member">前台用户</option>
+                                <option value="manager">后台用户</option>
                             </select>
                         </div>
                         <div class="form-group col col-md-3">
                             <label for="search-office">科室：</label>
                             <select id="search-office" name="search-office" class="form-control">
                                 @if(isset($office_list))
-                                    <option value="none">不限科室</option>
+                                    <option value="none">不限</option>
                                     @foreach($office_list as $key=> $name)
                                         <option value="{{ $key }}">{{ $name }}</option>
                                     @endforeach
@@ -57,7 +55,7 @@
                             </select>
                         </div>
                         <input type="hidden" name="s_type" value="users"/>
-                        <button type="button" class="btn btn-info" onclick="search_list($(this), $('#this-container'))">搜索</button>
+                        <button type="button" class="btn btn-info" onclick="searchUser($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>

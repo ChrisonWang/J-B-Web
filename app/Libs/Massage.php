@@ -35,7 +35,8 @@ class Massage
         }
         $presendTime = empty($presendTime) ? '' : '&presendTime='.$presendTime;
         $content = urlencode(mb_convert_encoding($content, 'utf-8'));
-        $send_url = $base_url.'?un='.self::$username.'&pw='.self::$password.'&phone='.$to.'&msg='.$content.$presendTime.'&rd=1';
+        $send_url =
+            $base_url.'?un='.self::$username.'&pw='.self::$password.'&phone='.$to.'&msg='.$content.$presendTime.'&rd=1';
         $result = self::_send_get($send_url);
         $result['receiver'] = $to;
         //日志

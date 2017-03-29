@@ -873,8 +873,10 @@ class User extends Controller
         Session::put('verify_code',$code.'|'.time(),30);
         Session::save();
         $re = Massage::send($phone,'你的验证码是：'.$code.',验证码15分钟内有效！');
-        $re = explode(':', $re['res']);
-        if($re[0]=='OK'){
+        $re['res'] = str_replace(array("\r\n", "\r", "\n"), '|', $re['res']);
+        $status = explode('|',$re['res']);
+        $stat = explode(',',$status[0]);
+        if(isset($stat[1]) && $stat[1]==0){
             json_response(['status'=>'succ','type'=>'notice', 'res'=>'！']);
         }
         else{

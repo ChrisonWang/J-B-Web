@@ -22,10 +22,13 @@
 		}else{
 			idclass="#"
 		}
-		$(this).find(outside.boxlrX).on("click",function(){
+		/*$(this).find(outside.boxlrX).on("click",function(){
 			$(this).addClass(outside.boxon).siblings().removeClass(outside.boxon)
-		});
+		});*/
 		$(outside.boxl).mouseover(function(){
+			$(outside.boxl).find(outside.boxlrX).on("click",function(){
+				$(this).addClass(outside.boxon).siblings().removeClass(outside.boxon)
+			});
 			$(outside.boxl).find(outside.boxlrX).on("dblclick",function(){
 				$(this).find("input").val($(this).data('key'));
 				$(this).appendTo(outside.boxr).siblings().removeClass(outside.boxon);

@@ -20,14 +20,17 @@ class Logs
 
     public static function message_log($info)
     {
-        $status = explode(':',$info['res']);
+        $info['res'] = str_replace(array("\r\n", "\r", "\n"), '|', $info['res']);
+        $status = explode('|',$info['res']);
+        $stat = explode(',',$status[0]);
+        $result_info = isset($status[1]) ? $status[1] : '';
         $log = array(
             'receiver'=>$info['receiver'],
             'send_date'=>date('Y-m-d H:i:s', time()),
-            'send_status'=>strtolower($status[0])=='ok' ? 'succ' : 'failed',
+            'send_status'=>isset($stat[1])&&$stat[1]==0 ? 'succ' : 'failed',
             'request_time'=>$info['start'],
             'result_time'=>$info['end'],
-            'result_info'=>$status[1]
+            'result_info'=>$result_info,
         );
         DB::table('service_message_log')->insertGetId($log);
         return;

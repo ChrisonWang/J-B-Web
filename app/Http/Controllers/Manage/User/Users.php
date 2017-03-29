@@ -593,6 +593,157 @@ class Users extends Controller
         }
     }
 
+    /**
+     * 搜索用户
+     * @param Request $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    public function searchUser(Request $request){
+        $inputs = $request->input();
+
+        $data_list = array();
+        $data_member = array();
+        $data_manager = array();
+        $type = isset($inputs['search-type']) ? $inputs['search-type'] : '';
+        $login_name = isset($inputs['search-login-name']) ? $inputs['search-login-name'] : '';
+        $nickname = isset($inputs['search-nickname']) ? $inputs['search-nickname'] : '';
+        $cell_phone = isset($inputs['search-cell-phone']) ? $inputs['search-cell-phone'] : '';
+        $status = isset($inputs['search-status']) ? $inputs['search-status'] : '';
+        $office = isset($inputs['search-office']) ? $inputs['search-office'] : '';
+
+        //搜索类型
+        switch($type){
+            case 'member':
+                $where = '';
+                $sql = 'SELECT * FROM `user_members` AS a JOIN `user_member_info` AS b ON a.`member_code` = b.`member_code` WHERE ';
+                if($login_name !== ''){
+                    $where .= 'a.`login_name` LIKE "%'.$login_name.'%" AND ';
+                }
+                if($nickname !== ''){
+                    $where .= 'b.`citizen_name` LIKE "%'.$nickname.'%" AND ';
+                }
+                if($cell_phone !== ''){
+                    $where .= 'a.`cell_phone` LIKE "%'.$cell_phone.'%" AND ';
+                }
+                if($status !== '' && $status!='none'){
+                    $where .= 'a.`disabled` = "'.$status.'" AND ';
+                }
+                $sql .= $where.'1';
+                $data_member = DB::select($sql);
+                break;
+
+            case 'manager':
+                $where = '';
+                $sql = 'SELECT * FROM `user_manager` WHERE ';
+                if($login_name !== ''){
+                    $where .= ' `login_name` LIKE "%'.$login_name.'%" AND ';
+                }
+                if($nickname !== ''){
+                    $where .= ' `nickname` LIKE "%'.$nickname.'%" AND ';
+                }
+                if($cell_phone !== ''){
+                    $where .= ' `cell_phone` LIKE "%'.$cell_phone.'%" AND ';
+                }
+                if($status !== '' && $status!='none'){
+                    $where .= ' `disabled` = "'.$status.'" AND ';
+                }
+                if($office !== '' && $office!='none'){
+                    $where .= ' `office_id` = "'.keys_decrypt($office).'" AND ';
+                }
+                $sql .= $where.'1';
+                $data_manager = DB::select($sql);
+                break;
+
+            default:
+                //前台
+                $where_member = '';
+                $sql_member = 'SELECT * FROM `user_members` AS a JOIN `user_member_info` AS b ON a.`member_code` = b.`member_code` WHERE ';
+                if($login_name !== ''){
+                    $where_member .= 'a.`login_name` LIKE "%'.$login_name.'%" AND ';
+                }
+                if($nickname !== ''){
+                    $where_member .= 'b.`citizen_name` LIKE "%'.$nickname.'%" AND ';
+                }
+                if($cell_phone !== ''){
+                    $where_member .= 'a.`cell_phone` LIKE "%'.$cell_phone.'%" AND ';
+                }
+                if($status !== '' && $status!='none'){
+                    $where_member .= 'a.`disabled` = "'.$status.'" AND ';
+                }
+                $sql_member .= $where_member.'1';
+                $data_member = DB::select($sql_member);
+
+                //后台
+                $where_manager = '';
+                $sql_manager = 'SELECT * FROM `user_manager` WHERE ';
+                if($login_name !== ''){
+                    $where_manager .= ' `login_name` LIKE "%'.$login_name.'%" AND ';
+                }
+                if($nickname !== ''){
+                    $where_manager .= ' `nickname` LIKE "%'.$nickname.'%" AND ';
+                }
+                if($cell_phone !== ''){
+                    $where_manager .= ' `cell_phone` LIKE "%'.$cell_phone.'%" AND ';
+                }
+                if($status !== '' && $status!='none'){
+                    $where_manager .= ' `disabled` = "'.$status.'" AND ';
+                }
+                if($office !== '' && $office!='none'){
+                    $where_manager .= ' `office_id` = "'.keys_decrypt($office).'" AND ';
+                }
+                $sql_manager .= $where_manager.'1';
+                $data_manager = DB::select($sql_manager);
+                break;
+        }
+
+        //处理结果
+        if(count($data_member) > 0){
+            foreach($data_member as $member){
+                $data_list[] = array(
+                    'key'=> $member->member_code,
+                    'login_name'=> $member->login_name,
+                    'type_id'=> $member->user_type,
+                    'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
+                    'cell_phone'=> $member->cell_phone,
+                    'disabled'=> $member->disabled,
+                    'create_date'=> $member->create_date,
+                );
+            }
+        }
+        if(count($data_manager) > 0){
+            foreach($data_manager as $manager){
+                $data_list[] = array(
+                    'key'=> $manager->manager_code,
+                    'login_name'=> $manager->login_name,
+                    'type_id'=> $manager->type_id,
+                    'nickname'=> empty($manager->nickname) ? '未设置' : $manager->nickname,
+                    'cell_phone'=> $manager->cell_phone,
+                    'disabled'=> $manager->disabled,
+                    'create_date'=> $manager->create_date,
+                );
+            }
+        }
+
+        //输出页面
+        if(count($data_list) < 1){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
+        }
+        else{
+            //取出用户类型
+            $type_list = array();
+            $user_type = DB::table('user_type')->get();
+            foreach($user_type as $type){
+                $type_list[$type->type_id] = $type->type_name;
+            }
+            //返回到前段界面
+            $this->page_data['type_list'] = $type_list;
+            $this->page_data['data_list'] = $data_list;
+            $pageContent = view('judicial.manage.cms.ajaxSearch.usersSearch',$this->page_data)->render();
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        }
+    }
+
     private function _checkInput($input, $managerCode){
         if(!preg_phone($input['cell_phone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入正确的手机号！"]);

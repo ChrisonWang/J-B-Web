@@ -11,7 +11,7 @@
     </tr>
     </thead>
     <tbody class="text-center">
-    @foreach($user_list as $user)
+    @foreach($data_list as $user)
         <tr>
             <td>
                 <a href="javascript: void(0) ;" data-key="{{ $user['key'] }}" data-type="{{ $user['type_id'] }}" data-method="show" onclick="userMethod($(this))">查看</a>

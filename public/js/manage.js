@@ -1702,6 +1702,29 @@ function checkBoxDisabled(cb){
     return;
 }
 
+function searchUser(t, c){
+    var data = t.parents('form').serialize()
+    var url = '/manage/user/users/searchUser'
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                c.html(re.res);
+            }
+            else if(re.status == 'failed'){
+                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+            }
+        }
+    });
+    return;
+}
+
 function search_list(t, c){
     var data = t.parents('form').serialize()
     var url = '/manage/searchList'
