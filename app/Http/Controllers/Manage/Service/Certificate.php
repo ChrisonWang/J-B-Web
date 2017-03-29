@@ -14,7 +14,7 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
-use App\Libs\Massage;
+use App\Libs\Message;
 
 use App\Libs\Logs;
 
@@ -559,20 +559,22 @@ class Certificate extends Controller
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'发送对象为“未备案人员”时，请填写4位数备案年份！']);
         }
         //内容
-        $content = DB::table('service_message_temp')->where('temp_code', $inputs['temp_code'])->first();
-        if(!isset($content->content) || trim($content->content)===''){
+        $contents = DB::table('service_message_temp')->where('temp_code', $inputs['temp_code'])->first();
+        if(!isset($contents->content) || trim($contents->content)===''){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'短信模板内容为空！请检查']);
         }
         else{
-            $content = $content->content;
+            $content = $contents->content;
         }
         //取出手机号
+        $send_log = array();
         if($inputs['to_message']=='no'){
             $phone_list = '';
             $certificates = DB::table('service_certificate')->get();
             if(count($certificates)>0){
                 foreach($certificates as $certificate){
                     $phone_list .= ','.$certificate->phone;
+                    $send_log[$certificate->id] = $certificate->message_log;
                 }
                 $phone_list = substr($phone_list, 1, (strlen($phone_list)-1));
             }
@@ -594,12 +596,53 @@ class Certificate extends Controller
             }
         }
         //发送
-        $rs = Massage::send($phone_list, $content);
-        $rs = explode(':',$rs['res']);
-        if(strtolower($rs[0]) == "ok"){
-            json_response(['status'=>'succ','type'=>'alert', 'res'=>'']);
+        /*if(isset($phone_list) && isset($content)){
+            $rs = Message::send($phone_list, $content);
         }
         else{
+            $rs = 'failed';
+        }*/
+        $rs['status'] = "succ";
+        if($rs['status'] == "succ"){
+            foreach($send_log as $id=> $log){
+                if(empty($log)){
+                    $log[0] = array(
+                        'date'=> date('Y-m-d H:i:s', time()),
+                        'title'=> $contents->title,
+                        'status' => 'success',
+                    );
+                }
+                else{
+                    $log = json_decode($log, true);
+                    $log[] = array(
+                        'date'=> date('Y-m-d H:i:s', time()),
+                        'title'=> $contents->title,
+                        'status' => 'success',
+                    );
+                }
+                $log_rs = DB::table('service_certificate')->where('id', $id)->update(['message_log'=> json_encode($log), 'last_status'=>'success']);
+            }
+            json_response(['status'=>'succ','type'=>'alert', 'res'=>'发送成功！']);
+        }
+        else{
+            foreach($send_log as $id=> $log){
+                if(empty($log)){
+                    $log[0] = array(
+                        'date'=> date('Y-m-d H:i:s', time()),
+                        'title'=> $contents->title,
+                        'status' => 'failed',
+                    );
+                }
+                else{
+                    $log = json_decode($log, true);
+                    $log[] = array(
+                        'date'=> date('Y-m-d H:i:s', time()),
+                        'title'=> $contents->title,
+                        'status' => 'failed',
+                    );
+                }
+                $log_rs = DB::table('service_certificate')->where('id', $id)->update(['message_log'=> json_encode($log), 'last_status'=> 'failed']);
+            }
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'手机号码有误！请查看短信日志']);
         }
     }

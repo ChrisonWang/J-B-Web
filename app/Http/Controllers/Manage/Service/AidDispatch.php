@@ -12,7 +12,7 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
-use App\Libs\Massage;
+use App\Libs\Message;
 
 use App\Libs\Logs;
 
@@ -174,7 +174,7 @@ class AidDispatch extends Controller
                 $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
             }
             if(isset($phone->cell_phone)){
-                Massage::send($phone->cell_phone,'管理员通过了您编号为“'.$member_code->record_code.'”的公检法指派申请！');
+                Message::send($phone->cell_phone,'管理员通过了您编号为“'.$member_code->record_code.'”的公检法指派申请！');
             }
             //审核成功，加载列表数据
             $apply_list = array();
@@ -241,7 +241,7 @@ class AidDispatch extends Controller
                 $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
             }
             if(isset($phone->cell_phone)){
-                Massage::send($phone->cell_phone,'管理员拒绝了您编号为“'.$member_code->record_code.'”的公检法指派申请，请登录PC官网查看原因！');
+                Message::send($phone->cell_phone,'管理员拒绝了您编号为“'.$member_code->record_code.'”的公检法指派申请，请登录PC官网查看原因！');
             }
             //审核成功，加载列表数据
             $apply_list = array();

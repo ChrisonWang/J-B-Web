@@ -12,7 +12,7 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
-use App\Libs\Massage;
+use App\Libs\Message;
 
 use App\Libs\Logs;
 
@@ -187,7 +187,7 @@ class AidApply extends Controller
             //发短信
             $phone = DB::table('service_legal_aid_apply')->where('id',$id)->first();
             if(isset($phone->apply_phone)){
-                Massage::send($phone->apply_phone,'管理员通过了您编号为“'.$phone->record_code.'”的法律援助申请！');
+                Message::send($phone->apply_phone,'管理员通过了您编号为“'.$phone->record_code.'”的法律援助申请！');
             }
             //审核成功，加载列表数据
             $apply_list = array();
@@ -251,7 +251,7 @@ class AidApply extends Controller
             //发短信
             $phone = DB::table('service_legal_aid_apply')->where('archived', 'no')->where('id',$id)->first();
             if(isset($phone->apply_phone)){
-                Massage::send($phone->apply_phone,'管理员驳回了您编号为“'.$phone->record_code.'”的法律援助申请，请登录PC官网查看原因！');
+                Message::send($phone->apply_phone,'管理员驳回了您编号为“'.$phone->record_code.'”的法律援助申请，请登录PC官网查看原因！');
             }
             //审核成功，加载列表数据
             $apply_list = array();

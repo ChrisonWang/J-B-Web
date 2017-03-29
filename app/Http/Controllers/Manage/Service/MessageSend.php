@@ -14,7 +14,7 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
-use App\Libs\Massage;
+use App\Libs\Message;
 
 use App\Libs\Logs;
 
@@ -179,15 +179,27 @@ class MessageSend extends Controller
 
             //持证人
             default:
-                $log = array(
-                    'date'=> $inputs['send_date'],
-                    'title'=>$content->title,
-                    'status'=>'success'
-                );
                 if(is_array($member_list) && !empty($member_list) && count($member_list)>0){
                     foreach($member_list as $member){
                         $phone_list[] = $member;
-                        DB::table('service_certificate')->where('phone', $member)->update(['message_log'=>json_encode($log), 'last_status'=>'success']);
+                        $log = DB::table('service_certificate')->where('phone', $member)->first();
+                        if(empty($log->message_log)){
+                            $logs = array();
+                            $logs[0] = array(
+                                'date'=> $inputs['send_date'],
+                                'title'=> $content->title,
+                                'status' => 'success',
+                            );
+                        }
+                        else{
+                            $logs = json_decode($log->message_log, true);
+                            $logs[] = array(
+                                'date'=> $inputs['send_date'],
+                                'title'=> $content->title,
+                                'status' => 'success',
+                            );
+                        }
+                        $log_rs = DB::table('service_certificate')->where('phone', $member)->update(['message_log'=> json_encode($logs), 'last_status'=>'success']);
                     }
                 }
                 else{
@@ -195,7 +207,24 @@ class MessageSend extends Controller
                     if(count($phone) > 0){
                         foreach($phone as $p){
                             $phone_list[]=$p->phone;
-                            DB::table('service_certificate')->update(['message_log'=>json_encode($log), 'last_status'=>'success']);
+                            $log = DB::table('service_certificate')->where('id', $p->id)->first();
+                            if(empty($log->message_log)){
+                                $logs = array();
+                                $logs[0] = array(
+                                    'date'=> $inputs['send_date'],
+                                    'title'=> $content->title,
+                                    'status' => 'success',
+                                );
+                            }
+                            else{
+                                $logs = json_decode($log->message_log, true);
+                                $logs[] = array(
+                                    'date'=> $inputs['send_date'],
+                                    'title'=> $content->title,
+                                    'status' => 'success',
+                                );
+                            }
+                            $log_rs = DB::table('service_certificate')->where('id', $p->id)->update(['message_log'=> json_encode($logs), 'last_status'=>'success']);
                         }
                     }
                     $save_member_log = 'all';
@@ -206,13 +235,19 @@ class MessageSend extends Controller
         //电话队列
         $to = '';
         if(count($phone_list) > 0){
-            foreach($phone_list as $p){
-                $to .= ','.$p;
+            if(count($phone_list) == 1){
+                $to = $phone_list[0];
             }
+            else{
+                foreach($phone_list as $p){
+                    $to .= ','.$p;
+                }
+            }
+
             $content = $content->content;
             $to = substr($to, 1, strlen($to)-1);
             $presendTime = date('Y-m-d H:i:s', strtotime($inputs['send_date']));
-            Massage::send($to, $content, $presendTime);
+            Message::send($to, $content, $presendTime);
         }
         //储存信息
         $now = date('Y-m-d H:i:s', time());
@@ -258,6 +293,7 @@ class MessageSend extends Controller
                         'receiver_type'=> $l->receiver_type,
                         'received_office'=> $l->received_office,
                         'received_person'=> $l->received_person,
+                        'send_status'=> $l->send_status,
                         'create_date'=> $l->create_date,
                         'update_date'=> $l->update_date,
                     );

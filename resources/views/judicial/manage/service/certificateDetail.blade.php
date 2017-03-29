@@ -87,17 +87,23 @@
                                 </tr>
                                 </thead>
                                 <tbody class="text-center" id="menu-nodes">
-                                    <tr>
-                                        <td width="20%">
-                                            <input disabled type="text" value="{{ $certificate_detail['message_log']['date'] }}" class="form-control" />
-                                        </td>
-                                        <td>
-                                            <input disabled type="text" value="{{ $certificate_detail['message_log']['title'] }}" class="form-control" />
-                                        </td>
-                                        <td>
-                                            <input disabled type="text" value="发送成功" class="form-control" />
-                                        </td>
-                                    </tr>
+                                    @foreach($certificate_detail['message_log'] as $log)
+                                        <tr>
+                                            <td>
+                                                {{ $log['date'] }}
+                                            </td>
+                                            <td>
+                                                {{ $log['title'] }}
+                                            </td>
+                                            <td>
+                                                @if($log['status'] == 'success')
+                                                    <b style="color: green">发送成功</b>
+                                                @else
+                                                    <b style="color: red">发送失败</b>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

@@ -12,7 +12,7 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
-use App\Libs\Massage;
+use App\Libs\Message;
 
 use App\Libs\Logs;
 
@@ -155,7 +155,7 @@ class Consultions extends Controller
 
             $phone = DB::table('service_consultions')->where('id',$id)->first();
             if(isset($phone->cell_phone)){
-                Massage::send($phone->cell_phone,'您在三门峡司法局提交的问题咨询（编号:'.$record_code->record_code.'）已经回复，去登录网站查看吧');
+                Message::send($phone->cell_phone,'您在三门峡司法局提交的问题咨询（编号:'.$record_code->record_code.'）已经回复，去登录网站查看吧');
             }
             //答复成功，加载列表数据
             $consultion_list = array();
