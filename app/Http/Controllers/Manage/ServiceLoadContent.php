@@ -291,7 +291,7 @@ class ServiceLoadContent extends Controller
         //加载列表数据
         $type_list = array();
         $pages = '';
-        $count = DB::table('service_judicial_expertise_type')->where('archived', 'no')->count();
+        $count = DB::table('service_judicial_expertise_type')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
         $types = DB::table('service_judicial_expertise_type')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
@@ -353,7 +353,7 @@ class ServiceLoadContent extends Controller
         }
         $this->page_data['pages'] = $pages;
         $this->page_data['type_list'] = $type_list;
-        $this->page_data['send_list'] = $apply_list;
+        $this->page_data['apply_list'] = $apply_list;
         $pageContent = view('judicial.manage.service.expertiseApplyList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }

@@ -10,6 +10,10 @@ function delRow(t){
     t.parents("tr").remove();
 }
 
+function delRowChannel(t){
+    t.parents("tr").remove();
+}
+
 function addRow(){
     var content = $("#node-row tbody").html()
     $("#menu-nodes").append(content);
@@ -1062,7 +1066,7 @@ function editRoles(){
         var permission = $(this).find("select[name='permission'] option:selected").val();
         if( menus == '' || nodes == '' || permission == ''){
             $('#add-row-notice').removeClass('hidden');
-            $('#add-row-notice').text('请填写完整的频道名称名称');
+            $('#add-row-notice').text('请填写完整的频道名称');
             v = false;
             return false
         }
@@ -1106,7 +1110,7 @@ function addRoles(){
         var permission = $(this).find("select[name='permission'] option:selected").val();
         if( menus == '' || nodes == '' || permission == ''){
             $('#add-row-notice').removeClass('hidden');
-            $('#add-row-notice').text('请填写完整的频道名称名称');
+            $('#add-row-notice').text('请填写完整的频道名称');
             v = false;
             return false
         }
@@ -1246,10 +1250,11 @@ function addChannel(){
         var zwgk = ($(this).find("input[name='sub-zwgk']").is(':checked')) ==true ? 'yes' : 'no';
         var wsbs = ($(this).find("input[name='sub-wsbs']").is(':checked')) ==true ? 'yes' : 'no';
         if( title ==''){
-            $('#add-row-notice').removeClass('hidden');
+            return true
+            /*$('#add-row-notice').removeClass('hidden');
             $('#add-row-notice').text('请填写完整的频道名称名称');
             v = false;
-            return false
+            return false*/
         }
         var sub = {sub_title:title, sub_zwgk: zwgk, sub_wsbs: wsbs, sub_sort: sort};
         sub_list[i] = sub;
@@ -1575,7 +1580,7 @@ function searchTags(t){
             if(re.status=='succ'){
                 var str = "";
                 $.each(re.res, function(i,v){
-                    str += '<li style="list-style: none" data-key="'+ v.key +'">'
+                    str += '<li style="list-style: none" data-key="'+ v.key +'"  onclick="liOnclick($(this))">'
                         + v.name +
                         '<input type="hidden" name="tags[]" />' +
                         '</li>'

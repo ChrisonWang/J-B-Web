@@ -22,7 +22,7 @@
                     <input type="text" class="form-control" name="sub-sort" placeholder="请输入权重（数字越大越靠前）" />
                 </td>
                 <td>
-                    <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                    <a href="javascript: void(0) ;" onclick="delRowChannel($(this))">删除</a>
                 </td>
             </tr>
             </tbody>
@@ -96,7 +96,7 @@
                                     <input type="text" class="form-control" name="sub-sort" placeholder="请输入权重（数字越大越靠前）" />
                                 </td>
                                 <td>
-                                    <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                                    <a href="javascript: void(0) ;" onclick="delRowChannel($(this))">删除</a>
                                 </td>
                             </tr>
                             </tbody>

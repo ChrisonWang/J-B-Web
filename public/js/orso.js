@@ -21,7 +21,7 @@
 			idclass="."
 		}else{
 			idclass="#"
-		};
+		}
 		$(this).find(outside.boxlrX).on("click",function(){
 			$(this).addClass(outside.boxon).siblings().removeClass(outside.boxon)
 		});
@@ -45,8 +45,8 @@
 				find.appendTo(outside.boxl).siblings().removeClass(outside.boxon);
 			}else{
 				alert("请选择一个！");
-			};
-		};
+			}
+		}
 		function right(){
 			var isno=$(outside.boxl).find(outside.boxlrX).hasClass(outside.boxon);
 			var find=$(outside.boxl).children(idclass+outside.boxon);
@@ -55,8 +55,8 @@
 				find.appendTo(outside.boxr).siblings().removeClass(outside.boxon);
 			}else{
 				alert("请选择一个！");
-			};
-		};
+			}
+		}
 		function top(){
 			var isno=$(outside.boxr).find(outside.boxlrX).hasClass(outside.boxon);
 			var index=$(outside.boxr).children(idclass+outside.boxon).index();
@@ -66,11 +66,11 @@
 					$(outside.boxr).children(outside.boxlrx).eq(index-1).before(top);
 				}else{
 					alert("已经是第一个了！！")
-				};
+				}
 			}else{
 				alert("请选择一个！");
-			};
-		};
+			}
+		}
 		function bottom(){
 			var isno=$(outside.boxr).find(outside.boxlrX).hasClass(outside.boxon);
 			var len=$(outside.boxr).children(outside.boxlrX).length;
@@ -81,11 +81,11 @@
 					$(outside.boxr).children(outside.boxlrx).eq(index+1).after(top);
 				}else{
 					alert("已经是最后一个了！！")
-				};
+				}
 			}else{
 				alert("请选择一个！");
-			};
-		};
+			}
+		}
 		$(outside.boxlan).on("click",function(){
 			left();
 		});
@@ -100,10 +100,10 @@
 		});
 		function allleft(){
 			$(outside.boxr).find(outside.boxlrX).appendTo(outside.boxl);
-		};
+		}
 		function allright(){
 			$(outside.boxl).find(outside.boxlrX).appendTo(outside.boxr);
-		};
+		}
 		function alltop(){
 			var isno=$(outside.boxr).find(outside.boxlrX).hasClass(outside.boxon);
 			var index=$(outside.boxr).children(idclass+outside.boxon).index();
@@ -113,11 +113,11 @@
 					$(outside.boxr).prepend(top);
 				}else{
 					alert("当前已经是首个了！！")
-				};
+				}
 			}else{
 				alert("请选择一个！");
 			}
-		};
+		}
 		function allbottom(){
 			var isno=$(outside.boxr).find(outside.boxlrX).hasClass(outside.boxon);
 			var len=$(outside.boxr).children(outside.boxlrX).length;
@@ -128,11 +128,11 @@
 					$(outside.boxr).append(top);
 				}else{
 					alert("当前已经是最后了！！")
-				};
+				}
 			}else{
 				alert("请选择一个！");
-			};
-		};
+			}
+		}
 		$(outside.boxalllan).on("click",function(){
 			allleft();
 		});

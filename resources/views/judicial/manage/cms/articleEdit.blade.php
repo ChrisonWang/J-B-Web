@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="publish_date" class="col-md-1 control-label">发布时间：</label>
+                <label for="publish_date" class="col-md-1 control-label"><strong style="color: red">*</strong> 发布时间：</label>
                 <div class="col-md-3">
                     <input id="publish_date" class="form-control" name="publish_date" type="text" >
                 </div>

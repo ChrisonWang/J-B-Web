@@ -34,13 +34,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="disabled" class="col-md-1 control-label"><strong style="color: red">*</strong> 是否发布：</label>
+                <label for="disabled" class="col-md-1 control-label">是否发布：</label>
                 <div class="col-md-3">
                     <input type="checkbox" class="form-control" id="disabled" name="disabled" value="no" checked/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="publish_date" class="col-md-1 control-label">发布时间：</label>
+                <label for="publish_date" class="col-md-1 control-label"><strong style="color: red">*</strong> 发布时间：</label>
                 <div class="col-md-3">
                     <input id="publish_date" class="form-control" name="publish_date" type="text" >
                 </div>

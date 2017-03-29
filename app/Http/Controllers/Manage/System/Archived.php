@@ -78,14 +78,9 @@ class Archived extends Controller
         if(count($row) > 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在完全相同的归档']);
         }
-        $last_date = DB::table('system_archived')->where('type', $inputs['type'])->first();
+        $last_date = DB::table('system_archived')->where('type', $inputs['type'])->orderBy('date','desc')->first();
         if(isset($last_date->create_date) && intval(strtotime($last_date->create_date))!=0){
-            if(strtotime($last_date->date) > strtotime($inputs['date'])){
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在晚于所选日期的归档，归档日期：'.$last_date->date]);
-            }
-            else{
-                $last_date = $last_date->date;
-            }
+            $last_date = $last_date->date;
         }
         $save_data = array(
             'type'=> $inputs['type'],
@@ -96,10 +91,10 @@ class Archived extends Controller
         );
         DB::beginTransaction();
         if($inputs['type']=='service_judicial_expertise' || $inputs['type']=='service_legal_aid_apply' || $inputs['type']=='service_legal_aid_dispatch'){
-            $rs = DB::table($inputs['type'])->where('apply_date','<=',$inputs['date'])->where('archived', 'no')->update(['archived'=> 'yes']);
+            $rs = DB::table($inputs['type'])->where('apply_date','>',$save_data['last_date'])->where('apply_date','<=',$inputs['date'])->where('archived', 'no')->update(['archived'=> 'yes']);
         }
         else{
-            $rs = DB::table($inputs['type'])->where('create_date','<=',$inputs['date'])->where('archived', 'no')->update(['archived'=> 'yes']);
+            $rs = DB::table($inputs['type'])->where('create_date','>',$save_data['last_date'])->where('create_date','<=',$inputs['date'])->where('archived', 'no')->update(['archived'=> 'yes']);
         }
         if($rs === false || $rs == 0){
             DB::rollBack();

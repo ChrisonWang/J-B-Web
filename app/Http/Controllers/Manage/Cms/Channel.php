@@ -77,6 +77,14 @@ class Channel extends Controller
         if(trim($inputs['channel_title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
+        //判断是否存在首页推荐的
+        if(isset($inputs['is_recommend']) && $inputs['is_recommend']=='yes'){
+            $channel_title = DB::table('cms_channel')->select('channel_title')->where('is_recommend', 'yes')->first();
+            if(!is_null($channel_title)){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在首页推荐的频道：'.$channel_title->channel_title.'！']);
+            }
+        }
+
         //判断子链接是否有没有填写的
         $subs = json_decode($inputs['sub'], true);
         //执行插入数据操作
@@ -269,6 +277,14 @@ class Channel extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
         $id = keys_decrypt($inputs['key']);
+        //判断是否存在首页推荐的
+        if(isset($inputs['is_recommend']) && $inputs['is_recommend']=='yes'){
+            $channel_title = DB::table('cms_channel')->select('channel_title')->where('is_recommend', 'yes')->where('channel_id','!=',$id)->first();
+            if(!is_null($channel_title)){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在首页推荐的频道：'.$channel_title->channel_title.'！']);
+            }
+        }
+
         $sql = 'SELECT `channel_id` FROM cms_channel WHERE `channel_title` = "'.$inputs['channel_title'].'" AND `channel_id` != "'.$id.'" AND `pid` = 0';
         $res = DB::select($sql);
         if(count($res) != 0){
@@ -303,7 +319,7 @@ class Channel extends Controller
             if(!isset($edit_data[$channel->channel_id])){
                 $article = DB::table('cms_article')->where('channel_id',$channel->channel_id)->orWhere('sub_channel',$channel->channel_id)->get();
                 if(count($article) > 0){
-                    json_response(['status'=>'failed','type'=>'alert', 'res'=>'子频道频道包含文章不能删除！']);
+                    json_response(['status'=>'failed','type'=>'alert', 'res'=>'子频道包含文章不能删除！']);
                 }
                 $del_data[$channel->channel_id] = $channel->channel_id;
             }
@@ -388,19 +404,19 @@ class Channel extends Controller
         }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        //检查是否存在不能删除的频道
-        $subs = DB::table('cms_channel')->where('pid',$id)->get();
-        if(count($subs)){
-            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含子频道不能删除！']);
-        }
         $article = DB::table('cms_article')->where('channel_id',$id)->orWhere('sub_channel',$id)->get();
         if(count($article) > 0){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含文章不能删除！']);
         }
+        //检查是否存在不能删除的频道
+        $subs = DB::table('cms_channel')->where('pid',$id)->get();
+        if(count($subs) > 0){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含子频道不能删除！']);
+        }
         //事物方式删除
         DB::beginTransaction();
         $row = DB::table('cms_channel')->where('pid',$id)->delete();
-        if($row == false ){
+        if(count($subs) > 0 && $row == false){
             DB::rollBack();
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'删除失败！']);
         }
