@@ -1,5 +1,5 @@
 @if(isset($apply_list) && is_array($apply_list) && count($apply_list) > 0)
-    <table class="table table-striped table-condensed">
+    <table class="table table-striped table-condensed" id="list_table_apply">
         <thead>
         <tr>
             <th width="35%">申请时间</th>
@@ -28,8 +28,8 @@
         @endforeach
         </tbody>
     </table>
-    <div class="container-fluid" id="height_box">
-        <h5 class="text-center"><small id="height_box_notice">数据已全部加载完成</small></h5>
+    <div class="container-fluid" id="height_box_apply">
+        <h5 class="text-center"><small id="height_box_apply_notice">数据已全部加载完成</small></h5>
     </div>
 @else
     <h4 class="text-center">您暂时还没有申请记录！</h4>

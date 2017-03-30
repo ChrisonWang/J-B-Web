@@ -102,6 +102,50 @@ class Aid extends Controller
         else{
             $this->_member_code = $member_code;
         }
+        $inputs = $request->input();
+        $type = $inputs['search_type'];
+        $page_no = $inputs['page_no'];
+        $offset = $page_no * 12;
+        $apply_list = array();
+        $dispatch_list = array();
+        if($type == 'apply'){
+            $applys = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->skip($offset)->take(12)->get();
+            if(count($applys)>0){
+                foreach($applys as $apply){
+                    $apply_list[] = array(
+                        'record_code' =>$apply->record_code,
+                        'apply_date'=> date('Y-m-d H:i', strtotime($apply->apply_date)),
+                        'status'=> $apply->status,
+                    );
+                }
+                $this->page_data['apply_list'] = $apply_list;
+                $pageContent = view('judicial.wechat.layout.aidLoadList', $this->page_data)->render();
+                json_response(['status'=>'succ','type'=>'apply', 'res'=>$pageContent, 'page_no'=>$page_no+1]);
+            }
+            else{
+                json_response(['status'=>'failed','type'=>'apply', 'res'=>'', 'page_no'=>$page_no]);
+            }
+        }
+        else{
+            //司法指派援助
+            $dispatches = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->skip($offset)->take(12)->get();
+            if(count($dispatches)>0){
+                foreach($dispatches as $dispatch){
+                    $dispatch_list[] = array(
+                        'record_code' =>$dispatch->record_code,
+                        'apply_date'=> date('Y-m-d H:i', strtotime($dispatch->apply_date)),
+                        'status'=> $dispatch->status,
+                    );
+                }
+                $this->page_data['dispatch_list'] = $dispatch_list;
+                $pageContent = view('judicial.wechat.layout.dispatchLoadList', $this->page_data)->render();
+                json_response(['status'=>'succ','type'=>'dispatch', 'res'=>$pageContent, 'page_no'=>$page_no+1]);
+            }
+            else{
+                json_response(['status'=>'failed','type'=>'dispatch', 'res'=>'', 'page_no'=>$page_no]);
+            }
+        }
+        return true;
     }
 
 }

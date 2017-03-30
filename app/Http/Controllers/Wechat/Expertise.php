@@ -72,7 +72,7 @@ class Expertise extends Controller
         else{
             $this->_member_code = $member_code;
         }
-
+        $record_list = array();
         $inputs = $request->input();
         $page_no = $inputs['page_no'];
         $offset = $page_no * 12;

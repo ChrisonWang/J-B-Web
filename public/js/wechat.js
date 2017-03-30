@@ -63,7 +63,7 @@ function show_reason(t){
     });
 }
 
-//下拉加载
+//下拉加载律师律所
 function scrollLoad(type, page_no){
     var url = '/wechat/scrollLoad';
     $.ajax({
@@ -138,6 +138,49 @@ function scrollLoadExpertise(page_no){
             else if(re.status == 'failed'){
                 window.localStorage.setItem('page_no', re.page_no);
                 $("#height_box_notice").text('数据已全部加载完成');
+            }
+            return false;
+        }
+    });
+}
+
+//下拉加载法律援助
+function scrollLoadAis(type, page_no){
+    var url = '/wechat/scrollLoad/aid';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        url: url,
+        method: "POST",
+        data: {page_no: page_no, search_type: type},
+        success: function(re){
+            if(re.status == 'succ'){
+                if(re.type == 'apply'){
+                    window.localStorage.setItem('page_no_apply', re.page_no);
+                    $("#list_table_apply tbody").append(re.res);
+                    $("#height_box_apply_notice").text('');
+                    $("#height_box_apply").hide();
+                }
+                else if(re.type == 'dispatch'){
+                    window.localStorage.setItem('page_no_dispatch', re.page_no);
+                    $("#list_table_dispatch tbody").append(re.res);
+                    $("#height_box_dispatch_notice").text('');
+                    $("#height_box_dispatch").hide();
+                }
+            }
+            else if(re.status == 'failed'){
+                if(re.type == 'apply'){
+                    window.localStorage.setItem('page_no_apply', re.page_no);
+                    $("#height_box_apply").show();
+                    $("#height_box_apply_notice").text('数据已全部加载完成');
+                }
+                else if(re.type == 'dispatch'){
+                    window.localStorage.setItem('page_no_dispatch', re.page_no);
+                    $("#height_box_dispatch").show();
+                    $("#height_box_dispatch_notice").text('数据已全部加载完成');
+                }
             }
             return false;
         }
