@@ -718,6 +718,10 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('wechat/scrollLoad', 'Wechat\Lawyer@scrollLoadLawyer');
 
+    Route::post('wechat/scrollLoad/expertise', 'Wechat\Expertise@scrollLoad');
+
+    Route::post('wechat/scrollLoad/aid', 'Wechat\Aid@scrollLoad');
+
     //司法鉴定查询
     Route::get('wechat/expertiseList', 'Wechat\Expertise@index');
 

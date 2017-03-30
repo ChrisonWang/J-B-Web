@@ -9,7 +9,7 @@
         </div>
     </div>
     @if(isset($record_list) && is_array($record_list) && count($record_list) > 0)
-        <table class="table table-striped table-condensed">
+        <table class="table table-striped table-condensed" id="list_table">
             <thead>
             <tr>
                 <th width="35%">申请时间</th>
@@ -67,4 +67,36 @@
     </div>
 
 @include('judicial.wechat.chips.foot')
+
+<script>
+    $(document).ready(function(){
+        window.localStorage.setItem('page_no', 1);
+        var count_page = {{ $count_page }};
+
+        if($(window).height() >= $(document).height()){
+            var add_height = $(window).height() - $("#main_container").height() + 50;
+            $("#height_box").show();
+            $("#height_box").css('height', add_height);
+        }
+        $(window).scroll(function(){
+            var page_no = 1;
+            var range = 10;             //距下边界长度/单位px
+            var elemt = 500;           //插入元素高度/单位px
+            var totalheight = 0;
+            var srollPos = $(window).scrollTop();
+            totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
+            if(($(document).height()-range) <= totalheight) {
+                var page_no = window.localStorage.getItem('page_no');
+                if(page_no >= count_page){
+                    window.localStorage.setItem('page_no', count_page);
+                    $("#height_box").show();
+                    $("#height_box_notice").text('数据已全部加载完成');
+                    return false;
+                }
+                $("#height_box_notice").text(' 加载中... ');
+                scrollLoadExpertise(page_no);
+            }
+        });
+    });
+</script>
 

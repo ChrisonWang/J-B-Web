@@ -37,7 +37,7 @@ class Aid extends Controller
 
         //群众预约援助
         $count['apply'] = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->count();
-        $applys = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->get();
+        $applys = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->skip(0)->take(12)->get();
         if(count($applys)){
             foreach($applys as $apply){
                 $apply_list[] = array(
@@ -50,7 +50,7 @@ class Aid extends Controller
 
         //司法指派援助
         $count['dispatch'] = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->count();
-        $dispatches = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->get();
+        $dispatches = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->skip(0)->take(12)->get();
         if(count($dispatches)){
             foreach($dispatches as $dispatch){
                 $dispatch_list[] = array(
@@ -88,6 +88,19 @@ class Aid extends Controller
         }
         else{
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'']);
+        }
+    }
+
+    //下拉加载
+    public function scrollLoad(Request $request)
+    {
+        $member_code = $this->checkLoginStatus();
+        if(!$member_code){
+            setcookie("page_url",URL::to('wechat/expertiseList'),time()+3600,'/');
+            return redirect()->action('Wechat\Index@login');
+        }
+        else{
+            $this->_member_code = $member_code;
         }
     }
 

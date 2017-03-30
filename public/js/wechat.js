@@ -114,3 +114,32 @@ function scrollLoad(type, page_no){
         }
     });
 }
+
+//下拉加载司法鉴定
+function scrollLoadExpertise(page_no){
+    var url = '/wechat/scrollLoad/expertise';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        url: url,
+        method: "POST",
+        data: {page_no: page_no},
+        success: function(re){
+            if(re.status == 'succ'){
+                window.localStorage.setItem('page_no', re.page_no);
+                if(re.status == 'succ'){
+                    $("#list_table tbody").append(re.res);
+                }
+                $("#height_box_notice").text('');
+                $("#height_box").hide();
+            }
+            else if(re.status == 'failed'){
+                window.localStorage.setItem('page_no', re.page_no);
+                $("#height_box_notice").text('数据已全部加载完成');
+            }
+            return false;
+        }
+    });
+}
