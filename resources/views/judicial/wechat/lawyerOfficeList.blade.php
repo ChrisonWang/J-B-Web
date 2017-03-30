@@ -9,6 +9,13 @@
             <p class="text-right"><a href="{{ URL::to('wechat/lawyerOfficeSearch') }}">重新查询</a></p>
         </div>
     </div>
+
+    <input type="hidden" name="name" id="i_name" value="{{ isset($inputs['name']) ? $inputs['name'] : '' }}">
+    <input type="hidden" name="usc_code" id="i_usc_code" value="{{ isset($inputs['usc_code']) ? $inputs['usc_code'] : '' }}">
+    <input type="hidden" name="director" id="i_director" value="{{ isset($inputs['director']) ? $inputs['director'] : '' }}">
+    <input type="hidden" name="type" id="i_type" value="{{ isset($inputs['type']) ? $inputs['type'] : '' }}">
+    <input type="hidden" name="area_id" id="i_area_id" value="{{ isset($inputs['area_id']) ? $inputs['area_id'] : '' }}">
+
     @if(isset($office_list) && is_array($office_list) && count($office_list) > 0)
         <table class="table table-striped table-condensed" id="list_table">
             <thead>
@@ -44,6 +51,7 @@
     $(document).ready(function(){
         window.localStorage.setItem('page_no', 1);
         var count_page = {{ $count_page }};
+        var area_id = '{{ isset($area_id) ? $area_id : '' }}';
 
         if($(window).height() >= $(document).height()){
             var add_height = $(window).height() - $("#main_container").height() + 50;
@@ -66,7 +74,7 @@
                     return false;
                 }
                 $("#height_box_notice").text(' 加载中... ');
-                scrollLoad('lawyerOffice', page_no);
+                scrollLoad('lawyerOffice', page_no, area_id);
             }
         });
     });

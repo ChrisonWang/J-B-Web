@@ -9,6 +9,12 @@
         </div>
     </div>
 
+    <input type="hidden" name="name" id="i_name" value="{{ isset($inputs['name']) ? $inputs['name'] : '' }}">
+    <input type="hidden" name="certificate_code" id="i_certificate_code" value="{{ isset($inputs['certificate_code']) ? $inputs['certificate_code'] : '' }}">
+    <input type="hidden" name="lawyer_office_name" id="i_lawyer_office_name" value="{{ isset($inputs['lawyer_office_name']) ? $inputs['lawyer_office_name'] : '' }}">
+    <input type="hidden" name="type" id="i_type" value="{{ isset($inputs['type']) ? $inputs['type'] : '' }}">
+    <input type="hidden" name="sex" id="i_sex" value="{{ isset($inputs['sex']) ? $inputs['sex'] : '' }}">
+
     @if(isset($lawyer_list) && is_array($lawyer_list) && count($lawyer_list) > 0)
         <table class="table table-striped table-condensed" id="list_table">
             <thead>

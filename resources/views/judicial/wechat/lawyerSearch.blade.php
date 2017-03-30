@@ -19,7 +19,7 @@
                 <label for="sex" class="col-xs-4 control-label">性别：</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="sex" name="sex">
-                        <option value="none" selected>不限</option>
+                        <option value="" selected>不限</option>
                         <option value="male">男</option>
                         <option value="female">女</option>
                     </select>
@@ -29,7 +29,7 @@
                 <label for="type" class="col-xs-4 control-label">律师类型：</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="type" name="type">
-                        <option value="none" selected>不限</option>
+                        <option value="" selected>不限</option>
                         <option value="full_time">专职</option>
                         <option value="part_time">兼职</option>
                         <option value="company">公司</option>

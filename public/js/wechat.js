@@ -64,8 +64,25 @@ function show_reason(t){
 }
 
 //下拉加载律师律所
-function scrollLoad(type, page_no){
+function scrollLoad(type, page_no, area_id){
     var url = '/wechat/scrollLoad';
+    if(type=='lawyer'){
+        var inputs = {
+            name: $("#i_name").val(),
+            certificate_code: $("#i_certificate_code").val(),
+            lawyer_office_name: $("#i_lawyer_office_name").val(),
+            type: $("#i_type").val(),
+            sex: $("#i_sex").val()};
+    }
+    else {
+        var inputs = {
+            name: $("#i_name").val(),
+            usc_code: $("#i_usc_code").val(),
+            director: $("#i_director").val(),
+            type: $("#i_type").val(),
+            area_id: $("#i_area_id").val()};
+    }
+
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -73,7 +90,7 @@ function scrollLoad(type, page_no){
         async: false,
         url: url,
         method: "POST",
-        data: {page_no: page_no, search_type: type},
+        data: {page_no: page_no, search_type: type, area_id: area_id, inputs: inputs},
         success: function(re){
             if(re.status == 'succ'){
                 window.localStorage.setItem('page_no', re.page_no);

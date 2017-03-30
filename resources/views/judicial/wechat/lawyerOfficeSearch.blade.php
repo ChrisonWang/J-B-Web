@@ -25,7 +25,7 @@
                 <label for="type" class="col-xs-4 control-label">律所类型：</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="type" name="type">
-                        <option value="none" selected>不限</option>
+                        <option value="" selected>不限</option>
                         <option value="head">总所</option>
                         <option value="branch">分所</option>
                         <option value="personal">个人</option>
@@ -42,7 +42,7 @@
                 <label for="area_id" class="col-xs-4 control-label">所在区域：</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="area_id" name="area_id">
-                        <option value="none" selected>不限</option>
+                        <option value="" selected>不限</option>
                         @foreach($area_list as $key=> $area)
                             <option value="{{ $key }}">{{ $area }}</option>
                         @endforeach

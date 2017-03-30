@@ -200,6 +200,7 @@ class Lawyer extends Controller
         $this->page_data['page_no'] = 1;
         $this->page_data['count_page'] = ceil($count/12);
         $this->page_data['office_list'] = $office_list;
+        $this->page_data['area_id'] = keys_encrypt($area_id);
         return view('judicial.wechat.lawyerOfficeList', $this->page_data);
     }
 
@@ -222,10 +223,10 @@ class Lawyer extends Controller
         if(isset($inputs['lawyer_office_name']) && trim($inputs['lawyer_office_name'])!==''){
             $where .= ' `lawyer_office_name` LIKE "%'.$inputs['lawyer_office_name'].'%" AND ';
         }
-        if(isset($inputs['type']) &&($inputs['type'])!='none'){
+        if(isset($inputs['type']) &&($inputs['type'])!=''){
             $where .= ' `type` = "'.$inputs['type'].'" AND ';
         }
-        if(isset($inputs['sex']) &&($inputs['sex'])!='none'){
+        if(isset($inputs['sex']) &&($inputs['sex'])!=''){
             $where .= ' `sex` = "'.$inputs['sex'].'" AND ';
         }
         $sql = 'SELECT * FROM `service_lawyer` '.$where.'1 ORDER BY `create_date` DESC';
@@ -261,6 +262,8 @@ class Lawyer extends Controller
             $this->page_data['lawyer_list'] = $lawyer_list;
         }
 
+        $this->page_data['inputs'] = $inputs;
+        $this->page_data['type'] = 'lawyer';
         $this->page_data['page_no'] = 1;
         $this->page_data['count_page'] = ceil($count/12);
         return view('judicial.wechat.lawyerList',$this->page_data);
@@ -285,10 +288,10 @@ class Lawyer extends Controller
         if(isset($inputs['director']) && trim($inputs['director'])!==''){
             $where .= ' `director` LIKE "%'.$inputs['director'].'%" AND ';
         }
-        if(isset($inputs['type']) &&($inputs['type'])!='none'){
+        if(isset($inputs['type']) &&($inputs['type'])!=''){
             $where .= ' `type` = "'.$inputs['type'].'" AND ';
         }
-        if(isset($inputs['area_id']) &&($inputs['area_id'])!='none'){
+        if(isset($inputs['area_id']) &&($inputs['area_id'])!=''){
             $where .= ' `area_id` = "'.keys_decrypt($inputs['area_id']).'" AND ';
         }
         $sql = 'SELECT * FROM `service_lawyer_office` '.$where.'1 ORDER BY `create_date` DESC';
@@ -323,6 +326,8 @@ class Lawyer extends Controller
                     'update_date'=> $o->update_date,
                 );
             }
+            $this->page_data['inputs'] = $inputs;
+            $this->page_data['type'] = 'lawyerOffice';
             $this->page_data['count_page'] = ceil($count/12);
             $this->page_data['page_no'] = 1;
             $this->page_data['area_list'] = $area_list;
@@ -336,23 +341,31 @@ class Lawyer extends Controller
     {
         $inputs = $request->input();
         $page_no = $inputs['page_no'];
+        $area_id = isset($inputs['area_id']) ? $inputs['area_id'] : '';
         $search_type = $inputs['search_type'];
+        $searches = $inputs['inputs'];
         if($search_type == 'lawyerOffice'){
-            $where = 'WHERE';
-            if(isset($inputs['name']) && trim($inputs['name'])!==''){
-                $where .= ' `name` LIKE "%'.$inputs['name'].'%" AND ';
+            if(empty($area_id)){
+                $where = 'WHERE ';
             }
-            if(isset($inputs['usc_code']) && trim($inputs['usc_code'])!==''){
-                $where .= ' `usc_code` LIKE "%'.$inputs['usc_code'].'%" AND ';
+            else{
+                $area_id = keys_decrypt($area_id);
+                $where = 'WHERE `area_id` = '.$area_id.' AND ';
             }
-            if(isset($inputs['director']) && trim($inputs['director'])!==''){
-                $where .= ' `director` LIKE "%'.$inputs['director'].'%" AND ';
+            if(isset($searches['name']) && trim($searches['name'])!==''){
+                $where .= ' `name` LIKE "%'.$searches['name'].'%" AND ';
             }
-            if(isset($inputs['type']) &&($inputs['type'])!='none'){
-                $where .= ' `type` = "'.$inputs['type'].'" AND ';
+            if(isset($searches['usc_code']) && trim($searches['usc_code'])!==''){
+                $where .= ' `usc_code` LIKE "%'.$searches['usc_code'].'%" AND ';
             }
-            if(isset($inputs['area_id']) &&($inputs['area_id'])!='none'){
-                $where .= ' `area_id` = "'.keys_decrypt($inputs['area_id']).'" AND ';
+            if(isset($searches['director']) && trim($searches['director'])!==''){
+                $where .= ' `director` LIKE "%'.$searches['director'].'%" AND ';
+            }
+            if(isset($searches['type']) &&($searches['type']) != ''){
+                $where .= ' `type` = "'.$searches['type'].'" AND ';
+            }
+            if(isset($searches['area_id']) &&($searches['area_id'])!='' && empty($area_id)){
+                $where .= ' `area_id` = "'.keys_decrypt($searches['area_id']).'" AND ';
             }
             $sql = 'SELECT * FROM `service_lawyer_office` '.$where.'1 ORDER BY `create_date` DESC';
             $res = DB::select($sql);
@@ -387,20 +400,20 @@ class Lawyer extends Controller
         }
         else{
             $where = 'WHERE';
-            if(isset($inputs['name']) && trim($inputs['name'])!==''){
-                $where .= ' `name` LIKE "%'.$inputs['name'].'%" AND ';
+            if(isset($searches['name']) && trim($searches['name'])!==''){
+                $where .= ' `name` LIKE "%'.$searches['name'].'%" AND ';
             }
-            if(isset($inputs['certificate_code']) && trim($inputs['certificate_code'])!==''){
-                $where .= ' `certificate_code` LIKE "%'.$inputs['certificate_code'].'%" AND ';
+            if(isset($searches['certificate_code']) && trim($searches['certificate_code'])!==''){
+                $where .= ' `certificate_code` LIKE "%'.$searches['certificate_code'].'%" AND ';
             }
-            if(isset($inputs['lawyer_office_name']) && trim($inputs['lawyer_office_name'])!==''){
-                $where .= ' `lawyer_office_name` LIKE "%'.$inputs['lawyer_office_name'].'%" AND ';
+            if(isset($searches['lawyer_office_name']) && trim($searches['lawyer_office_name'])!==''){
+                $where .= ' `lawyer_office_name` LIKE "%'.$searches['lawyer_office_name'].'%" AND ';
             }
-            if(isset($inputs['type']) &&($inputs['type'])!='none'){
-                $where .= ' `type` = "'.$inputs['type'].'" AND ';
+            if(isset($searches['type']) &&($searches['type'])!=''){
+                $where .= ' `type` = "'.$searches['type'].'" AND ';
             }
-            if(isset($inputs['sex']) &&($inputs['sex'])!='none'){
-                $where .= ' `sex` = "'.$inputs['sex'].'" AND ';
+            if(isset($searches['sex']) &&($searches['sex'])!=''){
+                $where .= ' `sex` = "'.$searches['sex'].'" AND ';
             }
             $sql = 'SELECT * FROM `service_lawyer` '.$where.' 1 ORDER BY `create_date` DESC';
             $res = DB::select($sql);

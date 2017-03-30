@@ -555,7 +555,7 @@ class Certificate extends Controller
         if(!isset($inputs['temp_code']) || trim($inputs['temp_code'])=='none'){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'请选择短信模板！']);
         }
-        if(!isset($inputs['to_message']) && $inputs['to_message']=='no' && trim($inputs['year'])===''){
+        if(isset($inputs['to_message']) && $inputs['to_message']=='no' && trim($inputs['year'])===''){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'发送对象为“未备案人员”时，请填写4位数备案年份！']);
         }
         //内容
@@ -570,7 +570,7 @@ class Certificate extends Controller
         $send_log = array();
         if($inputs['to_message']=='no'){
             $phone_list = '';
-            $certificates = DB::table('service_certificate')->get();
+            $certificates = DB::table('service_certificate')->where('register_log', '')->get();
             if(count($certificates)>0){
                 foreach($certificates as $certificate){
                     $phone_list .= ','.$certificate->phone;
@@ -579,7 +579,7 @@ class Certificate extends Controller
                 $phone_list = substr($phone_list, 1, (strlen($phone_list)-1));
             }
             else{
-                json_response(['status'=>'failed','type'=>'alert', 'res'=>'没有录入司法考试持证人员']);
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'未找到没有备案的持证人员']);
             }
         }
         elseif($inputs['to_message']=='all'){
@@ -588,6 +588,7 @@ class Certificate extends Controller
             if(count($certificates)>0){
                 foreach($certificates as $certificate){
                     $phone_list .= ','.$certificate->phone;
+                    $send_log[$certificate->id] = $certificate->message_log;
                 }
                 $phone_list = substr($phone_list, 1, (strlen($phone_list)-1));
             }
