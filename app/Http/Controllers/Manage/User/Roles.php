@@ -60,12 +60,15 @@ class Roles extends Controller
             $menu_list[$key]['nodes'] = json_decode($menu->nodes,true);
         }
         //取出第一个菜单
+        $node_list = array();
         $menu_first = DB::table('user_menus')->first();
-        foreach(json_decode($menu_first->nodes, true) as $node_key => $node_name){
-            $node_list[] = array(
-                'node_key'=> keys_encrypt($node_key),
-                'node_name'=> $node_name
-            );
+        if(!is_null($menu_first)){
+            foreach(json_decode($menu_first->nodes, true) as $node_key => $node_name){
+                $node_list[] = array(
+                    'node_key'=> keys_encrypt($node_key),
+                    'node_name'=> $node_name
+                );
+            }
         }
         $this->page_data['node_list'] = $node_list;
         $this->page_data['menu_list'] = $menu_list;

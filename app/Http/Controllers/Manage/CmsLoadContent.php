@@ -388,16 +388,17 @@ class CmsLoadContent extends Controller
                     'channel_title'=> $channel->channel_title,
                 );
             }
-        }
-        reset($channels_data);
-        $c_id = current($channels_data);
-        $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
-        if(count($sub_channels) > 0){
-            $sub_channels_data = array();
-            foreach($sub_channels as $sub_channel){
-                $sub_channels_data[keys_encrypt($sub_channel->channel_id)] = $sub_channel->channel_title;
+            reset($channels_data);
+            $c_id = current($channels_data);
+            $sub_channels = DB::table('cms_channel')->where('pid','!=',0 )->orderBy('create_date', 'desc')->get();
+            if(count($sub_channels) > 0){
+                $sub_channels_data = array();
+                foreach($sub_channels as $sub_channel){
+                    $sub_channels_data[keys_encrypt($sub_channel->channel_id)] = $sub_channel->channel_title;
+                }
             }
         }
+
         //取出标签
         $tag_list = array();
         $tags = DB::table('cms_tags')->get();

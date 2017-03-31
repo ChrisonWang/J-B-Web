@@ -105,12 +105,14 @@
 <div class="w980 news_2">
     <div class="new2_left">
         <div class="idbr_top">
+            @if($zwgk_list!='none' && is_array($zwgk_list))
             <ul>
                 @foreach($zwgk_list as $k=> $zwgk_l)
                     <li @if($k == 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#zwgk_c'))"data-channel="zwgk" data-key="{{ $zwgk_l['key'] }}">{{ $zwgk_l['channel_title'] }}</li>
                 @endforeach
             </ul>
             <a href="{{ URL::to('/list').'/'.$zwgk_list[0]['key']}}" style="color: #000">更多>></a>
+            @endif
         </div>
         <div class="idbr_down">
             <ul id="zwgk_c">

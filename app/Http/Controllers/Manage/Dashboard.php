@@ -59,9 +59,9 @@ class Dashboard extends Controller
                     $r_data[$key]['r_title'] = $link->title;
                     $r_data[$key]['r_link'] = $link->link;
                 }
-                $this->page_data['r_list'] = $r_data;
             }
         }
+        $this->page_data['r_list'] = $r_data;
         return view('judicial.manage.dashboard',$this->page_data);
     }
 
@@ -120,9 +120,9 @@ class Dashboard extends Controller
         $officeInfo = DB::table('user_office')->select('office_name')->where('id', $managerInfo['office_id'])->get();
         $roleInfo = DB::table('user_role')->select('role_name','role_permisson')->where('role_id', $managerInfo['role_id'])->get();
         $typeInfo = DB::table('user_type')->select('type_name')->where('type_id', $managerInfo['type_id'])->get();
-        $managerInfo['office_name'] = $officeInfo[0]->office_name;
-        $managerInfo['role_name'] = $roleInfo[0]->role_name;
-        $managerInfo['type_name'] = $typeInfo[0]->type_name;
+        $managerInfo['office_name'] = isset($officeInfo[0]->office_name) ? $officeInfo[0]->office_name : '未设置';
+        $managerInfo['role_name'] = isset($roleInfo[0]->role_name) ? $roleInfo[0]->role_name : '未设置' ;
+        $managerInfo['type_name'] = isset($typeInfo[0]->type_name) ? $typeInfo[0]->type_name : '未设置';
 
         return $managerInfo;
     }
@@ -752,17 +752,21 @@ class Dashboard extends Controller
      */
     private function _content_UserMng($request)
     {
+        $type_list = array();
+        $office_list = array();
         //取出管理员
         $user_list = array();
         $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
-        foreach($managers as $key=> $managers){
-            $user_list[$key]['key'] = $managers->manager_code;
-            $user_list[$key]['login_name'] = $managers->login_name;
-            $user_list[$key]['type_id'] = $managers->type_id;
-            $user_list[$key]['nickname'] = $managers->nickname;
-            $user_list[$key]['cell_phone'] = $managers->cell_phone;
-            $user_list[$key]['disabled'] = $managers->disabled;
-            $user_list[$key]['create_date'] = $managers->create_date;
+        if(count($managers) > 0){
+            foreach($managers as $key=> $manager){
+                $user_list[$key]['key'] = $manager->manager_code;
+                $user_list[$key]['login_name'] = $manager->login_name;
+                $user_list[$key]['type_id'] = $manager->type_id;
+                $user_list[$key]['nickname'] = $manager->nickname;
+                $user_list[$key]['cell_phone'] = $manager->cell_phone;
+                $user_list[$key]['disabled'] = $manager->disabled;
+                $user_list[$key]['create_date'] = $manager->create_date;
+            }
         }
         //取出用户
         $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_member_info.create_date', 'desc')->get();

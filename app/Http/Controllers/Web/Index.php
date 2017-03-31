@@ -79,26 +79,29 @@ class Index extends Controller
             $pic_article_list = array_slice($pic_article_list,0,6);
         }
         //拿出首页推荐的频道
-        $rc_channel = DB::table('cms_channel')->where(['is_recommend'=> 'yes', 'pid'=> 0])->orderBy('sort', 'desc')->first();
-        $rc_data = DB::table('cms_channel')->where('pid', $rc_channel->channel_id)->orderBy('sort', 'desc')->skip(0)->take(3)->get();
         $recommend_list = 'none';
-        if(count($rc_data) > 0){
-            $recommend_list = array();
-            foreach($rc_data as $rc){
-                $recommend_list[] = array(
-                    'key'=> $rc->channel_id,
-                    'channel_title'=> $rc->channel_title,
-                );
-            }
-            $r_article = DB::table('cms_article')->where('sub_channel',$recommend_list[0]['key'])->where('archived', 'no')->orderBy('publish_date','desc')->skip(0)->take(6)->get();
-            if(count($r_article) > 0){
-                $r_article_list = array();
-                foreach($r_article as $r_ar){
-                    $r_article_list[] = array(
-                        'key'=> $r_ar->article_code,
-                        'article_title'=> $r_ar->article_title,
-                        'publish_date'=> date('Y-m-d', strtotime($r_ar->publish_date)),
+        $rc_channel = DB::table('cms_channel')->where(['is_recommend'=> 'yes', 'pid'=> 0])->orderBy('sort', 'desc')->first();
+        if(!is_null($rc_channel)){
+            $rc_data = DB::table('cms_channel')->where('pid', $rc_channel->channel_id)->orderBy('sort', 'desc')->skip(0)->take(3)->get();
+            $recommend_list = 'none';
+            if(count($rc_data) > 0){
+                $recommend_list = array();
+                foreach($rc_data as $rc){
+                    $recommend_list[] = array(
+                        'key'=> $rc->channel_id,
+                        'channel_title'=> $rc->channel_title,
                     );
+                }
+                $r_article = DB::table('cms_article')->where('sub_channel',$recommend_list[0]['key'])->where('archived', 'no')->orderBy('publish_date','desc')->skip(0)->take(6)->get();
+                if(count($r_article) > 0){
+                    $r_article_list = array();
+                    foreach($r_article as $r_ar){
+                        $r_article_list[] = array(
+                            'key'=> $r_ar->article_code,
+                            'article_title'=> $r_ar->article_title,
+                            'publish_date'=> date('Y-m-d', strtotime($r_ar->publish_date)),
+                        );
+                    }
                 }
             }
         }
@@ -136,6 +139,7 @@ class Index extends Controller
             }
         }
         //政务公开
+        $zwgk_article_list = 'none';
         $zwgk = DB::table('cms_channel')->where(['zwgk'=>'yes'])->where('wsbs','no')->where('pid',0)->orderBy('create_date', 'desc')->skip(0)->take(5)->get();
         $zwgk_list = 'none';
         if(count($zwgk) > 0) {
@@ -148,7 +152,6 @@ class Index extends Controller
                 );
             }
             $zwgk_article = DB::table('cms_article')->where(['channel_id'=> $zwgk_list[0]['key'], 'disabled'=> 'no'])->where('archived', 'no')->orderBy('publish_date','desc')->skip(0)->take(6)->get();
-            $zwgk_article_list = 'none';
             if(count($zwgk_article) > 0){
                 $zwgk_article_list = array();
                 foreach($zwgk_article as $zw_ar){
@@ -505,12 +508,17 @@ class Index extends Controller
         //获取正文
         $introduction = DB::table('cms_justice_bureau_introduce')->first();
         if(is_null($introduction)){
-            $this->page_date['intro_detail'] = 'none';
+            $intro_detail = array(
+                'introduce'=> '暂未添加',
+                'create_date'=> '',
+            );
         }
-        $intro_detail = array(
-            'introduce'=> $introduction->introduce,
-            'create_date'=> $introduction->create_date,
-        );
+        else{
+            $intro_detail = array(
+                'introduce'=> $introduction->introduce,
+                'create_date'=> $introduction->create_date,
+            );
+        }
         $this->page_date['intro_detail'] = $intro_detail;
         return view('judicial.web.intro', $this->page_date);
     }

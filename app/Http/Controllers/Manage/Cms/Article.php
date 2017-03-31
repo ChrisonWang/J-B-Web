@@ -108,23 +108,31 @@ class Article extends Controller
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
         }
         //取出一级频道
+        $channel_list = array();
         $first_channel = DB::table('cms_channel')->where('pid', 0)->first();
         $channels = DB::table('cms_channel')->where('pid', 0)->get();
-        foreach($channels as $channel){
-            $channel_list[] = array(
-                'channel_key'=> keys_encrypt($channel->channel_id),
-                'channel_title'=> $channel->channel_title
-            );
+        if(count($channels) > 0){
+            foreach($channels as $channel){
+                $channel_list[] = array(
+                    'channel_key'=> keys_encrypt($channel->channel_id),
+                    'channel_title'=> $channel->channel_title
+                );
+            }
         }
         //取出二级频道
-        $sub_channels = DB::table('cms_channel')->where('pid', $first_channel->channel_id)->get();
-        foreach($sub_channels as $sub_channel){
-            $sub_channel_list[] = array(
-                'channel_key'=> keys_encrypt($sub_channel->channel_id),
-                'channel_title'=> $sub_channel->channel_title
-            );
+        $sub_channel_list = array();
+        if(!is_null($first_channel)){
+            $sub_channels = DB::table('cms_channel')->where('pid', $first_channel->channel_id)->get();
+            foreach($sub_channels as $sub_channel){
+                $sub_channel_list[] = array(
+                    'channel_key'=> keys_encrypt($sub_channel->channel_id),
+                    'channel_title'=> $sub_channel->channel_title
+                );
+            }
         }
+
         //取出标签
+        $tag_list = array();
         $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
         foreach($tags as $tag){
             $tag_list[] = array(

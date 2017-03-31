@@ -15,12 +15,14 @@
                 </tr>
                 </thead>
                 <tbody class="text-center">
-                @foreach($r_list as $r)
-                    <tr>
-                        <td>{{ $r['r_title'] }}</td>
-                        <td><a href="{{ $r['r_link'] }}" target="_blank">{{ $r['r_link'] }}</a></td>
-                    </tr>
-                @endforeach
+                @if(is_array($r_list) && count($r_list)>0)
+                    @foreach($r_list as $r)
+                        <tr>
+                            <td>{{ $r['r_title'] }}</td>
+                            <td><a href="{{ $r['r_link'] }}" target="_blank">{{ $r['r_link'] }}</a></td>
+                        </tr>
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
