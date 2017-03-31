@@ -25,7 +25,7 @@ class Message
 
     public static function send($to, $content, $presendTime='')
     {
-        $base_url = 'http://sms.253.com/msg/send';
+        $base_url = 'https://sms.253.com/msg/send';
         if(is_array($to)){
             $_to = '';
             foreach($to as $phone){
@@ -57,6 +57,8 @@ class Message
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
         $start = microtime(true);
         $result = curl_exec($ch);
         $end = microtime(true);
