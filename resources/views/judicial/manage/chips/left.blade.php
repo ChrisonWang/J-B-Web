@@ -131,7 +131,7 @@
                         </ul><!-- 子菜单End -->
                     </li><!-- 民政互动End -->
                     <!-- 车辆管理管理 -->
-                    <li>
+                    {{--<li>
                         <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>车辆管理<span class="fa arrow"></span></a>
                         <!-- 子菜单 -->
                         <ul class="nav nav-second-level">
@@ -140,7 +140,7 @@
                                 <a href="javascript:void(0);" data-node="system-vehiclesLocationMng" >车辆位置管理</a>
                             </li>
                         </ul><!-- 子菜单End -->
-                    </li><!-- 车辆管理End -->
+                    </li>--}}<!-- 车辆管理End -->
                     <!-- 系统管理 -->
                     <li>
                         <a href="javascript:void(0);"><i class="fa fa-laptop nav_icon"></i>系统管理<span class="fa arrow"></span></a>
