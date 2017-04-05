@@ -108,7 +108,7 @@ class Leader extends Controller
             'job'=> $inputs['leader_job'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
             'photo'=> empty($photo_path) ? '' : $photo_path,
-            'description'=> htmlspecialchars($inputs['description']),
+            'description'=> $inputs['description'],
             'create_date'=> $now,
             'update_date'=> $now
         );
@@ -167,7 +167,7 @@ class Leader extends Controller
         $leader_detail['leader_job'] = $leader->job;
         $leader_detail['photo'] = empty($leader->photo) ? "none" : $leader->photo;
         $leader_detail['sort'] = $leader->sort;
-        $leader_detail['description'] = htmlspecialchars_decode($leader->description, ENT_HTML5);
+        $leader_detail['description'] = $leader->description;
         $leader_detail['create_date'] = $leader->create_date;
         $leader_detail['update_date'] = $leader->update_date;
 
@@ -204,7 +204,7 @@ class Leader extends Controller
         $leader_detail['leader_job'] = $leader->job;
         $leader_detail['photo'] = empty($leader->photo) ? "none" : $leader->photo;
         $leader_detail['sort'] = $leader->sort;
-        $leader_detail['description'] = htmlspecialchars_decode($leader->description, ENT_HTML5);
+        $leader_detail['description'] = $leader->description;
         $leader_detail['create_date'] = $leader->create_date;
         $leader_detail['update_date'] = $leader->update_date;
 
@@ -256,7 +256,7 @@ class Leader extends Controller
         $save_data = array(
             'name'=> $inputs['leader_name'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
-            'description'=> htmlspecialchars($inputs['description']),
+            'description'=> $inputs['description'],
             'job'=> $inputs['leader_job'],
             'photo'=> empty($photo_path) ? '' : $photo_path,
             'update_date'=> $now

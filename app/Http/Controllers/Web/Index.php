@@ -61,7 +61,7 @@ class Index extends Controller
         }
         $r_article_list = 'none';
         //拿出图片新闻
-        $pic_articles = DB::table('cms_article')->where(['disabled'=>'no'])->where('thumb','!=','')->where('archived', 'no')->orderBy('publish_date', 'desc')->get();
+        $pic_articles = DB::table('cms_article')->where(['disabled'=>'no'])->where('thumb','!=','')->where('archived', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date', 'desc')->get();
         $pic_article_list = 'none';
         if(count($pic_articles) > 0){
             $pic_article_list = array();
@@ -92,7 +92,7 @@ class Index extends Controller
                         'channel_title'=> $rc->channel_title,
                     );
                 }
-                $r_article = DB::table('cms_article')->where('sub_channel',$recommend_list[0]['key'])->where('archived', 'no')->orderBy('publish_date','desc')->skip(0)->take(6)->get();
+                $r_article = DB::table('cms_article')->where('sub_channel',$recommend_list[0]['key'])->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date','desc')->skip(0)->take(6)->get();
                 if(count($r_article) > 0){
                     $r_article_list = array();
                     foreach($r_article as $r_ar){
@@ -151,7 +151,7 @@ class Index extends Controller
                     'create_date'=> $zw->create_date,
                 );
             }
-            $zwgk_article = DB::table('cms_article')->where(['channel_id'=> $zwgk_list[0]['key'], 'disabled'=> 'no'])->where('archived', 'no')->orderBy('publish_date','desc')->skip(0)->take(6)->get();
+            $zwgk_article = DB::table('cms_article')->where('channel_id', $zwgk_list[0]['key'])->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date','desc')->skip(0)->take(6)->get();
             if(count($zwgk_article) > 0){
                 $zwgk_article_list = array();
                 foreach($zwgk_article as $zw_ar){
@@ -191,7 +191,7 @@ class Index extends Controller
         }
 
         //搜索
-        $res = DB::table('cms_article')->where('article_title', 'like', '%'.$keywords.'%')->where('archived', 'no')->get();
+        $res = DB::table('cms_article')->where('article_title', 'like', '%'.$keywords.'%')->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->get();
         $count = count($res);
         if(count($res) == 0){
             $this->page_date['page'] = array(
@@ -229,6 +229,7 @@ class Index extends Controller
     public function article_list($cid, $page = 1)
     {
         $channel_id = $cid;
+        $article_list = array();
         //频道信息
         $channel = DB::table('cms_channel')->where('channel_id', $channel_id)->first();
         if((count($channel)==0)){
@@ -242,14 +243,14 @@ class Index extends Controller
             }
         }
         $offset = 16 * ($page-1);
-        $count = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'disabled'=>'no', 'thumb'=>'', 'archived'=> 'no'])->count();
+        $count = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'archived'=> 'no'])->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->count();
         if($count < 1){
             $article_list = 'none';
             $this->page_date['article_list'] = $article_list;
             return view('judicial.web.list', $this->page_date);
         }
         else{
-            $articles = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'disabled'=>'no', 'thumb'=>'', 'archived'=> 'no'])->skip($offset)->take(16)->get();
+            $articles = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'archived'=> 'no'])->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->skip($offset)->take(16)->get();
             if(count($articles) < 1){
                 return view('errors.404');
             }
@@ -322,7 +323,7 @@ class Index extends Controller
     {
         //文章
         $article_list = array();
-        $sql = 'SELECT * FROM `cms_article` WHERE `tags` LIKE "%'.$tid.'%" AND `disabled`="no" AND `archived` = "no"';
+        $sql = 'SELECT * FROM `cms_article` WHERE `tags` LIKE "%'.$tid.'%" AND `disabled`="no" AND `archived` = "no" AND `publish_data` <= "'.date('Y-m-d H:i:s', time()).'"';
         $articles = DB::select($sql);
         $tag_name = DB::table('cms_tags')->where('id', $tid)->first();
         if((count($articles)==0)){
@@ -364,14 +365,14 @@ class Index extends Controller
     public function picture_list($page = 1)
     {
         $offset = 9 * ($page-1);
-        $count = DB::table('cms_article')->where(['disabled'=>'no'])->where('thumb','!=','')->where('archived', 'no')->count();
+        $count = DB::table('cms_article')->where('disabled', 'no')->where('thumb','!=','')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->where('archived', 'no')->count();
         if($count < 1){
             $article_list = 'none';
             $this->page_date['article_list'] = $article_list;
             return view('judicial.web.list', $this->page_date);
         }
         else{
-            $articles = DB::table('cms_article')->where(['disabled'=>'no'])->where('thumb','!=','')->where('archived', 'no')->orderBy('create_date', 'desc')->skip($offset)->take(9)->get();
+            $articles = DB::table('cms_article')->where('disabled', 'no')->where('thumb','!=','')->where('archived', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date', 'desc')->skip($offset)->take(9)->get();
             if(count($articles) < 1){
                 return view('errors.404');
             }
@@ -405,7 +406,7 @@ class Index extends Controller
             return view('errors.404');
         }
         //获取正文
-        $article = DB::table('cms_article')->where('article_code', $article_code)->where('archived', 'no')->first();
+        $article = DB::table('cms_article')->where('article_code', $article_code)->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->where('archived', 'no')->first();
         if(is_null($article)){
             return view('errors.404');
         }
@@ -446,7 +447,7 @@ class Index extends Controller
         }
         //更新访问
         $clicks = (isset($article->clicks)) ? $article->clicks + 1 : 1;
-        DB::table('cms_article')->where('article_code', $article_code)->where('archived', 'no')->update(['clicks'=> $clicks]);
+        DB::table('cms_article')->where('article_code', $article_code)->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->where('archived', 'no')->update(['clicks'=> $clicks]);
         $this->page_date['tag_list'] = $tag_list;
         $this->page_date['article_detail'] = $article_detail;
         return view('judicial.web.content', $this->page_date);
@@ -525,19 +526,22 @@ class Index extends Controller
 
     public function get_left_list()
     {
+        $sfdt_list = array();
         $channel_list = array();
         //获取一级频道
         $p_channels = DB::table('cms_channel')->where(['pid'=>0,'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
-        foreach($p_channels as $key=> $p_channel){
-            $channel_list [$key]['key'] = keys_encrypt($p_channel->channel_id);
-            $channel_list [$key]['channel_title'] = $p_channel->channel_title;
-            $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
-            if(count($sub_channels)<1){
-                $channel_list [$key]['sub_channel'] = 'none';
-            }
-            else{
-                foreach($sub_channels as $sub_c){
-                    $channel_list [$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
+        if(count($p_channels) > 0){
+            foreach($p_channels as $key=> $p_channel){
+                $channel_list [$key]['key'] = keys_encrypt($p_channel->channel_id);
+                $channel_list [$key]['channel_title'] = $p_channel->channel_title;
+                $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
+                if(count($sub_channels)<1){
+                    $channel_list [$key]['sub_channel'] = 'none';
+                }
+                else{
+                    foreach($sub_channels as $sub_c){
+                        $channel_list [$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
+                    }
                 }
             }
         }
@@ -625,7 +629,7 @@ class Index extends Controller
     public function loadArticleList(Request $request)
     {
         $channel_id = $request->input('channel_id');
-        $articles = DB::table('cms_article')->where(['sub_channel'=> $channel_id, 'disabled'=> 'no', 'archived'=>'no'])->orderBy('publish_date','desc')->skip(0)->take(6)->get();
+        $articles = DB::table('cms_article')->where(['sub_channel'=> $channel_id, 'disabled'=> 'no', 'archived'=>'no'])->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date','desc')->skip(0)->take(6)->get();
         if(count($articles) > 0){
             $article_list = array();
             foreach($articles as $article){

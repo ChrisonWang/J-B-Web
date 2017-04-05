@@ -384,7 +384,7 @@ class ServiceLoadContent extends Controller
                 'count' => $count,
                 'count_page' => $count_page,
                 'now_page' => 1,
-                'type' => 'suggestion',
+                'type' => 'suggestions',
             );
         }
         $this->page_data['pages'] = $pages;

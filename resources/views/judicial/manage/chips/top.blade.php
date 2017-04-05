@@ -5,7 +5,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="index.html">后台</a>
+    <a class="navbar-brand" href="/manage/dashboard">后台</a>
 </div>
 <!-- /.navbar-header -->
 <ul class="nav navbar-nav navbar-right">
@@ -20,8 +20,8 @@
         </ul>
     </li>
     <li><a><p style="color: white"><strong>{{$managerInfo['role_name']}}</strong></p></a></li>
-    <li><a href="javascript:void(0);" data-node="managerInfo" onclick="loadContent($(this))"><p style="color: white"><strong>个人信息</strong></p></a></li>
-    <li><a href="javascript:void(0);" data-node="changePassword" onclick="loadContent($(this))"><p style="color: white"><strong>修改密码</strong></p></a></li>
+    <li><a href="javascript:void(0);" data-node="user-managerInfo" onclick="loadContent($(this))"><p style="color: white"><strong>个人信息</strong></p></a></li>
+    <li><a href="javascript:void(0);" data-node="user-editManagerInfo" onclick="loadContent($(this))"><p style="color: white"><strong>修改密码</strong></p></a></li>
     <li><a href="logout"><p style="color: white"><strong>退出</strong></p></a></li>
 </ul>
 <!--模态框-->

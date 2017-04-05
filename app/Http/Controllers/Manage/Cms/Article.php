@@ -249,7 +249,7 @@ class Article extends Controller
 
         $channels_data = 'none';
         $sub_channels_data = 'none';
-        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+        $channels = DB::table('cms_channel')->where('pid', 0 )->orderBy('create_date', 'desc')->get();
         if(count($channels) > 0){
             $channels_data = array();
             foreach($channels as $key => $channel){
@@ -741,6 +741,9 @@ class Article extends Controller
     {
         $sub_channel_list = array();
         $channel_id = $request->input('channel_key');
+        if($channel_id == 'none'){
+            json_response(['status'=>'failed']);
+        }
         $sub_channels = DB::table('cms_channel')->where('pid', keys_decrypt($channel_id))->get();
         if(count($sub_channels) < 1){
             json_response(['status'=>'failed']);

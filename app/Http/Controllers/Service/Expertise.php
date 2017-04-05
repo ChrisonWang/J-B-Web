@@ -55,9 +55,9 @@ class Expertise extends Controller
     {
         $member_code = $this->checkLoginStatus();
         //取出列表
+        $type_list = array();
         $types = DB::table('service_judicial_expertise_type')->get();
         if(count($types)>0){
-            $type_list = array();
             foreach($types as $type){
                 $type_list[keys_encrypt($type->id)] = $type->name;
             }
@@ -226,10 +226,10 @@ class Expertise extends Controller
     public function downloadForm($page = 1){
         $pages = '';
         $form_list = 'none';
-        $count = DB::table('cms_forms')->where(['channel_id'=>84, 'disabled'=>'no'])->count();
+        $count = DB::table('cms_forms')->where(['channel_id'=>130, 'disabled'=>'no'])->count();
         $count_page = ($count > 16)? ceil($count/16)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 16;
-        $forms = DB::table('cms_forms')->where(['channel_id'=>84, 'disabled'=>'no'])->orderBy('create_date', 'desc')->skip($offset)->take(16)->get();
+        $forms = DB::table('cms_forms')->where(['channel_id'=>130, 'disabled'=>'no'])->orderBy('create_date', 'desc')->skip($offset)->take(16)->get();
         if(count($forms) > 0){
             $form_list = array();
             foreach($forms as $form){

@@ -13,6 +13,7 @@
     <div class="zw_right w810">
         <div class="zwr_top">
             <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span>政务公开&nbsp;&nbsp;>&nbsp;</span>
             <span>宣传视频&nbsp;&nbsp;>&nbsp;</span>
             <span style="color: #101010;">{{ $video_detail['title'] }}</span>
         </div>

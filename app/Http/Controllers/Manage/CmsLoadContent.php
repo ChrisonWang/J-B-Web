@@ -379,7 +379,7 @@ class CmsLoadContent extends Controller
         //取出频道
         $channels_data = 'none';
         $sub_channels_data = 'none';
-        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+        $channels = DB::table('cms_channel')->where('pid', 0 )->orderBy('create_date', 'desc')->get();
         if(count($channels) > 0){
             $channels_data = array();
             foreach($channels as $key => $channel){

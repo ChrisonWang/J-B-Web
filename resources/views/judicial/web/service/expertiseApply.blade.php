@@ -24,6 +24,7 @@
                 <li><i>■</i>申请人根据司法鉴定类型下载对应表格。</li>
                 <li><i>■</i>申请人在本系统提交司法鉴定申请，并上传相关附件。</li>
                 <li><i>■</i>申请人在收到司法局审批通过短信通知后，携带所有资料到司法局一次性办理业务。</li>
+                <li><i>■</i>如果审批不通过，请按提示重新提交申请</li>
             </ul>
         </div>
         <div class="xx_tit">
@@ -68,6 +69,13 @@
                     <a href="{{ URL::to('/').'/uploads/system/files/群众预约援助表.xlsx'}}" target="_blank">下载表格</a>
                 </span>
             </div>
+
+                <div class=mt_last>
+                    <span class="mtl_txt">温馨提示</span>
+                    <div class="mt_ul">
+                        <span>如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
+                    </div>
+                </div>
             <div class="last_btn" onclick="expertiseApply()">
                 提交申请
             </div>

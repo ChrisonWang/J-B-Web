@@ -1508,7 +1508,7 @@ function getSubChannel(c,sub){
 }
 
 function getSubChannel_S(c,sub){
-    sub.html('<option value="none" selected>暂无分类</option>');
+    sub.html('<option value="none" selected>不限二级频道</option>');
     var url = '/manage/cms/article/get_sub_channel';
     var channel_key = c.find("option:selected").val();
     $.ajax({
@@ -2993,7 +2993,6 @@ function search_aidApply(t, c){
             }
         }
     });
-    return;
 }
 
 //公检法指派管理
@@ -3086,7 +3085,6 @@ function search_aidDispatch(t, c){
             }
         }
     });
-    return;
 }
 
 //车辆管理

@@ -170,14 +170,17 @@
 
 <!--底部滚动-->
 <div class="ft_mall w980">
-    <span class="vd_tit">图片中心</span>
+    <span class="vd_tit">图片中心
+        <span style="float: right"><a href="{{ URL::to('/picture')}}" style="color: #000">查看更多>></a>
+        </span>
+    </span>
     <div class="ft_sid swiper-container w980">
         <ul class="swiper-wrapper">
             @if(isset($pic_list) && is_array($pic_list))
                 @foreach($pic_list as $pic)
                 <li class="swiper-slide">
                     <a href="{{ URL::to('/article').'/'.$pic['key'] }}" target="_blank">
-                        <img src="{{ $pic['thumb'] }}"><span>{{ $pic['article_title'] }}</span>
+                        <img src="{{ $pic['thumb'] }}" width="210" height="150"><span>{{ spilt_title($pic['article_title'], 15) }}</span>
                     </a>
                 </li>
                 @endforeach
@@ -211,7 +214,7 @@
                 @foreach($img_flink_list as $img_flink)
                     <li class="swiper-slide">
                         <a href="{{ $img_flink['links'] }}" target="_blank">
-                            <img src="{{ $img_flink['image'] }}" alt="{{ $img_flink['title'] }}">
+                            <img src="{{ $img_flink['image'] }}" width="150" height="50" alt="{{ $img_flink['title'] }}">
                         </a>
                     </li>
                 @endforeach

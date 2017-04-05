@@ -351,7 +351,7 @@ class User extends Controller
         if(!$memberCode){
             return redirect('user/login');
         }
-        return view('judicial.web.user.layout.changePhone');
+        return view('judicial.web.user.layout.changePhone',$this->page_date);
     }
 
     public function doChangePhone(Request $request)
@@ -412,6 +412,9 @@ class User extends Controller
         $newPassword = preg_replace('/\s/', '', $inputs['newPassword']);
         $confirmPassword = preg_replace('/\s/', '', $inputs['confirmPassword']);
         //过滤不合法的提交
+        if(!preg_password($newPassword)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'密码长度应为8-16位，由字母/数字/下划线组成！']);
+        }
         if(empty($oldPassword) || empty($newPassword) || empty($confirmPassword)){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'密码不能包含空格！']);
         }

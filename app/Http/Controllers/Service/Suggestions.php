@@ -175,13 +175,13 @@ class Suggestions extends Controller
 
     private function _checkInput($inputs){
         if(!isset($inputs['name']) || trim($inputs['name'])==='' || strlen($inputs['name']) > 20){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名应为长度20以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名必填/必选，请填写/选择']);
         }
         if(!isset($inputs['email']) || trim($inputs['email'])==='' || !preg_email($inputs['email'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写合法的邮箱！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'邮箱必填/必选，请填写/选择']);
         }
         if(!isset($inputs['cell_phone']) || trim($inputs['cell_phone'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系电话不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系电话必填/必选，请填写/选择']);
         }
         if(!preg_phone($inputs['cell_phone']) && !preg_phone2($inputs['cell_phone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写正确的联系电话！（13800000000 或 0398-1234567 或 010-12345678）']);
@@ -190,10 +190,10 @@ class Suggestions extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择留言分类！']);
         }
         if(!isset($inputs['title']) || trim($inputs['title'])==='' || strlen($inputs['title']) > 200){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'主题应为长度200以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'问题主题必填/必选，请填写/选择']);
         }
         if(!isset($inputs['content']) || trim($inputs['content'])==='' || strlen($inputs['content']) > 200){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'内容应为长度200以内的字符串']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'问题内容必填/必选，请填写/选择']);
         }
         return true;
     }

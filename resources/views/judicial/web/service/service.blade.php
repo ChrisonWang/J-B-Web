@@ -54,7 +54,7 @@
                         @if(isset($bszn_article_list[$bszn['channel_id']]) && is_array($bszn_article_list[$bszn['channel_id']]))
                             @foreach($bszn_article_list[$bszn['channel_id']] as $a)
                                 <li>
-                                    <a href="{{ URL::to('service/article').'/'.$a['article_code'] }}">
+                                    <a href="{{ URL::to('article').'/'.$a['article_code'] }}">
                                         <i>{{ spilt_title($a['article_title'], 32) }}</i>
                                         <b>{{ date('Y-m-d', strtotime($a['publish_date'])) }}</b>
                                     </a>

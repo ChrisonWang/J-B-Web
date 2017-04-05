@@ -63,7 +63,8 @@ class Roles extends Controller
         $node_list = array();
         $menu_first = DB::table('user_menus')->first();
         if(!is_null($menu_first)){
-            foreach(json_decode($menu_first->nodes, true) as $node_key => $node_name){
+            $nodes = json_decode($menu_first->nodes, true);
+            foreach($nodes as $node_key => $node_name){
                 $node_list[] = array(
                     'node_key'=> keys_encrypt($node_key),
                     'node_name'=> $node_name

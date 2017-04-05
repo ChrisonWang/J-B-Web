@@ -36,12 +36,7 @@
                         <div class="form-group">
                             <label for="search-sub-channel-key">二级频道：</label>
                             <select id="search-sub-channel-key" name="search-sub-channel-key" class="form-control">
-                                @if(isset($sub_channel_list) && is_array($sub_channel_list))
-                                    <option value="none">不限二级频道</option>
-                                    @foreach($sub_channel_list as $key=> $name)
-                                        <option value="{{ $key }}">{{ $name }}</option>
-                                    @endforeach
-                                @endif
+                                <option value="none">不限二级频道</option>
                             </select>
                         </div>
                         <div class="form-group">

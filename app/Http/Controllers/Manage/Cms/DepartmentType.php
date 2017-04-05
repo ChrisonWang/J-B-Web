@@ -226,6 +226,12 @@ class DepartmentType extends Controller
         }
         $inputs = $request->input();
         $type_id = keys_decrypt($inputs['key']);
+        //判断有没有机构简介
+        $rs = DB::table('cms_department')->where('type_id',$type_id)->get();
+        if(count($rs) > 0){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该分类下存在机构简介，无法删除！']);
+        }
+
         $row = DB::table('cms_department_type')->where('type_id',$type_id)->delete();
         if( $row > 0 ){
             $type_data = array();

@@ -21,7 +21,7 @@
             <ul>
                 @foreach($article_list as $article)
                     <li>
-                        <div class="zwrm_a"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ $article['article_title'] }}</a></div>
+                        <div class="zwrm_a"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'], 40) }}</a></div>
                         <div class="zwrm_b">{{ $article['publish_date'] }}</div>
                         <div class="zwrm_c">浏览：{{ $article['clicks'] }}</div>
                     </li>

@@ -282,6 +282,7 @@ function aidDispatchApply(){
         return false;
     }
     //弹窗提示
+    $(".alert_sh .als_top").text('正在提交！');
     $(".alert_sh .als_down").text('附件上传中,请耐心等待……');
     $(".alert_sh").show();
 
@@ -298,6 +299,7 @@ function aidDispatchApply(){
             if(re.status == 'failed'){
                 $(".alert_sh .als_top").text('提交错误！');
                 $(".alert_sh .als_down").text(re.res + '！');
+                return false;
             }
             else if(re.status == 'succ'){
                 $(".alert_sh").hide();
@@ -308,6 +310,7 @@ function aidDispatchApply(){
         error:function(re,s,et){
             $(".alert_sh .als_top").text('提交错误！');
             $(".alert_sh .als_down").text('您上传的文件过大，服务器拒绝了您的请求');
+            return false;
         }
     });
 }
@@ -354,6 +357,7 @@ function expertiseApply(){
         return false;
     }
     //弹窗提示
+    $(".alert_sh .als_top").text('正在提交！');
     $(".alert_sh .als_down").text('附件上传中,请耐心等待……');
     $(".alert_sh").show();
 

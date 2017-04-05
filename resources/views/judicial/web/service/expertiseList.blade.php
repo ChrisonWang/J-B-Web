@@ -64,23 +64,25 @@
             暂无记录！
         @endif
 
-        <div class="zwr_ft">
-            <div class="fy_left">
-                <span>@if($pages['count_page']>1 )<a href="{{ URL::to('service/'.$pages['type']) }}"> 首页</a> @else 首页 @endif</span>
+        @if(is_array($pages) && count($pages)>0)
+            <div class="zwr_ft">
+                <div class="fy_left">
+                    <span>@if($pages['count_page']>1 )<a href="{{ URL::to('service/'.$pages['type']) }}"> 首页</a> @else 首页 @endif</span>
                 <span>
                     @if($pages['now_page'] >1 ) <a href="{{ URL::to('service/'.$pages['type']).'/'.($pages['now_page']-1) }}">上一页</a> @else 上一页 @endif
                 </span>
                 <span>
                     @if($pages['now_page']<$pages['count_page'] ) <a href="{{ URL::to('service/'.$pages['type']).'/'.($pages['now_page']+1) }}">下一页</a> @else 下一页 @endif
                 </span>
-                <span>@if($pages['count_page']>1 && $pages['now_page']<$pages['count_page'] )<a href="{{ URL::to('service/'.$pages['type']).'/'.$pages['count_page'] }}"> 尾页</a> @else 尾页 @endif</span>
+                    <span>@if($pages['count_page']>1 && $pages['now_page']<$pages['count_page'] )<a href="{{ URL::to('service/'.$pages['type']).'/'.$pages['count_page'] }}"> 尾页</a> @else 尾页 @endif</span>
+                </div>
+                <div class="fy_right">
+                    <span>总记录数：{{ $pages['count'] }}</span>
+                    <span>每页显示10条记录</span>
+                    <span>当前页{{ $pages['now_page'] }}/{{ $pages['count_page'] }}</span>
+                </div>
             </div>
-            <div class="fy_right">
-                <span>总记录数：{{ $pages['count'] }}</span>
-                <span>每页显示10条记录</span>
-                <span>当前页{{ $pages['now_page'] }}/{{ $pages['count_page'] }}</span>
-            </div>
-        </div>
+        @endif
     </div>
 
 </div>

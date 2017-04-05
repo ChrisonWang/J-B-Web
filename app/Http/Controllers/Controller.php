@@ -45,10 +45,10 @@ class Controller extends BaseController
     public function get_left_sub()
     {
         //左侧
-        $s_lsfw = DB::table('cms_channel')->where('pid', 74)->get();
-        $s_sfks = DB::table('cms_channel')->where('pid', 79)->get();
-        $s_sfjd = DB::table('cms_channel')->where('pid', 84)->get();
-        $s_flyz = DB::table('cms_channel')->where('pid', 89)->get();
+        $s_lsfw = DB::table('cms_channel')->where('pid', 128)->get();
+        $s_sfks = DB::table('cms_channel')->where('pid', 126)->get();
+        $s_sfjd = DB::table('cms_channel')->where('pid', 130)->get();
+        $s_flyz = DB::table('cms_channel')->where('pid', 133)->get();
 
         $this->page_data['s_lsfw'] = json_decode(json_encode($s_lsfw), true);
         $this->page_data['s_sfks'] = json_decode(json_encode($s_sfks), true);

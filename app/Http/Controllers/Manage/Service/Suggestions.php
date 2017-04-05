@@ -59,7 +59,7 @@ class Suggestions extends Controller
                 'count' => $count,
                 'count_page' => $count_page,
                 'now_page' => $page,
-                'type' => 'suggestion',
+                'type' => 'suggestions',
             );
         }
         $this->page_data['pages'] = $pages;

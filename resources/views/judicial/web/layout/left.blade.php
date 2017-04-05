@@ -7,12 +7,6 @@
                 <span><a href="{{ URL::to('/leader')}}">领导介绍</a></span>
                 <span><a href="{{ URL::to('/department')}}">机构设置</a></span>
             </div>
-            <div><a href="#">司法动态</a><i class="r_awry"></i></div>
-            <div class="law_body">
-                <span><a href="">热点新闻</a></span>
-                <span><a href="">业务动态</a></span>
-                <span><a href="">通知公告</a></span>
-            </div>
             <div><a href="{{ URL::to('/picture')}}">图片中心</a><i class="r_awry"></i></div>
             <div><a href="{{ URL::to('/video')}}">宣传视频</a><i class="r_awry"></i></div>
         </li>

@@ -73,7 +73,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 /*视频模块*/
 .idx_vedio{margin: 20px auto; overflow: hidden;}
 .vd_left{width: 350px; height: 250px; background: #F9F9F9; border: 1px solid #ECECEC; text-align: center; position: relative; padding-top: 50px; float: left;}
-.vd_tit{ position: absolute; color: #DD3938; font-size: 13px; left: 0; min-width: 60px; display: block; padding-left: 10px; border-left: 5px solid #DD3938; height: 25px; line-height: 25px; top: 10px;}
+.vd_tit{ width: 950px; position: absolute; color: #DD3938; font-size: 13px; left: 0; min-width: 60px; display: block; padding-left: 10px; border-left: 5px solid #DD3938; height: 25px; line-height: 25px; top: 10px;}
 .vd_mid{width: 400px; height: 275px; position: relative; float: left; background: #F9F9F9; border: 1px solid #ECECEC; margin-left: 20px; padding-top: 25px;}
 .vd_mid ul{overflow: hidden;}
 .vd_mid ul li{width: 160px; height: 100px; float: left; background-color: #ECECEC; margin-left: 25px; margin-top: 25px; text-align: center;}

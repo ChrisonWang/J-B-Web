@@ -1,6 +1,6 @@
 <div class="zw_left">
     <ul>
-        <li><div>律师服务<i class="r_awry"></i></div>
+        <li ><div>律师服务<i class="r_awry"></i></div>
             <div class="law_body">
                 <span onclick="javascript: window.location.href='{{URL::to('service/lawyer/1')}}';">律师查询</span>
                 <span onclick="javascript: window.location.href='{{URL::to('service/lawyerOffice/1')}}';">事务所查询</span>
