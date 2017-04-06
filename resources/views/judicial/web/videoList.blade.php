@@ -21,12 +21,16 @@
                 <ul>
                     @foreach($video_list as $video)
                         <li>
-                            <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}">
+                            <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
                                 <img src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="245" height="167">
                             </a>
-                            <a class="vd_btn"><img src="{{ asset('/images/btn_play_50x50.png') }}" width="50" height="50"></a>
+                            <a class="vd_btn" href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
+                                <img src="{{ asset('/images/btn_play_50x50.png') }}" width="50" height="50">
+                            </a>
                             <span class="zwv_txt">
-                                <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}">{{ spilt_title($video['title'], 20) }}</a>
+                                <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
+                                    {{ spilt_title($video['title'], 20) }}
+                                </a>
                             </span>
                         </li>
                     @endforeach
@@ -56,8 +60,8 @@
                         <span>总记录数：{{ $page['count'] }}</span>
                         <span>显示 9 条记录</span>
                         <span>当前页{{ $page['now_page'] }}/{{ $page['page_count'] }}</span>
-                        <span>跳转至第<input id="page_no" type="text" value="">页</span>
-                        <span class="fy_btn" onclick="">跳转</span>
+                        <span>跳转至第<input id="page_no_input" type="text" value="">页</span>
+                        <a class="fy_btn" onclick="cms_page_jumps($(this))" data-type="/video">跳转</a>
                     </div>
                 </div>
             @endif

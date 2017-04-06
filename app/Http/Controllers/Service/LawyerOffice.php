@@ -69,6 +69,9 @@ class LawyerOffice extends Controller
         $pages = '';
         $count = DB::table('service_lawyer_office')->count();
         $count_page = ($count > 16)? ceil($count/16)  : 1;
+        if($page<1 || $page>$count_page){
+            return view('errors.404');
+        }
         $offset = $page > $count_page ? 0 : ($page - 1) * 16;
         $lawyerOffice = DB::table('service_lawyer_office')->orderBy('create_date', 'desc')->skip($offset)->take(16)->get();
         if(count($lawyerOffice) > 0){

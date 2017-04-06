@@ -21,7 +21,7 @@
                 <ul>
                     @foreach($article_list as $article)
                         <li>
-                            <div class="zwrm_a"><a href="{{ URL::to('service/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
+                            <div class="zwrm_a"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
                             <div class="zwrm_b">{{ $article['publish_date'] }}</div>
                             <div class="zwrm_c">浏览：{{ $article['clicks'] }}</div>
                         </li>
@@ -49,7 +49,7 @@
             @else
                 <div class="zwr_ft">
                     <div class="fy_left">
-                        <span><a href="service/list/{{$page['channel_id']}}/1">首页</a></span>
+                        <span><a href="/service/list/{{$page['channel_id']}}/1">首页</a></span>
                         <span>@if(($page['now_page'] - 1) > 0)<a href="service/list/{{$page['channel_id']}}/{{$page['now_page'] - 1}}">@endif上一页</a></span>
                         <span>@if(($page['now_page'] + 1) <= $page['page_count'])<a href="service/list/{{$page['channel_id']}}/{{$page['now_page'] + 1}}">@endif下一页</a></span>
                         <span><a href="service/list/{{$page['channel_id']}}/{{$page['page_count']}}">尾页</a></span>
@@ -58,8 +58,8 @@
                         <span>总记录数：{{ $page['count'] }}</span>
                         <span>显示 16 条记录</span>
                         <span>当前页{{ $page['now_page'] }}/{{ $page['page_count'] }}</span>
-                        {{--<span>跳转至第<input type="text" value="1">页</span>
-                        <span class="fy_btn">跳转</span>--}}
+                        <span>跳转至第<input id="page_no_input" type="text" value="1"/>页</span>
+                        <a class="fy_btn" onclick="cms_page_jumps($(this))" data-type="{{ '/service/list/'.$page['channel_id'] }}">跳转</a>
                     </div>
                 </div>
             @endif

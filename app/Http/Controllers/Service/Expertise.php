@@ -66,6 +66,9 @@ class Expertise extends Controller
         $pages = '';
         $count = DB::table('service_judicial_expertise')->where('member_code', $member_code)->count();
         $count_page = ($count > 10)? ceil($count/10)  : 1;
+        if($page<1 || $page>$count_page){
+            return view('errors.404');
+        }
         $offset = $page > $count_page ? 0 : ($page - 1) * 10;
         $records = DB::table('service_judicial_expertise')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip($offset)->take(10)->get();
         if(count($records) > 0){
@@ -171,7 +174,7 @@ class Expertise extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'申请失败！请联系管理员']);
         }
         else{
-            json_response(['status'=>'succ','type'=>'notice', 'res'=>'提交成功！请等待管理员答复！', 'link'=>URL::to('service/expertise/list')]);
+            json_response(['status'=>'succ','type'=>'notice', 'res'=>'提交成功！请等待管理员答复！', 'link'=>URL::to('service/expertise/detail').'/'.$record_code]);
         }
     }
 

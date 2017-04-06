@@ -35,6 +35,10 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('user/sendVerify','Web\User@sendVerify');
 
+    Route::get('user/forgetPassword','Web\User@forgetPassword');
+
+    Route::post('user/forgetPassword','Web\User@doForgetPassword');
+
     Route::group(['middleware' => ['user.verify']], function () {
 
         Route::post('user/changePassword','Web\User@changePassword');

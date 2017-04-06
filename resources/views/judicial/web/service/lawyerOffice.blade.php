@@ -112,6 +112,8 @@
                     <span>总记录数：{{ $pages['count'] }}</span>
                     <span>每页显示16条记录</span>
                     <span>当前页{{ $pages['now_page'] }}/{{ $pages['count_page'] }}</span>
+                    <span>跳转至第<input id="page_no_input" type="text" value="1"/>页</span>
+                    <a class="fy_btn" onclick="cms_page_jumps($(this))" data-type="{{ '/service/'.$pages['type'] }}">跳转</a>
                 </div>
             </div>
         @endif

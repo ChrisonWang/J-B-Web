@@ -137,7 +137,7 @@ function keys_decrypt($string = '', $skey = 'JusticeBureau') {
     return base64_decode(join('', $strArr));
 }
 
-function spilt_title($str,$len){
+function spilt_title($str,$len,$end = true){
     if($str === ''){
         return $str;
     }
@@ -147,7 +147,12 @@ function spilt_title($str,$len){
         return $str;
     }
     else{
-        $title = mb_substr($str, 0, $len).'...';
+        if($end === true){
+            $title = mb_substr($str, 0, $len).'...';
+        }
+        else{
+            $title = mb_substr($str, 0, $len);
+        }
         return $title;
     }
 }

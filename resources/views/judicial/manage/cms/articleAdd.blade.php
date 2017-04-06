@@ -146,7 +146,7 @@
                     </div>
                     <div class="container-fluid">
                         <hr/>
-                        <div class="col-md-2">
+                        <div class="col-md-2" hidden>
                             <a class="btn btn-default btn-block" onclick="addRow()">
                                 添加
                             </a>

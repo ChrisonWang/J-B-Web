@@ -59,6 +59,9 @@ class Suggestions extends Controller
         $pages = '';
         $count = DB::table('service_suggestions')->count();
         $count_page = ($count > 12)? ceil($count/12)  : 1;
+        if($page<1 || $page>$count_page){
+            return view('errors.404');
+        }
         $offset = $page > $count_page ? 0 : ($page - 1) * 12;
         $records = DB::table('service_suggestions')->orderBy('create_date', 'desc')->skip($offset)->take(12)->get();
         if(count($records) > 0){

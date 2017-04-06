@@ -30,6 +30,11 @@
                             <a href="{{ URL::to('/article').'/'.$pic_article['key'] }}" alt="{{ $pic_article['article_title'] }}">
                                 <img src="{{ $pic_article['thumb'] }}" width="550" height="350" alt="{{ $pic_article['article_title'] }}"/>
                             </a>
+                            <span class="swiper_title_bg">
+                                <a href="{{ URL::to('/article').'/'.$pic_article['key'] }}" alt="{{ $pic_article['article_title'] }}">
+                                    {{ spilt_title($pic_article['article_title'], 30) }}
+                                </a>
+                            </span>
                         </div>
                     @endforeach
                 @endif
@@ -42,7 +47,7 @@
             @if($recommend_list != 'none' && is_array($recommend_list))
                 <ul>
                     @foreach($recommend_list as $k=> $recommend)
-                        <li @if($k == 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#sfdt_c'))"data-channel="sfdt" data-key="{{ $recommend['key'] }}">{{ $recommend['channel_title'] }}</li>
+                        <li @if($k == 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#sfdt_c'))"data-channel="sfdt" data-key="{{ $recommend['key'] }}" data-top="yes">{{ $recommend['channel_title'] }}</li>
                     @endforeach
                 </ul>
                 <a href="{{ URL::to('/list').'/'.$recommend_list[0]['key']}}">更多>></a>
@@ -70,9 +75,9 @@
 <div class="w980 idx_vedio">
     <div class="vd_left">
         <span class="vd_tit">宣传视频</span>
-        <span class="vid_more"><a href="{{ URL::to('/video') }}">更多视频>></a></span>
-        <video src="images/cs.mp4"  controls="controls" width="300" height="200"></video>
-        <span style="display: block;">市公证协会举办全市公证业务培训</span>
+        <span class="vid_more"><a href="{{ URL::to('/video') }}" target="_blank">更多视频>></a></span>
+        <embed src='{!! isset($video['link']) ? $video['link'] : '' !!}' allowFullScreen='true' quality='high' width='300' height='200' align='middle' allowScriptAccess='always' type='application/x-shockwave-flash'></embed>
+        <span style="display: block;">{{ isset($video['title']) ? $video['title'] : '未添加' }}</span>
     </div>
 
     <div class="vd_mid">
@@ -105,10 +110,10 @@
 <div class="w980 news_2">
     <div class="new2_left">
         <div class="idbr_top">
-            @if($zwgk_list!='none' && is_array($zwgk_list))
+            @if(is_array($m_zwgk_list) && count($m_zwgk_list)>0)
             <ul>
-                @foreach($zwgk_list as $k=> $zwgk_l)
-                    <li @if($k == 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#zwgk_c'))"data-channel="zwgk" data-key="{{ $zwgk_l['key'] }}">{{ $zwgk_l['channel_title'] }}</li>
+                @foreach($m_zwgk_list as $k=> $zwgk_l)
+                    <li @if($k === 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#zwgk_c'))"data-channel="zwgk" data-key="{{ $zwgk_l['key'] }}" data-top="no">{{ $zwgk_l['channel_title'] }}</li>
                 @endforeach
             </ul>
             <a href="{{ URL::to('/list').'/'.$zwgk_list[0]['key']}}" style="color: #000">更多>></a>
@@ -232,21 +237,27 @@
         pagination: '.swiper-pagination',
         paginationClickable: true,
         direction: 'vertical',
-        loop:true
+        watchActiveIndex : true,
+        loop:true,
+        autoplay : 5000
     });
     var swiper_ft = new Swiper('.ft_sid', {
         nextButton: '.ft_sid .swiper-button-next',
         prevButton: '.ft_sid .swiper-button-prev',
         slidesPerView: 4,
         paginationClickable: true,
-        spaceBetween: 0
+        spaceBetween: 0,
+        loop:true,
+        autoplay : 2000
     });
     var swiper_last = new Swiper('.ft_sidlast', {
         nextButton: '.ft_sidlast .swiper-button-next',
         prevButton: '.ft_sidlast .swiper-button-prev',
         slidesPerView: 6,
         paginationClickable: true,
-        spaceBetween: 0
+        spaceBetween: 0,
+        loop:true,
+        autoplay : 2000
     });
 
 </script>

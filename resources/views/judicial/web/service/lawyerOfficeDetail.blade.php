@@ -121,12 +121,14 @@
                     </div>
                 </li>
                 <li>
-                    <div class="wslb_left">
-                        <span class="wslbl_left">律所简介</span>：
-                        <span class="wslbl_right">{{ $office_detail['description'] }}</span>
+                    <div class="wslb_m">
+                        <span class="wslb_m_left">律所简介：</span>
+                        <span class="wslb_m_right">{!! $office_detail['description'] !!}</span>
                     </div>
                 </li>
             </ul>
+            <div class="clear"></div>
+            <br/>
             <div class="container-fluid text-center">
                 {!! $office_detail['map_code'] !!}
             </div>

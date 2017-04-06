@@ -24,7 +24,7 @@
     </div>
     <div class="form-group hidden" id="message_notice">
         <div class="col-md-offset-1 col-md-10">
-            <p></p>
+            <p style="color: red"></p>
         </div>
     </div>
     <div class="form-group">
@@ -54,7 +54,7 @@
     </div>
     <div class="form-group" style="padding-top: 20px">
         <div class="col-md-offset-1 col-md-10">
-            <p class="login-link text-center">已有账号？<a href="javascript:void(0);" onclick="javascript:$('#tap-login').click();">直接登录 >></a></p>
+            <p class="login-link text-center"><a href="javascript:void(0);" onclick="javascript:$('#tap-login').click();">已有账号？直接登录 >></a></p>
         </div>
     </div>
 </form>

@@ -7,26 +7,64 @@
     </div>
 </div>
 <div class="container-fluid">
-    <div class="col-xs-5">
+    <div class="col-xs-6 col-xs-offset-3">
         <img src="{{ $lawyer_detail['thumb'] }}" class="img-responsive img-thumbnail" alt="Responsive image">
     </div>
-    <div class="col-xs-7">
-        <h4>姓名： {{ $lawyer_detail['name'] }}</h4>
-        <h4>性别： {{ $lawyer_detail['sex']=='female' ? '女' : '男' }}</h4>
-        <h4>民族： {{ $lawyer_detail['nationality'] }}</h4>
-        <h4>政治面貌： {{ $political[$lawyer_detail['political']] }}</h4>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-5"><h5 class="text-left ">姓名：</h5></div>
+        <div class="col-xs-7"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['name'] }}</h5></div>
     </div>
-    <div class="col-xs-12">
-        <h4>学历（最高）： {{ $lawyer_detail['education'] }}</h4>
-        <h4>专业： {{ $lawyer_detail['major'] }}</h4>
-        <h4>职业状态： {{ $lawyer_detail['status']=='cancel' ? '注销' : '执业' }}</h4>
-        <h4>人员类型： {{ $type_list[$lawyer_detail['type']] }}</h4>
-        <h4>所属律所： {{ $office_list[$lawyer_detail['lawyer_office']] }}</h4>
-        <h4>执业证编号： {{ $lawyer_detail['certificate_code'] }}</h4>
-        <h4>证书类型： {{ $lawyer_detail['certificate_type'] }}</h4>
-        <h4>资格证取得时间： {{ $lawyer_detail['certificate_date'] }}</h4>
-        <h4>首次执业省市： {{ $lawyer_detail['province'] }}</h4>
-        <h4>首次执业时间： {{ $lawyer_detail['job_date'] }}</h4>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-5"><h5 class="text-left ">性别：</h5></div>
+        <div class="col-xs-7"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['sex']=='female' ? '女' : '男' }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-5"><h5 class="text-left ">民族：</h5></div>
+        <div class="col-xs-7"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['nationality'] }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-5"><h5 class="text-left ">政治面貌：</h5></div>
+        <div class="col-xs-7"><h5 class="text-right " style="font-weight: bold">{{ $political[$lawyer_detail['political']] }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-6"><h5 class="text-left ">学历（最高）：</h5></div>
+        <div class="col-xs-6"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['education'] }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-5"><h5 class="text-left ">专业：</h5></div>
+        <div class="col-xs-7"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['major'] }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-6"><h5 class="text-left ">职业状态：</h5></div>
+        <div class="col-xs-6"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['status']=='cancel' ? '注销' : '执业' }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-6"><h5 class="text-left ">人员类型：</h5></div>
+        <div class="col-xs-6"><h5 class="text-right " style="font-weight: bold">{{ $type_list[$lawyer_detail['type']] }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-5"><h5 class="text-left ">所属律所：</h5></div>
+        <div class="col-xs-7"><h5 class="text-right " style="font-weight: bold">{{ isset($office_list[$lawyer_detail['lawyer_office']])? $office_list[$lawyer_detail['lawyer_office']] : '' }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-5"><h5 class="text-left ">执业证编号：</h5></div>
+        <div class="col-xs-7"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['certificate_code'] }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-5"><h5 class="text-left ">证书类型：</h5></div>
+        <div class="col-xs-7"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['certificate_type'] }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-7"><h5 class="text-left ">资格证取得时间：</h5></div>
+        <div class="col-xs-5"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['certificate_date'] }}</h5></div>
+    </div>
+    <div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-6"><h5 class="text-left ">首次执业省市：</h5></div>
+        <div class="col-xs-6"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['province'] }}</h5></div>
+    </div>
+    <div class="container">
+        <div class="col-xs-7"><h5 class="text-left ">首次执业时间：</h5></div>
+        <div class="col-xs-5"><h5 class="text-right " style="font-weight: bold">{{ $lawyer_detail['job_date'] }}</h5></div>
     </div>
 </div>
 

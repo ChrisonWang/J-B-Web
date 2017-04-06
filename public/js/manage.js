@@ -1673,6 +1673,43 @@ function addUser(){
 }
 
 function checkBoxDisabled(cb){
+    var c_name = cb.attr('name');
+    if(c_name == 'wsbs'){
+        var show_list = $("input[name='sub-wsbs']");
+        var hide_list = $("input[name='sub-zwgk']");
+    }
+    else if(c_name == 'zwgk'){
+        var show_list = $("input[name='sub-zwgk']");
+        var hide_list = $("input[name='sub-wsbs']");
+    }
+    $.each(show_list,function(i,input){
+
+        if(cb.is(':checked')){
+            $(show_list[i]).attr('disabled', false);
+            $(show_list[i]).attr('checked', 'checked');
+            $(hide_list[i]).attr('disabled','disabled');
+            if($("#wsbs").is(':checked') && $("#zwgk").is(':checked')){
+                $(show_list[i]).attr('checked','checked');
+                $(show_list[i]).attr('disabled', false);
+                $(hide_list[i]).attr('checked','checked');
+                $(hide_list[i]).attr('disabled', false);
+            }
+        }
+        else {
+            $(show_list[i]).attr('disabled', 'disabled');
+            $(show_list[i]).attr('checked', false);
+            $(hide_list[i]).attr('disabled',false);
+            if($("#wsbs").is(':checked')==false && $("#zwgk").is(':checked')==false){
+                $(show_list[i]).attr('checked',false);
+                $(show_list[i]).attr('disabled','disabled');
+                $(hide_list[i]).attr('checked',false);
+                $(hide_list[i]).attr('disabled','disabled');
+            }
+        }
+    });
+}
+
+function checkBoxDisabled2(cb){
     if($("#wsbs").is(':checked') && $("#zwgk").is(':checked')){
         $("input[name='sub-zwgk']").attr('disabled',false);
         $("input[name='sub-wsbs']").attr('disabled',false);
@@ -1689,17 +1726,17 @@ function checkBoxDisabled(cb){
         }
         $.each(list,function(i,input){
             if(cb.is(':checked')){
-                $(r_list[i]).removeAttr('disabled');
+                $(r_list[i]).attr('disabled','disabled');
+                $(list[i]).removeAttr('disabled');
+                $(this).removeAttr('checked');
             }
             else {
-                $(this).removeAttr('checked');
-                $(r_list[i]).attr('disabled','disabled');
+                $(r_list[i]).removeAttr('disabled');
+                $(list[i]).attr('disabled','disabled');
+                $(this).attr('disabled','disabled');
             }
-            $(this).removeAttr('checked');
-            $(this).attr('disabled','disabled');
         });
     }
-    return;
 }
 
 function searchUser(t, c){

@@ -58,8 +58,8 @@
                         <span>总记录数：{{ $page['count'] }}</span>
                         <span>显示 16 条记录</span>
                         <span>当前页{{ $page['now_page'] }}/{{ $page['page_count'] }}</span>
-                        <span>跳转至第<input type="text" value="1">页</span>
-                        <span class="fy_btn">跳转</span>
+                        <span>跳转至第<input id="page_no_input" type="text" value="1"/>页</span>
+                        <a class="fy_btn" onclick="cms_page_jumps($(this))" data-type="{{ '/list/'.$page['channel_id'] }}">跳转</a>
                     </div>
                 </div>
             @endif

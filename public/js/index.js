@@ -134,16 +134,17 @@ function changeFontSize(s){
 }
 
 function loadArticle(t,c){
-    var channel = t.data('channel')
-    var channel_id = t.data('key')
-    var url = 'index/loadArticle'
+    var channel = t.data('channel');
+    var channel_id = t.data('key');
+    var top = t.data('top');
+    var url = 'index/loadArticle';
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         url: url,
         method: "POST",
-        data: {channel_id: channel_id},
+        data: {channel_id: channel_id, top: top},
         success:function(re){
             if(channel == 'zwgk'){
                 if(re.status == 'succ'){
@@ -448,4 +449,11 @@ function service_page(t){
             }
         }
     });
+}
+
+function cms_page_jumps(t){
+    var page = $('#page_no_input').val();
+    var type = t.data('type');
+    url = type + '/' + page;
+    window.location.href = url;
 }

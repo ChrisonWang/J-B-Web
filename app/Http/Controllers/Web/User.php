@@ -351,6 +351,9 @@ class User extends Controller
         if(!$memberCode){
             return redirect('user/login');
         }
+        else{
+            $this->page_date['is_signin'] = 'yes';
+        }
         return view('judicial.web.user.layout.changePhone',$this->page_date);
     }
 
@@ -362,7 +365,15 @@ class User extends Controller
         }
         //解析用户提交的
         $inputs = $request->input();
-        $cell_phone = preg_replace('/\s/', '', $inputs['cell_phone']);
+        $code = Session('verify_code');
+        $code = explode('|', $code);
+        if(trim($inputs['msgVerifyCode'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入短信验证码"]);
+        }
+        if($inputs['msgVerifyCode']!=$code[0]){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"短信验证码错误！"]);
+        }
+        $cell_phone = preg_replace('/\s/', '', $inputs['cellPhone']);
         if(empty($cell_phone)){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'手机号不能为空！']);
         }
@@ -395,6 +406,56 @@ class User extends Controller
         }
     }
 
+    public function forgetPassword(Request $request){
+        return view('judicial.web.user.layout.forgetPassword',$this->page_date);
+    }
+
+    public function doForgetPassword(Request $request){
+        $inputs = $request->input();
+        $code = Session('verify_code');
+        $code = explode('|', $code);
+        if(trim($inputs['msgVerifyCode'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入短信验证码"]);
+        }
+        /*if($inputs['msgVerifyCode']!=$code[0]){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"短信验证码错误！"]);
+        }*/
+        $cell_phone = preg_replace('/\s/', '', $inputs['cellPhone']);
+        if(empty($cell_phone)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'手机号不能为空！']);
+        }
+        elseif(!preg_phone($cell_phone)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请输入正确的11位手机号码！']);
+        }
+        $password = preg_replace('/\s/', '', $inputs['password']);
+        $passwordConfirm = preg_replace('/\s/', '', $inputs['passwordConfirm']);
+        //过滤不合法的提交
+        if(!preg_password($password) || !preg_password($passwordConfirm)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'密码长度应为8-16位，由字母/数字/下划线组成！']);
+        }
+        if(empty($password) || empty($passwordConfirm)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'密码不能包含空格！']);
+        }
+        if($password !== $passwordConfirm){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'两次输入的新密码不一致！']);
+        }
+        //验证用户
+        $member = Members::where('cell_phone', $cell_phone)->select('password')->first();
+        if(is_null($member)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'用户不存在']);
+        }
+        $passwordConfirmE = password_hash($passwordConfirm,PASSWORD_BCRYPT);
+        $affected = Members::where('cell_phone', $cell_phone)->update(['password'=>$passwordConfirmE]);
+        if($affected || $affected>0){
+            $request->session()->forget($_COOKIE['_token']);
+            setcookie('s','',time()-3600*24*30);
+            Session::save();
+            json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('user/login')]);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
+        }
+    }
 
     /**
      * 修改密码

@@ -27,8 +27,8 @@
                 </div>
             </div>
             <div class="wz_txt">
-                <div class="wz_mg" id="content">
-                    <video src="{{ $video_detail['link'] }}"  controls="controls" width="500" height="350" style="margin: auto"></video>
+                <div class="wz_mg" id="content" style="text-align: center">
+                    <embed src='{!! $video_detail['link'] !!}' allowFullScreen='true' quality='high' width='680' height='450' align='middle' allowScriptAccess='always' type='application/x-shockwave-flash'></embed>
                 </div>
             </div>
         </div>

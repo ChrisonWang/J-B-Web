@@ -388,7 +388,7 @@ class Lawyer extends Controller
                 }
                 //格式化数据
                 foreach($res as $o){
-                    $office_list[] = array(
+                    $office_list[keys_encrypt($o->id)] = array(
                         'name'=> spilt_title($o->name, 12),
                         'area'=> $area_list[keys_encrypt($o->area_id)],
                         'status'=> $o->status=='cancel' ? '注销' : '执业',
@@ -441,7 +441,7 @@ class Lawyer extends Controller
                         'sex'=> $lawyer->sex=='female' ? '女' : '男',
                         'type'=> $type_list[$lawyer->type],
                         'certificate_code'=> $lawyer->certificate_code,
-                        'lawyer_office'=> $office_list[keys_encrypt($lawyer->lawyer_office)],
+                        'lawyer_office'=> isset($office_list[keys_encrypt($lawyer->lawyer_office)]) ? $office_list[keys_encrypt($lawyer->lawyer_office)] : '',
                         'status'=> $lawyer->status=='cancel' ? '注销' : '执业',
                         'link'=> URL::to('wechat/lawyer/detail').'/'.keys_encrypt($lawyer->id)
                     );
