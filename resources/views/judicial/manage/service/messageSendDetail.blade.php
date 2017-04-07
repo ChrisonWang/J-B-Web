@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal">
             <div class="form-group">
-                <label for="temp_code" class="col-md-1 control-label"><strong style="color: red">*</strong> 模板：</label>
+                <label for="temp_code" class="col-md-2 control-label"><strong style="color: red">*</strong> 模板：</label>
                 <div class="col-md-3">
                     <select disabled class="form-control" id="temp_code" name="temp_code" onchange="getTempContent($(this))">
                         @if(!isset($temp_list) || count($temp_list)<1)
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="content" class="col-md-1 control-label">内容：</label>
+                <label for="content" class="col-md-2 control-label">内容：</label>
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -31,13 +31,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="send_date" class="col-md-1 control-label"><strong style="color: red">*</strong> 发送时间：</label>
+                <label for="send_date" class="col-md-2 control-label"><strong style="color: red">*</strong> 发送时间：</label>
                 <div class="col-md-3">
                     <p>{{ $send_detail['send_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="receiver_type" class="col-md-1 control-label"> 发送用户类型：</label>
+                <label for="receiver_type" class="col-md-2 control-label"> 发送用户类型：</label>
                 <div class="col-md-3">
                     <p>
                         @if($send_detail['receiver_type'] == 'member')
@@ -51,14 +51,14 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <p>{{ $send_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col col-md-offset-1 col-md-1">
+                <div class="col col-md-offset-1 col-md-2">
                     @if($archived == 'yes')
                         <button type="button" class="btn btn-danger btn-block" data-key="{{ $archived_key }}" data-method="show" onclick="archivedMethod($(this))">返回列表</button>
                     @else

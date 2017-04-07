@@ -27,31 +27,31 @@
         <form class="form-horizontal" id="articleEditForm">
             <input type="hidden" value="{{ $article_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="article_title" class="col-md-1 control-label">标题：</label>
+                <label for="article_title" class="col-md-2 control-label">标题：</label>
                 <div class="col-md-3">
                     <input type="text" disabled class="form-control" id="article_title" name="article_title" value="{{ $article_detail['article_title'] }}" placeholder="请输入文章标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="disabled" class="col-md-1 control-label">是否发布：</label>
+                <label for="disabled" class="col-md-2 control-label">是否发布：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="disabled" name="disabled" value="no" @if($article_detail['disabled'] == 'no') checked @endif/>
+                    <input type="checkbox" class="" id="disabled" name="disabled" value="no" @if($article_detail['disabled'] == 'no') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="publish_date" class="col-md-1 control-label">发布时间：</label>
+                <label for="publish_date" class="col-md-2 control-label">发布时间：</label>
                 <div class="col-md-3">
                     <input id="publish_date" class="form-control" name="publish_date" type="text" disabled>
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建人：</label>
+                <label for="create_date" class="col-md-2 control-label">创建人：</label>
                 <div class="col-md-3">
                     <p>{{ $manager['nickname'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="tags" class="col-md-1 control-label">关联标签：</label>
+                <label for="tags" class="col-md-2 control-label">关联标签：</label>
                 <div class="col-md-3">
                     @if(is_array($article_detail['tags']) && $article_detail['tags']!='')
                         @foreach($article_detail['tags'] as $tag_title)
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="channel_id" class="col-md-1 control-label">频道：</label>
+                <label for="channel_id" class="col-md-2 control-label">频道：</label>
                 <div class="col-md-3">
                     <select disabled name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
                         @foreach($channel_list as $channel)
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_channel_id" class="col-md-1 control-label">二级频道：</label>
+                <label for="sub_channel_id" class="col-md-2 control-label">二级频道：</label>
                 <div class="col-md-3">
                     <select disabled id="sub_channel_id" name="sub_channel_id" class="form-control">
                         @foreach($sub_channel_list as $sub_channel)
@@ -82,19 +82,19 @@
             </div>
             @if( isset($article_detail['thumb']) && $article_detail['thumb'] != "none" )
                 <div class="form-group" id="image-thumbnail">
-                    <label for="image-holder" class="col-md-1 control-label">预览：</label>
+                    <label for="image-holder" class="col-md-2 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder">
                         <img src="{{ $article_detail['thumb'] }}" class="img-thumbnail img-responsive">
                     </div>
                 </div>
             @else
                 <div class="form-group hidden" id="image-thumbnail">
-                    <label for="leader_photo" class="col-md-1 control-label">预览：</label>
+                    <label for="leader_photo" class="col-md-2 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder"></div>
                 </div>
             @endif
             <div class="form-group">
-                <label class="col-md-1 control-label">附件：</label>
+                <label class="col-md-2 control-label">附件：</label>
                 <div class="col-md-8">
                     <div class="container-fluid">
                         @if($article_detail['files'] != 'none' && is_array($article_detail['files']))
@@ -131,25 +131,25 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="UE_Content" class="col-md-1 control-label">正文：</label>
+                <label for="UE_Content" class="col-md-2 control-label">正文：</label>
                 <div class="col-md-10">
                     <script id="UE_Content" name="content" type="text/plain"></script>
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>{{ $article_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="articleEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col col-md-offset-1 col-md-1">
+                <div class="col col-md-offset-1 col-md-2">
                     @if($archived == 'yes')
                         <button type="button" class="btn btn-danger btn-block" data-key="{{ $archived_key }}" data-method="show" onclick="archivedMethod($(this))">返回列表</button>
                     @else

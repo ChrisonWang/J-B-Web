@@ -25,17 +25,17 @@ class Controller extends BaseController
     {
         $channel_list = array();
         //获取一级频道
-        $p_channels = DB::table('cms_channel')->where(['pid'=>0,'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
+        $p_channels = DB::table('cms_channel')->where('pid', 0)->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
         foreach($p_channels as $key=> $p_channel){
-            $channel_list [$key]['key'] = keys_encrypt($p_channel->channel_id);
-            $channel_list [$key]['channel_title'] = $p_channel->channel_title;
+            $channel_list[$key]['key'] = keys_encrypt($p_channel->channel_id);
+            $channel_list[$key]['channel_title'] = $p_channel->channel_title;
             $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
             if(count($sub_channels)<1){
                 $channel_list [$key]['sub_channel'] = 'none';
             }
             else{
                 foreach($sub_channels as $sub_c){
-                    $channel_list [$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
+                    $channel_list[$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
                 }
             }
         }
@@ -45,15 +45,36 @@ class Controller extends BaseController
     public function get_left_sub()
     {
         //左侧
-        $s_lsfw = DB::table('cms_channel')->where('pid', 128)->get();
-        $s_sfks = DB::table('cms_channel')->where('pid', 126)->get();
-        $s_sfjd = DB::table('cms_channel')->where('pid', 130)->get();
-        $s_flyz = DB::table('cms_channel')->where('pid', 133)->get();
+        $s_lsfw = DB::table('cms_channel')->where('pid', 128)->where('wsbs','yes')->where('zwgk','no')->get();
+        $s_sfks = DB::table('cms_channel')->where('pid', 126)->where('wsbs','yes')->where('zwgk','no')->get();
+        $s_sfjd = DB::table('cms_channel')->where('pid', 130)->where('wsbs','yes')->where('zwgk','no')->get();
+        $s_flyz = DB::table('cms_channel')->where('pid', 133)->where('wsbs','yes')->where('zwgk','no')->get();
+        //网上办事左侧其他菜单
+        $wsbs_left_list = array();
+        $p_channels = DB::table('cms_channel')->where('wsbs', 'yes')->where('standard', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        if(count($p_channels) > 0){
+            foreach($p_channels as $key=> $_p_channel){
+                $wsbs_left_list[$key] = array(
+                    'key'=> $_p_channel->channel_id,
+                    'channel_title'=> $_p_channel->channel_title,
+                );
+                $sub_channels = DB::table('cms_channel')->where('pid', $_p_channel->channel_id)->where('wsbs', 'yes')->where('is_recommend', 'no')->get();
+                if(count($sub_channels)<1){
+                    $wsbs_left_list[$key]['sub_channel'] = array();
+                }
+                else{
+                    foreach($sub_channels as $sub_c){
+                        $wsbs_left_list[$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
+                    }
+                }
+            }
+        }
 
         $this->page_data['s_lsfw'] = json_decode(json_encode($s_lsfw), true);
         $this->page_data['s_sfks'] = json_decode(json_encode($s_sfks), true);
         $this->page_data['s_sfjd'] = json_decode(json_encode($s_sfjd), true);
         $this->page_data['s_flyz'] = json_decode(json_encode($s_flyz), true);
+        $this->page_data['wsbs_left_list'] = $wsbs_left_list;
     }
 
     /**

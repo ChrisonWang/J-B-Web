@@ -52,6 +52,10 @@ class ExpertiseType extends Controller
 
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-expertiseTypeMng'] || $node_p['service-expertiseTypeMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.service.expertiseTypeAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -158,6 +162,10 @@ class ExpertiseType extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-expertiseTypeMng'] || $node_p['service-expertiseTypeMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $id = keys_decrypt($request->input('key'));
         $type_detail = array();
         $type = DB::table('service_judicial_expertise_type')->where('id', $id)->first();
@@ -181,6 +189,10 @@ class ExpertiseType extends Controller
 
     public function doEdit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-expertiseTypeMng'] || $node_p['service-expertiseTypeMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         if(trim($inputs['name']) === ''){
@@ -264,6 +276,10 @@ class ExpertiseType extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-expertiseTypeMng'] || $node_p['service-expertiseTypeMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $id = keys_decrypt($request->input('key'));
         $re = DB::table('service_judicial_expertise')->where('type_id', $id)->get();
         if(count($re) > 0){

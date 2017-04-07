@@ -123,6 +123,10 @@ class AidApply extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-aidApplyMng'] || $node_p['service-aidApplyMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $apply_detail = array();
         $id = keys_decrypt($request->input('key'));
         $apply = DB::table('service_legal_aid_apply')->where('id', $id)->first();

@@ -23,22 +23,22 @@ class ManageVerify
      */
     public function handle($request, Closure $next)
     {
-        $page_date = array();
-        $page_date['url'] = array(
+        $page_data = array();
+        $page_data['url'] = array(
             'loginUrl' => URL::route('loginUrl'),
             'webUrl' => URL::to('/'),
         );
         $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
         $managerCode = session($login_name);
         if(!isset($managerCode) || !$managerCode || empty($managerCode)){
-            setcookie('s','',time()-3600*24);
+            setcookie('s','',time()-3600*24,'/');
             return redirect('manage');
         }
         else{
             $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','disabled')->first();
             if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name || $managerInfo['attributes']['disabled']=='yes'){
-                setcookie('s','',time()-3600*24);
-                return view('judicial.manage.login',$page_date);
+                setcookie('s','',time()-3600*24,'/');
+                return view('judicial.manage.login',$page_data);
             }
         }
         $menuList = $this->getPermission($managerCode);
@@ -68,6 +68,21 @@ class ManageVerify
                 'cms-department'              => 'rw',
                 'cms-departmentType'          => 'rw',
                 'cms-recommendLink'           => 'rw',
+                'service-areaMng'=> 'rw',
+                'service-lawyerMng'=> 'rw',
+                'service-lawyerOfficeMng'=> 'rw',
+                'service-messageTmpMng'=> 'rw',
+                'service-messageSendMng'=> 'rw',
+                'service-certificateMng'=> 'rw',
+                'service-expertiseTypeMng'=> 'rw',
+                'service-expertiseApplyMng'=> 'rw',
+                'service-aidApplyMng'=> 'rw',
+                'service-aidDispatchMng'=> 'rw',
+                'service-consultionsMng'=> 'rw',
+                'service-suggestionsMng'=> 'rw',
+                'system-logMng'=> 'rw',
+                'system-backupMng'=> 'rw',
+                'system-archivedMng'=> 'rw'
             );
             Session::put('node_p',$node_p,120);
             Session::put('permission','ROOT',120);

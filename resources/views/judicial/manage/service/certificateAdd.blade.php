@@ -26,43 +26,43 @@
     <div class="panel-body">
         <form class="form-horizontal" id="addCertificateForm">
             <div class="form-group">
-                <label for="name" class="col-md-1 control-label"><red>*</red> 姓名：</label>
+                <label for="name" class="col-md-2 control-label"><red>*</red> 姓名：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="name" name="name" placeholder="请输入姓名" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="phone" class="col-md-1 control-label"><red>*</red> 联系电话：</label>
+                <label for="phone" class="col-md-2 control-label"><red>*</red> 联系电话：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入联系电话" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="citizen_code" class="col-md-1 control-label"><red>*</red> 证件号：</label>
+                <label for="citizen_code" class="col-md-2 control-label"><red>*</red> 证件号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="citizen_code" name="citizen_code" placeholder="请输入证件号" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="certi_code" class="col-md-1 control-label"><red>*</red> 证书编号：</label>
+                <label for="certi_code" class="col-md-2 control-label"><red>*</red> 证书编号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="certi_code" name="certi_code" placeholder="请输入证件号" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="exam_date" class="col-md-1 control-label">司法考试参加时间：</label>
+                <label for="exam_date" class="col-md-2 control-label">司法考试参加时间：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="exam_date" name="exam_date"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="certificate_date" class="col-md-1 control-label">取得证书时间：</label>
+                <label for="certificate_date" class="col-md-2 control-label">取得证书时间：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="certificate_date" name="certificate_date"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">备案记录：</label>
+                <label for="create_date" class="col-md-2 control-label">备案记录：</label>
                 <div class="col-md-10">
                     <div class="container-fluid">
                         <table class="table table-bordered table-hover table-condensed">
@@ -102,22 +102,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <p>自动生成</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="addCertificateNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="addCertificate()">确认</button>
                 </div>
-                <div class="col col-md-1">
+                <div class="col col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="service-certificateMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

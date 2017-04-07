@@ -29,32 +29,32 @@
         <form class="form-horizontal" id="articleEditForm">
             <input type="hidden" value="{{ $article_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="article_title" class="col-md-1 control-label">标题：</label>
+                <label for="article_title" class="col-md-2 control-label">标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="article_title" name="article_title" value="{{ $article_detail['article_title'] }}" placeholder="请输入文章标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="disabled" class="col-md-1 control-label">是否发布：</label>
+                <label for="disabled" class="col-md-2 control-label">是否发布：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="disabled" name="disabled" value="no" @if($article_detail['disabled'] == 'no') checked @endif/>
+                    <input type="checkbox" class="" id="disabled" name="disabled" value="no" @if($article_detail['disabled'] == 'no') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="publish_date" class="col-md-1 control-label"><strong style="color: red">*</strong> 发布时间：</label>
+                <label for="publish_date" class="col-md-2 control-label"><strong style="color: red">*</strong> 发布时间：</label>
                 <div class="col-md-3">
                     <input id="publish_date" class="form-control" name="publish_date" type="text" >
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建人：</label>
+                <label for="create_date" class="col-md-2 control-label">创建人：</label>
                 <div class="col-md-3">
                     <p>{{ $manager['nickname'] }}</p>
                 </div>
             </div>
             <!-- 标签选择器 -->
             <div class="form-group office_switch">
-                <label for="search_tags" class="col-md-1 control-label">关联标签：</label>
+                <label for="search_tags" class="col-md-2 control-label">关联标签：</label>
                 <div class="col-md-2">
                     <input class="form-control" id="search_tags" name="search_tags" onkeyup="searchTags($(this))" placeholder="搜索标签"/>
                 </div>
@@ -92,7 +92,7 @@
                 </div>
             </div><!-- 标签选择器 End -->
             <div class="form-group">
-                <label for="channel_id" class="col-md-1 control-label">频道：</label>
+                <label for="channel_id" class="col-md-2 control-label">频道：</label>
                 <div class="col-md-3">
                     <select name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
                         @foreach($channel_list as $channel)
@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_channel_id" class="col-md-1 control-label">二级频道：</label>
+                <label for="sub_channel_id" class="col-md-2 control-label">二级频道：</label>
                 <div class="col-md-3">
                     <select id="sub_channel_id" name="sub_channel_id" class="form-control">
                         @foreach($sub_channel_list as $sub_channel)
@@ -112,7 +112,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="thumb" class="col-md-1 control-label">封面图片（480 * 360）：</label>
+                <label for="thumb" class="col-md-2 control-label">封面图片（480 * 360）：</label>
                 <div class="col-md-3">
                     <i class="fa fa-paperclip"></i>上传头像图片
                     <input type="file" id="upload_photo" class="btn btn-default btn-file" name="thumb" onchange="upload_img($(this))"/>
@@ -120,19 +120,19 @@
             </div>
             @if( isset($article_detail['thumb']) && $article_detail['thumb'] != "none" )
                 <div class="form-group" id="image-thumbnail">
-                    <label for="image-holder" class="col-md-1 control-label">预览：</label>
+                    <label for="image-holder" class="col-md-2 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder">
                         <img src="{{ $article_detail['thumb'] }}" class="img-thumbnail img-responsive">
                     </div>
                 </div>
             @else
                 <div class="form-group hidden" id="image-thumbnail">
-                    <label for="leader_photo" class="col-md-1 control-label">预览：</label>
+                    <label for="leader_photo" class="col-md-2 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder"></div>
                 </div>
             @endif
             <div class="form-group">
-                <label class="col-md-1 control-label">附件：</label>
+                <label class="col-md-2 control-label">附件：</label>
                 <div class="col-md-8">
                     <div class="container-fluid">
                         @if(is_array($article_detail['files']) && $article_detail['files'] != 'none')
@@ -201,28 +201,28 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="UE_Content" class="col-md-1 control-label">正文：</label>
+                <label for="UE_Content" class="col-md-2 control-label">正文：</label>
                 <div class="col-md-10">
                     <script id="UE_Content" name="content" type="text/plain"></script>
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>{{ $article_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="articleEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col col-md-offset-1 col-md-1">
+                <div class="col col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block"onclick="editArticle($(this))">确认修改</button>
                 </div>
-                <div class="col col-md-1">
+                <div class="col col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-articleMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

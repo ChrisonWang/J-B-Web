@@ -40,14 +40,14 @@
     <div class="panel-body">
         <form class="form-horizontal" id="rolesAddForm">
             <div class="form-group">
-                <label for="title" class="col-md-1 control-label">菜单名称：</label>
+                <label for="title" class="col-md-2 control-label">角色名称：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" id="title" name="title" placeholder="请输角色名称" value="{{ $role_detail['title'] }}"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_links" class="col-md-1 control-label">子链接：</label>
-                <div class="col-md-5">
+                <label for="sub_links" class="col-md-2 control-label">功能菜单：</label>
+                <div class="col-md-10">
                     <div class="container-fluid">
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
@@ -94,19 +94,19 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>自动生成</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="addRolesNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col col-md-offset-1 col-md-1">
+                <div class="col col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="user-roleMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

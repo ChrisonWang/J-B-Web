@@ -103,6 +103,10 @@ class MessageSend extends Controller
 
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-messageSendMng'] || $node_p['service-messageSendMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.service.messageSendAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -245,9 +249,9 @@ class MessageSend extends Controller
             }
 
             $content = $content->content;
-            $to = substr($to, 1, strlen($to)-1);
+            $to = ltrim($to,',');
             $presendTime = date('Y-m-d H:i:s', strtotime($inputs['send_date']));
-            Message::send($to, $content, $presendTime);
+            Message::send($to, $content);
         }
         //储存信息
         $now = date('Y-m-d H:i:s', time());
@@ -352,6 +356,10 @@ class MessageSend extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-messageSendMng'] || $node_p['service-messageSendMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $send_detail = array();
         $id = keys_decrypt($request->input('key'));
         $message = DB::table('service_message_list')->where('id', $id)->first();
@@ -447,6 +455,10 @@ class MessageSend extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-messageSendMng'] || $node_p['service-messageSendMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $id = keys_decrypt($request->input('key'));
         $message = DB::table('service_message_list')->where('id', $id)->first();
         $re = DB::table('service_message_list')->where('id', $id)->delete();
@@ -477,6 +489,7 @@ class MessageSend extends Controller
                         'key' => keys_encrypt($l->id),
                         'temp_code' => $l->temp_code,
                         'send_date'=> $l->send_date,
+                        'send_status'=> $l->send_status,
                         'receiver_type'=> $l->receiver_type,
                         'received_office'=> $l->received_office,
                         'received_person'=> $l->received_person,

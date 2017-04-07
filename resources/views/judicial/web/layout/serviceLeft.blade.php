@@ -32,17 +32,35 @@
                 <span onclick="javascript: window.location.href='{{URL::to('service/expertise/downloadForm')}}';">表格下载</span>
             </div>
         </li>
-        <li><div>法律援助<i class="r_awry"></i></div>
+        <li>
+            <div>法律援助<i class="r_awry"></i></div>
             <div class="law_body">
                 <span onclick="javascript: window.location.href='{{URL::to('service/aidApply/apply')}}';">群众预约援助</span>
                 <span onclick="javascript: window.location.href='{{URL::to('service/aidDispatch/apply')}}';">公检法指派援助</span>
                 <span onclick="javascript: window.location.href='{{URL::to('service/aid/list/1')}}';">办理进度查询</span>
                 @if(isset($s_flyz) && is_array($s_flyz) && count($s_flyz)>0)
                     @foreach($s_flyz as $flyz)
-                        <span onclick="javascript: window.location.href='{{URL::to('service/list'.'/'.$flyz['channel_id'].'/1')}}';">{{ $flyz['channel_title'] }}</span>
+                        <span onclick="javascript: window.location.href='{{URL::to('service/list'.'/'.$flyz['channel_id'].'/1')}}';">{{ mb_spilt_title($flyz['channel_title'], 7, false) }}</span>
                     @endforeach
                 @endif
             </div>
         </li>
+        @if(isset($wsbs_left_list) && is_array($wsbs_left_list) && count($wsbs_left_list)>0)
+            @foreach($wsbs_left_list as $wsbs_p)
+                <li>
+                    <div style="height: 40px; overflow: hidden">
+                        <span class="zw_left_li_span">{{ mb_spilt_title($wsbs_p['channel_title'], 7, false) }}</span>
+                        <i class="r_awry"></i>
+                    </div>
+                    <div class="law_body">
+                        @if(isset($wsbs_p['sub_channel']) && is_array($wsbs_p['sub_channel']) && count($wsbs_p['sub_channel'])>0)
+                            @foreach($wsbs_p['sub_channel'] as $key=> $sub_channel)
+                                <span onclick="javascript: window.location.href='{{URL::to('service/list'.'/'.$key.'/1')}}';">{{ $sub_channel }}</span>
+                            @endforeach
+                        @endif
+                    </div>
+                </li>
+            @endforeach
+        @endif
     </ul>
 </div>

@@ -84,10 +84,13 @@ class Users extends Controller
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
         }
         $type_list = array();
-        $types = DB::table('user_type')->get();
+        $types = DB::table('user_type')->orderBy('sort', 'desc')->get();
         //取出用户类型
         foreach($types as $type){
-            $type_list[keys_encrypt($type->type_id)] = $type->type_name;
+            $type_list[keys_encrypt($type->type_id)] = array(
+                'type_name'=> $type->type_name,
+                'type_key'=> $type->type_key
+            );
         }
         $office_list = array();
         $office = DB::table('user_office')->get();
@@ -143,8 +146,6 @@ class Users extends Controller
                 'cell_phone' => $inputs['cell_phone'],
                 'email'=> $inputs['email'],
                 'user_type'=> 1,
-                'office_id'=> keys_decrypt($inputs['user_office']),
-                'role_id'=> keys_decrypt($inputs['user_role']),
                 'member_level'=> 1,
                 'disabled'=> isset($inputs['disabled']) ? 'no' : 'yes',
                 'create_date'=> $now,
@@ -170,8 +171,14 @@ class Users extends Controller
             DB::commit();
         }
         else{
+            if($type_id == 3){
+                $manager_code = gen_unique_code('ADMIN_');
+            }
+            else{
+                $manager_code = gen_unique_code('MNG_');
+            }
             $save_data = array(
-                'manager_code'=> gen_unique_code('MEM_'),
+                'manager_code'=> $manager_code,
                 'password'=> password_hash($inputs['password'],PASSWORD_BCRYPT),
                 'login_name'=> $inputs['login_name'],
                 'cell_phone'=> $inputs['cell_phone'],
@@ -184,6 +191,9 @@ class Users extends Controller
                 'create_date'=> $now,
                 'update_date'=> $now
             );
+            if($type_id == 3){
+                unset($save_data['role_id']);
+            }
             $id = DB::table('user_manager')->insertGetId($save_data);
             if($id===false){
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
@@ -257,7 +267,10 @@ class Users extends Controller
         $type_list = array();
         $types = DB::table('user_type')->get();
         foreach($types as $type){
-            $type_list[keys_encrypt($type->type_id)] = $type->type_name;
+            $type_list[keys_encrypt($type->type_id)] = array(
+                'type_name'=> $type->type_name,
+                'type_key'=> $type->type_key
+            );
         }
         $office_list = array();
         $office = DB::table('user_office')->get();
@@ -328,7 +341,10 @@ class Users extends Controller
         $type_list = array();
         $types = DB::table('user_type')->get();
         foreach($types as $type){
-            $type_list[keys_encrypt($type->type_id)] = $type->type_name;
+            $type_list[keys_encrypt($type->type_id)] = array(
+                'type_name'=> $type->type_name,
+                'type_key'=> $type->type_key
+            );
         }
         $office_list = array();
         $office = DB::table('user_office')->get();
@@ -385,9 +401,20 @@ class Users extends Controller
         $inputs = $request->input();
         $code = $inputs['key'];
         $this->_checkInput($inputs, $code);
+        $new_type = keys_decrypt($inputs['user_type']);
+
+        //取出旧的数据
+        $old = DB::table('user_members')->where('member_code', $code)->first();
+        if(is_null($old)){
+            $old = DB::table('user_manager')->where('manager_code', $code)->first();
+            $old_type = $old->type_id;
+        }
+        else{
+            $old_type = $old->user_type;
+        }
+        $save_password = empty($inputs['password']) ? $old->password : password_hash($inputs['password'],PASSWORD_BCRYPT);
         //判断是否有重名的
-        $type_id = keys_decrypt($inputs['user_type']);
-        if($type_id == 1){
+        if($new_type == 1){
             $sql = 'SELECT `member_code` FROM user_members WHERE `login_name` = "'.$inputs['login_name'].'" AND `member_code` != "'.$code.'"';
             $res = DB::select($sql);
         }
@@ -400,58 +427,143 @@ class Users extends Controller
         }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
-        if($type_id == 1){
-            //获取用户提交的信息并格式化
-            $saveMembers = array(
-                'login_name' => $inputs['login_name'],
-                'password' => empty($inputs['password'])? '' : password_hash($inputs['password'],PASSWORD_BCRYPT),
-                'cell_phone' => $inputs['cell_phone'],
-                'email'=> $inputs['email'],
-                'user_type'=> keys_decrypt($inputs['user_type']),
-                'office_id'=> keys_decrypt($inputs['user_office']),
-                'role_id'=> keys_decrypt($inputs['user_role']),
-                'member_level'=> 1,
-                'disabled'=> isset($inputs['disabled']) ? 'no' : 'yes',
-                'create_date'=> $now,
-            );
-            $saveMemberInfo = array(
-                'citizen_name' => $inputs['nickname'],
-                'update_date' => $now
-            );
-            if(empty($inputs['password']))
-                unset($saveMembers['password']);
-            //以事物的方式储存账号
-            DB::beginTransaction();
-            $id = DB::table('user_members')->where('member_code', $code)->update($saveMembers);
-            if($id===false){
-                DB::rollback();
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+        if($old_type == 1){
+            if($new_type == 1){
+                //获取用户提交的信息并格式化
+                $saveMembers = array(
+                    'login_name' => $inputs['login_name'],
+                    'password' => $save_password,
+                    'cell_phone' => $inputs['cell_phone'],
+                    'email'=> $inputs['email'],
+                    'user_type'=> keys_decrypt($inputs['user_type']),
+                    'office_id'=> keys_decrypt($inputs['user_office']),
+                    'role_id'=> keys_decrypt($inputs['user_role']),
+                    'member_level'=> 1,
+                    'disabled'=> isset($inputs['disabled']) ? 'no' : 'yes',
+                    'create_date'=> $now,
+                );
+                $saveMemberInfo = array(
+                    'citizen_name' => $inputs['nickname'],
+                    'update_date' => $now
+                );
+                //以事物的方式储存账号
+                DB::beginTransaction();
+                $id = DB::table('user_members')->where('member_code', $code)->update($saveMembers);
+                if($id===false){
+                    DB::rollback();
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+                }
+                $iid = DB::table('user_member_info')->where('member_code', $code)->update($saveMemberInfo);
+                if($iid===false){
+                    DB::rollback();
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+                }
+                DB::commit();
             }
-            $iid = DB::table('user_member_info')->where('member_code', $code)->update($saveMemberInfo);
-            if($iid===false){
-                DB::rollback();
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+            else{
+                if($new_type == 3){
+                    $manager_code = gen_unique_code('ADMIN_');
+                }
+                else{
+                    $manager_code = gen_unique_code('MNG_');
+                }
+                $save_data = array(
+                    'manager_code'=> $manager_code,
+                    'password'=> $save_password,
+                    'login_name'=> $inputs['login_name'],
+                    'cell_phone'=> $inputs['cell_phone'],
+                    'nickname'=> $inputs['nickname'],
+                    'email'=> $inputs['email'],
+                    'role_id'=> keys_decrypt($inputs['user_role']),
+                    'office_id'=> keys_decrypt($inputs['user_office']),
+                    'type_id'=> $new_type,
+                    'disabled'=> isset($inputs['disabled']) ? 'no' : 'yes',
+                    'create_date'=> $now,
+                    'update_date'=> $now
+                );
+                if($new_type == 3){
+                    unset($save_data['role_id']);
+                }
+                //以事物的方式储存账号
+                DB::beginTransaction();
+                $id = DB::table('user_manager')->insertGetId($save_data);
+                if($id===false){
+                    DB::rollback();
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+                }
+                $re = DB::table('user_members')->where('member_code', $code)->delete();
+                if($re===false){
+                    DB::rollback();
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+                }
+                $re = DB::table('user_member_info')->where('member_code', $code)->delete();
+                if($re===false){
+                    DB::rollback();
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+                }
+                DB::commit();
             }
-            DB::commit();
         }
         else{
-            $save_data = array(
-                'password'=> empty($inputs['password'])? '' : password_hash($inputs['password'],PASSWORD_BCRYPT),
-                'login_name'=> $inputs['login_name'],
-                'cell_phone'=> $inputs['cell_phone'],
-                'nickname'=> $inputs['nickname'],
-                'email'=> $inputs['email'],
-                'role_id'=> keys_decrypt($inputs['user_role']),
-                'office_id'=> keys_decrypt($inputs['user_office']),
-                'type_id'=> keys_decrypt($inputs['user_type']),
-                'disabled'=> isset($inputs['disabled']) ? 'no' : 'yes',
-                'update_date'=> $now
-            );
-            if(empty($inputs['password']))
-                unset($save_data['password']);
-            $id = DB::table('user_manager')->where('manager_code', $code)->update($save_data);
-            if($id===false){
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
+            if($new_type == 1){
+                //获取用户提交的信息并格式化
+                $member_code = gen_unique_code("MEM_");
+                $saveMembers = array(
+                    'member_code' => $member_code,
+                    'login_name' => $inputs['login_name'],
+                    'password' => $save_password,
+                    'cell_phone' => $inputs['cell_phone'],
+                    'email'=> $inputs['email'],
+                    'user_type'=> 1,
+                    'member_level'=> 1,
+                    'disabled'=> isset($inputs['disabled']) ? 'no' : 'yes',
+                    'create_date'=> $now,
+                );
+                $saveMemberInfo = array(
+                    'member_code' => $member_code,
+                    'citizen_name' => $inputs['nickname'],
+                    'create_date' => $now,
+                    'update_date' => $now
+                );
+                //以事物的方式储存账号
+                DB::beginTransaction();
+                $id = DB::table('user_members')->insertGetId($saveMembers);
+                if($id===false){
+                    DB::rollback();
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+                }
+                $iid = DB::table('user_member_info')->insertGetId($saveMemberInfo);
+                if($iid===false){
+                    DB::rollback();
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+                }
+                $iiid = DB::table('user_manager')->where('manager_code', $code)->delete();
+                if($iiid===false){
+                    DB::rollback();
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
+                }
+                DB::commit();
+            }
+            else{
+                $save_data = array(
+                    'password'=> $save_password,
+                    'login_name'=> $inputs['login_name'],
+                    'cell_phone'=> $inputs['cell_phone'],
+                    'nickname'=> $inputs['nickname'],
+                    'email'=> $inputs['email'],
+                    'role_id'=> keys_decrypt($inputs['user_role']),
+                    'office_id'=> keys_decrypt($inputs['user_office']),
+                    'type_id'=> $new_type,
+                    'disabled'=> isset($inputs['disabled']) ? 'no' : 'yes',
+                    'update_date'=> $now
+                );
+                if($new_type == 3){
+                    unset($save_data['role_id']);
+                }
+                $id = DB::table('user_manager')->where('manager_code', $code)->update($save_data);
+                if($id===false){
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
+                }
             }
         }
         //修改成功则回调页面,取出数据
@@ -745,31 +857,38 @@ class Users extends Controller
     }
 
     private function _checkInput($input, $managerCode){
+        if(keys_decrypt($input['user_type']) == 1){
+            $user_type = 'user_members';
+        }
+        else{
+            $user_type = 'user_manager';
+        }
+
+        if(empty($input['login_name']) || !preg_manager_name($input['login_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"账号不合法（5-16位大小写字母、数字、符号）！"]);
+        }
+        if($this->_loginNameExist($input['login_name'],$managerCode,$user_type)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"已存在名称为".$input['login_name']."的账号！"]);
+        }
         if(!preg_phone($input['cell_phone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入正确的手机号！"]);
         }
-        elseif($this->_phoneExist($input['cell_phone'],$managerCode)){
+        if($this->_phoneExist($input['cell_phone'],$managerCode,$user_type)){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cell_phone']." 已存在"]);
         }
-        elseif(!preg_manager_name($input['login_name'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法！"]);
-        }
-        elseif($this->_loginNameExist($input['login_name'],$managerCode)){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名已存在！"]);
-        }
-        elseif(!preg_email($input['email'])){
+        if(!empty($input['email']) && !preg_email($input['email'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱不合法！"]);
         }
-        elseif($this->_emailExist($input['email'],$managerCode)){
+        if(!empty($input['email']) && $this->_emailExist($input['email'],$managerCode,$user_type)){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱已存在！"]);
         }
-        elseif($this->_nicknameExist($input['nickname'],$managerCode)){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名已存在！"]);
+        if(!empty($input['nickname']) && $this->_nicknameExist($input['nickname'],$managerCode,$user_type)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"已存在名称为".$input['nickname']."的显示名！"]);
         }
-        elseif(strlen($input['nickname']) > 20){
+        if(mb_strlen($input['nickname'], 'UTF-8') > 20){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名长度不能超过20字符！"]);
         }
-        elseif(!empty($input['password'])){
+        if(!empty($input['password'])){
             if(!preg_password($input['password'])){
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);
             }
@@ -778,17 +897,38 @@ class Users extends Controller
     }
 
     private function _addCheckInput($input){
+        if(keys_decrypt($input['user_type']) == 1){
+            $user_type = 'user_members';
+        }
+        else{
+            $user_type = 'user_manager';
+        }
+        if(empty($input['login_name']) || !preg_manager_name($input['login_name'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"账号不合法（5-16位大小写字母、数字、符号）！"]);
+        }
+        if($this->_loginNameExist($input['login_name'],false,$user_type)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"已存在名称为".$input['login_name']."的账号！"]);
+        }
         if(!preg_phone($input['cell_phone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"请输入正确的手机号！"]);
         }
-        elseif(!preg_manager_name($input['login_name'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法！"]);
+        if($this->_phoneExist($input['cell_phone'],false,$user_type)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cell_phone']." 已存在"]);
         }
-        elseif(!preg_email($input['email'])){
+        if(!empty($input['email']) && !preg_email($input['email'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱不合法！"]);
         }
+        if(!empty($input['email']) && $this->_emailExist($input['email'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱已存在！"]);
+        }
+        if(!empty($input['nickname']) && $this->_nicknameExist($input['nickname'],false,$user_type)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"已存在名称为".$input['nickname']."的显示名！"]);
+        }
+        if(mb_strlen($input['nickname'], 'UTF-8') > 20){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名长度不能超过20字符！"]);
+        }
         if(!preg_password($input['password'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成"]);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码必填，且长度应为8-16位，由字母/数字/下划线组成"]);
 
         }
         return true;
@@ -799,8 +939,23 @@ class Users extends Controller
      * @param $phone
      * @return bool
      */
-    private function _phoneExist($phone,$manager_code){
-        $sql = 'SELECT manager_code FROM user_manager WHERE `cell_phone` = "'.$phone.'" AND `manager_code` != "'.$manager_code.'"';
+    private function _phoneExist($phone,$manager_code = false, $type='user_manager'){
+        if(!$manager_code){
+            if($type == 'user_manager'){
+                $sql = 'SELECT `manager_code` FROM `user_manager` WHERE `cell_phone` = "'.$phone.'"';
+            }
+            else{
+                $sql = 'SELECT `member_code` FROM `user_members` WHERE `cell_phone` = "'.$phone.'"';
+            }
+        }
+        else{
+            if($type == 'user_manager'){
+                $sql = 'SELECT `manager_code` FROM `user_manager` WHERE `cell_phone` = "'.$phone.'" AND `manager_code` != "'.$manager_code.'"';
+            }
+            else{
+                $sql = 'SELECT `member_code` FROM `user_members` WHERE `cell_phone` = "'.$phone.'" AND `member_code` != "'.$manager_code.'"';
+            }
+        }
         $res = DB::select($sql);
         if(count($res)<1){
             return false;
@@ -814,9 +969,24 @@ class Users extends Controller
      * @param $loginName
      * @return bool
      */
-    private function _loginNameExist($loginName,$manager_code)
+    private function _loginNameExist($loginName,$manager_code = false, $type='user_manager')
     {
-        $sql = 'SELECT manager_code FROM user_manager WHERE `login_name` = "'.$loginName.'" AND `manager_code` != "'.$manager_code.'"';
+        if(!$manager_code){
+            if($type == 'user_manager'){
+                $sql = 'SELECT `manager_code` FROM `user_manager` WHERE `login_name` = "'.$loginName.'"';
+            }
+            else{
+                $sql = 'SELECT `member_code` FROM `user_members` WHERE `login_name` = "'.$loginName.'"';
+            }
+        }
+        else{
+            if($type == 'user_manager') {
+                $sql = 'SELECT `manager_code` FROM `user_manager` WHERE `login_name` = "' . $loginName . '" AND `manager_code` != "' . $manager_code . '"';
+            }
+            else{
+                $sql = 'SELECT `member_code` FROM `user_members` WHERE `login_name` = "' . $loginName . '" AND `member_code` != "' . $manager_code . '"';
+            }
+        }
         $res = DB::select($sql);
         if(count($res)<1){
             return false;
@@ -830,9 +1000,24 @@ class Users extends Controller
      * @param $loginName
      * @return bool
      */
-    private function _nicknameExist($nickName,$manager_code)
+    private function _nicknameExist($nickName,$manager_code = false, $type='user_manager')
     {
-        $sql = 'SELECT manager_code FROM user_manager WHERE `nickname` = "'.$nickName.'" AND `manager_code` != "'.$manager_code.'"';
+        if(!$manager_code){
+            if($type == 'user_manager') {
+                $sql = 'SELECT `manager_code` FROM `user_manager` WHERE `nickname` = "' . $nickName . '"';
+            }
+            else{
+                $sql = 'SELECT `member_code` FROM `user_member_info` WHERE `citizen_name` = "' . $nickName . '"';
+            }
+        }
+        else{
+            if($type == 'user_manager') {
+                $sql = 'SELECT `manager_code` FROM `user_manager` WHERE `nickname` = "' . $nickName . '" AND `manager_code` != "'.$manager_code.'"';
+            }
+            else{
+                $sql = 'SELECT `member_code` FROM `user_member_info` WHERE `citizen_name` = "' . $nickName . '" AND `member_code` != "'.$manager_code.'"';
+            }
+        }
         $res = DB::select($sql);
         if(count($res)<1){
             return false;
@@ -846,9 +1031,24 @@ class Users extends Controller
      * @param $email
      * @return bool
      */
-    private function _emailExist($email,$manager_code)
+    private function _emailExist($email,$manager_code = false, $type = 'user_manager')
     {
-        $sql = 'SELECT manager_code FROM user_manager WHERE `email` = "'.$email.'" AND `manager_code` != "'.$manager_code.'"';
+        if(!$manager_code){
+            if($type == 'user_manager') {
+                $sql = 'SELECT `manager_code` FROM `user_manager` WHERE `email` = "'.$email.'"';
+            }
+            else{
+                $sql = 'SELECT `member_code` FROM `user_members` WHERE `email` = "'.$email.'"';
+            }
+        }
+        else{
+            if($type == 'user_manager') {
+                $sql = 'SELECT `manager_code` FROM `user_manager` WHERE `email` = "'.$email.'" AND `manager_code` != "'.$manager_code.'"';
+            }
+            else{
+                $sql = 'SELECT `member_code` FROM `user_members` WHERE `email` = "'.$email.'" AND `member_code` != "'.$manager_code.'"';
+            }
+        }
         $res = DB::select($sql);
         if(count($res)<1){
             return false;

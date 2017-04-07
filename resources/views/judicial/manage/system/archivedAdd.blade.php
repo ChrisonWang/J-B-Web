@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="addArchivedForm">
             <div class="form-group">
-                <label for="type" class="col-md-1 control-label"><strong style="color: red">*</strong> 功能点：</label>
+                <label for="type" class="col-md-2 control-label"><strong style="color: red">*</strong> 功能点：</label>
                 <div class="col-md-3">
                     <select id="type" name="type" class="form-control">
                         @if(isset($type_list) && is_array($type_list) && count($type_list)>0)
@@ -21,28 +21,28 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="date" class="col-md-1 control-label"><strong style="color: red">*</strong> 数据创建截止日期：</label>
+                <label for="date" class="col-md-2 control-label"><strong style="color: red">*</strong> 数据创建截止日期：</label>
                 <div class="col-md-3">
                     <input id="date" class="form-control" name="date" type="text" >
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <p>自动生成</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="addArchivedNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="addArchived()">确认</button>
                 </div>
-                <div class="col col-md-1">
+                <div class="col col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="system-archivedMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

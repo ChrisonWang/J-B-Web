@@ -53,8 +53,21 @@ class AidApply extends Controller
                 $area_list[keys_encrypt($area->id)] = $area->area_name;
             }
         }
+        //拿出网上办事
+        $d_data = DB::table('cms_channel')->where('wsbs', 'yes')->where('standard', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        $wsbs_list = 'none';
+        if(count($d_data) > 0){
+            $wsbs_list = array();
+            foreach($d_data as $_d_data){
+                $wsbs_list[] = array(
+                    'key'=> $_d_data->channel_id,
+                    'channel_title'=> $_d_data->channel_title,
+                );
+            }
+        }
         $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
         $this->page_data['zwgk_list'] = $zwgk_list;
+        $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['area_list'] = $area_list;
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->get_left_sub();
@@ -256,7 +269,7 @@ class AidApply extends Controller
     }
 
     private function _checkInput($inputs){
-        if(!isset($inputs['apply_name']) || trim($inputs['apply_name'])==='' || strlen(trim($inputs['apply_name'])) > 20){
+        if(!isset($inputs['apply_name']) || trim($inputs['apply_name'])==='' || mb_strlen(trim($inputs['apply_name']), 'UTF-8') > 20){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“姓名”应为长度20以内的字符串']);
         }
         if(!isset($inputs['political']) || trim($inputs['political'])==='' || trim($inputs['political'])=='none'){
@@ -271,19 +284,19 @@ class AidApply extends Controller
         if(!isset($inputs['apply_identity_no']) || trim($inputs['apply_identity_no'])==='' || !preg_identity(trim($inputs['apply_identity_no'])) ){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写真实有效的“身份证号码”！']);
         }
-        if(!isset($inputs['apply_address']) || trim($inputs['apply_address'])==='' || strlen(trim($inputs['apply_address'])) > 200){
+        if(!isset($inputs['apply_address']) || trim($inputs['apply_address'])==='' || mb_strlen(trim($inputs['apply_address']), 'UTF-8') > 200){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“通讯地址”应为长度200以内的字符串']);
         }
-        if(!isset($inputs['defendant_name']) || trim($inputs['defendant_name']) ==='' || strlen(strlen($inputs['defendant_name'])) > 20){
+        if(!isset($inputs['defendant_name']) || trim($inputs['defendant_name']) ==='' || mb_strlen(trim($inputs['defendant_name']), 'UTF-8') > 20){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“被告人姓名”应为长度20以内的字符串']);
         }
         if(!isset($inputs['defendant_phone']) || trim($inputs['defendant_phone'])==='' || !preg_phone(trim($inputs['defendant_phone'])) ){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写正确的的“被告人联系电话”！']);
         }
-        if(!isset($inputs['defendant_company']) || trim($inputs['defendant_company'])==='' || strlen(trim($inputs['defendant_company'])) > 200){
+        if(!isset($inputs['defendant_company']) || trim($inputs['defendant_company'])==='' || mb_strlen(trim($inputs['defendant_company']), 'UTF-8') > 200){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“被告人单位名称”应为长度200以内的字符串']);
         }
-        if(!isset($inputs['defendant_addr']) || trim($inputs['defendant_addr'])==='' || strlen(trim($inputs['defendant_addr'])) > 200){
+        if(!isset($inputs['defendant_addr']) || trim($inputs['defendant_addr'])==='' || mb_strlen(trim($inputs['defendant_addr']), 'UTF-8') > 200){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“被告人通讯地址”应为长度200以内的字符串']);
         }
         if(!isset($inputs['happened_date']) || trim($inputs['happened_date'])===''){
@@ -295,7 +308,7 @@ class AidApply extends Controller
         if(!isset($inputs['type']) || trim($inputs['type'])==='' || trim($inputs['type'])=='none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择“案件类型”']);
         }
-        if(!isset($inputs['case_location']) || trim($inputs['case_location'])==='' || strlen(trim($inputs['case_location'])) > 200){
+        if(!isset($inputs['case_location']) || trim($inputs['case_location'])==='' || mb_strlen(trim($inputs['case_location']), 'UTF-8') > 200){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“发生地点”应为长度200以内的字符串']);
         }
         if(!isset($inputs['dispute_description']) || trim($inputs['dispute_description'])===''){

@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'url' => 'http://localhost',
+    'url' => 'http://www.5260.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'PRC',
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'cn',
 
     /*
     |--------------------------------------------------------------------------
@@ -156,6 +156,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * 司法局项目自定义
+         */
+        Stevenyangecho\UEditor\UEditorServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        //Mmanos\Search\SearchServiceProvider::class,
+        //TomLingham\Searchy\SearchyServiceProvider::class
     ],
 
     /*
@@ -201,7 +208,45 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-
+        //'Search' => Mmanos\Search\Facade::class,
+        //'Searchy' => TomLingham\Searchy\Facades\Searchy::class,
     ],
+
+    //permission后台权限配置
+    'permission' => [
+        'user-nodesMng'                => '节点管理',
+        'user-menuMng'                 => '菜单管理',
+        'user-roleMng'                 => '角色管理',
+        'user-userMng'                 => '用户管理',
+        'user-officeMng'               => '科室管理',
+        'cms-channelMng'               => '频道管理',
+        'cms-tagsMng'                  => '标签管理',
+        'cms-articleMng'               => '文章管理',
+        'cms-videoMng'                 => '宣传视频管理',
+        'cms-flink1Mng'                => '图片友情链接',
+        'cms-flink2Mng'                => '一/二级友情链接',
+        'cms-formMng'                  => '表单管理',
+        'cms-justiceIntroduction'    => '司法局简介',
+        'cms-leaderIntroduction'     => '领导简介',
+        'cms-department'              => '机构简介',
+        'cms-departmentType'          => '机构分类',
+        'cms-recommendLink'           => '后台推荐链接',
+        'service-areaMng'=> '区域管理',
+        'service-lawyerMng'=> '律师管理',
+        'service-lawyerOfficeMng'=> '事务所管理',
+        'service-messageTmpMng'=> '短信模板管理',
+        'service-messageSendMng'=> '短信发送管理',
+        'service-certificateMng'=> '证书持有人管理',
+        'service-expertiseTypeMng'=> '司法鉴定类型管理',
+        'service-expertiseApplyMng'=> '司法鉴定申请管理',
+        'service-aidApplyMng'=> '群众预约援助管理',
+        'service-aidDispatchMng'=> '公检法指派援助管理',
+        'service-consultionsMng'=> '问题咨询管理',
+        'service-suggestionsMng'=> '征求意见管理',
+        'system-logMng'=> '系统日志',
+        'system-backupMng'=> '数据备份',
+        'system-archivedMng'=> '归档管理'
+    ],
+
 
 ];

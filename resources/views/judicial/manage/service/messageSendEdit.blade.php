@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="editMessageSendForm">
             <input type="hidden" name="key" value="{{ $send_detail['key'] }}"/>
             <div class="form-group">
-                <label for="temp_code" class="col-md-1 control-label"><strong style="color: red">*</strong> 模板：</label>
+                <label for="temp_code" class="col-md-2 control-label"><strong style="color: red">*</strong> 模板：</label>
                 <div class="col-md-3">
                     <select class="form-control" id="temp_code" name="temp_code" onchange="getTempContent($(this))">
                         @if(!isset($temp_list) || count($temp_list)<1)
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="content" class="col-md-1 control-label">内容：</label>
+                <label for="content" class="col-md-2 control-label">内容：</label>
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -34,13 +34,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="send_date" class="col-md-1 control-label"><strong style="color: red">*</strong> 发送时间：</label>
+                <label for="send_date" class="col-md-2 control-label"><strong style="color: red">*</strong> 发送时间：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="send_date" name="send_date" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="receiver_type" class="col-md-1 control-label"> 发送用户类型：</label>
+                <label for="receiver_type" class="col-md-2 control-label"> 发送用户类型：</label>
                 <div class="col-md-3">
                     <select class="form-control" onchange="switch_hidden()" id="receiver_type" name="receiver_type">
                         <option value="member" @if($send_detail['receiver_type']=='member') selected @endif>前台用户</option>
@@ -52,7 +52,7 @@
 
             <!-- 科室选择器 -->
             <div hidden class="form-group office_switch">
-                <label for="create_date" class="col-md-1 control-label">发送科室：</label>
+                <label for="create_date" class="col-md-2 control-label">发送科室：</label>
                 <div class="col-md-2">
                     <input class="form-control" id="search_office" name="search_office" onkeyup="searchOffice($(this))" placeholder="搜索科室"/>
                 </div>
@@ -80,7 +80,7 @@
 
             <!-- 人员选择器 -->
             <div hidden class="form-group member_switch">
-                <label for="create_date" class="col-md-1 control-label">发送个人：</label>
+                <label for="create_date" class="col-md-2 control-label">发送个人：</label>
                 <div class="col-md-2">
                     <input class="form-control" id="search_member" name="search_office" onkeyup="searchMembers($(this))" placeholder="搜索个人"/>
                 </div>
@@ -104,22 +104,22 @@
             </div><!-- 人员选择器End -->
 
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <p>{{ $send_detail['send_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="addMessageSendNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="editMessageSend()">确认</button>
                 </div>
-                <div class="col col-md-1">
+                <div class="col col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="service-messageSendMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

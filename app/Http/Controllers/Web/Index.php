@@ -22,7 +22,7 @@ class Index extends Controller
 {
     public function __construct()
     {
-        $this->page_date['url'] = array(
+        $this->page_data['url'] = array(
             'loginUrl' => URL::route('loginUrl'),
             'userLoginUrl' => URL::route('userLoginUrl'),
             'webUrl' => URL::to('/'),
@@ -33,16 +33,28 @@ class Index extends Controller
         );
         $loginStatus = $this->checkLoginStatus();
         if(!!$loginStatus)
-            $this->page_date['is_signin'] = 'yes';
+            $this->page_data['is_signin'] = 'yes';
         //拿出政务公开
-        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->where('wsbs', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->where('pid',0)->orderBy('sort', 'desc')->get();
         $zwgk_list = 'none';
         if(count($c_data) > 0){
             $zwgk_list = array();
-            foreach($c_data as $_c_date){
+            foreach($c_data as $_c_data){
                 $zwgk_list[] = array(
-                    'key'=> $_c_date->channel_id,
-                    'channel_title'=> $_c_date->channel_title,
+                    'key'=> $_c_data->channel_id,
+                    'channel_title'=> $_c_data->channel_title,
+                );
+            }
+        }
+        //拿出网上办事
+        $d_data = DB::table('cms_channel')->where('wsbs', 'yes')->where('standard', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        $wsbs_list = 'none';
+        if(count($d_data) > 0){
+            $wsbs_list = array();
+            foreach($d_data as $_d_data){
+                $wsbs_list[] = array(
+                    'key'=> $_d_data->channel_id,
+                    'channel_title'=> $_d_data->channel_title,
                 );
             }
         }
@@ -54,9 +66,11 @@ class Index extends Controller
                 $sfdt_list[$sfdt->channel_id] = $sfdt->channel_title;
             }
         }
-        $this->page_date['sfdt_list'] = $sfdt_list;
-        $this->page_date['zwgk_list'] = $zwgk_list;
-        $this->page_date['channel_list'] = $this->get_left_list();
+        $this->get_left_sub();
+        $this->page_data['sfdt_list'] = $sfdt_list;
+        $this->page_data['wsbs_list'] = $wsbs_list;
+        $this->page_data['zwgk_list'] = $zwgk_list;
+        $this->page_data['channel_list'] = $this->get_left_list();
     }
 
     /**
@@ -66,7 +80,7 @@ class Index extends Controller
     function index(Request $request){
         $loginStatus = $this->checkLoginStatus();
         if(!!$loginStatus){
-            $this->page_date['is_signin'] = 'yes';
+            $this->page_data['is_signin'] = 'yes';
         }
         $r_article_list = 'none';
         //拿出图片新闻
@@ -181,17 +195,17 @@ class Index extends Controller
             );
         }
 
-        $this->page_date['video'] = $video;
-        $this->page_date['recommend_list'] = $recommend_list;
-        $this->page_date['m_zwgk_list'] = $m_zwgk_list;
-        $this->page_date['zwgk_article_list'] = $zwgk_article_list;
-        $this->page_date['r_article_list'] = $r_article_list;
-        $this->page_date['pic_list'] = $pic_list;
-        $this->page_date['pic_article_list'] = $pic_article_list;
-        $this->page_date['flink_type_list'] = $flink_type_list;
-        $this->page_date['flinks_list'] = $flinks_list;
-        $this->page_date['img_flink_list'] = $img_flink_list;
-        return view('judicial.web.index', $this->page_date);
+        $this->page_data['video'] = $video;
+        $this->page_data['recommend_list'] = $recommend_list;
+        $this->page_data['m_zwgk_list'] = $m_zwgk_list;
+        $this->page_data['zwgk_article_list'] = $zwgk_article_list;
+        $this->page_data['r_article_list'] = $r_article_list;
+        $this->page_data['pic_list'] = $pic_list;
+        $this->page_data['pic_article_list'] = $pic_article_list;
+        $this->page_data['flink_type_list'] = $flink_type_list;
+        $this->page_data['flinks_list'] = $flinks_list;
+        $this->page_data['img_flink_list'] = $img_flink_list;
+        return view('judicial.web.index', $this->page_data);
     }
 
     public function search(Request $request)
@@ -199,26 +213,26 @@ class Index extends Controller
         $keywords = $request->input('keywords');
         $count = 0;
         if(empty($keywords)){
-            $this->page_date['page'] = array(
+            $this->page_data['page'] = array(
                 'count' => $count,
                 'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => 1,
             );
-            $this->page_date['search_list'] = 'none';
-            return view('judicial.web.search', $this->page_date);
+            $this->page_data['search_list'] = 'none';
+            return view('judicial.web.search', $this->page_data);
         }
 
         //搜索
         $res = DB::table('cms_article')->where('article_title', 'like', '%'.$keywords.'%')->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->get();
         $count = count($res);
         if(count($res) == 0){
-            $this->page_date['page'] = array(
+            $this->page_data['page'] = array(
                 'count' => $count,
                 'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => 1,
             );
-            $this->page_date['search_list'] = 'none';
-            return view('judicial.web.search', $this->page_date);
+            $this->page_data['search_list'] = 'none';
+            return view('judicial.web.search', $this->page_data);
         }
         else{
             $search_list = array();
@@ -230,13 +244,13 @@ class Index extends Controller
                 );
             }
         }
-        $this->page_date['page'] = array(
+        $this->page_data['page'] = array(
             'count' => $count,
             'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
             'now_page' => 1,
         );
-        $this->page_date['search_list'] = $search_list;
-        return view('judicial.web.search', $this->page_date);
+        $this->page_data['search_list'] = $search_list;
+        return view('judicial.web.search', $this->page_data);
     }
 
     /**
@@ -254,18 +268,20 @@ class Index extends Controller
             return view('errors.404');
         }
         else{
-            $this->page_date['sub_title'] = $channel->channel_title;
+            $this->page_data['sub_title'] = $channel->channel_title;
             $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
             if(count($p_channel)!=0){
-                $this->page_date['title'] = $p_channel->channel_title;
+                $this->page_data['title'] = $p_channel->channel_title;
             }
+            $this->page_data['zwgk'] = $channel->zwgk;
+            $this->page_data['wsbs'] = $channel->wsbs;
         }
         $offset = 16 * ($page-1);
         $articles = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->orWhere(['channel_id'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->skip($offset)->take(16)->get();
         if(count($articles) < 1){
             $article_list = 'none';
-            $this->page_date['article_list'] = $article_list;
-            return view('judicial.web.list', $this->page_date);
+            $this->page_data['article_list'] = $article_list;
+            return view('judicial.web.list', $this->page_data);
         }
         else{
             $count = 0;
@@ -283,14 +299,14 @@ class Index extends Controller
                     $count++;
                 }
             }
-            $this->page_date['page'] = array(
+            $this->page_data['page'] = array(
                 'channel_id'=> $channel_id,
                 'count' => $count,
                 'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => $page,
             );
-            $this->page_date['article_list'] = $article_list;
-            return view('judicial.web.list', $this->page_date);
+            $this->page_data['article_list'] = $article_list;
+            return view('judicial.web.list', $this->page_data);
         }
     }
 
@@ -305,8 +321,8 @@ class Index extends Controller
         $count = DB::table('cms_video')->where(['disabled'=>'no'])->where('archived', 'no')->count();
         if($count < 1){
             $video_list = 'none';
-            $this->page_date['video_list'] = $video_list;
-            return view('judicial.web.videoList', $this->page_date);
+            $this->page_data['video_list'] = $video_list;
+            return view('judicial.web.videoList', $this->page_data);
         }
         else{
             $videos = DB::table('cms_video')->where(['disabled'=>'no'])->where('archived', 'no')->orderBy('sort', 'desc')->skip($offset)->take(9)->get();
@@ -325,13 +341,13 @@ class Index extends Controller
                 }
             }
 
-            $this->page_date['page'] = array(
+            $this->page_data['page'] = array(
                 'count' => $count,
                 'page_count' => ($count>9) ? (ceil($count / 9)) : 1,
                 'now_page' => $page,
             );
-            $this->page_date['video_list'] = $video_list;
-            return view('judicial.web.videoList', $this->page_date);
+            $this->page_data['video_list'] = $video_list;
+            return view('judicial.web.videoList', $this->page_data);
         }
     }
 
@@ -344,7 +360,7 @@ class Index extends Controller
     {
         //文章
         $article_list = array();
-        $sql = 'SELECT * FROM `cms_article` WHERE `tags` LIKE "%'.$tid.'%" AND `disabled`="no" AND `archived` = "no" AND `publish_data` <= "'.date('Y-m-d H:i:s', time()).'"';
+        $sql = 'SELECT * FROM `cms_article` WHERE `tags` LIKE "%'.$tid.'%" AND `disabled`="no" AND `archived` = "no" AND `publish_date` <= "'.date('Y-m-d H:i:s', time()).'"';
         $articles = DB::select($sql);
         $tag_name = DB::table('cms_tags')->where('id', $tid)->first();
         if((count($articles)==0)){
@@ -354,8 +370,8 @@ class Index extends Controller
         $count = count($articles);
         if($count < 1){
             $article_list = 'none';
-            $this->page_date['article_list'] = $article_list;
-            return view('judicial.web.tagList', $this->page_date);
+            $this->page_data['article_list'] = $article_list;
+            return view('judicial.web.tagList', $this->page_data);
         }
         else{
             $articles = array_slice($articles, $offset, 16);
@@ -367,14 +383,14 @@ class Index extends Controller
                     'publish_date'=> date('Y-m-d',strtotime($article->publish_date)),
                 );
             }
-            $this->page_date['page'] = array(
+            $this->page_data['page'] = array(
                 'count' => $count,
                 'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => $page,
                 'tag_name' => is_null($tag_name) ? '' : $tag_name->tag_title,
             );
-            $this->page_date['article_list'] = $article_list;
-            return view('judicial.web.tagList', $this->page_date);
+            $this->page_data['article_list'] = $article_list;
+            return view('judicial.web.tagList', $this->page_data);
         }
     }
 
@@ -389,8 +405,8 @@ class Index extends Controller
         $count = DB::table('cms_article')->where('disabled', 'no')->where('thumb','!=','')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->where('archived', 'no')->count();
         if($count < 1){
             $article_list = 'none';
-            $this->page_date['article_list'] = $article_list;
-            return view('judicial.web.list', $this->page_date);
+            $this->page_data['article_list'] = $article_list;
+            return view('judicial.web.list', $this->page_data);
         }
         else{
             $articles = DB::table('cms_article')->where('disabled', 'no')->where('thumb','!=','')->where('archived', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date', 'desc')->skip($offset)->take(9)->get();
@@ -406,13 +422,13 @@ class Index extends Controller
                 );
             }
 
-            $this->page_date['page'] = array(
+            $this->page_data['page'] = array(
                 'count' => $count,
                 'page_count' => ($count>9) ? (ceil($count / 16)) + 1 : 1,
                 'now_page' => $page,
             );
-            $this->page_date['article_list'] = $article_list;
-            return view('judicial.web.pictureList', $this->page_date);
+            $this->page_data['article_list'] = $article_list;
+            return view('judicial.web.pictureList', $this->page_data);
         }
     }
 
@@ -463,15 +479,15 @@ class Index extends Controller
             //频道信息
             $channel = DB::table('cms_channel')->where('channel_id', $article_detail['channel_id'])->orWhere('channel_id', $article_detail['sub_channel'])->first();
             $sub_channel = DB::table('cms_channel')->where('channel_id', $article_detail['sub_channel'])->first();
-            $this->page_date['title'] = isset($channel->channel_title) ? $channel->channel_title : '频道已被删除';
-            $this->page_date['sub_title'] = isset($sub_channel->channel_title) ? $sub_channel->channel_title : '频道已被删除';
+            $this->page_data['title'] = isset($channel->channel_title) ? $channel->channel_title : '频道已被删除';
+            $this->page_data['sub_title'] = isset($sub_channel->channel_title) ? $sub_channel->channel_title : '频道已被删除';
         }
         //更新访问
         $clicks = (isset($article->clicks)) ? $article->clicks + 1 : 1;
         DB::table('cms_article')->where('article_code', $article_code)->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->where('archived', 'no')->update(['clicks'=> $clicks]);
-        $this->page_date['tag_list'] = $tag_list;
-        $this->page_date['article_detail'] = $article_detail;
-        return view('judicial.web.content', $this->page_date);
+        $this->page_data['tag_list'] = $tag_list;
+        $this->page_data['article_detail'] = $article_detail;
+        return view('judicial.web.content', $this->page_data);
     }
 
     /**
@@ -497,8 +513,8 @@ class Index extends Controller
                 'update_date'=> $video->update_date,
             );
         }
-        $this->page_date['video_detail'] = $video_detail;
-        return view('judicial.web.videoContent', $this->page_date);
+        $this->page_data['video_detail'] = $video_detail;
+        return view('judicial.web.videoContent', $this->page_data);
     }
 
     /**
@@ -521,8 +537,8 @@ class Index extends Controller
                 'create_date'=> $department->create_date,
             );
         }
-        $this->page_date['department_detail'] = $department_detail;
-        return view('judicial.web.departmentIntro', $this->page_date);
+        $this->page_data['department_detail'] = $department_detail;
+        return view('judicial.web.departmentIntro', $this->page_data);
     }
 
     public function introduction()
@@ -541,36 +557,10 @@ class Index extends Controller
                 'create_date'=> $introduction->create_date,
             );
         }
-        $this->page_date['intro_detail'] = $intro_detail;
-        return view('judicial.web.intro', $this->page_date);
+        $this->page_data['intro_detail'] = $intro_detail;
+        return view('judicial.web.intro', $this->page_data);
     }
 
-    public function get_left_list()
-    {
-        $sfdt_list = array();
-        $channel_list = array();
-        //获取一级频道
-        $p_channels = DB::table('cms_channel')->where(['pid'=>0,'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
-        if(count($p_channels) > 0){
-            foreach($p_channels as $key=> $p_channel){
-                if($p_channel->channel_id == 139){
-                    continue;
-                }
-                $channel_list[$key]['key'] = keys_encrypt($p_channel->channel_id);
-                $channel_list[$key]['channel_title'] = $p_channel->channel_title;
-                $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes', 'wsbs'=>'no'])->where('is_recommend', 'no')->get();
-                if(count($sub_channels)<1){
-                    $channel_list [$key]['sub_channel'] = 'none';
-                }
-                else{
-                    foreach($sub_channels as $sub_c){
-                        $channel_list[$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
-                    }
-                }
-            }
-        }
-        return $channel_list;
-    }
     /**
      * 检查用户的登录状态
      * @return bool|mixed
@@ -613,8 +603,8 @@ class Index extends Controller
                 );
             }
         }
-        $this->page_date['leader_list'] = $leader_list;
-        return view('judicial.web.leaderList', $this->page_date);
+        $this->page_data['leader_list'] = $leader_list;
+        return view('judicial.web.leaderList', $this->page_data);
     }
 
     public function department()
@@ -646,8 +636,8 @@ class Index extends Controller
                 }
             }
         }
-        $this->page_date['department_list'] = $department_list;
-        return view('judicial.web.departmentList', $this->page_date);
+        $this->page_data['department_list'] = $department_list;
+        return view('judicial.web.departmentList', $this->page_data);
     }
 
     public function loadArticleList(Request $request)

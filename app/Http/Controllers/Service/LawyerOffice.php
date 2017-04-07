@@ -46,6 +46,18 @@ class LawyerOffice extends Controller
                 );
             }
         }
+        //拿出网上办事
+        $d_data = DB::table('cms_channel')->where('wsbs', 'yes')->where('standard', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        $wsbs_list = 'none';
+        if(count($d_data) > 0){
+            $wsbs_list = array();
+            foreach($d_data as $_d_data){
+                $wsbs_list[] = array(
+                    'key'=> $_d_data->channel_id,
+                    'channel_title'=> $_d_data->channel_title,
+                );
+            }
+        }
         //拿出区域
         $area_list = array();
         $areas = DB::table('service_area')->get();
@@ -55,7 +67,7 @@ class LawyerOffice extends Controller
             }
         }
         $this->page_data['zwgk_list'] = $zwgk_list;
-        $this->page_data['zwgk_list'] = $zwgk_list;
+        $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->page_data['type_list'] = ['head'=>'总所', 'branch'=>'分所', 'personal'=>'个人'];
         $this->page_data['area_list'] = $area_list;

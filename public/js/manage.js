@@ -1347,7 +1347,7 @@ function editForms(){
 
 function addForms(){
     var url = '/manage/cms/forms/add';
-    $.ajax({
+    $('#formsAddForm').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -1828,6 +1828,22 @@ function list_page_system($type, $page){
             ajaxResult(re);
         }
     });
+}
+
+function changeType(){
+    var type = $('#user_type option:selected').data('type');
+    if(type == 'user'){
+        $('#user_office').parents('div.form-group').hide();
+        $('#user_role').parents('div.form-group').hide();
+    }
+    if(type == 'manager'){
+        $('#user_office').parents('div.form-group').show();
+        $('#user_role').parents('div.form-group').show();
+    }
+    if(type == 'admin'){
+        $('#user_office').parents('div.form-group').show();
+        $('#user_role').parents('div.form-group').hide();
+    }
 }
 
 /**

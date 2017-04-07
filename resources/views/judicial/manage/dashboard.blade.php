@@ -77,8 +77,8 @@
 				alert(re.res);
 				break;
 			default:
-				alert(re.res);
-				return;
+				window.location.href = '{{ URL::to('manage/dashboard') }}';
+				break;
 		}
 	}
 

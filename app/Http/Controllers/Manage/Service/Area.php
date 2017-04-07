@@ -53,6 +53,10 @@ class Area extends Controller
 
     public function  create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-areaMng'] || $node_p['service-areaMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.service.areaAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -133,6 +137,10 @@ class Area extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-areaMng'] || $node_p['service-areaMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $area_detail = array();
         $id = keys_decrypt($request->input('key'));
         $area = DB::table('service_area')->where('id', $id)->first();
@@ -208,6 +216,10 @@ class Area extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-areaMng'] || $node_p['service-areaMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $id = keys_decrypt($request->input('key'));
         $res = DB::table('service_lawyer_office')->where('area_id', $id)->get();
         if(count($res) > 0){

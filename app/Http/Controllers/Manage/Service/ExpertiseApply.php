@@ -111,6 +111,10 @@ class ExpertiseApply extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-expertiseApplyMng'] || $node_p['service-expertiseApplyMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $type_list = array();
         $apply_detail = array();
         $id = keys_decrypt($request->input('key'));

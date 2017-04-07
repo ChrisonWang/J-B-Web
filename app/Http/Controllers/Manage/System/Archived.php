@@ -64,6 +64,10 @@ class Archived extends Controller
 
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['system-archivedMng'] || $node_p['system-archivedMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.system.archivedAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -139,6 +143,10 @@ class Archived extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['system-archivedMng'] || $node_p['system-archivedMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $id = keys_decrypt($request->input('key'));
         $archive = DB::table('system_archived')->where('id', $id)->first();
         if(is_null($archive) || count($archive) < 1){

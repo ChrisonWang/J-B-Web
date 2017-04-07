@@ -185,21 +185,6 @@ function addSuggestion(){
     var cell_phone = $("input[name='cell_phone']").val();
     var title = $("input[name='title']").val();
     var content = $("textarea[name='content']").val();
-    if(typeof(name)== 'undefined' || name == '' || name.length<20){
-
-    }
-    if(typeof(email)== 'undefined' || email == ''){
-
-    }
-    if(typeof(cell_phone) == 'undefined' || cell_phone == ''){
-
-    }
-    if(typeof(title)== 'undefined' || title == ''){
-
-    }
-    if(typeof(content)== 'undefined' || content == ''){
-
-    }
     var c = confirm("确认提交？");
     if(c != true){
         return false;
@@ -233,23 +218,6 @@ function addConsultion(){
     var cell_phone = $("input[name='cell_phone']").val();
     var title = $("input[name='title']").val();
     var content = $("textarea[name='content']").val();
-    if(typeof(name)== 'undefined' || name == ''){
-        alert('name');
-    }else if( name.length>20 ){
-        alert('name');
-    }
-    if(typeof(email)== 'undefined' || email == ''){
-
-    }
-    if(typeof(cell_phone) == 'undefined' || cell_phone == ''){
-
-    }
-    if(typeof(title)== 'undefined' || title == ''){
-
-    }
-    if(typeof(content)== 'undefined' || content == ''){
-
-    }
     var c = confirm("确认提交？");
     if(c != true){
         return false;

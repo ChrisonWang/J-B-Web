@@ -9,7 +9,7 @@
             <div class="col col-md-4">
                 <a type="button" data-key='none' data-method="add" onclick="certificateMethod($(this))" class="btn btn-primary">新增</a>
             </div>
-            <div class="col col-md-1">
+            <div class="col col-md-2">
                 <a type="button" data-key='none' data-method="add" onclick="javascript: $('#sendMessage_modal').modal('show');" class="btn btn-danger">短信通知</a>
             </div>
             <div class="col col-md-7">
@@ -42,43 +42,51 @@
                 </div>
             </div><!--批量导入模态框End-->
             <!--发送短信模态框-->
-            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="sendMessage_modal">
-                <div class="modal-dialog modal-sm" role="document">
+            <div class="modal fade" tabindex="-1" role="dialog" id="sendMessage_modal" aria-labelledby="gridSystemModalLabel">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="gridSystemModalLabel">短信通知</h4>
                         </div>
                         <div class="modal-body">
-                            <form class="form-inline" id="send_form">
+                            <form class="form-horizontal" id="send_form">
                                 <div class="form-group">
-                                    <label for="to_message">发送对象：</label>
-                                    <select name="to_message" id="to_message" class="form-control">
-                                        <option value="all" selected>所有持证人</option>
-                                        <option value="no">未备案持证人</option>
-                                    </select>
+                                    <label for="to_message" class="col-md-2 control-label">发送对象：</label>
+                                    <div class="col-md-10">
+                                        <select name="to_message" id="to_message" class="form-control">
+                                            <option value="all" selected>所有持证人</option>
+                                            <option value="no">未备案持证人</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="year">备案年份：</label>
-                                    <input type="text" class="form-control" id="year" name="year" placeholder="请输入四位数年份"/>
+                                    <label for="year" class="col-md-2 control-label">备案年份：</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="year" name="year" placeholder="请输入四位数年份"/>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="temp_code">短信模板：</label>
-                                    <select class="form-control" id="temp_code" name="temp_code" onchange="getTempContent($(this))">
-                                        @if(!isset($temp_list) || count($temp_list)<1)
-                                            <option value="none">请先设置短信模板！</option>
-                                        @else
-                                            @foreach($temp_list as $k=> $temp)
-                                                <option value="{{ $temp['temp_code'] }}" @if($k == 0) selected @endif >{{ $temp['title'] }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
+                                    <label for="temp_code" class="col-md-2 control-label">短信模板：</label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" id="temp_code" name="temp_code" onchange="getTempContent($(this))">
+                                            @if(!isset($temp_list) || count($temp_list)<1)
+                                                <option value="none">请先设置短信模板！</option>
+                                            @else
+                                                @foreach($temp_list as $k=> $temp)
+                                                    <option value="{{ $temp['temp_code'] }}" @if($k == 0) selected @endif >{{ $temp['title'] }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="content" class="col-md-1 control-label">内容：</label>
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <p class="lead" id="temp_content">【三门峡司法局官网】{{ isset($temp_list[0]['content']) ? $temp_list[0]['content'] : '请先设置短信模板！' }}</p>
+                                    <label for="content" class="col-md-2 control-label">内容：</label>
+                                    <div class="col-md-10">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <p class="lead" id="temp_content">【三门峡司法局官网】{{ isset($temp_list[0]['content']) ? $temp_list[0]['content'] : '请先设置短信模板！' }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

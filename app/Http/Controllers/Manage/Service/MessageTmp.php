@@ -56,6 +56,10 @@ class MessageTmp extends Controller
 
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-messageTmpMng'] || $node_p['service-messageTmpMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.service.messageTmpAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -145,6 +149,10 @@ class MessageTmp extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-messageTmpMng'] || $node_p['service-messageTmpMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $temp_detail = array();
         $temp_code = $request->input('key');
         $temp = DB::table('service_message_temp')->where('temp_code', $temp_code)->first();
@@ -227,6 +235,10 @@ class MessageTmp extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-messageTmpMng'] || $node_p['service-messageTmpMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $temp_code = $request->input('key');
         $row = DB::table('service_message_temp')->where('temp_code',$temp_code)->delete();
         if($row > 0){

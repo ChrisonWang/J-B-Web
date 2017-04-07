@@ -5,7 +5,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="editManagerInfoForm">
             <div class="form-group">
-                <label for="loginName" class="col-md-1 control-label">
+                <label for="loginName" class="col-md-2 control-label">
                     <dt>账号：</dt>
                 </label>
                 <div class="col-md-3">
@@ -13,19 +13,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="user_type" class="col-md-1 control-label">
-                    <dt>用户类型：</dt>
-                </label>
-                <div class="col-md-3">
-                    <select class="form-control" id="user_type" name="user_type">
-                        @foreach ($managerInfo['type_name'] as $type)
-                            <option value="{{$type['type_id']}}" @if($type['type_checked']=='yes') selected @endif>{{$type['type_name']}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="user_office" class="col-md-1 control-label">
+                <label for="user_office" class="col-md-2 control-label">
                     <dt>科室：</dt>
                 </label>
                 <div class="col-md-3">
@@ -37,19 +25,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="user_role" class="col-md-1 control-label">
-                    <dt>角色：</dt>
-                </label>
-                <div class="col-md-3">
-                    <select class="form-control" id="user_role" name="user_role">
-                        @foreach ($managerInfo['role_name'] as $role)
-                            <option value="{{$role['role_id']}}" @if($role['role_checked']=='yes') selected @endif>{{$role['role_name']}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="cell_phone" class="col-md-1 control-label">
+                <label for="cell_phone" class="col-md-2 control-label">
                     <dt>手机号码：</dt>
                 </label>
                 <div class="col-md-3">
@@ -57,7 +33,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="email" class="col-md-1 control-label">
+                <label for="email" class="col-md-2 control-label">
                     <dt>邮箱：</dt>
                 </label>
                 <div class="col-md-3">
@@ -65,7 +41,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="nickname" class="col-md-1 control-label">
+                <label for="nickname" class="col-md-2 control-label">
                     <dt>显示名：</dt>
                 </label>
                 <div class="col-md-3">
@@ -73,7 +49,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="password" class="col-md-1 control-label">
+                <label for="password" class="col-md-2 control-label">
                     <dt>密码：</dt>
                 </label>
                 <div class="col-md-3">
@@ -81,7 +57,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="disabled" class="col-md-1 control-label">
+                <label for="disabled" class="col-md-2 control-label">
                     <dt>是否启用：</dt>
                 </label>
                 <div class="col-md-3">
@@ -89,7 +65,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="disabled" class="col-md-1 control-label">
+                <label for="disabled" class="col-md-2 control-label">
                     <dt>创建时间：</dt>
                 </label>
                 <div class="col-md-3">
@@ -97,13 +73,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="editManagerInfoNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="doEdit()">确认</button>
                 </div>
             </div>

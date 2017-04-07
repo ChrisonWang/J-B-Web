@@ -17,7 +17,7 @@
                     <form class="form-horizontal" id="loginForm">
                         <div class="form-group">
                             <div class="col-md-offset-1 col-md-10">
-                                <input type="text" class="form-control" name="loginName" id="loginName" placeholder="请输入登录名/手机号/邮箱">
+                                <input type="text" class="form-control" name="loginName" id="loginName" placeholder="请输入登录名/手机号">
                             </div>
                         </div>
                         <div class="form-group">
@@ -128,7 +128,8 @@
                 window.location.href = re.res;
                 break;
             default:
-                return;
+                window.location.href = '{{ URL::to('user') }}';
+                break;
         }
     }
 

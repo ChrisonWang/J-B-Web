@@ -42,7 +42,7 @@ class Dashboard extends Controller
         //判断登录状态
         $managerCode = $request->get('managerCode');
         if(!$managerCode){
-            setcookie('s','',time()-3600*24*30);
+            setcookie('s','',time()-3600*24*30,'/');
             return redirect('manage');
         }
         else{
@@ -195,9 +195,7 @@ class Dashboard extends Controller
         if($change_password === true){
             $save_data = array(
                 'login_name' => $inputs['login_name'],
-                'role_id' => $inputs['user_role'],
                 'office_id' => $inputs['user_office'],
-                'type_id' => $inputs['user_type'],
                 'cell_phone' => $inputs['cell_phone'],
                 'email' => $inputs['email'],
                 'nickname' => $inputs['nickname'],
@@ -209,9 +207,7 @@ class Dashboard extends Controller
         else{
             $save_data = array(
                 'login_name' => $inputs['login_name'],
-                'role_id' => $inputs['user_role'],
                 'office_id' => $inputs['user_office'],
-                'type_id' => $inputs['user_type'],
                 'cell_phone' => $inputs['cell_phone'],
                 'email' => $inputs['email'],
                 'nickname' => $inputs['nickname'],
@@ -224,7 +220,7 @@ class Dashboard extends Controller
             if($change_password === true){
                 $login_name = $_COOKIE['s'];
                 $request->session()->forget($login_name);
-                setcookie('s','',time()-3600*24*30);
+                setcookie('s','',time()-3600*24*30,'/');
                 Session::save();
                 json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
             }
@@ -295,7 +291,7 @@ class Dashboard extends Controller
             $affected = Manager::where('manager_code',$managerCode)->update(['password'=>$confirmPasswordE, 'update_date'=>date("Y-m-d H:i:s",time())]);
             if($affected || $affected>0){
                 $request->session()->forget($_COOKIE['s']);
-                setcookie('s','',time()-3600*24*30);
+                setcookie('s','',time()-3600*24*30,'/');
                 json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
             }
             else{
@@ -319,7 +315,7 @@ class Dashboard extends Controller
         //验证用户
         $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','disabled')->first();
         if(is_null($managerInfo) || md5($managerInfo['attributes']['login_name'])!=$login_name || $managerInfo['attributes']['disabled']=='yes'){
-            setcookie('s','',time()-3600*24*30);
+            setcookie('s','',time()-3600*24*30,'/');
             return false;
         }
         else{
@@ -339,7 +335,7 @@ class Dashboard extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号 ".$input['cell_Phone']." 已存在"]);
         }
         elseif(!preg_manager_name($input['login_name'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法！"]);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名不合法（5-16位大小写字母、数字、符号）！"]);
         }
         elseif($this->_loginNameExist($input['login_name'],$managerCode)){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"用户名已存在！"]);

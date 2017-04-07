@@ -7,19 +7,19 @@
     <div class="panel-body">
         <form class="form-horizontal" id="formsAddForm">
             <div class="form-group">
-                <label for="title" class="col-md-1 control-label"><strong style="color: red">*</strong> 标题：</label>
+                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong> 标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" placeholder="请输入标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="disabled" class="col-md-1 control-label">是否官网显示：</label>
+                <label for="disabled" class="col-md-2 control-label">是否官网显示：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" value="no" id="disabled" name="disabled" checked/>
+                    <input type="checkbox" class="" value="no" id="disabled" name="disabled" checked/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="channel_id" class="col-md-1 control-label"><strong style="color: red">*</strong> 频道：</label>
+                <label for="channel_id" class="col-md-2 control-label"><strong style="color: red">*</strong> 频道：</label>
                 <div class="col-md-3">
                     <select class="form-control" id="channel_id" name="channel_id">
                         @foreach($channel_list as $key=> $channel)
@@ -29,36 +29,35 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="leader_photo" class="col-md-1 control-label">附件：</label>
+                <label for="leader_photo" class="col-md-2 control-label">附件：</label>
                 <div class="col-md-3">
                     <i class="fa fa-paperclip"></i>上传附件
                     <input type="file" id="upload_photo" class="btn btn-default btn-file" name="file"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="UE_Content" class="col-md-1 control-label">简介：</label>
+                <label for="UE_Content" class="col-md-2 control-label">简介：</label>
                 <div class="col-md-8">
-                    <textarea name="description" id="description" style="width: 300px; height: 100px">
-                    </textarea>
+                    <textarea name="description" id="description" style="width: 300px; height: 100px"></textarea>
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <p>自动生成</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="addFormsNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="addForms()">确认</button>
                 </div>
-                <div class="col col-md-1">
+                <div class="col col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-formMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

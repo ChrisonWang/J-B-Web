@@ -35,7 +35,7 @@ class Suggestions extends Controller
         if(!!$loginStatus)
             $this->page_data['is_signin'] = 'yes';
         //拿出政务公开
-        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
+        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->where('wsbs', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
         $zwgk_list = 'none';
         if(count($c_data) > 0){
             $zwgk_list = array();
@@ -46,8 +46,21 @@ class Suggestions extends Controller
                 );
             }
         }
+        //拿出网上办事
+        $d_data = DB::table('cms_channel')->where('wsbs', 'yes')->where('standard', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        $wsbs_list = 'none';
+        if(count($d_data) > 0){
+            $wsbs_list = array();
+            foreach($d_data as $_d_data){
+                $wsbs_list[] = array(
+                    'key'=> $_d_data->channel_id,
+                    'channel_title'=> $_d_data->channel_title,
+                );
+            }
+        }
         $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
         $this->page_data['zwgk_list'] = $zwgk_list;
+        $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->get_left_sub();
     }
@@ -177,11 +190,17 @@ class Suggestions extends Controller
     }
 
     private function _checkInput($inputs){
-        if(!isset($inputs['name']) || trim($inputs['name'])==='' || strlen($inputs['name']) > 20){
+        if(!isset($inputs['name']) || trim($inputs['name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名必填/必选，请填写/选择']);
         }
-        if(!isset($inputs['email']) || trim($inputs['email'])==='' || !preg_email($inputs['email'])){
+        if(mb_strlen($inputs['name'], 'utf-8') > 20){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名请限制在20个字符内']);
+        }
+        if(!isset($inputs['email']) || trim($inputs['email'])==='' ){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'邮箱必填/必选，请填写/选择']);
+        }
+        if(!preg_email($inputs['email'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请输入合法邮箱地址']);
         }
         if(!isset($inputs['cell_phone']) || trim($inputs['cell_phone'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系电话必填/必选，请填写/选择']);
@@ -192,11 +211,17 @@ class Suggestions extends Controller
         if(!isset($inputs['type']) || trim($inputs['type'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择留言分类！']);
         }
-        if(!isset($inputs['title']) || trim($inputs['title'])==='' || strlen($inputs['title']) > 200){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'问题主题必填/必选，请填写/选择']);
+        if(!isset($inputs['title']) || trim($inputs['title'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'留言主题必填/必选，请填写/选择']);
         }
-        if(!isset($inputs['content']) || trim($inputs['content'])==='' || strlen($inputs['content']) > 200){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'问题内容必填/必选，请填写/选择']);
+        if(mb_strlen($inputs['title'], 'utf-8') > 200){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'留言主题请限制在200个字符内']);
+        }
+        if(!isset($inputs['content']) || trim($inputs['content'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'留言内容必填/必选，请填写/选择']);
+        }
+        if(mb_strlen($inputs['content'], 'utf-8') > 200){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'留言内容请限制在200个字符内']);
         }
         return true;
     }

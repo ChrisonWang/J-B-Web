@@ -156,3 +156,23 @@ function spilt_title($str,$len,$end = true){
         return $title;
     }
 }
+
+function mb_spilt_title($str, $len, $end = true){
+    if($str === ''){
+        return $str;
+    }
+    $str_len = mb_strlen($str, 'UTF-8');
+    if($str_len <= $len)
+    {
+        return $str;
+    }
+    else{
+        if($end === true){
+            $title = mb_substr($str, 0, $len).'...';
+        }
+        else{
+            $title = mb_substr($str, 0, $len);
+        }
+        return $title;
+    }
+}

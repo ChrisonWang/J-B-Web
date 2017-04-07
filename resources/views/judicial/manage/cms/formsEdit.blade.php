@@ -8,19 +8,19 @@
         <form class="form-horizontal" id="formsEditForm">
             <input type="hidden" name="key" value="{{ $form_detail['key'] }}" />
             <div class="form-group">
-                <label for="title" class="col-md-1 control-label">标题：</label>
+                <label for="title" class="col-md-2 control-label">标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" value="{{ $form_detail['title'] }}" placeholder="请输入标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="disabled" class="col-md-1 control-label">是否官网显示：</label>
+                <label for="disabled" class="col-md-2 control-label">是否官网显示：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="form-control" id="disabled" value="no" name="disabled" @if($form_detail['disabled'] == 'no') checked @endif/>
+                    <input type="checkbox" class="" id="disabled" value="no" name="disabled" @if($form_detail['disabled'] == 'no') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="channel" class="col-md-1 control-label">频道：</label>
+                <label for="channel" class="col-md-2 control-label">频道：</label>
                 <div class="col-md-3">
                     <select class="form-control" id="channel_id" name="channel_id">
                         @foreach($channel_list as $key=> $channel)
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="leader_photo" class="col-md-1 control-label">附件：</label>
+                <label for="leader_photo" class="col-md-2 control-label">附件：</label>
                 @if($form_detail['file'] == 'none')
                     <div class="col-md-3">
                         <i class="fa fa-paperclip"></i>上传附件
@@ -47,30 +47,28 @@
                 @endif
             </div>
             <div class="form-group">
-                <label for="description" class="col-md-1 control-label">简介：</label>
+                <label for="description" class="col-md-2 control-label">简介：</label>
                 <div class="col-md-8">
-                    <textarea name="description" id="description">
-                        {{ $form_detail['description'] }}
-                    </textarea>
+                    <textarea name="description" id="description">{{ $form_detail['description'] }}</textarea>
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <p>{{ $form_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="formsEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="editForms()">确认</button>
                 </div>
-                <div class="col col-md-1">
+                <div class="col col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-formMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

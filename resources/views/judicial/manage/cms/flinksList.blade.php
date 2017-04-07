@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            二级友情链接管理
+            一/二级友情链接管理
         </h3>
     </div>
     <div class="panel-body">

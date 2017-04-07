@@ -19,9 +19,9 @@ use App\Libs\Logs;
 
 class Message
 {
-    private static $username ='N5022354';
+    private static $username ='N530425_N5022354';
 
-    private static $password ='VUutB2lNCK1086';
+    private static $password ='1Rpgv5OtcEcc67';
 
     public static function send($to, $content, $presendTime='')
     {
@@ -34,7 +34,7 @@ class Message
             $to = substr($_to, 1, strlen($_to)-1);
         }
         $presendTime = empty($presendTime) ? '' : '&presendTime='.$presendTime;
-        $content = urlencode(mb_convert_encoding($content, 'utf-8'));
+        $content = urlencode(mb_convert_encoding('【三门峡司法局】'.$content, 'utf-8'));
         $send_url = $base_url.'?un='.self::$username.'&pw='.self::$password.'&phone='.$to.'&msg='.$content.$presendTime.'&rd=1';
         $result = self::_send_get($send_url);
 

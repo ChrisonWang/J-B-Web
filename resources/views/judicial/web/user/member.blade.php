@@ -161,7 +161,8 @@
                 window.location.href = re.res;
                 break;
             default:
-                return;
+                window.location.href = '{{ URL::to('user') }}';
+                break;
         }
     }
 

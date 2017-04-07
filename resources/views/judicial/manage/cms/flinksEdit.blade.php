@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            二级友情链接管理/编辑
+            一/二级友情链接管理/编辑
         </h3>
     </div>
     <!--隐藏的模板-->
@@ -27,14 +27,14 @@
         <form class="form-horizontal" id="flinksEditForm">
             <input type="hidden" id="key" name="key" value="{{ $flinks_detail['key'] }}" />
             <div class="form-group">
-                <label for="title" class="col-md-1 control-label">名称：</label>
+                <label for="title" class="col-md-2 control-label">名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" value="{{ $flinks_detail['title'] }}" placeholder="请输一级分类名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="menu-nodes" class="col-md-1 control-label">子链接：</label>
-                <div class="col-md-5">
+                <label for="menu-nodes" class="col-md-2 control-label">子链接：</label>
+                <div class="col-md-8">
                     <div class="container-fluid">
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
@@ -89,22 +89,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>{{ $flinks_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="flinksEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="editFlinks()">确认</button>
                 </div>
-                <div class="col col-md-1">
+                <div class="col col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-flink2Mng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

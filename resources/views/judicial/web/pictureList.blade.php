@@ -25,7 +25,7 @@
                                 <img src="{{ $article['thumb'] }}"  controls="controls" width="250" height="167">
                             </a>
                             <span class="zwv_txt">
-                                <a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ $article['publish_date'] }}</a>
+                                <a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],18) }}</a>
                             </span>
                         </li>
                     @endforeach

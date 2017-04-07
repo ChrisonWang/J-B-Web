@@ -8,44 +8,44 @@
         <form class="form-horizontal" id="flinkImgEditForm">
             <input type="hidden" value="{{ $flink_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="fi_title" class="col-md-1 control-label">标题：</label>
+                <label for="fi_title" class="col-md-2 control-label">标题：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" id="fi_title" name="fi_title" value="{{ $flink_detail['fi_title'] }}" placeholder="请输入链接标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="fi_links" class="col-md-1 control-label">链接：</label>
+                <label for="fi_links" class="col-md-2 control-label">链接：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" id="fi_links" name="fi_links" value="{{ $flink_detail['fi_links'] }}" placeholder="请输入链接地址" />
                 </div>
             </div>
             @if( isset($flink_detail['fi_image']) && $flink_detail['fi_image'] != "none" )
                 <div class="form-group" id="image-thumbnail">
-                    <label for="leader_photo" class="col-md-1 control-label">预览：</label>
+                    <label for="leader_photo" class="col-md-2 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder">
                         <img src="{{ $flink_detail['fi_image'] }}" class="img-thumbnail img-responsive">
                     </div>
                 </div>
             @else
                 <div class="form-group hidden" id="image-thumbnail">
-                    <label for="leader_photo" class="col-md-1 control-label">预览：</label>
+                    <label for="leader_photo" class="col-md-2 control-label">预览：</label>
                     <div class="col-md-3" id="image-holder"></div>
                 </div>
             @endif
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>{{ $flink_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="flinkImgEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-flink1Mng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

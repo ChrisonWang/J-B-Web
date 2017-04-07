@@ -102,6 +102,10 @@ class Suggestions extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-suggestionsMng'] || $node_p['service-suggestionsMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $suggestion_detail = array();
         $id = keys_decrypt($request->input('key'));
         $suggestion = DB::table('service_suggestions')->where('id', $id)->first();

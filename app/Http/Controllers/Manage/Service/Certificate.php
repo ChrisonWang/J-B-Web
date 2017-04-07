@@ -76,6 +76,10 @@ class Certificate extends Controller
 
     public function create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-certificateMng'] || $node_p['service-certificateMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.service.certificateAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -219,6 +223,10 @@ class Certificate extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-certificateMng'] || $node_p['service-certificateMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $certificate_detail = array();
         $id = keys_decrypt($request->input('key'));
         $certi = DB::table('service_certificate')->where('id', $id)->first();
@@ -356,6 +364,10 @@ class Certificate extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-certificateMng'] || $node_p['service-certificateMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $id = keys_decrypt($request->input('key'));
         $row = DB::table('service_certificate')->where('id',$id)->delete();
         if($row > 0){
@@ -457,6 +469,10 @@ class Certificate extends Controller
 
     public function doImport(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-certificateMng'] || $node_p['service-certificateMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $data_list = array();
         $batch_file = $request->file('batch_file');
         if(is_null($batch_file) || !$batch_file->isValid()){
@@ -582,7 +598,7 @@ class Certificate extends Controller
                 json_response(['status'=>'failed','type'=>'alert', 'res'=>'未找到没有备案的持证人员']);
             }
         }
-        elseif($inputs['to_message']=='all'){
+        else{
             $phone_list = '';
             $certificates = DB::table('service_certificate')->get();
             if(count($certificates)>0){
@@ -603,7 +619,7 @@ class Certificate extends Controller
         else{
             $rs = 'failed';
         }*/
-        $rs['status'] = "succ";
+        $rs = Message::send($phone_list, $content);
         if($rs['status'] == "succ"){
             foreach($send_log as $id=> $log){
                 if(empty($log)){

@@ -8,13 +8,13 @@
         <form class="form-horizontal" id="nodeEditForm">
             <input type="hidden" value="{{ $node_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="node_name" class="col-md-1 control-label">功能点名称：</label>
+                <label for="node_name" class="col-md-2 control-label">功能点名称：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" id="node_name" name="node_name" value="{{ $node_detail['node_name'] }}" placeholder="请输入功能点名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="node_schema" class="col-md-1 control-label">分类：</label>
+                <label for="node_schema" class="col-md-2 control-label">分类：</label>
                 <div class="col-md-3">
                     <select disabled id="node_schema" name="node_schema" class="form-control">
                         @foreach ($node_schema as $key=> $schema)
@@ -24,19 +24,19 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>{{ $node_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="nodeEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col col-md-offset-1 col-md-1">
+                <div class="col col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="user-nodesMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

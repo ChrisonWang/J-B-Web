@@ -28,13 +28,13 @@
         <form class="form-horizontal" id="menuEditForm">
             <input type="hidden" name="key" value="{{ $menu_detail['key'] }}"/>
             <div class="form-group">
-                <label for="menu_name" class="col-md-1 control-label">菜单名称：</label>
+                <label for="menu_name" class="col-md-2 control-label">菜单名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="menu_name" name="menu_name" value="{{ $menu_detail['menu_name'] }}" placeholder="请输菜单名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="node_schema" class="col-md-1 control-label">功能点：</label>
+                <label for="node_schema" class="col-md-2 control-label">功能点：</label>
                 <div class="col-md-5">
                     <div class="container-fluid">
                         <table class="table table-bordered table-hover table-condensed">
@@ -91,22 +91,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>自动生成</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="menuEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="editMenu()">确认</button>
                 </div>
-                <div class="col col-md-1">
+                <div class="col col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="user-menuMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

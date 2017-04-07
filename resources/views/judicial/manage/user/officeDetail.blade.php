@@ -8,13 +8,13 @@
         <form class="form-horizontal" id="officeEditForm">
             <input type="hidden" value="{{ $office_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="office_name" class="col-md-1 control-label">科室名称：</label>
+                <label for="office_name" class="col-md-2 control-label">科室名称：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" id="office_name" name="office_name" value="{{ $office_detail['office_name'] }}" placeholder="请输入科室名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-1 control-label">下属职员：</label>
+                <label class="col-md-2 control-label">下属职员：</label>
                 <div class="col-md-8">
                     <div class="container-fluid">
                         @if($manager_list != 'none' && is_array($manager_list))
@@ -53,19 +53,19 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>{{ $office_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="officeEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col col-md-offset-1 col-md-1">
+                <div class="col col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="user-officeMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

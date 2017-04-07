@@ -72,6 +72,10 @@ class LawyerOffice extends Controller
 
     public function  create(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-lawyerOfficeMng'] || $node_p['service-lawyerOfficeMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         //获取区域
         $area_list = 'none';
         $areas = DB::table('service_area')->get();
@@ -242,6 +246,10 @@ class LawyerOffice extends Controller
 
     public function edit(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-lawyerOfficeMng'] || $node_p['service-lawyerOfficeMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $office_detail = array();
         $area_list = 'none';
         $id = keys_decrypt($request->input('key'));
@@ -397,6 +405,10 @@ class LawyerOffice extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['service-lawyerOfficeMng'] || $node_p['service-lawyerOfficeMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $id = keys_decrypt($request->input('key'));
         $row = DB::table('service_lawyer_office')->where('id',$id)->delete();
         if($row > 0){

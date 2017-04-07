@@ -13,10 +13,10 @@
                     <input type="text" class="form-control" name="sub-channel_title" placeholder="请输频道名称" />
                 </td>
                 <td>
-                    <input type="checkbox" class="form-control" name="sub-zwgk" value="yes" checked/>
+                    <input type="checkbox" class="" name="sub-zwgk" value="yes" checked/>
                 </td>
                 <td>
-                    <input type="checkbox" class="form-control" name="sub-wsbs" value="yes" checked/>
+                    <input type="checkbox" class="" name="sub-wsbs" value="yes" checked/>
                 </td>
                 <td>
                     <input type="text" class="form-control" name="sub-sort" placeholder="请输入权重（数字越大越靠前）" />
@@ -33,43 +33,43 @@
         <form class="form-horizontal" id="channelEditForm">
             <input type="hidden" name="key" value="{{ $channel_detail['key'] }}"/>
             <div class="form-group">
-                <label for="channel_title" class="col-md-1 control-label">菜单名称：</label>
+                <label for="channel_title" class="col-md-2 control-label">菜单名称：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" value="{{ $channel_detail['channel_title'] }}" id="channel_title" name="channel_title" placeholder="请输菜单名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="is_recommend" class="col-md-1 control-label">是否首页推荐：</label>
+                <label for="is_recommend" class="col-md-2 control-label">是否首页推荐：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" disabled class="form-control" id="is_recommend" name="is_recommend" value="yes" @if($channel_detail['is_recommend'] == 'yes') checked @endif />
+                    <input type="checkbox" disabled class="" id="is_recommend" name="is_recommend" value="yes" @if($channel_detail['is_recommend'] == 'yes') checked @endif />
                 </div>
             </div>
             <div class="form-group">
-                <label for="form_download" class="col-md-1 control-label">是否开启表单下载：</label>
+                <label for="form_download" class="col-md-2 control-label">是否开启表单下载：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" disabled class="form-control" id="form_download" name="form_download" value="yes" @if($channel_detail['form_download'] == 'yes') checked @endif/>
+                    <input type="checkbox" disabled class="" id="form_download" name="form_download" value="yes" @if($channel_detail['form_download'] == 'yes') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="zwgk" class="col-md-1 control-label">是否归属政务公开：</label>
+                <label for="zwgk" class="col-md-2 control-label">是否归属政务公开：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" disabled class="form-control" id="zwgk" name="zwgk" value="yes"  @if($channel_detail['zwgk'] == 'yes') checked @endif/>
+                    <input type="checkbox" disabled class="" id="zwgk" name="zwgk" value="yes"  @if($channel_detail['zwgk'] == 'yes') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="wsbs" class="col-md-1 control-label">是否归属网上办事：</label>
+                <label for="wsbs" class="col-md-2 control-label">是否归属网上办事：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" disabled class="form-control" id="wsbs" name="wsbs" value="yes"  @if($channel_detail['wsbs'] == 'yes') checked @endif/>
+                    <input type="checkbox" disabled class="" id="wsbs" name="wsbs" value="yes"  @if($channel_detail['wsbs'] == 'yes') checked @endif/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="sort" class="col-md-1 control-label">排序权重：</label>
+                <label for="sort" class="col-md-2 control-label">排序权重：</label>
                 <div class="col-md-3">
                     <input type="text" disabled class="form-control" id="sort" name="sort" value="{{ $channel_detail['sort'] }}" placeholder="请输入权重（数字越大越靠前）" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-1 control-label">子频道：</label>
+                <label class="col-md-2 control-label">子频道：</label>
                 <div class="col-md-8">
                     <div class="container-fluid">
                         <table class="table table-bordered table-hover table-condensed">
@@ -89,10 +89,10 @@
                                             <input disabled type="text" class="form-control" name="sub-channel_title" data-key="{{ $sub['key'] }}" value="{{ $sub['channel_title'] }}" placeholder="请输频道名称" />
                                         </td>
                                         <td>
-                                            <input disabled type="checkbox" class="form-control" name="sub-zwgk" value="yes" @if($sub['zwgk'] == 'yes') checked @endif/>
+                                            <input disabled type="checkbox" class="" name="sub-zwgk" value="yes" @if($sub['zwgk'] == 'yes') checked @endif/>
                                         </td>
                                         <td>
-                                            <input disabled type="checkbox" class="form-control" name="sub-wsbs" value="yes" @if($sub['wsbs'] == 'yes') checked @endif/>
+                                            <input disabled type="checkbox" class="" name="sub-wsbs" value="yes" @if($sub['wsbs'] == 'yes') checked @endif/>
                                         </td>
                                         <td>
                                             <input disabled type="text" class="form-control" name="sub-sort" value="{{ $sub['sort'] }}" placeholder="请输入权重（数字越大越靠前）" />
@@ -114,19 +114,19 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">创建时间：</label>
+                <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>{{ $channel_detail['create_date'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-1 col-md-10">
                     <p class="text-left hidden" id="channelEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-danger btn-block" data-node="cms-channelMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>

@@ -35,7 +35,7 @@
                         <!-- 子菜单 -->
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="javascript:void(0);" data-node="user-nodesMng" >功能点管理</a>
+                                {{--<a href="javascript:void(0);" data-node="user-nodesMng" >功能点管理</a>--}}
                                 <a href="javascript:void(0);" data-node="user-menuMng">菜单管理</a>
                                 <a href="javascript:void(0);" data-node="user-roleMng">角色管理</a>
                                 <a href="javascript:void(0);" data-node="user-userMng">用户管理</a>

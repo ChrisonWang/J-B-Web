@@ -101,7 +101,8 @@
                 window.location.href = re.res;
                 break;
             default:
-                return;
+                window.location.href = '{{ URL::to('manage/dashboard') }}';
+                break;
         }
     }
 </script>

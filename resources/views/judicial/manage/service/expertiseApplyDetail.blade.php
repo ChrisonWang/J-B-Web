@@ -7,31 +7,31 @@
     <div class="panel-body">
         <form class="form-horizontal">
             <div class="form-group">
-                <label for="record_code" class="col-md-1 control-label">编号：</label>
+                <label for="record_code" class="col-md-2 control-label">编号：</label>
                 <div class="col-md-3">
                     <p>{{ $apply_detail['record_code'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="apply_name" class="col-md-1 control-label">申请人姓名：</label>
+                <label for="apply_name" class="col-md-2 control-label">申请人姓名：</label>
                 <div class="col-md-3">
                     <p>{{ $apply_detail['apply_name'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="cell_phone" class="col-md-1 control-label">联系电话：</label>
+                <label for="cell_phone" class="col-md-2 control-label">联系电话：</label>
                 <div class="col-md-3">
                     <p>{{ $apply_detail['cell_phone'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="cell_phone" class="col-md-1 control-label">申请类型：</label>
+                <label for="cell_phone" class="col-md-2 control-label">申请类型：</label>
                 <div class="col-md-3">
                     <p>{{ isset($type_list[$apply_detail['type_id']]) ? $type_list[$apply_detail['type_id']] : '-' }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="name" class="col-md-1 control-label">附件：</label>
+                <label for="name" class="col-md-2 control-label">附件：</label>
                 <div class="col-md-3">
                     <p>
                         @if((empty($apply_detail['apply_table_name'])||empty($apply_detail['apply_table'])))
@@ -44,13 +44,13 @@
             </div>
             <div class="form-group">
                 <hr/>
-                <label for="create_date" class="col-md-1 control-label">审批意见：</label>
+                <label for="create_date" class="col-md-2 control-label">审批意见：</label>
                 <div class="col-md-8">
                     <p>{{ empty($apply_detail['approval_opinion']) ? '未填写，表示无异议' : $apply_detail['approval_opinion'] }}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-1 control-label">审批结果：</label>
+                <label for="create_date" class="col-md-2 control-label">审批结果：</label>
                 <div class="col-md-8">
                     @if($apply_detail['approval_result'] == 'pass')
                         <p>审批通过</p>
@@ -63,7 +63,7 @@
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-offset-1 col-md-2">
                     @if($archived == 'yes')
                         <button type="button" class="btn btn-danger btn-block" data-key="{{ $archived_key }}" data-method="show" onclick="archivedMethod($(this))">返回列表</button>
                     @else

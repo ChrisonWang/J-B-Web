@@ -15,17 +15,18 @@
         <ul class="hd_ful">
             <li class="hdf_li"><a href="{{URL::to('/')}}">首页</a></li>
             <li class="hdf_li"><a href="@if($zwgk_list != 'none' && is_array($zwgk_list)){{ URL::to('/list').'/'.$zwgk_list[0]['key'] }}@else{{URL::to('/')}}@endif">政务公开</a>
-                @if($zwgk_list != 'none' && is_array($zwgk_list))
-                    <div class="hd_lv3">
+                <div class="hd_lv3">
+                    <span><a href="{{ URL::to('intro')}}">司法局介绍</a></span>
+                    <span><a href="{{ URL::to('/picture/1')}}">图片中心</a></span>
+                    <span><a href="{{ URL::to('/video/1')}}">宣传视频</a></span>
+                    @if($zwgk_list != 'none' && is_array($zwgk_list))
                         @foreach($zwgk_list as $zwgk)
-                            <span><a href="{{ URL::to('/list').'/'.$zwgk['key'] }}">{{ $zwgk['channel_title'] }}</a></span>
+                            <span><a href="{{ URL::to('list').'/'.$zwgk['key'] }}">{{ mb_spilt_title($zwgk['channel_title'], 7, false) }}</a></span>
                         @endforeach
-                    </div>
-                @else
-                    <div class="hd_lv3">
+                    @else
                         <span><a href="javascript:void(0)">请先添加子频道</a></span>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </li>
             <li class="hdf_li"><a href="{{ URL::to('service') }}">网上办事</a>
                 <div class="hd_lv3">
@@ -33,6 +34,13 @@
                     <span><a href="{{ URL::to('service') }}">司法考试</a></span>
                     <span><a href="{{ URL::to('service/expertise/list/1') }}">司法鉴定</a></span>
                     <span><a href="{{ URL::to('service/aid/list/1') }}">法律援助</a></span>
+                    @if($wsbs_list != 'none' && is_array($wsbs_list))
+                        @foreach($wsbs_list as $wsbs)
+                            <span><a href="{{ URL::to('service/list').'/'.$wsbs['key'] }}">{{ mb_spilt_title($wsbs['channel_title'], 7, false) }}</a></span>
+                        @endforeach
+                    @else
+                        <span><a href="javascript:void(0)">请先添加子频道</a></span>
+                    @endif
                 </div>
             </li>
             <li class="hdf_li"><a href="{{ URL::to('consultions/list/').'/1' }}">政民互动</a>

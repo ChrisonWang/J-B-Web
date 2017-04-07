@@ -35,20 +35,32 @@ class Index extends Controller
         if(!!$loginStatus)
             $this->page_data['is_signin'] = 'yes';
         //拿出政务公开
-        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
+        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->where('pid',0)->orderBy('sort', 'desc')->get();
         $zwgk_list = 'none';
         if(count($c_data) > 0){
             $zwgk_list = array();
-            foreach($c_data as $_c_date){
+            foreach($c_data as $_c_data){
                 $zwgk_list[] = array(
-                    'key'=> $_c_date->channel_id,
-                    'channel_title'=> $_c_date->channel_title,
+                    'key'=> $_c_data->channel_id,
+                    'channel_title'=> $_c_data->channel_title,
                 );
             }
         }
+        //拿出网上办事
+        $d_data = DB::table('cms_channel')->where('wsbs', 'yes')->where('standard', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        $wsbs_list = 'none';
+        if(count($d_data) > 0){
+            $wsbs_list = array();
+            foreach($d_data as $_d_data){
+                $wsbs_list[] = array(
+                    'key'=> $_d_data->channel_id,
+                    'channel_title'=> $_d_data->channel_title,
+                );
+            }
+        }
+        $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['channel_list'] = $this->get_left_list();
-        $this->get_left_sub();
         $this->get_left_sub();
     }
 
@@ -116,13 +128,15 @@ class Index extends Controller
             if(count($p_channel)!=0){
                 $this->page_data['title'] = $p_channel->channel_title;
             }
+            $this->page_data['zwgk'] = $channel->zwgk;
+            $this->page_data['wsbs'] = $channel->wsbs;
         }
         $offset = 16 * ($page-1);
         $count = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'disabled'=>'no', 'thumb'=>''])->count();
         if($count < 1){
             $article_list = 'none';
             $this->page_data['article_list'] = $article_list;
-            return view('judicial.web.list', $this->page_data);
+            return view('judicial.web.service.list', $this->page_data);
         }
         else{
             $articles = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->orWhere(['channel_id'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->skip($offset)->take(16)->get();

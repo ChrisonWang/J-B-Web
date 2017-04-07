@@ -16,7 +16,7 @@
                     <form class="form-horizontal" id="passwordForm">
                         <div class="form-group">
                             <div class="col-md-offset-1 col-md-10">
-                                <input type="text" class="form-control" type="number" id="cellPhone" name="cellPhone" placeholder="请输入新的11位手机号" required>
+                                <input type="text" class="form-control" type="number" id="cellPhone" name="cellPhone" placeholder="请输入注册时的手机号" required>
                             </div>
                         </div>
                         <div class="form-group">

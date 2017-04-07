@@ -19,7 +19,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 
 /*首页*/
 /*头部*/
-.w1024{width: 1024px;clear: both;margin: 0 auto;}
+.w1024{width: 1060px;clear: both;margin: 0 auto;}
 .w980{width: 980px;clear: both;margin: 0 auto;}
 .w810{width: 810px;}
 .w700{width: 700px;margin: 0 auto}
@@ -40,9 +40,9 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .hd_nav .hd_ful .hdf_li:hover{background-color: #fff;}
 .hd_nav .hd_ful .hdf_li:hover>a{color: #E23939!important;}
 .hd_nav .hd_ful .hdf_li:hover .hd_lv3{display: block;}
-.hd_lv3 {z-index: 100000; position: absolute;width: 260px;background: #FFFFFF;box-shadow: 0 2px 4px 0 rgba(0,0,0,0.15);border-radius: 4px;padding-bottom: 20px;top: 31px;left: -65px;display: none;border-top: 10px solid #e03b39;}
-.hd_lv3 span {text-align: left;float: left;width: 65px;margin-left: 20px;margin-top: 20px;}
-.lv3_sd a{color: #DD3736;}
+.hd_lv3 {z-index: 100000; position: absolute;width: 350px;background: #FFFFFF;box-shadow: 0 2px 4px 0 rgba(0,0,0,0.15);border-radius: 4px;padding-bottom: 20px;top: 31px;left: -125px;display: none;border-top: 10px solid #e03b39;}
+.hd_lv3 span {text-align: left;float: left;width: 95px; height: 20px; max-width: 95px;margin-left: 20px;margin-top: 20px; overflow: hidden; line-height: 20px}
+.lv3_sd a{color: #DD3736; max-width: 95px; line-height: 20px;}
 
 /*搜索*/
 .index_search{background: #FFFFFF;border: 1px solid #ECECEC;overflow: hidden;width: 978px;margin: 10px auto;}
@@ -146,8 +146,9 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 
 /*政务公开*/
 .zw_mb{margin-top: 10px; margin-bottom: 100px; overflow: hidden;}
-.zw_left{float: left; width: 150px; background-color: #F9F9F9; margin-left: 25px;}
-.zw_left ul li{text-align: left; text-indent: 30px; font-size: 14px; line-height: 40px;}
+.zw_left{float: left; width: 180px; background-color: #F9F9F9; margin-left: 25px;}
+.zw_left ul li{text-align: left; width: 180px; text-indent: 30px; font-size: 14px; line-height: 40px}
+.zw_left_li_span {height: 40px; line-height: 40px; overflow: hidden}
 .zw_left_link{text-align: left; text-indent: 30px; font-size: 14px; line-height: 40px; color: #000000}
 .zw_left_link a{text-align: left; text-indent: 30px; font-size: 14px; line-height: 40px; color: #000000}
 .zw_left ul li i{float: right; font-weight: bold; margin-right: 25px; width: 20px; height: 20px; margin-top: 10px;}

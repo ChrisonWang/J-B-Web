@@ -60,6 +60,10 @@ class Backup extends Controller
 
     public function create()
     {
+        $node_p = session('node_p');
+        if(!$node_p['system-backupMng'] || $node_p['system-backupMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $pageContent = view('judicial.manage.system.backupAdd',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -145,6 +149,10 @@ class Backup extends Controller
 
     public function doDelete(Request $request)
     {
+        $node_p = session('node_p');
+        if(!$node_p['system-backupMng'] || $node_p['system-backupMng']!='rw'){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'您没有此栏目的编辑权限！']);
+        }
         $id = keys_decrypt($request->input('key'));
         $rs = DB::table('system_backup')->where('id', $id)->delete();
         if($rs === false){

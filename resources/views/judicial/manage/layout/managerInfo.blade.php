@@ -4,7 +4,7 @@
         </h3>
         <div class="pull-right">
             <i class="fa fa-check-square-o fa-2"></i>
-            <a href="javascript:void(0);" data-node="EditManagerInfo" onclick="loadContent($(this))">编辑</a>
+            <a href="javascript:void(0);" data-node="user-editManagerInfo" onclick="loadContent($(this))">编辑</a>
         </div>
     </div>
     <div class="panel-body">

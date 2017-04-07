@@ -46,7 +46,20 @@ class Expertise extends Controller
                 );
             }
         }
+        //拿出网上办事
+        $d_data = DB::table('cms_channel')->where('wsbs', 'yes')->where('standard', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        $wsbs_list = 'none';
+        if(count($d_data) > 0){
+            $wsbs_list = array();
+            foreach($d_data as $_d_data){
+                $wsbs_list[] = array(
+                    'key'=> $_d_data->channel_id,
+                    'channel_title'=> $_d_data->channel_title,
+                );
+            }
+        }
         $this->page_data['zwgk_list'] = $zwgk_list;
+        $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->get_left_sub();
     }
@@ -236,6 +249,9 @@ class Expertise extends Controller
         if(count($forms) > 0){
             $form_list = array();
             foreach($forms as $form){
+                if(empty($form->file)){
+                    continue;
+                }
                 $form_list[] = array(
                     'title'=> $form->title,
                     'file'=> $form->file,
@@ -256,7 +272,7 @@ class Expertise extends Controller
 
     private function _checkInput($inputs)
     {
-        if(!isset($inputs['apply_name']) || trim($inputs['apply_name'])==='' || strlen(trim($inputs['apply_name'])) > 20){
+        if(!isset($inputs['apply_name']) || trim($inputs['apply_name'])==='' || mb_strlen(trim($inputs['apply_name']), 'UTF-8') > 20){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“申请人姓名”应为长度20以内的字符串']);
         }
         if(!isset($inputs['cell_phone']) || trim($inputs['cell_phone'])==='' || !preg_phone($inputs['cell_phone'])){

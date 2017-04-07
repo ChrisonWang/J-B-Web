@@ -26,7 +26,7 @@ class User extends Controller
 {
     public function __construct()
     {
-        $this->page_date['url'] = array(
+        $this->page_data['url'] = array(
             'loginUrl' => URL::route('loginUrl'),
             'userLoginUrl' => URL::route('userLoginUrl'),
             'webUrl' => URL::to('/'),
@@ -47,8 +47,21 @@ class User extends Controller
                 );
             }
         }
-        $this->page_date['zwgk_list'] = $zwgk_list;
-        $this->page_date['channel_list'] = $this->get_left_list();
+        //拿出网上办事
+        $d_data = DB::table('cms_channel')->where('wsbs', 'yes')->where('standard', 'no')->where('pid',0)->orderBy('sort', 'desc')->get();
+        $wsbs_list = 'none';
+        if(count($d_data) > 0){
+            $wsbs_list = array();
+            foreach($d_data as $_d_data){
+                $wsbs_list[] = array(
+                    'key'=> $_d_data->channel_id,
+                    'channel_title'=> $_d_data->channel_title,
+                );
+            }
+        }
+        $this->page_data['zwgk_list'] = $zwgk_list;
+        $this->page_data['wsbs_list'] = $wsbs_list;
+        $this->page_data['channel_list'] = $this->get_left_list();
     }
 
     public function get_left_list()
@@ -103,10 +116,10 @@ class User extends Controller
                 'address'=>$memberInfo->address,
                 'description'=>$memberInfo->description
             );
-            $this->page_date['memberInfo'] = $formatMemberInfo;
-            $this->page_date['is_signin'] = 'yes';
+            $this->page_data['memberInfo'] = $formatMemberInfo;
+            $this->page_data['is_signin'] = 'yes';
         }
-        return view('judicial.web.user.member',$this->page_date);
+        return view('judicial.web.user.member',$this->page_data);
     }
 
     public function login(Request $request)
@@ -115,9 +128,9 @@ class User extends Controller
         $loginStatus = $this->checkLoginStatus();
         if(!$loginStatus){
             if($action == 'signup'){
-                $this->page_date['action'] = 'signup';
+                $this->page_data['action'] = 'signup';
             }
-            return view('judicial.web.user.login',$this->page_date);
+            return view('judicial.web.user.login',$this->page_data);
         }
         else{
             return redirect('user');
@@ -158,7 +171,7 @@ class User extends Controller
             setcookie("_token",md5($userInfo->login_name),time()+24*3600,'/');
             Session::put(md5($userInfo->login_name),$userInfo->member_code,30);
             Session::save();
-            json_response(['status'=>'succ', 'type'=>'redirect', 'res'=>$this->page_date['url']['user']]);
+            json_response(['status'=>'succ', 'type'=>'redirect', 'res'=>$this->page_data['url']['user']]);
         }
     }
 
@@ -194,7 +207,7 @@ class User extends Controller
         }
         $login_name = $_COOKIE['_token'];
         $request->session()->forget($login_name);
-        setcookie('_token','',time()-24*3600*30);
+        setcookie('_token','',time()-24*3600*30,'/');
 
         return redirect('/');
     }
@@ -352,9 +365,9 @@ class User extends Controller
             return redirect('user/login');
         }
         else{
-            $this->page_date['is_signin'] = 'yes';
+            $this->page_data['is_signin'] = 'yes';
         }
-        return view('judicial.web.user.layout.changePhone',$this->page_date);
+        return view('judicial.web.user.layout.changePhone',$this->page_data);
     }
 
     public function doChangePhone(Request $request)
@@ -407,7 +420,7 @@ class User extends Controller
     }
 
     public function forgetPassword(Request $request){
-        return view('judicial.web.user.layout.forgetPassword',$this->page_date);
+        return view('judicial.web.user.layout.forgetPassword',$this->page_data);
     }
 
     public function doForgetPassword(Request $request){
@@ -447,8 +460,7 @@ class User extends Controller
         $passwordConfirmE = password_hash($passwordConfirm,PASSWORD_BCRYPT);
         $affected = Members::where('cell_phone', $cell_phone)->update(['password'=>$passwordConfirmE]);
         if($affected || $affected>0){
-            $request->session()->forget($_COOKIE['_token']);
-            setcookie('s','',time()-3600*24*30);
+            setcookie('_token','',time()-3600*24*30,'/');
             Session::save();
             json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('user/login')]);
         }
@@ -498,8 +510,7 @@ class User extends Controller
             }
             $affected = Members::where('member_code',$memberCode)->update(['password'=>$confirmPasswordE]);
             if($affected || $affected>0){
-                $request->session()->forget($_COOKIE['_token']);
-                setcookie('s','',time()-3600*24*30);
+                setcookie('_token','',time()-3600*24*30,'/');
                 Session::save();
                 json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('user/login')]);
             }
@@ -699,25 +710,25 @@ class User extends Controller
             'count_page'=>($dispatch_count<=10) ? 1 : ceil($dispatch_count/10),
         );
 
-        $this->page_date['expertise_type'] = $expertise_type;
-        $this->page_date['expertise_list'] = $expertise_list;
-        $this->page_date['expertise_pages'] = $expertise_pages;
+        $this->page_data['expertise_type'] = $expertise_type;
+        $this->page_data['expertise_list'] = $expertise_list;
+        $this->page_data['expertise_pages'] = $expertise_pages;
 
-        $this->page_date['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
-        $this->page_date['consultions_list'] = json_decode(json_encode($consultions_list), true);
-        $this->page_date['consultions_pages'] = $consultions_pages;
+        $this->page_data['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_data['consultions_list'] = json_decode(json_encode($consultions_list), true);
+        $this->page_data['consultions_pages'] = $consultions_pages;
 
-        $this->page_date['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
-        $this->page_date['suggestions_list'] = json_decode(json_encode($suggestions_list), true);
-        $this->page_date['suggestions_pages'] = $suggestions_pages;
+        $this->page_data['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+        $this->page_data['suggestions_list'] = json_decode(json_encode($suggestions_list), true);
+        $this->page_data['suggestions_pages'] = $suggestions_pages;
 
-        $this->page_date['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
-        $this->page_date['apply_list'] = $apply_list;
-        $this->page_date['apply_pages'] = $apply_pages;
+        $this->page_data['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
+        $this->page_data['apply_list'] = $apply_list;
+        $this->page_data['apply_pages'] = $apply_pages;
 
-        $this->page_date['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
-        $this->page_date['dispatch_list'] = $dispatch_list;
-        $this->page_date['dispatch_pages'] = $dispatch_pages;
+        $this->page_data['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_data['dispatch_list'] = $dispatch_list;
+        $this->page_data['dispatch_pages'] = $dispatch_pages;
     }
 
     public function getServiceListPage(Request $request)
@@ -908,13 +919,13 @@ class User extends Controller
             default:
                 break;
         }
-        $this->page_date['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
-        $this->page_date['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
-        $this->page_date['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
-        $this->page_date['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
-        $this->page_date['list'] = $list;
-        $this->page_date['pages'] = $pages;
-        $pageContent = view('judicial.web.user.service.'.$pages['method'].'Pages',$this->page_date)->render();
+        $this->page_data['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_data['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+        $this->page_data['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
+        $this->page_data['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_data['list'] = $list;
+        $this->page_data['pages'] = $pages;
+        $pageContent = view('judicial.web.user.service.'.$pages['method'].'Pages',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'notice', 'res'=>$pageContent]);
     }
 
