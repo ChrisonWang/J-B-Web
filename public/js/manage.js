@@ -3409,3 +3409,64 @@ function addBackup(){
         }
     });
 }
+
+function changeManagerInfo(){
+    $('#changeInfoNotice').addClass('hidden');
+    var data = $('#changeInfoForm').serialize();
+    var url = '/manage/changeManagerInfo';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                $('#dd_cellphone').text(re.cellphone);
+                $('#dd_email').text(re.email);
+                $('#dd_nickname').text(re.nickname);
+                alert("修改成功！");
+                $('#changeInfo_modal').modal('hide');
+            }
+            else if(re.status == 'failed') {
+                if(re.type=='redirect'){
+                    window.location.href = re.res;
+                }
+                else {
+                    $('#changeInfoNotice').removeClass('hidden');
+                    $('#changeInfoNotice').text(re.res);
+                }
+            }
+        }
+    });
+}
+
+function managerPassword(){
+    $('#managerPasswordNotice').addClass('hidden');
+    var data = $('#managerPasswordForm').serialize();
+    var url = '/manage/changeManagerPassword';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(re){
+            if(re.status == 'succ'){
+                alert('修改成功！请重新登录');
+                window.location.href = re.res;
+            }
+            else if(re.status == 'failed') {
+                if(re.type=='redirect'){
+                    window.location.href = re.res;
+                }
+                else {
+                    $('#managerPasswordNotice').removeClass('hidden');
+                    $('#managerPasswordNotice').text(re.res);
+                }
+            }
+        }
+    });
+}

@@ -48,7 +48,7 @@
                 <li>
                     <span class="wsc_txt">类型</span>
                     <div class="cx_inp">
-                        <select name="type_id" style="width: 252px; height: 30px">
+                        <select name="type_id" style="width: 252px; height: 30px" onchange="loadExpertiseFile($(this))">
                             @if($type_list != 'none' && is_array($type_list))
                                 <option value="none">请选择类型！</option>
                                 @foreach($type_list as $k=>$name)
@@ -65,8 +65,8 @@
                 <span class="mtb_text">附件:&nbsp;&nbsp;</span>
                     <input type="file" name="file">
 
-                <span class="mtb_m">
-                    <a href="{{ URL::to('/').'/uploads/system/files/群众预约援助表.xlsx'}}" target="_blank">下载表格</a>
+                <span class="mtb_m" id="expertiseFile">
+                    <a href="javascript: alert('请先选择司法鉴定类型！') ;">请先选择类型</a>
                 </span>
             </div>
 

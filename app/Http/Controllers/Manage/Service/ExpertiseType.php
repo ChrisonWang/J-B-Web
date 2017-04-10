@@ -90,7 +90,7 @@ class ExpertiseType extends Controller
                     $file_name = '';
                 }
                 else{
-                    $file_path = URL::to('/').'/uploads/system/lawyer/'.$file_name;
+                    $file_path = URL::to('/').'/uploads/system/files/'.$file_name;
                     $file_name = $file->getClientOriginalName();
                 }
             }

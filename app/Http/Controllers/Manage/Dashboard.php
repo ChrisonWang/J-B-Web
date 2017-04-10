@@ -128,7 +128,7 @@ class Dashboard extends Controller
     }
 
     /**
-     * 修改用户资料模板
+     * 修改用户资料模板（弃用）
      * @param null $managerCode
      * @throws \Exception
      * @throws \Throwable
@@ -234,6 +234,94 @@ class Dashboard extends Controller
         }
         else{
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
+        }
+    }
+
+    /**
+     * 新版修改管理员资料
+     * @param Request $request
+     */
+    public function changeManagerInfo(Request $request)
+    {
+        $managerCode = $this->checkLoginStatus();
+        if(!$managerCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_data['url']['login']]);
+        }
+        $inputs = $request->input();
+        if(trim($inputs['cellphone'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号码不能为空！"]);
+        }
+        if(trim($inputs['email'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱不能为空！"]);
+        }
+        if(trim($inputs['nickname'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名不能为空！"]);
+        }
+        if(!preg_phone(trim($inputs['cellphone']))){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"请填写正确的手机号码！"]);
+        }
+        if(!preg_email(trim($inputs['email']))){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"请填写正确的邮箱！"]);
+        }
+        if($this->_phoneExist(trim($inputs['cellphone']), $managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"手机号码已存在！"]);
+        }
+        if($this->_emailExist(trim($inputs['email']), $managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"邮箱已存在！"]);
+        }
+        if($this->_nicknameExist(trim($inputs['nickname']), $managerCode)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"显示名已存在！"]);
+        }
+        //修改信息
+        $save_data = array(
+            'cell_phone' => trim($inputs['cellphone']),
+            'email' => trim($inputs['email']),
+            'nickname' => trim($inputs['nickname'])
+        );
+        $res = DB::table('user_manager')->where('manager_code', $managerCode)->update($save_data);
+        if($res === false){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"修改失败！请联系管理员！"]);
+        }
+        else{
+            json_response(['status'=>'succ','type'=>'notice', 'cellphone'=>trim($inputs['cellphone']),'email'=>trim($inputs['email']),'nickname'=>trim($inputs['nickname'])]);
+        }
+    }
+
+    /**
+     * 新版修改管理员密码
+     * @param Request $request
+     */
+    public function changeManagerPassword(Request $request){
+        $managerCode = $this->checkLoginStatus();
+        if(!$managerCode){
+            json_response(['status'=>'failed','type'=>'redirect', 'res'=>$this->page_data['url']['login']]);
+        }
+        $inputs = $request->input();
+        $oldPassword = preg_replace('/\s/', '', $inputs['old_password']);
+        $newPassword = preg_replace('/\s/', '', $inputs['password']);
+        $confirmPassword = preg_replace('/\s/', '', $inputs['c_password']);
+        if(trim($oldPassword)==='' || trim($newPassword)==='' || trim($confirmPassword)===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"必填项不能为空！"]);
+        }
+        if(trim($newPassword) != trim($confirmPassword)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"两次输入的新密码不一致！"]);
+        }
+        //取出用户资料并验证
+        $manager = DB::table('user_manager')->where('manager_code',$managerCode)->first();
+        if(!password_verify($oldPassword, $manager->password)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'原密码错误！']);
+        }
+        else{
+            $confirmPasswordE = password_hash($confirmPassword,PASSWORD_BCRYPT);
+            $res = DB::table('user_manager')->where('manager_code',$managerCode)->update(['password'=>$confirmPasswordE, 'update_date'=>date("Y-m-d H:i:s",time())]);
+            if($res===false){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
+            }
+            else{
+                $request->session()->forget($_COOKIE['s']);
+                setcookie('s','',time()-3600*24*30,'/');
+                json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
+            }
         }
     }
 

@@ -25,11 +25,11 @@ class Controller extends BaseController
     {
         $channel_list = array();
         //获取一级频道
-        $p_channels = DB::table('cms_channel')->where('pid', 0)->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
+        $p_channels = DB::table('cms_channel')->where('pid', 0)->where('standard', 'no')->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
         foreach($p_channels as $key=> $p_channel){
             $channel_list[$key]['key'] = keys_encrypt($p_channel->channel_id);
             $channel_list[$key]['channel_title'] = $p_channel->channel_title;
-            $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
+            $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes'])->where('standard', 'no')->where('is_recommend', 'no')->get();
             if(count($sub_channels)<1){
                 $channel_list [$key]['sub_channel'] = 'none';
             }

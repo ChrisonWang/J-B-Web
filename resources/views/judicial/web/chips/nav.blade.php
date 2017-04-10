@@ -15,7 +15,7 @@
         <ul class="hd_ful">
             <li class="hdf_li"><a href="{{URL::to('/')}}">首页</a></li>
             <li class="hdf_li"><a href="@if($zwgk_list != 'none' && is_array($zwgk_list)){{ URL::to('/list').'/'.$zwgk_list[0]['key'] }}@else{{URL::to('/')}}@endif">政务公开</a>
-                <div class="hd_lv3">
+                <div class="hd_lv3" style="font-size: 12px; color: #676767">
                     <span><a href="{{ URL::to('intro')}}">司法局介绍</a></span>
                     <span><a href="{{ URL::to('/picture/1')}}">图片中心</a></span>
                     <span><a href="{{ URL::to('/video/1')}}">宣传视频</a></span>
@@ -29,7 +29,7 @@
                 </div>
             </li>
             <li class="hdf_li"><a href="{{ URL::to('service') }}">网上办事</a>
-                <div class="hd_lv3">
+                <div class="hd_lv3" style="font-size: 12px; color: #676767">
                     <span><a href="{{ URL::to('service/lawyer/1') }}">律师服务</a></span>
                     <span><a href="{{ URL::to('service') }}">司法考试</a></span>
                     <span><a href="{{ URL::to('service/expertise/list/1') }}">司法鉴定</a></span>
@@ -44,7 +44,7 @@
                 </div>
             </li>
             <li class="hdf_li"><a href="{{ URL::to('consultions/list/').'/1' }}">政民互动</a>
-                <div class="hd_lv3">
+                <div class="hd_lv3" style="font-size: 12px; color: #676767">
                     <span><a href="{{ URL::to('consultions/list').'/1' }}">问题咨询</a></span>
                     <span><a href="{{ URL::to('suggestions/list').'/1' }}">征求意见</a></span>
                 </div>

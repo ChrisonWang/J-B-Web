@@ -357,6 +357,33 @@ function expertiseApply(){
     });
 }
 
+function loadExpertiseFile(t){
+    var type_id = t.find("option:selected").val();
+    var url = '/service/expertise/loadFile';
+    if(type_id == 'none'){
+        return false;
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async:false,
+        url: url,
+        method: "POST",
+        data: {type_id: type_id},
+        success: function(re){
+            if(re.status == 'failed'){
+                var h = '<a href="javascript: void(0) ;">未上传附件</a>';
+                $('#expertiseFile').html(h);
+            }
+            else if(re.status == 'succ'){
+                var h = '<a href="'+ re.file_url +'" target="_blank">'+ re.file_name+ '</a>';
+                $('#expertiseFile').html(h);
+            }
+        }
+    });
+}
+
 function switch_service(t){
     var id = 's_'+t.data('key');
     $(".panel-member-switch").removeClass('on');

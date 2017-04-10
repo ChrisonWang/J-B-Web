@@ -1,86 +1,42 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">修改资料</h3>
+        <h3 class="panel-title">修改密码</h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" id="editManagerInfoForm">
+        <form class="form-horizontal" id="managerPasswordForm">
             <div class="form-group">
                 <label for="loginName" class="col-md-2 control-label">
-                    <dt>账号：</dt>
+                    <dt>旧密码：</dt>
                 </label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="login_name" value="{{ $managerInfo['login_name'] }}" name="login_name" placeholder="请输入账号">
+                    <input type="text" class="form-control" id="old_password" name="old_password" placeholder="请输入原密码" onfocus="this.type='password'">
                 </div>
             </div>
             <div class="form-group">
-                <label for="user_office" class="col-md-2 control-label">
-                    <dt>科室：</dt>
+                <label for="loginName" class="col-md-2 control-label">
+                    <dt>新密码：</dt>
                 </label>
                 <div class="col-md-3">
-                    <select class="form-control" id="user_office" name="user_office">
-                        @foreach ($managerInfo['office_name'] as $office)
-                            <option value="{{$office['office_id']}}" @if($office['office_checked']=='yes') selected @endif>{{$office['office_name']}}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" class="form-control" id="password" name="password" placeholder="请输入新密码" onfocus="this.type='password'">
                 </div>
             </div>
             <div class="form-group">
-                <label for="cell_phone" class="col-md-2 control-label">
-                    <dt>手机号码：</dt>
+                <label for="loginName" class="col-md-2 control-label">
+                    <dt>确认新密码：</dt>
                 </label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="cell_phone" value="{{$managerInfo['cell_phone']}}" name="cell_phone" placeholder="请输入11位手机号码">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="email" class="col-md-2 control-label">
-                    <dt>邮箱：</dt>
-                </label>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" id="email" value="{{$managerInfo['email']}}" name="email" placeholder="请输入邮箱账号">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="nickname" class="col-md-2 control-label">
-                    <dt>显示名：</dt>
-                </label>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" id="nickname" value="{{$managerInfo['nickname']}}" name="nickname" placeholder="请输入显示名/昵称">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="password" class="col-md-2 control-label">
-                    <dt>密码：</dt>
-                </label>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" id="password" name="password" placeholder="请输入密码，留空则不修改" autocomplete="off" onfocus="this.type='password'"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="disabled" class="col-md-2 control-label">
-                    <dt>是否启用：</dt>
-                </label>
-                <div class="col-md-3">
-                    <h3><input type="checkbox" name="disabled" id="disabled" value="no" @if($managerInfo['disabled']=='no') checked @endif /></h3>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="disabled" class="col-md-2 control-label">
-                    <dt>创建时间：</dt>
-                </label>
-                <div class="col-md-3">
-                    {{$managerInfo['create_date']}}
+                    <input type="text" class="form-control" id="c_password" name="c_password" placeholder="请确认新密码" onfocus="this.type='password'">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <p class="text-left hidden" id="editManagerInfoNotice" style="color: red"></p>
+                    <p class="text-left hidden" id="managerPasswordNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-2">
-                    <button type="button" class="btn btn-info btn-block" onclick="doEdit()">确认</button>
+                    <button type="button" class="btn btn-info btn-block" onclick="managerPassword()">确认</button>
                 </div>
             </div>
         </form>

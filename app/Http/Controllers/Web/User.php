@@ -36,7 +36,7 @@ class User extends Controller
             'user'=>URL::to('user')
         );
         //拿出政务公开
-        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
+        $c_data = DB::table('cms_channel')->where('zwgk', 'yes')->where('pid',0)->orderBy('sort', 'desc')->get();
         $zwgk_list = 'none';
         if(count($c_data) > 0){
             $zwgk_list = array();
@@ -62,27 +62,6 @@ class User extends Controller
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['channel_list'] = $this->get_left_list();
-    }
-
-    public function get_left_list()
-    {
-        $channel_list = array();
-        //获取一级频道
-        $p_channels = DB::table('cms_channel')->where(['pid'=>0,'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
-        foreach($p_channels as $key=> $p_channel){
-            $channel_list [$key]['key'] = keys_encrypt($p_channel->channel_id);
-            $channel_list [$key]['channel_title'] = $p_channel->channel_title;
-            $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes'])->where('is_recommend', 'no')->get();
-            if(count($sub_channels)<1){
-                $channel_list [$key]['sub_channel'] = 'none';
-            }
-            else{
-                foreach($sub_channels as $sub_c){
-                    $channel_list [$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
-                }
-            }
-        }
-        return $channel_list;
     }
 
     /**

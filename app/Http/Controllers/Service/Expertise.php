@@ -270,6 +270,22 @@ class Expertise extends Controller
         return view('judicial.web.service.expertiseForm', $this->page_data);
     }
 
+    public function loadFile(Request $request){
+        $type_id = keys_decrypt($request->input('type_id'));
+        $file = DB::table('service_judicial_expertise_type')->where('id', $type_id)->first();
+        if(is_null($file)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>""]);
+        }
+        else{
+            $file_url = $file->file_url;
+            $file_name = $file->file_name;
+            if(empty($file_url) || empty($file_url)){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>""]);
+            }
+            json_response(['status'=>'succ','type'=>'notice', 'res'=>"", 'file_url'=>$file_url, 'file_name'=>$file_name]);
+        }
+    }
+
     private function _checkInput($inputs)
     {
         if(!isset($inputs['apply_name']) || trim($inputs['apply_name'])==='' || mb_strlen(trim($inputs['apply_name']), 'UTF-8') > 20){

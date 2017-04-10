@@ -81,6 +81,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('service/expertise/doApply', 'Service\Expertise@store');
 
+        Route::post('service/expertise/loadFile', 'Service\Expertise@loadFile');
+
         Route::post('user/service/list/', 'Web\User@getServiceListPage');
 
     });
@@ -172,6 +174,10 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('manage/dashboard',['as'=>'dashBoard', 'uses'=>'Manage\Dashboard@index']);
 
         Route::post('manage/dashboard/editManagerInfo','Manage\Dashboard@toEditManagerInfo');
+
+        Route::post('manage/changeManagerInfo','Manage\Dashboard@changeManagerInfo');
+
+        Route::post('manage/changeManagerPassword','Manage\Dashboard@changeManagerPassword');
 
         Route::post('manage/ajax/{action}','Manage\Login@ajaxRequest');
 
