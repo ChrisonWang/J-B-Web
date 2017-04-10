@@ -306,6 +306,9 @@ class Dashboard extends Controller
         if(trim($newPassword) != trim($confirmPassword)){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"两次输入的新密码不一致！"]);
         }
+        if(!preg_password(trim($newPassword))){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>"密码长度应为8-16位，由字母/数字/下划线组成！"]);
+        }
         //取出用户资料并验证
         $manager = DB::table('user_manager')->where('manager_code',$managerCode)->first();
         if(!password_verify($oldPassword, $manager->password)){
