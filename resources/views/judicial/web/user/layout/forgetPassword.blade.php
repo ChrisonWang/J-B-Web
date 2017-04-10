@@ -59,7 +59,7 @@
                         </div>
                         <div class="form-group" style="padding-top: 20px">
                             <div class="col-md-offset-1 col-md-10">
-                                <p class="login-link text-center"><a href="javascript:void(0);" onclick="javascript:$('#tap-login').click();">已有账号？直接登录 >></a></p>
+                                <p class="login-link text-center"><a href="{{ URL::to('user/login') }}">已有账号？直接登录 >></a></p>
                             </div>
                         </div>
                     </form>
