@@ -132,43 +132,34 @@ class Index extends Controller
             $this->page_data['wsbs'] = $channel->wsbs;
         }
         $offset = 16 * ($page-1);
-        $count = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'disabled'=>'no', 'thumb'=>''])->count();
-        if($count < 1){
+        $articles = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->orWhere(['channel_id'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->skip($offset)->take(16)->get();
+        if(count($articles) < 1){
             $article_list = 'none';
             $this->page_data['article_list'] = $article_list;
             return view('judicial.web.service.list', $this->page_data);
         }
         else{
-            $articles = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->orWhere(['channel_id'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->skip($offset)->take(16)->get();
-            if(count($articles) < 1){
-                $article_list = 'none';
-                $this->page_data['article_list'] = $article_list;
-                return view('judicial.web.service.list', $this->page_data);
-            }
-            else{
-                $article_list = array();
-                $count = 0;
-                foreach($articles as $article){
-                    if(strtotime($article->publish_date) > time()){
-                        continue;
-                    }
-                    else{
-                        $article_list[$article->article_code] = array(
-                            'key'=> $article->article_code,
-                            'article_title'=> $article->article_title,
-                            'clicks'=> $article->clicks,
-                            'publish_date'=> date('Y-m-d',strtotime($article->publish_date)),
-                        );
-                        $count++;
-                    }
+            $count = 0;
+            foreach($articles as $article){
+                if(strtotime($article->publish_date) > time()){
+                    continue;
                 }
-                $this->page_data['page'] = array(
-                    'channel_id'=> $channel_id,
-                    'count' => $count,
-                    'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
-                    'now_page' => $page,
-                );
+                else{
+                    $article_list[$article->article_code] = array(
+                        'key'=> $article->article_code,
+                        'article_title'=> $article->article_title,
+                        'clicks'=> $article->clicks,
+                        'publish_date'=> date('Y-m-d',strtotime($article->publish_date)),
+                    );
+                    $count++;
+                }
             }
+            $this->page_data['page'] = array(
+                'channel_id'=> $channel_id,
+                'count' => $count,
+                'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
+                'now_page' => $page,
+            );
             $this->page_data['article_list'] = $article_list;
             return view('judicial.web.service.list', $this->page_data);
         }

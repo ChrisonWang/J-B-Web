@@ -334,6 +334,7 @@ class Article extends Controller
             $article_tags = '';
         }
         //取出标签
+        $tag_list = array();
         $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
         if(count($tags) > 0){
             foreach($tags as $tag){
@@ -427,6 +428,7 @@ class Article extends Controller
             $article_tags = '';
         }
         //取出标签
+        $tag_list = array();
         $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
         if(count($tags) > 0){
             foreach($tags as $tag){
