@@ -31,7 +31,7 @@ class Users extends Controller
             $user_list[$key]['create_date'] = $managers->create_date;
         }
         //取出用户
-        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_member_info.create_date', 'desc')->get();
         $count = count($members);
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
@@ -50,11 +50,11 @@ class Users extends Controller
         $pages = array(
             'count' => $count,
             'count_page' => $count_page,
-            'now_page' => 1,
+            'now_page' => $page,
             'type' => 'users',
         );
         //取出用户类型
-        $user_type = DB::table('user_type')->get();
+        $user_type = DB::table('user_type')->where('is_admin','no')->orderBy('sort', 'desc')->get();
         foreach($user_type as $type){
             $type_list[$type->type_id] = $type->type_name;
         }
