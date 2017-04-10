@@ -613,12 +613,6 @@ class Certificate extends Controller
             }
         }
         //发送
-        /*if(isset($phone_list) && isset($content)){
-            $rs = Message::send($phone_list, $content);
-        }
-        else{
-            $rs = 'failed';
-        }*/
         $rs = Message::send($phone_list, $content);
         if($rs['status'] == "succ"){
             foreach($send_log as $id=> $log){

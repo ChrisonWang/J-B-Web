@@ -250,8 +250,11 @@ class MessageSend extends Controller
 
             $content = $content->content;
             $to = ltrim($to,',');
-            $presendTime = date('Y-m-d H:i:s', strtotime($inputs['send_date']));
-            Message::send($to, $content);
+            $delay = date('YmdHi', strtotime($inputs['send_date']));
+            $result = Message::sendDelay($to, $content,$delay);
+            if($result['status'] != 'succ'){
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'创建失败！短信接口推送错误！']);
+            }
         }
         //储存信息
         $now = date('Y-m-d H:i:s', time());
