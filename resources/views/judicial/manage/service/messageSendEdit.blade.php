@@ -162,9 +162,11 @@
     });
 
     $('#send_date').datetimepicker({
+        dayOfWeekStart : 1,
         value: '{{ $send_detail['send_date'] }}}',
         lang: 'zh',
         format: "Y-m-d H:i",
         todayButton: true,
+        step:5
     }).setLocale('zh');
 </script>
