@@ -254,9 +254,9 @@ function aidDispatchApply(){
     var len_apply_office = str_count_len($("input[name='apply_office']").val());
     var len_apply_aid_office = str_count_len($("input[name='apply_aid_office']").val());
     var len_case_name = str_count_len($("input[name='case_name']").val());
-    var len_case_description = str_count_len($("input[name='case_description']").val());
+    var len_case_description = str_count_len($("textarea[name='case_description']").val());
     var len_detention_location = str_count_len($("input[name='detention_location']").val());
-    var len_judge_description = str_count_len($("input[name='judge_description']").val());
+    var len_judge_description = str_count_len($("textarea[name='judge_description']").val());
     if(len_apply_office > 200){
         $(".alert_sh .als_down").text('“申请单位”应为长度200以内的字符串');
         $(".alert_sh").show();
