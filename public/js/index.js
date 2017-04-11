@@ -250,6 +250,43 @@ function aidDispatchApply(){
     if(c != true){
         return false;
     }
+    //计算长度
+    var len_apply_office = str_count_len($("input[name='apply_office']").val());
+    var len_apply_aid_office = str_count_len($("input[name='apply_aid_office']").val());
+    var len_case_name = str_count_len($("input[name='case_name']").val());
+    var len_case_description = str_count_len($("input[name='case_description']").val());
+    var len_detention_location = str_count_len($("input[name='detention_location']").val());
+    var len_judge_description = str_count_len($("input[name='judge_description']").val());
+    if(len_apply_office > 200){
+        $(".alert_sh .als_down").text('“申请单位”应为长度200以内的字符串');
+        $(".alert_sh").show();
+        return false;
+    }
+    if(len_apply_aid_office > 200){
+        $(".alert_sh .als_down").text('“申请援助单位”应为长度200以内的字符串');
+        $(".alert_sh").show();
+        return false;
+    }
+    if(len_case_name > 200){
+        $(".alert_sh .als_down").text('“案件名称”应为长度200以内的字符串');
+        $(".alert_sh").show();
+        return false;
+    }
+    if(len_case_description > 1000){
+        $(".alert_sh .als_down").text('“涉嫌犯罪内容”应为长度1000以内的字符串');
+        $(".alert_sh").show();
+        return false;
+    }
+    if(len_detention_location > 200){
+        $(".alert_sh .als_down").text('“收押居住地”应为长度200以内的字符串');
+        $(".alert_sh").show();
+        return false;
+    }
+    if(len_judge_description > 1000){
+        $(".alert_sh .als_down").text('“判刑处罚内容”应为长度1000以内的字符串');
+        $(".alert_sh").show();
+        return false;
+    }
     //弹窗提示
     $(".alert_sh .als_top").text('正在提交！');
     $(".alert_sh .als_down").text('附件上传中,请耐心等待……');
@@ -289,7 +326,37 @@ function aidApply(){
     if(c != true){
         return false;
     }
+    //计算长度
+    var len_apply_address = str_count_len($("input[name='apply_address']").val());
+    var len_defendant_company = str_count_len($("input[name='defendant_company']").val());
+    var len_defendant_addr = str_count_len($("input[name='defendant_addr']").val());
+    var len_case_location = str_count_len($("input[name='case_location']").val());
+    if(len_apply_address > 200){
+        $(".alert_sh .als_top").text('提交错误');
+        $(".alert_sh .als_down").text('“通讯地址”应为长度200以内的字符串！');
+        $(".alert_sh").show();
+        return false;
+    }
+    if(len_defendant_company > 200){
+        $(".alert_sh .als_top").text('提交错误');
+        $(".alert_sh .als_down").text('“被告人单位名称”应为长度200以内的字符串！');
+        $(".alert_sh").show();
+        return false;
+    }
+    if(len_defendant_addr > 200){
+        $(".alert_sh .als_top").text('提交错误');
+        $(".alert_sh .als_down").text('“被告人通讯地址”应为长度200以内的字符串！');
+        $(".alert_sh").show();
+        return false;
+    }
+    if(len_case_location > 200){
+        $(".alert_sh .als_top").text('提交错误');
+        $(".alert_sh .als_down").text('“发生地点”应为长度200以内的字符串！');
+        $(".alert_sh").show();
+        return false;
+    }
     //弹窗提示
+    $(".alert_sh .als_top").text('正在提交！');
     $(".alert_sh .als_down").text('附件上传中,请耐心等待……');
     $(".alert_sh").show();
 
@@ -451,4 +518,16 @@ function cms_page_jumps(t){
     var type = t.data('type');
     url = type + '/' + page;
     window.location.href = url;
+}
+
+function str_count_len(str){
+    var realLength = 0, len = str.length, charCode = -1;
+    for (var i = 0; i < len; i++) {
+        charCode = str.charCodeAt(i);
+        if (charCode >= 0 && charCode <= 128)
+            realLength += 1;
+        else
+            realLength += 1;
+    }
+    return realLength;
 }
