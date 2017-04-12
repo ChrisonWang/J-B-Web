@@ -124,7 +124,7 @@ function getBrowserInfo()
     var agent = navigator.userAgent.toLowerCase() ;
     var regStr_ie = /msie [\d.]+;/gi ;
     var regStr_ff = /firefox\/[\d.]+/gi
-    var regStr_opera = /opear\/[\d.]+/gi
+    var regStr_opera = /opr\/[\d.]+/gi
     var regStr_chrome = /chrome\/[\d.]+/gi ;
     var regStr_saf = /safari\/[\d.]+/gi ;
     var regStr_edge = /edge\/[\d.]+/gi ;
@@ -169,7 +169,7 @@ function getBrowserInfo()
         }
     }
     //Chrome
-    if(agent.indexOf("chrome") > 0)
+    if(agent.indexOf("chrome") > 0 && agent.indexOf("opr") < 0)
     {
         browser = agent.match(regStr_chrome);
         v = browser[0].split("/");
@@ -182,7 +182,7 @@ function getBrowserInfo()
         }
     }
     //Opera
-    if(agent.indexOf("opera") > 0)
+    if(agent.indexOf("opr") > 0)
     {
         browser = agent.match(regStr_opera);
         v = browser[0].split("/");
