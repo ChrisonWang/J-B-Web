@@ -52,3 +52,10 @@
         </ul>
     </div>
 </div>
+<div class="top_bar top_bar_index" id="top_bar" style="display: none">
+    <div class="top_bar_center">
+        <span class="top_icon"></span>
+        <span>温馨提示：您当前正在使用的&nbsp;<p id="myBrowser" style="display: inline"></p>&nbsp;浏览器版本过低，这会影响网站的正常使用，建议&nbsp;<a href="{{ URL::to('update') }}" target="_blank">升级浏览器</a></span>
+        <span class="close_icon" onclick="javascript: $('#top_bar').fadeOut(300);"></span>
+    </div>
+</div>

@@ -7,6 +7,7 @@
     <!-- Bootstrap Core CSS -->
     <link href="{{ asset('/css/bootstrap.min.css') }}" rel='stylesheet' type='text/css' />
     <!-- Custom CSS -->
+    <link href="{{ asset('/css/error.css') }}" rel='stylesheet' type='text/css' />
     <link href="{{ asset('/css/web-style.css') }}" rel='stylesheet' type='text/css' />
     <link href="{{ asset('/css/web.css') }}" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="{{ asset('css/swiper.min.css') }}">

@@ -10,6 +10,9 @@ Route::group(['middleware' => ['web']], function () {
 | and give it the controller to call when that URI is requested.
 |
 */
+    Route::get('update', function(){
+        return view('judicial.web.layout.browserPage');
+    });
 //前台相关路由
     Route::get('/', 'Web\Index@index');
 
