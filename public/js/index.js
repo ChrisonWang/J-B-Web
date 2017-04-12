@@ -127,6 +127,7 @@ function getBrowserInfo()
     var regStr_opera = /opear\/[\d.]+/gi
     var regStr_chrome = /chrome\/[\d.]+/gi ;
     var regStr_saf = /safari\/[\d.]+/gi ;
+    var regStr_edge = /edge\/[\d.]+/gi ;
 
     var browser = '';
     var v = '';
@@ -142,6 +143,17 @@ function getBrowserInfo()
     if(agent.indexOf("trident") > 0&&agent.indexOf("rv") > 0){
         return false;
         //return "IE " + agent.match(/rv:(\d+\.\d+)/) [1];
+    }
+    //Edge
+    if(agent.indexOf("edge") > 0){
+        browser = agent.match(regStr_edge) ;
+        version = browser[0].split("/");
+        if(version[0]+'.'+version[1] < 13.1){
+            return 'Microsoft Edge(' + version[1] + ')';
+        }
+        else{
+            return false;
+        }
     }
     //firefox
     if(agent.indexOf("firefox") > 0)
