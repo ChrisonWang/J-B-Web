@@ -4,8 +4,10 @@
 $(document).ready(function(){
     var browserInfo = getBrowserInfo();
     if(browserInfo != false){
-        $('#top_bar').fadeIn(300);
-        $('#myBrowser').text(browserInfo);
+        var top_bar = document.getElementById('top_bar');
+        var myBrowser = document.getElementById('myBrowser');
+        top_bar.style.display = 'block';
+        myBrowser.innerHTML = browserInfo;
     }
 
     //首页选中
