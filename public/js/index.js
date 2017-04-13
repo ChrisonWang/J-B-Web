@@ -1,7 +1,7 @@
 /**
  * Created by Auser on 2017/2/10.
  */
-$(function(){
+$(document).ready(function(){
     var browserInfo = getBrowserInfo();
     if(browserInfo != false){
         $('#top_bar').fadeIn(300);
@@ -71,140 +71,105 @@ $(function(){
 
 });
 
-function myBrowser(){
-    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-    var isOpera = userAgent.indexOf("Opera") > -1;
-    var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
-    if (isIE) {
-        var IE5 = IE55 = IE6 = IE7 = IE8 = false;
-        var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
-        reIE.test(userAgent);
-        var fIEVersion = parseFloat(RegExp["$1"]);
-        IE55 = fIEVersion == 5.5;
-        IE6 = fIEVersion == 6.0;
-        IE7 = fIEVersion == 7.0;
-        IE8 = fIEVersion == 8.0;
-        IE9 = fIEVersion == 9.0;
-        IE10 = fIEVersion == 10.0;
-        if (IE55) {
-            return "Internet Explorer5.5";
-        }
-        if (IE6) {
-            return "Internet Explorer6";
-        }
-        if (IE7) {
-            return "Internet Explorer7";
-        }
-        if (IE8) {
-            return "Internet Explorer8";
-        }
-        if (IE9) {
-            return "Internet Explorer9";
-        }
-        if (IE10) {
-            return "Internet Explorer10";
-        }
-    }//isIE end
-    if (isOpera) {
-        return "Opera";
-    } //判断是否Opera浏览器
-    if (userAgent.indexOf("Firefox") > -1) {
-        return "Mozilla Firefox";
-    } //判断是否Firefox浏览器
-    if (userAgent.indexOf("Chrome") > -1){
-        return "Google Chrome";
-    } //判断是否Chrome浏览器
-    if (userAgent.indexOf("Safari") > -1) {
-        return "Safari";
-    } //判断是否Safari浏览器
-}
-
 function getBrowserInfo()
 {
     var agent = navigator.userAgent.toLowerCase() ;
     var regStr_ie = /msie [\d.]+;/gi ;
-    var regStr_ff = /firefox\/[\d.]+/gi
-    var regStr_opera = /opr\/[\d.]+/gi
+    var regStr_ff = /firefox\/[\d.]+/gi ;
+    var regStr_opr = /opr\/[\d.]+/gi ;
+    var regStr_opera = /version\/[\d.]+/gi ;
     var regStr_chrome = /chrome\/[\d.]+/gi ;
-    var regStr_saf = /safari\/[\d.]+/gi ;
+    var regStr_saf = /version\/[\d.]+/gi ;
     var regStr_edge = /edge\/[\d.]+/gi ;
 
     var browser = '';
     var v = '';
     var version = '';
     //IE11以下
-    if(agent.indexOf("msie") > 0)
+    if(agent.indexOf("msie") > -1)
     {
         browser = agent.match(regStr_ie) ;
         version = browser[0].split("msie");
-        return 'Internet Explorer' + version[1];
+        return 'Internet Explorer' + version[1]
     }
     //IE11版本中不包括MSIE字段
     if(agent.indexOf("trident") > 0&&agent.indexOf("rv") > 0){
-        return false;
-        //return "IE " + agent.match(/rv:(\d+\.\d+)/) [1];
+        return false
     }
     //Edge
-    if(agent.indexOf("edge") > 0){
+    if(agent.indexOf("edge") > -1){
         browser = agent.match(regStr_edge) ;
         version = browser[0].split("/");
         if(version[0]+'.'+version[1] < 13.1){
-            return 'Microsoft Edge(' + version[1] + ')';
+            return 'Microsoft Edge(' + version[1] + ')'
         }
         else{
-            return false;
+            return false
         }
     }
     //firefox
-    if(agent.indexOf("firefox") > 0)
+    if(agent.indexOf("firefox") > -1)
     {
         browser = agent.match(regStr_ff) ;
         v = browser[0].split("/");
         version = v[1].split(".");
         if(version[0]+'.'+version[1] < 47.0){
-            return "Mozilla Firefox("+ v[1] +")";
+            return "Mozilla Firefox("+ v[1] +")"
         }
         else {
-            return false;
+            return false
         }
     }
     //Chrome
-    if(agent.indexOf("chrome") > 0 && agent.indexOf("opr") < 0)
+    if(agent.indexOf("chrome") > -1 && agent.indexOf("opr") < 0)
     {
         browser = agent.match(regStr_chrome);
         v = browser[0].split("/");
         version = v[1].split(".");
         if(version[0]+'.'+version[1] < 51.0){
-            return "Google Chrome("+ v[1] +")";
+            return "Google Chrome("+ v[1] +")"
         }
         else {
-            return false;
+            return false
         }
     }
-    //Opera
-    if(agent.indexOf("opr") > 0)
+    //OperaNew
+    if(agent.indexOf("opr") > -1)
+    {
+        browser = agent.match(regStr_opr);
+        v = browser[0].split("/");
+        version = v[1].split(".");
+        if(version[0]+'.'+version[1] < 11.64){
+            return "Opera("+ v[1] +")"
+        }
+        else {
+            return false
+        }
+    }
+    //OperaOld
+    if(agent.indexOf("opera") > -1)
     {
         browser = agent.match(regStr_opera);
         v = browser[0].split("/");
         version = v[1].split(".");
         if(version[0]+'.'+version[1] < 11.64){
-            return "Opera("+ v[1] +")";
+            return "Opera("+ v[1] +")"
         }
         else {
-            return false;
+            return false
         }
     }
     //Safari
-    if(agent.indexOf("safari") > 0 && agent.indexOf("chrome") < 0)
+    if(agent.indexOf("safari") > -1 && agent.indexOf("chrome") < 0)
     {
         browser = agent.match(regStr_saf) ;
         v = browser[0].split("/");
         version = v[1].split(".");
         if(version[0]+'.'+version[1] < 9.1){
-            return "Safari("+ v[1] +")";
+            return "Safari("+ v[1] +")"
         }
         else {
-            return false;
+            return false
         }
     }
 }
