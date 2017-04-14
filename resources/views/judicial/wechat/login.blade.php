@@ -6,14 +6,14 @@
     <div class="col-sm-offset-1 col-sm-10 col-xs-12" style="margin-top: 15%">
         <form class="form-horizontal " id="login_form">
             <div class="form-group">
-                <label for="login_name" class="col-sm-3 col-xs-3 control-label text-right">登录名：</label>
-                <div class="col-sm-8 col-xs-9">
+                <label for="login_name" class="col-sm-4 col-xs-4 control-label text-right">登录名：</label>
+                <div class="col-sm-8 col-xs-8 text-left">
                     <input type="text" class="form-control" name="login_name" id="login_name" placeholder="请输入账号或手机号码" required/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="password" class="col-sm-3 col-xs-3 control-label text-right">密码：</label>
-                <div class="col-sm-8 col-xs-9">
+                <label for="password" class="col-sm-4 col-xs-4 control-label text-right">密码：</label>
+                <div class="col-sm-8 col-xs-8 text-left">
                     <input type="password" class="form-control" name="password" id="password" placeholder="请输入您的密码" required/>
                 </div>
             </div>

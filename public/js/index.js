@@ -118,6 +118,14 @@ function getBrowserInfo()
         if(version[0]+'.'+version[1] < 47.0){
             return "Mozilla Firefox("+ v[1] +")"
         }
+        else if(version[0]+'.'+version[1] == 47.0){
+            if(version[2] < 1){
+                return "Mozilla Firefox("+ v[1] +")"
+            }
+            else{
+                return false
+            }
+        }
         else {
             return false
         }
