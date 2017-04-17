@@ -1,6 +1,15 @@
 /**
  * Created by Auser on 2017/2/10.
  */
+window.onload = function(){
+    var browserInfo = getBrowserInfo();
+    if(browserInfo != false){
+        var top_bar = document.getElementById('top_bar');
+        var myBrowser = document.getElementById('myBrowser');
+        top_bar.style.display = 'block';
+        myBrowser.innerHTML = browserInfo;
+    }
+};
 $(document).ready(function(){
     var browserInfo = getBrowserInfo();
     if(browserInfo != false){
@@ -72,7 +81,6 @@ $(document).ready(function(){
     });
 
 });
-
 function getBrowserInfo()
 {
     var agent = navigator.userAgent.toLowerCase() ;
