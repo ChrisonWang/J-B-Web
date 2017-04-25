@@ -22,7 +22,7 @@
                     @foreach($video_list as $video)
                         <li>
                             <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
-                                <img src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="245" height="167">
+                                <img class="image_list" src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="245" height="167">
                             </a>
                             <a class="vd_btn" href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
                                 <img src="{{ asset('/images/btn_play_50x50.png') }}" width="50" height="50">

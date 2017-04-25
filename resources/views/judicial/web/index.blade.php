@@ -8,7 +8,7 @@
 <!--搜索栏-->
 <div class="index_search">
     <div class="id_sch_l">
-        今天是： {{ date('Y-m-d l',time()) }}
+        今天是： {{ cn_date_format() }}
     </div>
     <div class="id_sch_r">
         <form action="{{ URL::route('search') }}" method="post">
@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="idb_right">
-        <div class="idbr_top">
+        <div class="idbr_top" id="_top_tab_a">
             @if($recommend_list != 'none' && is_array($recommend_list))
                 <ul>
                     @foreach($recommend_list as $k=> $recommend)

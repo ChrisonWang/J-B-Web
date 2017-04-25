@@ -22,7 +22,7 @@
                     @foreach($article_list as $article)
                         <li>
                             <a href="{{ URL::to('/article').'/'.$article['key'] }}">
-                                <img src="{{ $article['thumb'] }}"  controls="controls" width="250" height="167">
+                                <img class="image_list" src="{{ $article['thumb'] }}"  controls="controls" width="250" height="167">
                             </a>
                             <span class="zwv_txt">
                                 <a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],18) }}</a>

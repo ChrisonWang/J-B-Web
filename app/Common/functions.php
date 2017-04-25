@@ -20,6 +20,12 @@ function gen_unique_code($prefix='MEM_'){
     return $password;
 }
 
+function cn_date_format(){
+    $date = date('Y-m-d',time());
+    $arr = array('天','一','二','三','四','五','六');
+    return $date.' 星期'.$arr[date('w',strtotime($date))];
+}
+
 function preg_phone($str){
     $pattern = '/^1[34578]\d{9}$/';
     return(preg_match($pattern, $str));
