@@ -19,6 +19,36 @@ $(document).ready(function(){
         myBrowser.innerHTML = browserInfo;
     }
 
+    //首页tab
+    $('#_top_tab_a li').hover(
+        function(){
+            $(this).addClass('idbr_topsd_hover');
+        },
+        function(){
+            $(this).removeClass('idbr_topsd_hover');
+        }
+    );
+    $('#_top_tab_b li').hover(
+        function(){
+            $(this).addClass('idbr_topsd_hover');
+        },
+        function(){
+            $(this).removeClass('idbr_topsd_hover');
+        }
+    );
+
+    //左侧树状菜单
+    $('.law_body span').hover(
+        function(){
+            $(this).find("a").css({color: "#ffffff"});
+            $(this).addClass('law_hover');
+        },
+        function(){
+            $(this).find("a").css({color: "#222222"});
+            $(this).removeClass('law_hover');
+        }
+    );
+
     //首页选中
     $(".idbr_top ul li").click(function(){
         $(this).siblings("li").removeClass("idbr_topsd");
@@ -30,9 +60,12 @@ $(document).ready(function(){
     });
 
     //政务公开
-    $(".zw_left li i").click(function(){
+    $(".zw_left div").click(function(){
         //$(this).parent().parent().siblings("li").removeClass("lb_select");
-        $(this).parent().parent().toggleClass("lb_select");
+        $(this).parent().toggleClass("lb_select");
+    });
+    $(".zw_left div").mouseover(function(){
+        $(this).parent().addClass("lb_select");
     });
     $(".law_body span").click(function(){
         $(this).siblings("span").removeClass("lb_act");

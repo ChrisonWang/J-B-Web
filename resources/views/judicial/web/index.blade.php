@@ -109,7 +109,7 @@
 <!--新闻-->
 <div class="w980 news_2">
     <div class="new2_left">
-        <div class="idbr_top">
+        <div class="idbr_top" id="_top_tab_b">
             @if(is_array($m_zwgk_list) && count($m_zwgk_list)>0)
             <ul>
                 @foreach($m_zwgk_list as $k=> $zwgk_l)
