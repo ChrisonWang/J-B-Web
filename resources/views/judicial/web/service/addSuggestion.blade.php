@@ -8,8 +8,10 @@
         <!--内容-->
 <div class="w1024 zw_mb">
     <div class="su_content">
-        <div class="top_title">
-            征求意见
+        <div class="container-fluid">
+            <div class="top_title" style="padding: 0px">
+                征求意见
+            </div>
         </div>
         <div class="container-fluid" style="margin-top: 20px">
             <form class="form-horizontal" id="suggestionForm">

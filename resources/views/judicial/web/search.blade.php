@@ -19,8 +19,8 @@
         <ul>
             @foreach($search_list as $search)
             <li>
-                <div class="zwrm_a"><a href="{{ URL::to('article').'/'.$search['key'] }}">{{ $search['article_title'] }}</a></div>
-                <div class="zwrm_b">{{ $search['publish_date'] }}</div>
+                <div class="zwrm_a"><a href="{{ URL::to('article').'/'.$search['key'] }}">{{ spilt_title($search['article_title'], 40) }}</a></div>
+                <div class="zwrm_b">{{ date('Y-m-d', $search['publish_date']) }}</div>
             </li>
             @endforeach
         </ul>

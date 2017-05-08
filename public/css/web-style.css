@@ -169,8 +169,8 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .zwr_mid{margin-top: 10px;}
 .zwr_mid li div{display: inline-block; color: #222; font-size: 14px;}
 .zwr_mid li{line-height: 40px; margin-left: 10px;}
-.zwrm_a{width: 600px;}
-.zwrm_b{width: 80px;}
+.zwrm_a{width: 520px;}
+.zwrm_b{width: 160px;}
 .zwrm_c{width: 80px; margin-left: 20px;}
 .zwr_mid li:hover div{color: #E23939;}
 .zwr_ft{text-align: center; margin-top: 40px;}
@@ -333,7 +333,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .mor_d{min-height: 80px; text-indent: 0px!important; padding-left: 20px; line-height: 20px!important; width: 880px!important; padding-top: 10px;}
 
 /*征求意见*/
-.top_title{margin: 0 auto; border-bottom: 1px solid #E23939; width: 100px; height: 55px; line-height: 55px; text-align: center; color: #E23939; font-family: MicrosoftYaHei; font-size: 18px;}
+.top_title{margin: 0 auto; border-bottom: 1px solid #E23939; width: 150px; height: 55px; line-height: 55px; text-align: center; color: #E23939; font-family: MicrosoftYaHei; font-size: 18px;}
 
 .su_content{margin: 0 auto; width: 100%; height: auto; background-color: #F9F9F9}
 
