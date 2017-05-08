@@ -16,25 +16,25 @@
         <div class="container-fluid" style="margin-top: 20px">
             <form class="form-horizontal" id="suggestionForm">
                 <div class="form-group">
-                    <label for="name" class="col-md-2 control-label text-right">您的姓名：</label>
+                    <label for="name" class="col-md-2 control-label text-right"><b style="color: red">*</b>&nbsp;&nbsp;您的姓名：</label>
                     <div class="col-md-3">
                         <input type="text" class="form-control" id="name" name="name" placeholder="请输入姓名" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="email" class="col-md-2 control-label text-right">联系邮箱：</label>
+                    <label for="email" class="col-md-2 control-label text-right"><b style="color: red">*</b>&nbsp;&nbsp;联系邮箱：</label>
                     <div class="col-md-3">
                         <input type="text" class="form-control" id="email" name="email" placeholder="请输入您的联系邮箱" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="cell_phone" class="col-md-2 control-label text-right">联系电话：</label>
+                    <label for="cell_phone" class="col-md-2 control-label text-right"><b style="color: red">*</b>&nbsp;&nbsp;联系电话：</label>
                     <div class="col-md-3">
                         <input type="text" class="form-control" id="cell_phone" name="cell_phone" placeholder="请输入您的联系电话" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="type" class="col-md-2 control-label text-right">留言分类：</label>
+                    <label for="type" class="col-md-2 control-label text-right"><b style="color: red">*</b>&nbsp;&nbsp;留言分类：</label>
                     <div class="col-md-3">
                         <input name="type" type="radio" value="opinion" checked> 意见&nbsp;&nbsp;
                         <input name="type" type="radio" value="suggest"> 建议&nbsp;&nbsp;
@@ -43,13 +43,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="title" class="col-md-2 control-label text-right">留言主题：</label>
+                    <label for="title" class="col-md-2 control-label text-right"><b style="color: red">*</b>&nbsp;&nbsp;留言主题：</label>
                     <div class="col-md-9">
                         <input type="text" class="form-control" id="title" name="title" placeholder="请输入留言主题" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="content" class="col-md-2 control-label text-right">留言内容：</label>
+                    <label for="content" class="col-md-2 control-label text-right"><b style="color: red">*</b>&nbsp;&nbsp;留言内容：</label>
                     <div class="col-md-9">
                         <textarea class="form-control" id="content" name="content" placeholder="请输入留言内容" style="height: 100px"></textarea>
                     </div>
