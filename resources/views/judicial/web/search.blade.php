@@ -14,18 +14,18 @@
             <button type="submit" class="serach_btn">搜索</button>
         </form>
     </div>
-    <div class="zwr_mid">
+    <div class="serach_mid">
         @if($search_list != 'none')
         <ul>
             @foreach($search_list as $search)
             <li>
-                <div class="zwrm_a"><a href="{{ URL::to('article').'/'.$search['key'] }}">{{ spilt_title($search['article_title'], 40) }}</a></div>
-                <div class="zwrm_b">{{ date('Y-m-d', $search['publish_date']) }}</div>
+                <div class="serach_a"><a href="{{ URL::to('article').'/'.$search['key'] }}">{{ spilt_title($search['article_title'], 40) }}</a></div>
+                <div class="serach_b">{{ date('Y-m-d',strtotime($search['publish_date'])) }}</div>
             </li>
             @endforeach
         </ul>
         @else
-            <p> 未搜索到结果！ </p>
+            <p style="text-align: center"> 未搜索到结果！ </p>
         @endif
     </div>
     @if($page['page_count'] == 1 )

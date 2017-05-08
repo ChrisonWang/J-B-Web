@@ -169,8 +169,8 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .zwr_mid{margin-top: 10px;}
 .zwr_mid li div{display: inline-block; color: #222; font-size: 14px;}
 .zwr_mid li{line-height: 40px; margin-left: 10px;}
-.zwrm_a{width: 520px;}
-.zwrm_b{width: 160px;}
+.zwrm_a{width: 600px;}
+.zwrm_b{width: 80px;}
 .zwrm_c{width: 80px; margin-left: 20px;}
 .zwr_mid li:hover div{color: #E23939;}
 .zwr_ft{text-align: center; margin-top: 40px;}
@@ -213,10 +213,16 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .ldb_right span{display: block;}
 
 /*搜索*/
-.serach{margin: 0 auto; width: 700px; float: none; margin-bottom: 60px;}
+.serach{margin: 0 auto; width: 900px; float: none; margin-bottom: 60px;}
 .serach_body{text-align: center; margin-top: 20px;}
 .serach_body input{width: 450px; font-size: 14px; text-indent: 20px; padding: 10px 0; vertical-align: middle;}
 .serach_btn{width: 100px; height: 40px; font-size: 14px; background-color: #DF3737; display: inline-block; vertical-align: middle; color: #fff; line-height: 40px; margin-left: 10px;}
+.serach_mid{margin-top: 10px;}
+.serach_mid li div{display: inline-block; color: #222; font-size: 14px;}
+.serach_mid li{line-height: 40px; margin-left: 10px;}
+.serach_mid li:hover div{color: #E23939;}
+.serach_a{width: 750px}
+.serach_b{width: 100px}
 
 /*网上办事*/
 .ws_search{width: 810px!important;margin: 0 auto;}
