@@ -71,8 +71,8 @@
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="javascript:void(0);" data-node="service-areaMng" >区域管理</a>
-                                <a href="javascript:void(0);" data-node="service-lawyerMng">律师管理</a>
                                 <a href="javascript:void(0);" data-node="service-lawyerOfficeMng">事务所管理</a>
+                                <a href="javascript:void(0);" data-node="service-lawyerMng">律师管理</a>
                             </li>
                         </ul><!-- 子菜单End -->
                     </li><!-- 律师服务管理End -->

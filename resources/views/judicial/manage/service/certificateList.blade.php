@@ -105,32 +105,34 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
-                        <div class="form-group">
-                            <label for="name">姓名：</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="请输入持证人姓名">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="name">姓名：</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="请输入持证人姓名">
+                            </div>
+                            <div class="form-group">
+                                <label for="citizen_code">证件号：</label>
+                                <input type="text" class="form-control" id="citizen_code" name="citizen_code" placeholder="请输入证件号">
+                            </div>
+                            <div class="form-group">
+                                <label for="certi_code">证书编号：</label>
+                                <input type="text" class="form-control" id="certi_code" name="certi_code" placeholder="请输入证书编号">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">联系方式：</label>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入联系方式">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_status">最近一条短信状态：</label>
+                                <select class="form-control" name="last_status" id="last_status">
+                                    <option value="none">不限</option>
+                                    <option value="waiting">未发送</option>
+                                    <option value="success">发送成功</option>
+                                    <option value="failed">发送失败</option>
+                                </select>
+                            </div>
+                            <button id="search" type="button" class="btn btn-info" onclick="search_certificate($(this), $('#this-container'))">搜索</button>
                         </div>
-                        <div class="form-group">
-                            <label for="citizen_code">证件号：</label>
-                            <input type="text" class="form-control" id="citizen_code" name="citizen_code" placeholder="请输入证件号">
-                        </div>
-                        <div class="form-group">
-                            <label for="certi_code">证书编号：</label>
-                            <input type="text" class="form-control" id="certi_code" name="certi_code" placeholder="请输入证书编号">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">联系方式：</label>
-                            <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入证书编号">
-                        </div>
-                        <div class="form-group">
-                            <label for="last_status">最近一条短信状态：</label>
-                            <select class="form-control" name="last_status" id="last_status">
-                                <option value="none">不限</option>
-                                <option value="waiting">未发送</option>
-                                <option value="success">发送成功</option>
-                                <option value="failed">发送失败</option>
-                            </select>
-                        </div>
-                        <button id="search" type="button" class="btn btn-info" onclick="search_certificate($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>

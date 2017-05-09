@@ -315,15 +315,20 @@ class Dashboard extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'原密码错误！']);
         }
         else{
-            $confirmPasswordE = password_hash($confirmPassword,PASSWORD_BCRYPT);
-            $res = DB::table('user_manager')->where('manager_code',$managerCode)->update(['password'=>$confirmPasswordE, 'update_date'=>date("Y-m-d H:i:s",time())]);
-            if($res===false){
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
+            if(password_verify($confirmPassword, $manager->password)){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'新密码与原密码一致！']);
             }
             else{
-                $request->session()->forget($_COOKIE['s']);
-                setcookie('s','',time()-3600*24*30,'/');
-                json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
+                $confirmPasswordE = password_hash($confirmPassword,PASSWORD_BCRYPT);
+                $res = DB::table('user_manager')->where('manager_code',$managerCode)->update(['password'=>$confirmPasswordE, 'update_date'=>date("Y-m-d H:i:s",time())]);
+                if($res===false){
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败！']);
+                }
+                else{
+                    $request->session()->forget($_COOKIE['s']);
+                    setcookie('s','',time()-3600*24*30,'/');
+                    json_response(['status'=>'succ','type'=>'redirect', 'res'=>URL::to('manage')]);
+                }
             }
         }
     }
