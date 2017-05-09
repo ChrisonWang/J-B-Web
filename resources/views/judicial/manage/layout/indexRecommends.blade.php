@@ -7,22 +7,13 @@
     <div class="panel-body">
         <hr/>
         <div class="container-fluid">
-            <table class="table table-bordered table-hover table-condensed">
-                <thead>
-                <tr>
-                    <th class="text-center">标题</th>
-                </tr>
-                </thead>
-                <tbody class="text-center">
                 @if(is_array($r_list) && count($r_list)>0)
                     @foreach($r_list as $r)
-                        <tr>
-                            <td><a href="{{ $r['r_link'] }}" target="_blank">{{ $r['r_title'] }}</a></td>
-                        </tr>
+                        <div class="col-md-3 text-center">
+                            <h4><a href="{{ $r['r_link'] }}" target="_blank" style="color: #000000; line-height: 36px">{{ $r['r_title'] }}</a></h4>
+                        </div>
                     @endforeach
                 @endif
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
