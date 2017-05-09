@@ -153,6 +153,10 @@
                 <label for="map_code" class="col-md-2 control-label">地图代码：</label>
                 <div class="col-md-3">
                     <textarea id="map_code" name="map_code" class="form-control" placeholder="请输入事务地图代码">{{ $office_detail['map_code'] }}</textarea>
+                    <br/>
+                    <h5 class="text-left">
+                        地图代码获取地址：<a href="http://api.map.baidu.com/mapCard/setInformation.html" target="_blank">点击获取代码</a>
+                    </h5>
                 </div>
             </div>
             <div class="form-group">
