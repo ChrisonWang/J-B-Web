@@ -257,7 +257,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .ws_cxt ul{overflow: hidden; padding-top: 20px;}
 .ws_cxt ul li{width: 250px; float: left; margin-left: 10px; margin-bottom: 20px;}
 .wsc_txt{display: inline-block; width: 60px; font-size: 13px; vertical-align: middle;}
-.cx_inp{display: inline-block; width: 170px; height: 30px; position: relative;}
+.cx_inp{display: inline-block; width: 120px; height: 30px; position: relative;}
 .cx_inp input{width: 100%; padding: 7px 0; border-radius: 2px; text-indent: 10px; border: 1px solid #ECECEC; color: #222222; font-size: 13px;}
 .cx_inp select{width: 150px; padding: 7px 0; border-radius: 2px; text-indent: 10px; border: 1px solid #ECECEC; color: #222222; font-size: 13px;}
 .cx_inp .cx_t{position: absolute; right: 5px; top: 2px; color: #929292;}
@@ -293,7 +293,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .text_a{position: relative; background-color: #F9F9F9; height: 210px;}
 .text_a li{display: inline-block; margin-left: 10px; margin-bottom: 20px;}
 .text_a ul{overflow: hidden; padding-top: 50px;}
-.text_a .wsc_txt{width: 80px; text-align: right; margin-right: 5px;}
+.text_a .wsc_txt{width: 60px; text-align: right; margin-right: 5px;}
 .text_a .cx_inp{width: auto!important;}
 .post_btn{height: 530px;}
 .ws_ckd{width: 17px!important; height: 18px; background: url("../images/checkboxIcons.png") no-repeat 0 -52px;; background-size: 100%; display: inline-block; zoom: 1; -webkit-appearance: none; border: none!important; vertical-align: middle;}
@@ -303,7 +303,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .mtb_text{margin-left: 80px;}
 .mtb_m{width: 100px; height: 30px; line-height: 30px; background-color: #FFFFFF; border: 1px solid #ECECEC; display: inline-block; text-align: center; margin: 0 10px;}
 .mt_last{margin-top: 20px;}
-.mtl_txt{display: inline-block; width: 110px; text-align: right; vertical-align: top;}
+.mtl_txt{display: inline-block; width: 110px; text-align: right; vertical-align: top; color: #E23939;}
 .mt_ul{width: 500px; display: inline-block;}
 .mt_ul span{display: inline-block; color: #E23939; margin-left: 10px;}
 .last_btn{width: 310px; height: 40px; background-color: #E23939; font-size: 14px; color: #FFFFFF; text-align: center; line-height: 40px; margin: 0 auto; margin-top: 30px; border-radius: 2px;}

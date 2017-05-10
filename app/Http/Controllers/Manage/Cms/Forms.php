@@ -30,7 +30,7 @@ class Forms extends Controller
         }
         //取出频道
         $channels_data = array();
-        $channels = DB::table('cms_channel')->get();
+        $channels = DB::table('cms_channel')->where('pid','0')->get();
         foreach($channels as $channel){
             $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
         }
@@ -182,7 +182,7 @@ class Forms extends Controller
         $id = keys_decrypt($inputs['key']);
         //取出频道
         $channels_data = array();
-        $channels = DB::table('cms_channel')->get();
+        $channels = DB::table('cms_channel')->where('pid','0')->get();
         foreach($channels as $channel){
             $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
         }
@@ -224,7 +224,7 @@ class Forms extends Controller
         $id = keys_decrypt($inputs['key']);
         //取出频道
         $channels_data = array();
-        $channels = DB::table('cms_channel')->get();
+        $channels = DB::table('cms_channel')->where('pid','0')->get();
         foreach($channels as $channel){
             $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
         }

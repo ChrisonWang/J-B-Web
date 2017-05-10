@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label for="record_code" class="col-md-2 control-label">编号：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['record_code'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['record_code'] }}</label>
                 </div>
             </div>
             <div class="form-group">
@@ -19,37 +19,37 @@
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">姓名：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['apply_name'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['apply_name'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">政治面貌：</label>
                 <div class="col-md-3">
-                    <p>{{ $political_list[$apply_detail['political']] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $political_list[$apply_detail['political']] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">性别：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['sex']=='female' ? '女' : '男' }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['sex']=='female' ? '女' : '男' }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">联系电话：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['apply_phone'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['apply_phone'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">身份证：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['apply_identity_no'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['apply_identity_no'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">通讯地址：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['apply_address'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['apply_address'] }}</label>
                 </div>
             </div>
 
@@ -60,25 +60,25 @@
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">姓名：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['defendant_name'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['defendant_name'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">联系电话：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['defendant_phone'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['defendant_phone'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">单位名称：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['defendant_company'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['defendant_company'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">联系地址：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['defendant_addr'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['defendant_addr'] }}</label>
                 </div>
             </div>
 
@@ -89,49 +89,49 @@
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">案发时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['happened_date'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['happened_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">所属区域：</label>
                 <div class="col-md-3">
-                    <p>{{ isset($area_list[$apply_detail['case_area_id']]) ? $area_list[$apply_detail['case_area_id']] : '-' }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ isset($area_list[$apply_detail['case_area_id']]) ? $area_list[$apply_detail['case_area_id']] : '-' }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">案件类型：</label>
                 <div class="col-md-3">
-                    <p>{{ $type_list[$apply_detail['type']] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $type_list[$apply_detail['type']] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">是否为讨薪：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['salary_dispute']=='yes' ? '是' : '否' }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['salary_dispute']=='yes' ? '是' : '否' }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">发生地点：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['case_location'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['case_location'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">举报问题：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['dispute_description'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['dispute_description'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">附件：</label>
                 <div class="col-md-3">
-                    <p>
+                    <label for="name" class="control-label" style="text-align: left">
                         @if((empty($apply_detail['file_name'])||empty($apply_detail['file'])))
                             未上传附件！
                             @else
                             <a href="{{$apply_detail['file']}}" target="_blank">{{$apply_detail['file_name']}}</a>
                         @endif
-                    </p>
+                    </label>
                 </div>
             </div>
 
@@ -139,7 +139,7 @@
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">审批结果：</label>
                 <div class="col-md-3">
-                    <p>
+                    <label for="name" class="control-label" style="text-align: left">
                         @if($apply_detail['status'] == 'pass')
                             审批通过
                         @elseif($apply_detail['status'] == 'reject')
@@ -147,7 +147,7 @@
                         @else
                             待审批
                         @endif
-                    </p>
+                    </label>
                 </div>
             </div>
             <div class="form-group">
@@ -159,7 +159,7 @@
                     @endif
                 </label>
                 <div class="col-md-3">
-                    <p>{{ empty($apply_detail['approval_opinion']) ? '未填写，默认无异议' : $apply_detail['approval_opinion'] }}</p>
+                    <label for="name" class="control-label" style="text-align: left">{{ empty($apply_detail['approval_opinion']) ? '未填写，默认无异议' : $apply_detail['approval_opinion'] }}</label>
                 </div>
             </div>
 

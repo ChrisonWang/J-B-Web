@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label for="node_schema" class="col-md-2 control-label">功能点：</label>
                 <div class="col-md-5">
-                    <div class="container-fluid">
+                    <div class="container-fluid" style="margin-left: 0; padding-left: 0">
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
                             <tr>
@@ -81,7 +81,7 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
-                    <p>自动生成</p>
+                    <label for="create_date" class="control-label">自动生成</label>
                 </div>
             </div>
             <div class="form-group">

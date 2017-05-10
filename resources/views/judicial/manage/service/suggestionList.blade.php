@@ -9,21 +9,23 @@
             <div class="container-fluid">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="container-fluid">
-                        @if(isset($is_archived))
+                    @if(isset($is_archived))
+                        <div class="container-fluid">
                             <button type="button" class="btn btn-danger" data-node="system-archivedMng" onclick="loadContent($(this))">返回归档列表</button>
-                        @endif
-                    </div>
-                    <hr/>
+                        </div>
+                        <hr/>
+                    @endif
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="title">主题：</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="请输入主题">
                         </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="form-group">
                             <label for="record_code">受理编号：</label>
                             <input type="text" class="form-control" id="record_code" name="record_code" placeholder="请输入受理编号">
                         </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="form-group">
                             <label for="type">类别：</label>
                             <select class="form-control" name="type" id="type">
@@ -33,6 +35,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="form-group">
                             <label for="record_code">状态：</label>
                             <select class="form-control" name="status" id="status">

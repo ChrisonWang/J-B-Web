@@ -34,21 +34,21 @@
             <form id="expertiseForm">
             <ul>
                 <li>
-                    <span class="wsc_txt">申请人姓名</span>
+                    <span class="wsc_txt">申请人姓名&nbsp;&nbsp;</span>
                     <div class="cx_inp">
                         <input type="text" name="apply_name" placeholder="请输入申请人姓名" class="w250">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">联系电话</span>
+                    <span class="wsc_txt">联系电话&nbsp;&nbsp;</span>
                     <div class="cx_inp">
                         <input type="text" name="cell_phone" placeholder="请输入联系电话" class="w250">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">类型</span>
+                    <span class="wsc_txt">类型&nbsp;&nbsp;</span>
                     <div class="cx_inp">
-                        <select name="type_id" style="width: 252px; height: 30px" onchange="loadExpertiseFile($(this))">
+                        <select name="type_id" style="width: 252px; height: 40px" onchange="loadExpertiseFile($(this))">
                             @if($type_list != 'none' && is_array($type_list))
                                 <option value="none">请选择类型！</option>
                                 @foreach($type_list as $k=>$name)
@@ -62,7 +62,7 @@
                 </li>
             </ul>
             <div class="mt_btn">
-                <span class="mtb_text">附件:&nbsp;&nbsp;</span>
+                <span class="mtb_text">附件&nbsp;&nbsp;</span>
                     <input type="file" name="file">
 
                 <span class="mtb_m" id="expertiseFile">
@@ -71,7 +71,7 @@
             </div>
 
                 <div class=mt_last>
-                    <span class="mtl_txt">温馨提示</span>
+                    <span class="mtl_txt">温馨提示:</span>
                     <div class="mt_ul">
                         <span>如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
                     </div>

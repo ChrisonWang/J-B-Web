@@ -14,7 +14,7 @@
 				  <div class="form-group">
 					  <label for="loginName" class="col-md-3 control-label">登录名：</label>
 					  <div class="col-md-8">
-						  <input name="loginName" id="loginName" class="form-control" type="text" class="text" placeholder="请输入登录名/手机号/邮箱">
+						  <input name="loginName" id="loginName" class="form-control" type="text" class="text" placeholder="请输入登录名">
 					  </div>
 				  </div>
 				  <div class="form-group">
@@ -24,7 +24,7 @@
 					  </div>
 				  </div>
 				  <div class="form-group">
-					  <div class="col-md-5">
+					  <div class="col-md-10 col-md-offset-1">
 						  <p class="text-left hidden" id="notice" style="color: red"></p>
 					  </div>
 				  </div>

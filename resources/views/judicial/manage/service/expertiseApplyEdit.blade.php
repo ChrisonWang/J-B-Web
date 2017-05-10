@@ -10,37 +10,37 @@
             <div class="form-group">
                 <label for="record_code" class="col-md-2 control-label">编号：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['record_code'] }}</p>
+                    <label for="create_date" class="control-label">{{ $apply_detail['record_code'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="apply_name" class="col-md-2 control-label">申请人姓名：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['apply_name'] }}</p>
+                    <label for="create_date" class="control-label">{{ $apply_detail['apply_name'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="cell_phone" class="col-md-2 control-label">联系电话：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['cell_phone'] }}</p>
+                    <label for="create_date" class="control-label">{{ $apply_detail['cell_phone'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="cell_phone" class="col-md-2 control-label">申请类型：</label>
                 <div class="col-md-3">
-                    <p>{{ isset($type_list[$apply_detail['type_id']]) ? $type_list[$apply_detail['type_id']] : '-' }}</p>
+                    <label for="create_date" class="control-label">{{ isset($type_list[$apply_detail['type_id']]) ? $type_list[$apply_detail['type_id']] : '-' }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">附件：</label>
                 <div class="col-md-3">
-                    <p>
+                    <label for="create_date" class="control-label">
                         @if((empty($apply_detail['apply_table_name'])||empty($apply_detail['apply_table'])))
                             未上传附件！
                         @else
                             <a href="{{$apply_detail['apply_table']}}" target="_blank">{{$apply_detail['apply_table_name']}}</a>
                         @endif
-                    </p>
+                    </label>
                 </div>
             </div>
             <div class="form-group">
@@ -48,7 +48,7 @@
                 @if(isset($apply_detail['approval_count']) && $apply_detail['approval_count'] > 0)
                     <label for="approval_opinion" class="col-md-2 control-label">最近一次审批意见：</label>
                     <div class="col-md-8">
-                        <p>{{ $apply_detail['approval_opinion'] }}</p>
+                        <label for="create_date" class="control-label">{{ $apply_detail['approval_opinion'] }}</label>
                     </div>
                 @endif
             </div>

@@ -15,37 +15,43 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
-                        <div class="form-group">
-                            <label for="record_code">审批编号：</label>
-                            <input type="text" class="form-control" id="record_code" name="record_code" placeholder="请输入审批编号">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="record_code">审批编号：</label>
+                                <input type="text" class="form-control" id="record_code" name="record_code" placeholder="请输入审批编号">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="status">审批状态：</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="none">不限</option>
+                                    <option value="waiting">待审批</option>
+                                    <option value="pass">审批通过</option>
+                                    <option value="reject">审批未通过</option>
+                                </select>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="apply_name">申请人姓名：</label>
+                                <input type="text" class="form-control" id="apply_name" name="apply_name" placeholder="请输入申请人姓名">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="apply_phone">申请人电话：</label>
+                                <input type="text" class="form-control" id="apply_phone" name="apply_phone" placeholder="请输入申请人电话">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="type">案件类型：</label>
+                                <select class="form-control" name="type" id="type">
+                                    <option value="none">不限</option>
+                                    @foreach($type_list as $key=>$value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button id="search" type="button" class="btn btn-info" onclick="search_aidApply($(this), $('#this-container'))">搜索</button>
                         </div>
-                        <div class="form-group">
-                            <label for="status">审批状态：</label>
-                            <select class="form-control" name="status" id="status">
-                                <option value="none">不限</option>
-                                <option value="waiting">待审批</option>
-                                <option value="pass">审批通过</option>
-                                <option value="reject">审批未通过</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="apply_name">申请人姓名：</label>
-                            <input type="text" class="form-control" id="apply_name" name="apply_name" placeholder="请输入申请人姓名">
-                        </div>
-                        <div class="form-group">
-                            <label for="apply_phone">申请人电话：</label>
-                            <input type="text" class="form-control" id="apply_phone" name="apply_phone" placeholder="请输入申请人电话">
-                        </div>
-                        <div class="form-group">
-                            <label for="type">案件类型：</label>
-                            <select class="form-control" name="type" id="type">
-                                <option value="none">不限</option>
-                                @foreach($type_list as $key=>$value)
-                                    <option value="{{ $key }}">{{ $value }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button id="search" type="button" class="btn btn-info" onclick="search_aidApply($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>

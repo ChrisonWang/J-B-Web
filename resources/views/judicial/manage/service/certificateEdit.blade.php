@@ -66,7 +66,7 @@
                 <label for="create_date" class="col-md-2 control-label">备案记录：</label>
                 <div class="col-md-10">
                     @if(is_array($certificate_detail['register_log']) && $certificate_detail['register_log']!='none')
-                        <div class="container-fluid">
+                        <div class="container-fluid" style="padding-left: 0; margin-left: 0">
                             <table class="table table-bordered table-hover table-condensed">
                                 <thead>
                                 <tr>
@@ -104,7 +104,7 @@
                             </div>
                         </div>
                     @else
-                        <div class="col-md-8">
+                        <div class="col-md-8" style="padding-left: 0; margin-left: 0">
                             <table class="table table-bordered table-hover table-condensed">
                                 <thead>
                                 <tr>
@@ -146,7 +146,7 @@
                 <label for="create_date" class="col-md-2 control-label">短信通知记录：</label>
                 <div class="col-md-8">
                     @if(is_array($certificate_detail['message_log']) && $certificate_detail['message_log']!='none')
-                        <div class="container-fluid">
+                        <div class="container-fluid" style="padding-left: 0; margin-left: 0">
                             <table class="table table-bordered table-hover table-condensed">
                                 <thead>
                                 <tr>
@@ -184,12 +184,12 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
-                    <p>{{ $certificate_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $certificate_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <p class="text-left hidden" id="editCertificateNotice" style="color: red"></p>
+                    <label for="create_date" class="text-left hidden control-label" id="editCertificateNotice" style="color: red"></label>
                 </div>
             </div>
             <div class="form-group">

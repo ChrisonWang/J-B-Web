@@ -11,67 +11,67 @@
             <div class="form-group">
                 <label for="record_code" class="col-md-2 control-label">编号：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['record_code'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['record_code'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="apply_office" class="col-md-2 control-label">申请单位：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['apply_office'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['apply_office'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="apply_aid_office" class="col-md-2 control-label">申请援助单位：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['apply_aid_office'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['apply_aid_office'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="criminal_name" class="col-md-2 control-label">犯罪人姓名：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['criminal_name'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['criminal_name'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="criminal_id" class="col-md-2 control-label">犯罪人身份号：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['criminal_id'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['criminal_id'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="case_name" class="col-md-2 control-label">案件名称：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['case_name'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['case_name'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="case_description" class="col-md-2 control-label">涉嫌犯罪内容：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['case_description'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['case_description'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="detention_location" class="col-md-2 control-label">收押居住地：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['detention_location'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['detention_location'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="judge_description" class="col-md-2 control-label">判刑处罚内容：</label>
                 <div class="col-md-3">
-                    <p>{{ $apply_detail['judge_description'] }}</p>
+                    <label for="name" class="control-label">{{ $apply_detail['judge_description'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">附件：</label>
                 <div class="col-md-3">
-                    <p>
+                    <label for="name" class="control-label" style="text-align: left">
                         @if((empty($apply_detail['file_name'])||empty($apply_detail['file'])))
                             未上传附件！
                         @else
                             <a href="{{$apply_detail['file']}}" target="_blank">{{$apply_detail['file_name']}}</a>
                         @endif
-                    </p>
+                    </label>
                 </div>
             </div>
             <hr/>
@@ -92,7 +92,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <p class="text-left hidden" id="editAidDispatchNotice" style="color: red"></p>
+                    <p class="text-left hidden" id="editAidDispatchNotice" style="color: red"></label>
                 </div>
             </div>
             <div class="form-group">

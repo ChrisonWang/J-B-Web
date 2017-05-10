@@ -13,37 +13,43 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
-                        <div class="form-group">
-                            <label for="name">名称：</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="请输入律所名称">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="name">名称：</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="请输入律所名称">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="type">类型：</label>
+                                <select class="form-control" name="type" id="type">
+                                    <option value="none">不限</option>
+                                    @foreach($type_list as $key=> $type)
+                                        <option value="{{ $key }}">{{ $type }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="usc_code">社会统一信用代码：</label>
+                                <input type="text" class="form-control" id="usc_code" name="usc_code" placeholder="请输入社会统一信用代码">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="director">负责人：</label>
+                                <input type="text" class="form-control" id="director" name="director" placeholder="请输入负责人姓名">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="area_id">区域：</label>
+                                <select class="form-control" name="area_id" id="area_id">
+                                    <option value="none">不限</option>
+                                    @foreach($area_list as $key=> $type)
+                                        <option value="{{ $key }}">{{ $type }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button id="search" type="button" class="btn btn-info" onclick="search_lawyerOffice($(this), $('#this-container'))">搜索</button>
                         </div>
-                        <div class="form-group">
-                            <label for="type">类型：</label>
-                            <select class="form-control" name="type" id="type">
-                                <option value="none">不限</option>
-                                @foreach($type_list as $key=> $type)
-                                    <option value="{{ $key }}">{{ $type }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="usc_code">社会统一信用代码：</label>
-                            <input type="text" class="form-control" id="usc_code" name="usc_code" placeholder="请输入社会统一信用代码">
-                        </div>
-                        <div class="form-group">
-                            <label for="director">负责人：</label>
-                            <input type="text" class="form-control" id="director" name="director" placeholder="请输入负责人姓名">
-                        </div>
-                        <div class="form-group">
-                            <label for="area_id">区域：</label>
-                            <select class="form-control" name="area_id" id="area_id">
-                                <option value="none">不限</option>
-                                @foreach($area_list as $key=> $type)
-                                    <option value="{{ $key }}">{{ $type }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button id="search" type="button" class="btn btn-info" onclick="search_lawyerOffice($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>

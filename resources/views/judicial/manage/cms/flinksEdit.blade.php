@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label for="menu-nodes" class="col-md-2 control-label">子链接：</label>
                 <div class="col-md-8">
-                    <div class="container-fluid">
+                    <div class="container-fluid" style="padding-left: 0; margin-left: 0">
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
                             <tr>
@@ -91,12 +91,12 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $flinks_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $flinks_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <p class="text-left hidden" id="flinksEditNotice" style="color: red"></p>
+                    <p class="text-left hidden form-control" id="flinksEditNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">

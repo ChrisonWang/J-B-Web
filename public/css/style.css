@@ -1131,10 +1131,14 @@ h2.modal-title {
   color: #999;
   font-size: 0.85em;
 }
-.radio label, .checkbox label, label{
+.radio label, .checkbox label{
   font-size: 0.85em;
   font-weight:300;
   vertical-align: middle;
+}
+label{
+  font-size: 0.85em;
+  font-weight:300;
 }
 .checkbox1{
   font-size: 0.85em;

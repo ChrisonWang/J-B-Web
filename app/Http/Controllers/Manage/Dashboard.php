@@ -904,6 +904,7 @@ class Dashboard extends Controller
 
     private function _getLeft()
     {
+        $list = array();
         $nodes = session('permission');
         if($nodes == 'ROOT'){
             $this->page_data['left_tree'] = 'ROOT';

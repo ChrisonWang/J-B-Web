@@ -15,32 +15,38 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
-                        <div class="form-group">
-                            <label for="record_code">审批编号：</label>
-                            <input type="text" class="form-control" id="record_code" name="record_code" placeholder="请输入审批编号">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="record_code">审批编号：</label>
+                                <input type="text" class="form-control" id="record_code" name="record_code" placeholder="请输入审批编号">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="status">审批状态：</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="none">不限</option>
+                                    <option value="waiting">待审批</option>
+                                    <option value="pass">审批通过</option>
+                                    <option value="reject">审批未通过</option>
+                                </select>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="apply_office">申请单位：</label>
+                                <input type="text" class="form-control" id="apply_office" name="apply_office" placeholder="请输入申请单位">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="apply_aid_office">申请援助单位：</label>
+                                <input type="text" class="form-control" id="apply_aid_office" name="apply_aid_office" placeholder="请输入申请援助单位">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="case_name">案件名称：</label>
+                                <input type="text" class="form-control" id="case_name" name="case_name" placeholder="请输入案件名称">
+                            </div>
+                            <button id="search" type="button" class="btn btn-info" onclick="search_aidDispatch($(this), $('#this-container'))">搜索</button>
                         </div>
-                        <div class="form-group">
-                            <label for="status">审批状态：</label>
-                            <select class="form-control" name="status" id="status">
-                                <option value="none">不限</option>
-                                <option value="waiting">待审批</option>
-                                <option value="pass">审批通过</option>
-                                <option value="reject">审批未通过</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="apply_office">申请单位：</label>
-                            <input type="text" class="form-control" id="apply_office" name="apply_office" placeholder="请输入申请单位">
-                        </div>
-                        <div class="form-group">
-                            <label for="apply_aid_office">申请援助单位：</label>
-                            <input type="text" class="form-control" id="apply_aid_office" name="apply_aid_office" placeholder="请输入申请援助单位">
-                        </div>
-                        <div class="form-group">
-                            <label for="case_name">案件名称：</label>
-                            <input type="text" class="form-control" id="case_name" name="case_name" placeholder="请输入案件名称">
-                        </div>
-                        <button id="search" type="button" class="btn btn-info" onclick="search_aidDispatch($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>

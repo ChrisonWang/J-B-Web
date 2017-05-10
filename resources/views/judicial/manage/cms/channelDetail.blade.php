@@ -70,8 +70,8 @@
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">子频道：</label>
-                <div class="col-md-8">
-                    <div class="container-fluid">
+                <div class="col-md-10">
+                    <div class="container-fluid" style="padding-left: 0; margin-left: 0">
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
                             <tr>
@@ -116,7 +116,7 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $channel_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $channel_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

@@ -16,8 +16,8 @@
             <div class="form-group">
                 <label class="col-md-2 control-label">下属职员：</label>
                 <div class="col-md-8">
+                    @if($manager_list != 'none' && is_array($manager_list))
                     <div class="container-fluid">
-                        @if($manager_list != 'none' && is_array($manager_list))
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
                             <tr>
@@ -42,20 +42,17 @@
                         </table>
                     </div>
                     @else
-                        该部门暂无职员
+                        <label class="control-label">该部门暂无职员</label>
                     @endif
                     <div class="container-fluid">
                         <p class="text-left hidden" id="add-row-notice" style="color: red"></p>
-                    </div>
-                    <div class="container-fluid">
-                        <hr/>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $office_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $office_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

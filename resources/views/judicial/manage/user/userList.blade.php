@@ -13,49 +13,54 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
-                        <div class="form-group col col-md-3">
-                            <label for="search-login-name">账号：</label>
-                            <input type="text" class="form-control" id="search-login-name" name="search-login-name" placeholder="请输入需要检索的账号">
-                        </div>
-                        <div class="form-group col col-md-3">
-                            <label for="search-nickname">姓名：</label>
-                            <input type="text" class="form-control" id="search-nickname" name="search-nickname" placeholder="请输入需要检索的姓名">
-                        </div>
-                        <div class="form-group col col-md-3">
-                            <label for="search-cell-phone">手机号码：</label>
-                            <input type="text" class="form-control" id="search-cell-phone" name="search-cell-phone" placeholder="请输入需要检索的手机号">
-                        </div>
-                        <br/>
-                        <br/>
-                        <div class="form-group col col-md-3">
-                            <label for="search-status">状态：</label>
-                            <select id="search-status" name="search-status" class="form-control">
-                                <option value="none">不限</option>
-                                <option value="no">正常</option>
-                                <option value="yes">禁用</option>
-                            </select>
-                        </div>
-                        <div class="form-group col col-md-3">
-                            <label for="search-type">用户类型：</label>
-                            <select id="search-type" name="search-type" class="form-control">
-                                <option value="none">不限</option>
-                                <option value="member">前台用户</option>
-                                <option value="manager">后台用户</option>
-                            </select>
-                        </div>
-                        <div class="form-group col col-md-3">
-                            <label for="search-office">科室：</label>
-                            <select id="search-office" name="search-office" class="form-control">
-                                @if(isset($office_list))
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="search-login-name">账号：</label>
+                                <input type="text" class="form-control" id="search-login-name" name="search-login-name" placeholder="请输入需要检索的账号">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="search-nickname">姓名：</label>
+                                <input type="text" class="form-control" id="search-nickname" name="search-nickname" placeholder="请输入需要检索的姓名">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="search-cell-phone">手机号码：</label>
+                                <input type="text" class="form-control" id="search-cell-phone" name="search-cell-phone" placeholder="请输入需要检索的手机号">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="search-status">状态：</label>
+                                <select id="search-status" name="search-status" class="form-control">
                                     <option value="none">不限</option>
-                                    @foreach($office_list as $key=> $name)
-                                        <option value="{{ $key }}">{{ $name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
+                                    <option value="no">正常</option>
+                                    <option value="yes">禁用</option>
+                                </select>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="search-type">用户类型：</label>
+                                <select id="search-type" name="search-type" class="form-control">
+                                    <option value="none">不限</option>
+                                    <option value="member">前台用户</option>
+                                    <option value="manager">后台用户</option>
+                                </select>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="search-office">科室：</label>
+                                <select id="search-office" name="search-office" class="form-control">
+                                    @if(isset($office_list))
+                                        <option value="none">不限</option>
+                                        @foreach($office_list as $key=> $name)
+                                            <option value="{{ $key }}">{{ $name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <input type="hidden" name="s_type" value="users"/>
+                            <button type="button" class="btn btn-info" onclick="searchUser($(this), $('#this-container'))">搜索</button>
                         </div>
-                        <input type="hidden" name="s_type" value="users"/>
-                        <button type="button" class="btn btn-info" onclick="searchUser($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>

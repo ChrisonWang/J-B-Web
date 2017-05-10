@@ -6,13 +6,16 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <div class="col col-md-4">
+            <div class="col col-md-6 text-left">
                 <a type="button" data-key='none' data-method="add" onclick="certificateMethod($(this))" class="btn btn-primary">新增</a>
             </div>
-            <div class="col col-md-2">
+        </div>
+        <hr/>
+        <div class="container-fluid">
+            <div class="col col-md-6 text-left">
                 <a type="button" data-key='none' data-method="add" onclick="javascript: $('#sendMessage_modal').modal('show');" class="btn btn-danger">短信通知</a>
             </div>
-            <div class="col col-md-7">
+            <div class="col col-md-6 text-right">
                 <form class="form-inline" id="batch-form">
                     <div class="form-group">
                         <i class="fa fa-paperclip"></i>导入文件
@@ -110,18 +113,22 @@
                                 <label for="name">姓名：</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="请输入持证人姓名">
                             </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="form-group">
                                 <label for="citizen_code">证件号：</label>
                                 <input type="text" class="form-control" id="citizen_code" name="citizen_code" placeholder="请输入证件号">
                             </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="form-group">
                                 <label for="certi_code">证书编号：</label>
                                 <input type="text" class="form-control" id="certi_code" name="certi_code" placeholder="请输入证书编号">
                             </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="form-group">
                                 <label for="phone">联系方式：</label>
                                 <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入联系方式">
                             </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="form-group">
                                 <label for="last_status">最近一条短信状态：</label>
                                 <select class="form-control" name="last_status" id="last_status">

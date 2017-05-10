@@ -21,15 +21,15 @@
                 <tbody class="text-center">
                 @foreach($flink_list as $flink)
                 <tr>
-                    <td>
+                    <td width="20%">
                         <a href="javascript: void(0) ;" data-key="{{ $flink['key'] }}" data-method="show" onclick="flinkImgMethod($(this))">查看</a>
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $flink['key'] }}" data-method="edit" onclick="flinkImgMethod($(this))">编辑</a>
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $flink['key'] }}" data-method="delete" data-title="{{ $flink['fi_title'] }}" onclick="flinkImgMethod($(this))">删除</a>
                     </td>
-                    <td>{{ $flink['fi_title'] }}</td>
-                    <td><a href="{{ $flink['fi_links'] }}" target="_blank">{{ $flink['fi_links'] }}</a></td>
+                    <td width="20%">{{ $flink['fi_title'] }}</td>
+                    <td width="760%"><a href="{{ $flink['fi_links'] }}" target="_blank">{{ $flink['fi_links'] }}</a></td>
                 </tr>
                 @endforeach
                 </tbody>
