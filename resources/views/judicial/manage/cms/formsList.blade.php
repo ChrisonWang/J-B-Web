@@ -13,23 +13,26 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form class="form-inline">
-                        <div class="form-group">
-                            <label for="search-title">标题：</label>
-                            <input type="text" class="form-control" id="search-title" name="search-title" placeholder="请输入标题">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <label for="search-title">标题：</label>
+                                <input type="text" class="form-control" id="search-title" name="search-title" placeholder="请输入标题">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-group">
+                                <label for="search-channel-key">频道：</label>
+                                <select id="search-channel-key" name="search-channel-key" class="form-control">
+                                    @if(isset($channel_list))
+                                        <option value="none" selected>不限频道</option>
+                                        @foreach($channel_list as $key=> $name)
+                                            <option value="{{ $key }}">{{ $name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <input type="hidden" name="s_type" value="forms"/>
+                            <button id="search" type="button" class="btn btn-info" data-type="forms" onclick="search_list($(this), $('#this-container'))">搜索</button>
                         </div>
-                        <div class="form-group">
-                            <label for="search-channel-key">频道：</label>
-                            <select id="search-channel-key" name="search-channel-key" class="form-control">
-                                @if(isset($channel_list))
-                                    <option value="none" selected>不限频道</option>
-                                    @foreach($channel_list as $key=> $name)
-                                        <option value="{{ $key }}">{{ $name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-                        <input type="hidden" name="s_type" value="forms"/>
-                        <button id="search" type="button" class="btn btn-info" data-type="forms" onclick="search_list($(this), $('#this-container'))">搜索</button>
                     </form>
                 </div>
             </div>

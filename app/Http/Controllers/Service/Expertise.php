@@ -202,6 +202,7 @@ class Expertise extends Controller
                 'record_code'=> $record->record_code,
                 'apply_name'=> $record->apply_name,
                 'cell_phone'=> $record->cell_phone,
+                'approval_result'=> $record->approval_result,
                 'apply_table'=> $record->apply_table,
                 'apply_table_name'=> $record->apply_table_name,
             );
@@ -220,6 +221,7 @@ class Expertise extends Controller
         }
         else{
             $record_detail = array(
+                'approval_result'=> $record->approval_result,
                 'record_code'=> $record->record_code,
                 'apply_name'=> $record->apply_name,
                 'cell_phone'=> $record->cell_phone,

@@ -163,7 +163,7 @@ class LawyerOffice extends Controller
                 'area_id'=> keys_encrypt($office->area_id),
                 'justice_bureau'=> empty($office->justice_bureau) ? '' : $office->justice_bureau,
                 'usc_code'=> empty($office->usc_code) ? '' : $office->usc_code,
-                'certificate_date'=> empty(strtotime($office->certificate_date))?'':date('Y-m-d',strtotime($office->certificate_date)),
+                'certificate_date'=> empty(strtotime($office->certificate_date)) || strtotime($office->certificate_date)== '-62170012800' ? '' :date('Y-m-d',strtotime($office->certificate_date)),
                 'director'=> empty($office->director) ? '' : $office->director,
                 'type'=> $office->type,
                 'group_type'=> empty($office->group_type) ? '' : $office->group_type,
