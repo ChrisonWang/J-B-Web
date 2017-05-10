@@ -4,14 +4,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title text-center" style="font-family: 'MicrosoftYaHei'; font-size: 18px; color: #222222; letter-spacing: 0;">修改账号密码</h4>
+                <h4 class="modal-title text-center" style="font-family: 'MicrosoftYaHei'; font-size: 18px; color: #222222; letter-spacing: 0;">修改密码</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="changePasswordForm">
                     <div class="form-group">
-                        <label for="oldPassword" class="col-md-4 control-label">原密码：</label>
+                        <label for="oldPassword" class="col-md-4 control-label">旧密码：</label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="请输入原密码">
+                            <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="请输入旧密码">
                         </div>
                     </div>
                     <div class="form-group">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="confirmPassword" class="col-md-4 control-label">确认密码：</label>
+                        <label for="confirmPassword" class="col-md-4 control-label">重复新密码：</label>
                         <div class="col-md-6">
                             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="请再次输入新密码">
                         </div>
@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <hr/>
                         <div class="col-md-offset-2 col-md-8">
-                            <button type="button" class="btn btn-danger btn-block" onclick="toChangePassword()">确认</button>
+                            <button type="button" class="btn btn-danger btn-block" onmouseover="javascript: $(this).css('background', '#D22626')" onmouseout="javascript: $(this).css('background', '#d43f3a')" onclick="toChangePassword()">确认</button>
                         </div>
                     </div>
                 </form>

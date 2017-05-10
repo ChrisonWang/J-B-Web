@@ -8,8 +8,8 @@
 <div class="wrapper">
     <div class="container-main">
         <div class="login-box">
-            <div class="login-box-top text-center" id="top-tab" style='font-family: MicrosoftYaHei; font-size: 14px; color: #222222; letter-spacing: 0;'>
-                找回密码
+            <div class="login-box-top text-center" id="top-tab" style='font-family: MicrosoftYaHei; font-size: 14px; color: #222222; letter-spacing: 0; line-height: 60px'>
+                忘记密码
             </div>
             <div>
                 <div class="container-fluid" style="margin-top: 30px"  id="login-container">
