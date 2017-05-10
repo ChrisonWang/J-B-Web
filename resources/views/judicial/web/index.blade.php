@@ -175,7 +175,7 @@
 
 <!--底部滚动-->
 <div class="ft_mall w980">
-    <span class="vd_tit">图片中心
+    <span class="vd_tit" style="width: 950px">图片中心
         <span style="float: right"><a href="{{ URL::to('/picture')}}" style="color: #000">查看更多>></a>
         </span>
     </span>

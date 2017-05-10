@@ -173,7 +173,7 @@ class Index extends Controller
                     'create_date'=> $zw->create_date,
                 );
             }
-            $zwgk_article = DB::table('cms_article')->where('channel_id', $m_zwgk_list[0]['key'])->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date','desc')->skip(0)->take(6)->get();
+            $zwgk_article = DB::table('cms_article')->where('channel_id', $m_zwgk_list[0]['key'])->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date','desc')->skip(0)->take(7)->get();
             if(count($zwgk_article) > 0){
                 $zwgk_article_list = array();
                 foreach($zwgk_article as $zw_ar){

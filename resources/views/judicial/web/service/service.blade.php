@@ -64,7 +64,7 @@
                             暂无文章！
                         @endif
                     </ul>
-                    <a href="{{ URL::to('service/list').'/'.$bszn['sub_channel'].'/1' }}" class="wsrb_mor">查看更多 > ></a>
+                    <a href="{{ URL::to('service/list').'/'.$bszn['sub_channel'].'/1' }}" class="wsrb_mor" style="color: #DD3938">查看更多 > ></a>
                 </div>
                 @endforeach
             </div>

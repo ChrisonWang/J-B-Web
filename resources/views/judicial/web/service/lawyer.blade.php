@@ -14,7 +14,7 @@
         <div class="zwr_top">
             <span onclick="javascript: window.location.href='{{ URL::to('/') }}'">首页&nbsp;&nbsp;>&nbsp;</span>
             <span onclick="javascript: window.location.href='{{ URL::to('service') }}'">网上办事&nbsp;&nbsp;>&nbsp;</span>
-            <span>律师查询&nbsp;&nbsp;>&nbsp;</span>
+            <span style="color: #101010;">律师查询</span>
         </div>
 
         <div class="ws_cxt">
@@ -85,7 +85,7 @@
                         <td>{{ $lawyer['sex']=='female' ? '女' : '男' }}</td>
                         <td>{{ isset($type_list[$lawyer['type']]) ? $type_list[$lawyer['type']] : '-' }}</td>
                         <td>{{ $lawyer['certificate_code'] }}</td>
-                        <td>{{ isset($office_list[$lawyer['lawyer_office']]) ? $office_list[$lawyer['lawyer_office']] : '-' }}</td>
+                        <td>{{ isset($office_list[$lawyer['lawyer_office']]) ? spilt_title($office_list[$lawyer['lawyer_office']],15) : '-' }}</td>
                         <td>{{ $lawyer['status']=='cancel' ? '注销' : '执业' }}</td>
                     </tr>
                 @endforeach

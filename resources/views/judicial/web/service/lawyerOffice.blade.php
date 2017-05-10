@@ -82,7 +82,7 @@
             <tbody>
                 @foreach($office_list as $office)
                     <tr onclick="javascript: window.location.href='{{ URL::to('service/lawyerOffice/detail').'/'.$office['key'] }}'">
-                        <td>{{ $office['name'] }}</td>
+                        <td>{{ spilt_title($office['name'], 15) }}</td>
                         <td>{{ $office['director'] }}</td>
                         <td>{{ $office['usc_code'] }}</td>
                         <td>{{ isset($type_list[$office['type']]) ? $type_list[$office['type']] : '-' }}</td>
