@@ -105,7 +105,7 @@ class Index extends Controller
                         'channel_title'=> $channel->channel_title,
                         'sub_channel'=> $bszn->channel_id,
                     );
-                    $article = DB::table('cms_article')->where('sub_channel', $bszn->channel_id)->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date', 'desc')->skip(0)->take(5)->get();
+                    $article = DB::table('cms_article')->where('sub_channel', $bszn->channel_id)->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date', 'desc')->orderBy('id', 'desc')->skip(0)->take(5)->get();
                     $bszn_article_list[$channel->channel_id] = json_decode(json_encode($article) ,true);
                 }
             }

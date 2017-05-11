@@ -53,7 +53,7 @@ class Forms extends Controller
         $count = DB::table('cms_forms')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $forms = DB::table('cms_forms')->skip($offset)->take(30)->get();
+        $forms = DB::table('cms_forms')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
         if(count($forms) > 0){
             foreach($forms as $key=> $form){
                 $forms_data[$key]['key'] = keys_encrypt($form->id);
@@ -97,9 +97,10 @@ class Forms extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['title'].'的表单']);
         }
         //处理文件上传
+        $file_path = '';
         $file = $request->file('file');
         if(is_null($file) || !$file->isValid()){
-            $file_path = '';
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'附件不能为空！']);
         }
         else{
             $destPath = realpath(public_path('uploads/files'));
@@ -257,28 +258,31 @@ class Forms extends Controller
 
         $id = keys_decrypt($inputs['key']);
         //判断是否有重名的
-        $sql = 'SELECT `id` FROM cms_flinks WHERE `title` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';
+        $sql = 'SELECT `id` FROM cms_forms WHERE `title` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';
         $res = DB::select($sql);
         if(count($res) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['fi_title'].'的推荐链接']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['fi_title'].'的标题']);
         }
         //处理文件上传
+        $file_path = '';
         $file = $request->file('file');
-        if(is_null($file) || !$file->isValid()){
-            $file_path = '';
+        if((is_null($file) || !$file->isValid()) && $inputs['has_file']=='no'){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'附件不能为空！']);
         }
         else{
-            $destPath = realpath(public_path('uploads/files'));
-            if(!file_exists($destPath)){
-                mkdir($destPath, 0755, true);
-            }
-            $extension = $file->getClientOriginalExtension();
-            $filename = gen_unique_code('FILE_').'.'.$extension;
-            if(!$file->move($destPath,$filename)){
-                $file_path = '';
-            }
-            else{
-                $file_path = URL::to('/').'/uploads/files/'.$filename;
+            if($inputs['has_file'] == 'no'){
+                $destPath = realpath(public_path('uploads/files'));
+                if(!file_exists($destPath)){
+                    mkdir($destPath, 0755, true);
+                }
+                $extension = $file->getClientOriginalExtension();
+                $filename = gen_unique_code('FILE_').'.'.$extension;
+                if(!$file->move($destPath,$filename)){
+                    $file_path = '';
+                }
+                else{
+                    $file_path = URL::to('/').'/uploads/files/'.$filename;
+                }
             }
         }
         //执行插入数据操作
@@ -290,6 +294,9 @@ class Forms extends Controller
             'description'=> $inputs['description'],
             'update_date'=> date('Y-m-d H:i:s', time())
         );
+        if($inputs['has_file'] == 'yes'){
+            unset($save_data['file']);
+        }
         $rs = DB::table('cms_forms')->where('id',$id)->update($save_data);
         if($rs === false){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);

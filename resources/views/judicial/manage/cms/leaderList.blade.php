@@ -15,7 +15,7 @@
                     <tr>
                         <th width="20%" class="text-center">操作</th>
                         <th class="text-center">姓名</th>
-                        <th class="text-center">岗位</th>
+                        <th class="text-center">职位</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">

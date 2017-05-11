@@ -143,9 +143,9 @@ Route::group(['middleware' => ['web']], function () {
 
 
     //前台CMS路由
-    Route::post('search',['as'=>'search', 'uses'=>'Web\Index@search']);
+    Route::get('search',['as'=>'search', 'uses'=>'Web\Index@search']);
 
-    Route::post('get',['as'=>'search', 'uses'=>'Web\Index@search']);
+    Route::post('search',['as'=>'search', 'uses'=>'Web\Index@doSearch']);
 
     Route::get('list/{cid}/{page?}','Web\Index@article_list');
 

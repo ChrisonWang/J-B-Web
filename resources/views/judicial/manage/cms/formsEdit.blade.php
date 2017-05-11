@@ -30,14 +30,16 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="leader_photo" class="col-md-2 control-label">附件：</label>
+                <label for="leader_photo" class="col-md-2 control-label"><strong style="color: red">*</strong> 附件：</label>
                 @if($form_detail['file'] == 'none')
                     <div class="col-md-3">
+                        <input type="hidden" name="has_file" value="no"/>
                         <i class="fa fa-paperclip"></i>上传附件
                         <input type="file" id="upload_photo" class="btn btn-default btn-file" name="file"/>
                     </div>
                 @else
                     <div class="col-md-3" id="change_box">
+                        <input type="hidden" name="has_file" value="yes"/>
                         <input class="btn btn-default" type="button" value="修改附件(会删除原有附件)" onclick="changeFile()">
                     </div>
                     <div class="col-md-3 hidden" id="file_box">

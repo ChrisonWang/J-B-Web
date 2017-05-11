@@ -208,7 +208,12 @@ class Index extends Controller
         return view('judicial.web.index', $this->page_data);
     }
 
-    public function search(Request $request)
+    public function search(Request $request){
+        $this->page_data['no_search'] = 'yes';
+        return view('judicial.web.search', $this->page_data);
+    }
+
+    public function doSearch(Request $request)
     {
         $keywords = $request->input('keywords');
         $count = 0;

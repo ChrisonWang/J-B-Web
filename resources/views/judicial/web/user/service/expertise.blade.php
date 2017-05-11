@@ -13,10 +13,10 @@
             <tbody>
             @foreach($expertise_list as $expertise)
                 <tr>
-                    <td>{{ date("Y-m-d H:i", strtotime($expertise->apply_date)) }}</td>
-                    <td>{{ $expertise->record_code }}</td>
-                    <td>{{ isset($expertise_type[$expertise->type_id]) ? $expertise_type[$expertise->type_id] : '-' }}</td>
-                    <td>
+                    <td style="vertical-align: middle">{{ date("Y-m-d H:i", strtotime($expertise->apply_date)) }}</td>
+                    <td style="vertical-align: middle">{{ $expertise->record_code }}</td>
+                    <td style="vertical-align: middle">{{ isset($expertise_type[$expertise->type_id]) ? $expertise_type[$expertise->type_id] : '-' }}</td>
+                    <td style="vertical-align: middle">
                         @if($expertise->approval_result == 'pass')
                             <div class="shtg">审核通过</div>
                         @elseif($expertise->approval_result == 'reject')
@@ -27,7 +27,7 @@
                             <div class="dsh">待审核</div>
                         @endif
                     </td>
-                    <td>
+                    <td style="vertical-align: middle">
                         @if($expertise->approval_result == 'reject')
                             <a href="{{ URL::to('service/expertise/edit').'/'.$expertise->record_code }}" class="tb_btn">编辑</a>
                         @else

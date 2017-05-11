@@ -9,10 +9,10 @@
 <div class="w1024 zw_mb">
     <div class="container-fluid">
         <div class="col-md-offset-3 col-md-3">
-            <a href="{{ URL::to('consultions/add') }}" class="btn btn-danger btn-block">咨询问题</a>
+            <a href="{{ URL::to('consultions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px">咨询问题</a>
         </div>
         <div class=" col-md-3">
-            <a href="{{ URL::to('suggestions/add') }}" class="btn btn-danger btn-block">征求意见</a>
+            <a href="{{ URL::to('suggestions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px">征求意见</a>
         </div>
     </div>
     <!--搜索栏-->
@@ -23,7 +23,8 @@
         <div class="id_sch_r">
             <form action="{{ URL::to('suggestions/search') }}" method="post">
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                <input type="search" name="keywords" placeholder="查询受理编号/问题标题" value="">
+                <input type="search" name="keywords" placeholder="查询受理编号/问题标题" value="" style="width: 450px">
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit">搜索</button>
             </form>
         </div>
@@ -48,7 +49,7 @@
                             <td>{{ spilt_title($record['title'], 50) }}</td>
                             <td>{{ $record['create_date'] }}</td>
                             <td>{{ $record['answer_date'] }}</td>
-                            <td><a href="{{ URL::to('suggestions/detail').'/'.$record['record_code'] }}" class="tb_btn">查看</a></td>
+                            <td><a href="{{ URL::to('suggestions/detail').'/'.$record['record_code'] }}" class="tb_btn" style="color: #000000">查看</a></td>
                         </tr>
                     @endforeach
                     </tbody>

@@ -169,6 +169,9 @@ class Article extends Controller
         elseif(trim($inputs['sub_channel_id'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
         }
+        elseif(!isset($inputs['content']) || trim($inputs['content'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请输入正文内容！']);
+        }
         //处理上传的图片
         $file = $request->file('thumb');
         if(is_null($file) || !$file->isValid()){
@@ -500,6 +503,15 @@ class Article extends Controller
         }
         elseif(trim($inputs['publish_date'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'发布时间不能为空！']);
+        }
+        elseif(trim($inputs['channel_id'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
+        }
+        elseif(trim($inputs['sub_channel_id'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
+        }
+        elseif(!isset($inputs['content']) || trim($inputs['content'])===''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请输入正文内容！']);
         }
 
         $article_code = $inputs['key'];

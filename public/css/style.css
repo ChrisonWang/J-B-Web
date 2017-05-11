@@ -6,7 +6,7 @@ p {margin: 0;}
 html, body{
   	font-family: 'Roboto', sans-serif;
     font-size: 100%;
-  	background:#000;
+  	background:#FFF;
   	overflow-x: hidden;
 }
 body a{
@@ -220,11 +220,11 @@ body a{
   min-width: 0;
 }
 .navbar-default.sidebar {
-  background-color: #000;
+  background-color: #F9F9F9;
   font-family: 'Roboto', sans-serif;
 }
 nav.top1.navbar.navbar-default.navbar-static-top {
-  background-color: #00aced;
+  background-color: #DD3938;
   font-family: 'Roboto', sans-serif;
 }
 .navbar-default .navbar-brand {
@@ -239,11 +239,11 @@ nav.top1.navbar.navbar-default.navbar-static-top {
 	display:inline-block;
 }
 i.nav_icon {
-  color: #fff;
+  color: #222;
   margin-right:6px;
 }
 .sidebar ul li a{
-  color: #999;
+  color: #222;
   font-size:14px;
 }
 .form-control {

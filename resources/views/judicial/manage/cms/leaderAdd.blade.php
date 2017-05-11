@@ -13,9 +13,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="leader_job" class="col-md-2 control-label"><strong style="color: red">*</strong> 岗位：</label>
+                <label for="leader_job" class="col-md-2 control-label"><strong style="color: red">*</strong> 职位：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="leader_job" name="leader_job" placeholder="请输入领导岗位" />
+                    <input type="text" class="form-control" id="leader_job" name="leader_job" placeholder="请输入领导职位" />
                 </div>
             </div>
             <div class="form-group">

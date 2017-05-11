@@ -316,7 +316,8 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .gjf textarea{min-height: 200px;}
 
 /*审批状态查询*/
-.tb_btn{display: block; width: 80px;height: 30px; line-height: 30px; background-color: #FFFFFF; border: 1px solid #ECECEC; margin: 0 auto;}
+.tb_btn{display: block; width: 80px;height: 30px; line-height: 30px; background-color: #FFFFFF; border: 1px solid #ECECEC; margin: 0 auto; text-decoration: none}
+.tb_btn:hover{background-color: #ECECEC; text-decoration: none}
 .sh_tb tr:hover{background-color: #F9F9F9!important;}
 .sh_tb tr:hover .dsh{color: #7DA750;}
 .sh_tb tr:hover .shtg{color: #4684CD;}

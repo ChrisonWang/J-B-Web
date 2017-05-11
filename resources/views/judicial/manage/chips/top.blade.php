@@ -5,7 +5,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="/manage/dashboard">后台</a>
+    <a class="navbar-brand" href="/manage/dashboard">
+        司法局官网管理系统
+    </a>
 </div>
 <!-- /.navbar-header -->
 <ul class="nav navbar-nav navbar-right">

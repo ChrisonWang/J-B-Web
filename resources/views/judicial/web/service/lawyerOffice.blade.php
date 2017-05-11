@@ -23,19 +23,19 @@
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <ul>
                     <li style="width: auto">
-                        <label for="name" class="wsc_txt" style="width: auto">事务所名称:</label>
+                        <label for="name" class="wsc_txt" style="width: auto; margin: 0">事务所名称:</label>
                         <div class="cx_inp">
                             <input class="form-control" type="text" id="name" name="name" value="{{ isset($last_search['name']) ? $last_search['name'] : '' }}" placeholder="请输入事务所名称">
                         </div>
                     </li>
                     <li style="width: auto">
-                        <label for="director" class="wsc_txt" style="width: auto">负责人姓名:</label>
+                        <label for="director" class="wsc_txt" style="width: auto; margin: 0">负责人姓名:</label>
                         <div class="cx_inp">
                             <input type="text" class="form-control" value="{{ isset($last_search['director']) ? $last_search['director'] : '' }}" id="director" name="director" placeholder="请输入负责人姓名">
                         </div>
                     </li>
                     <li style="width: auto">
-                        <label for="type" class="wsc_txt" style="width: auto">律师类型:</label>
+                        <label for="type" class="wsc_txt" style="width: auto; margin: 0">律师类型:</label>
                         <div class="cx_inp">
                             <select class="form-control" id="type" name="type">
                                 <option value="none">不限</option>
@@ -46,13 +46,13 @@
                         </div>
                     </li>
                     <li style="width: auto">
-                        <label for="usc_code" class="wsc_txt" style="width: auto">统一社会信用代码:</label>
+                        <label for="usc_code" class="wsc_txt" style="width: auto; margin: 0">统一社会信用代码:</label>
                         <div class="cx_inp">
                             <input type="text" class="form-control" value="{{ isset($last_search['usc_code']) ? $last_search['usc_code'] : '' }}" id="usc_code" name="usc_code" placeholder="统一社会信用代码">
                         </div>
                     </li>
                     <li style="width: auto">
-                        <label for="area_id" class="wsc_txt" style="width: auto">所在区域:</label>
+                        <label for="area_id" class="wsc_txt" style="width: auto; margin: 0">所在区域:</label>
                         <div class="cx_inp">
                             <select class="form-control" id="area_id" name="area_id">
                                 <option value="none">不限</option>

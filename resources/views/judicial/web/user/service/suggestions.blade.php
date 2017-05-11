@@ -4,29 +4,37 @@
             <thead>
             <tr>
                 <th>受理编号</th>
-                <th>问题分类</th>
-                <th>问题标题</th>
-                <th>咨询时间</th>
+                <th>分类</th>
+                <th style="width: 25%">留言主题</th>
+                <th>留言时间</th>
                 <th>答复时间</th>
+                <th>问题状态</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
             @foreach($suggestions_list as $suggestions)
                 <tr>
-                    <td>{{ $suggestions['record_code'] }}</td>
-                    <td>{{ $suggestions_type[$suggestions['type']] }}</td>
-                    <td>{{ $suggestions['title'] }}</td>
-                    <td>{{ date("Y-m-d H:i", strtotime($suggestions['create_date'])) }}</td>
-                    <td>{{ empty(strtotime($suggestions['answer_date']))?'待答复':date("Y-m-d H:i", strtotime($suggestions['answer_date'])) }}</td>
-                    <td><a href="{{ URL::to('suggestions/detail').'/'.$suggestions['record_code'] }}" class="tb_btn">查看</a></td>
+                    <td style="vertical-align: middle">{{ $suggestions['record_code'] }}</td>
+                    <td style="vertical-align: middle">{{ $suggestions_type[$suggestions['type']] }}</td>
+                    <td style="vertical-align: middle">{{ spilt_title($suggestions['title'], 20) }}</td>
+                    <td style="vertical-align: middle">{{ date("Y-m-d H:i", strtotime($suggestions['create_date'])) }}</td>
+                    <td style="vertical-align: middle">{{ empty(strtotime($suggestions['answer_date'])) || $suggestions['answer_date']=='0000-00-00 00:00:00' ? '待回复' : date("Y-m-d H:i", strtotime($suggestions['answer_date'])) }}</td>
+                    <td style="vertical-align: middle">
+                        @if($suggestions['status'] == 'answer')
+                            已回复
+                        @else
+                            待回复
+                        @endif
+                    </td>
+                    <td style="vertical-align: middle"><a href="{{ URL::to('suggestions/detail').'/'.$suggestions['record_code'] }}" class="tb_btn">查看</a></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
 
         <!--分页-->
-        <div class="zwr_ft">
+        <div class="zwr_ft" style="display: none">
             <div class="fy_left">
                 <span>
                     <a href="javascript: void(0) ;" data-type="suggestions" data-method="first" data-now="{{ $suggestions_pages['now_page'] }}" data-c="s_suggestions" onclick="service_page($(this))"> 首页</a>

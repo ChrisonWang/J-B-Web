@@ -24,7 +24,7 @@
 					  </div>
 				  </div>
 				  <div class="form-group">
-					  <div class="col-md-10 col-md-offset-1">
+					  <div class="col-md-10 col-md-offset-3">
 						  <p class="text-left hidden" id="notice" style="color: red"></p>
 					  </div>
 				  </div>

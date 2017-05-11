@@ -13,10 +13,10 @@
             <tbody>
             @foreach($apply_list as $apply)
                 <tr>
-                    <td>{{ date("Y-m-d H:i", strtotime($apply->apply_date)) }}</td>
-                    <td>{{ $apply->record_code }}</td>
-                    <td>{{ isset($apply_type[$apply->type]) ? $apply_type[$apply->type] : '-' }}</td>
-                    <td>
+                    <td style="vertical-align: middle">{{ date("Y-m-d H:i", strtotime($apply->apply_date)) }}</td>
+                    <td style="vertical-align: middle">{{ $apply->record_code }}</td>
+                    <td style="vertical-align: middle">{{ isset($apply_type[$apply->type]) ? $apply_type[$apply->type] : '-' }}</td>
+                    <td style="vertical-align: middle">
                         @if($apply->status == 'pass')
                             <div class="shtg">审核通过</div>
                         @elseif($apply->status == 'reject')
@@ -27,7 +27,7 @@
                             <div class="dsh">待审核</div>
                         @endif
                     </td>
-                    <td>
+                    <td style="vertical-align: middle">
                         @if($apply->status == 'reject')
                             <a href="{{ URL::to('service/aidApply/edit').'/'.$apply->record_code }}" class="tb_btn">编辑</a>
                         @else

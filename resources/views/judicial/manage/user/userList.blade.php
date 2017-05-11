@@ -92,7 +92,7 @@
                     <td>{{ $user['login_name'] }}</td>
                     <td>{{ $user['nickname'] }}</td>
                     <td>{{ $user['cell_phone'] }}</td>
-                    <td>{{ isset($type_list[$user['type_id']]) ? $type_list[$user['type_id']] : '未设置' }}</td>
+                    <td>{{ isset($type_list[$user['type_id']]) ? $type_list[$user['type_id']] : '超级用户' }}</td>
                     <td>@if($user['disabled'] == 'no') 是 @else 否 @endif</td>
                     <td>{{ $user['create_date'] }}</td>
                 </tr>

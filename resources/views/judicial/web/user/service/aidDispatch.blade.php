@@ -13,10 +13,10 @@
             <tbody>
             @foreach($dispatch_list as $dispatch)
                 <tr>
-                    <td>{{ date("Y-m-d H:i", strtotime($dispatch->apply_date)) }}</td>
-                    <td>{{ $dispatch->record_code }}</td>
-                    <td>{{ $dispatch->apply_office }}</td>
-                    <td>
+                    <td style="vertical-align: middle">{{ date("Y-m-d H:i", strtotime($dispatch->apply_date)) }}</td>
+                    <td style="vertical-align: middle">{{ $dispatch->record_code }}</td>
+                    <td style="vertical-align: middle">{{ $dispatch->apply_office }}</td>
+                    <td style="vertical-align: middle">
                         @if($dispatch->status == 'pass')
                             <div class="shtg">审核通过</div>
                         @elseif($dispatch->status == 'reject')
@@ -27,7 +27,7 @@
                             <div class="dsh">待审核</div>
                         @endif
                     </td>
-                    <td>
+                    <td style="vertical-align: middle">
                         @if($dispatch->status == 'reject')
                             <a href="{{ URL::to('service/aidDispatch/edit').'/'.$dispatch->record_code }}" class="tb_btn">编辑</a>
                         @else

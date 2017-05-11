@@ -14,6 +14,13 @@
             <button type="submit" class="serach_btn">搜索</button>
         </form>
     </div>
+    @if(isset($no_search) && $no_search=='yes')
+        <div class="serach_mid">
+            <p style="text-align: center;font-family: MicrosoftYaHei;font-size: 14px;color: #929292;letter-spacing: 0; margin-top: 40px">
+                请输入您要搜索的关键字
+            </p>
+        </div>
+    @else
     <div class="serach_mid">
         @if($search_list != 'none')
         <ul>
@@ -63,6 +70,7 @@
             </p>
         @endif
     </div>
+    @endif
 </div>
 
 

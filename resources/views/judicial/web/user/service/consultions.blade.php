@@ -14,19 +14,19 @@
             <tbody>
             @foreach($consultions_list as $consultions)
                 <tr>
-                    <td>{{ $consultions['record_code'] }}</td>
-                    <td>{{ $consultions_type[$consultions['type']] }}</td>
-                    <td>{{ spilt_title($consultions['title'], 30) }}</td>
-                    <td>{{ date("Y-m-d H:i", strtotime($consultions['create_date'])) }}</td>
-                    <td>{{ empty(strtotime($consultions['answer_date']))?'待答复':date("Y-m-d H:i", strtotime($consultions['answer_date'])) }}</td>
-                    <td><a href="{{ URL::to('consultions/detail').'/'.$consultions['record_code'] }}" class="tb_btn">查看</a></td>
+                    <td style="vertical-align: middle">{{ $consultions['record_code'] }}</td>
+                    <td style="vertical-align: middle">{{ $consultions_type[$consultions['type']] }}</td>
+                    <td style="vertical-align: middle">{{ spilt_title($consultions['title'], 20) }}</td>
+                    <td style="vertical-align: middle">{{ date("Y-m-d H:i", strtotime($consultions['create_date'])) }}</td>
+                    <td style="vertical-align: middle">{{ empty(strtotime($consultions['answer_date'])) || $consultions['answer_date']=='0000-00-00 00:00:00' ? '待答复':date("Y-m-d H:i", strtotime($consultions['answer_date'])) }}</td>
+                    <td style="vertical-align: middle"><a href="{{ URL::to('consultions/detail').'/'.$consultions['record_code'] }}" class="tb_btn">查看</a></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
 
         <!--分页-->
-        <div class="zwr_ft">
+        <div class="zwr_ft" style="display: none">
             <div class="fy_left">
                 <span>
                     <a href="javascript: void(0) ;" data-type="consultions" data-method="first" data-now="{{ $consultions_pages['now_page'] }}" data-c="s_consultions" onclick="service_page($(this))"> 首页</a>
