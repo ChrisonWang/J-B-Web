@@ -629,6 +629,12 @@ class Users extends Controller
         $inputs = $request->input();
         $code = $inputs['key'];
         $type = $inputs['type'];
+        //检测删除的是不是自己
+        $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+        $managerCode = session($login_name);
+        if($managerCode === $code){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'不能删除当前登录的账号！']);
+        }
         if($type == 1){
             DB::beginTransaction();
             $res = DB::table('user_members')->where('member_code',$code)->delete();

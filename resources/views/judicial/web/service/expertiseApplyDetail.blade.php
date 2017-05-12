@@ -33,7 +33,7 @@
                 受理编号:{{$record_detail['record_code']}}
             </span>
         </div>
-        <div class="text_a post_btn gjf" style="height: auto">
+        <div class="text_a post_btn gjf" style="height: auto; padding-bottom: 50px">
             <form id="expertiseForm">
             <ul>
                 <li>
@@ -57,7 +57,7 @@
             </ul>
             <div class="mt_btn">
                 <span class="mtb_text">附件:&nbsp;&nbsp;</span>
-                    <a href="{{ $record_detail['apply_table'] }}" target="_blank" style="color:#1E90FF;">{{ $record_detail['apply_table_name'] }}</a>
+                    <a href="{{ $record_detail['apply_table'] }}" target="_blank" style="color:#4990E2;">{{ $record_detail['apply_table_name'] }}</a>
             </div>
 
             <div class="last_btn" style="background: #ECECEC">

@@ -9,7 +9,35 @@
             <a type="button" data-key='none' data-method="add" onclick="departmentMethod($(this))" class="btn btn-primary">新增</a>
         </div>
         <hr/>
-        <div class="container-fluid">
+        <!--筛选-->
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-inline">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="search-department_name">名称：</label>
+                            <input type="text" class="form-control" id="search-department_name" name="search-department_name" placeholder="请输入部门名称">
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-group">
+                            <label for="search-type">分类：</label>
+                            <select id="search-type" name="search-type" class="form-control">
+                                @if(isset($type_data) && is_array($type_data))
+                                    <option value="none">不限分类</option>
+                                    @foreach($type_data as $type_id=> $type_name)
+                                        <option value="{{ $type_id }}">{{ $type_name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <input type="hidden" name="s_type" value="department"/>
+                        <button id="search" type="button" class="btn btn-info" onclick="search_list($(this), $('#this-container'))">搜索</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr/>
+        <div class="container-fluid" id="this-container">
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                     <tr>

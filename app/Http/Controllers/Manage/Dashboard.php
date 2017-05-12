@@ -626,7 +626,6 @@ class Dashboard extends Controller
                 else{
                     json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
                 }
-
                 break;
 
             case 'users':
@@ -697,6 +696,46 @@ class Dashboard extends Controller
                 else{
                     json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
                 }
+                break;
+
+            case 'department':
+                $where = 'WHERE';
+                if(isset($inputs['search-department_name']) && !empty($inputs['search-department_name'])){
+                    $where .= ' `department_name` LIKE "%'.$inputs['search-department_name'].'%" AND ';
+                }
+                if(isset($inputs['search-type']) && $inputs['search-type']!='none'){
+                    $where .= '`type_id` = '.$inputs['search-type'].' AND ';
+                }
+                $sql = 'SELECT * FROM `cms_department` '.$where.'1';
+                $departments = DB::select($sql);
+                if($departments && count($departments) > 0){
+                    $department_data = array();
+                    $type_data = array();
+                    $pages = 'none';
+                    $types = DB::table('cms_department_type')->orderBy('create_date', 'desc')->get();
+                    foreach($types as $type){
+                        $type_data[$type->type_id] = $type->type_name;
+                    }
+                    //取出机构
+                    foreach($departments as $key=> $department){
+                        $department_data[$key]['key'] = keys_encrypt($department->id);
+                        $department_data[$key]['department_name'] = $department->department_name;
+                        $department_data[$key]['type_id'] = $department->type_id;
+                        $department_data[$key]['type_name'] = $type_data[$department->type_id];
+                        $department_data[$key]['sort'] = $department->sort;
+                        $department_data[$key]['create_date'] = $department->create_date;
+                    }
+                    //返回到前段界面
+                    $this->page_data['pages'] = $pages;
+                    $this->page_data['type_data'] = $type_data;
+                    $this->page_data['department_list'] = $department_data;
+                    $pageContent = view('judicial.manage.cms.ajaxSearch.departmentSearch',$this->page_data)->render();
+                    json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+                }
+                else{
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
+                }
+                break;
         }
     }
 

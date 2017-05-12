@@ -9,10 +9,10 @@
 <div class="w1024 zw_mb">
     <div class="container-fluid">
         <div class="col-md-offset-3 col-md-3">
-            <a href="{{ URL::to('consultions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px">咨询问题</a>
+            <a href="{{ URL::to('consultions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px; line-height: 30px">咨询问题</a>
         </div>
         <div class=" col-md-3">
-            <a href="{{ URL::to('suggestions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px">征求意见</a>
+            <a href="{{ URL::to('suggestions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px; line-height: 30px">征求意见</a>
         </div>
     </div>
     <!--搜索栏-->
@@ -20,7 +20,7 @@
         <div class="left_title">
             <span>征求意见列表</span>
         </div>
-        <div class="id_sch_r">
+        <div class="id_sch_r" style="padding-top: 30px">
             <form action="{{ URL::to('suggestions/search') }}" method="post">
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <input type="search" name="keywords" placeholder="查询受理编号/问题标题" value="" style="width: 450px">

@@ -7,7 +7,7 @@
                 <a href="{{ URL::to('user') }}">个人中心</a>&nbsp;&nbsp;|&nbsp;
                 <a href="{{ URL::to('user/logout') }}">退出</a>
             @else
-                <input type="button">
+                <input type="button" onclick="javascript: window.location.href='/search'">
                 <a href="{{ URL::to('user') }}">登录</a>&nbsp;&nbsp;|&nbsp;
                 <a href="{{ URL::to('user').'?action=signup' }}">注册</a>
             @endif

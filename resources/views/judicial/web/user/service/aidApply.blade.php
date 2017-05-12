@@ -1,4 +1,9 @@
 <div class="panel-member-body a" id="s_apply" hidden>
+    <div class="container-fluid" style="padding-left: 0; background: #F9F9F9">
+        <div class="left_title" style="margin-top: 10px">
+            <span>我的法律援助记录</span>
+        </div>
+    </div>
     @if(isset($apply_list) && count($apply_list)>0)
         <table class="table">
             <thead>
@@ -18,13 +23,13 @@
                     <td style="vertical-align: middle">{{ isset($apply_type[$apply->type]) ? $apply_type[$apply->type] : '-' }}</td>
                     <td style="vertical-align: middle">
                         @if($apply->status == 'pass')
-                            <div class="shtg">审核通过</div>
+                            <div class="shtg" style="color: #4684CD;">审核通过</div>
                         @elseif($apply->status == 'reject')
-                            <div class="btg">审核不通过/
-                                <a href="#" data-key="{{ $apply->record_code }}" data-type="service_legal_aid_apply" onclick="show_opinion($(this))">查看原因</a>
+                            <div class="btg" style="color: #222222;">审核不通过/
+                                <a href="#" data-key="{{ $apply->record_code }}" data-type="service_legal_aid_apply" onclick="show_opinion($(this))" style="color: #DD3938">查看原因</a>
                             </div>
                         @else
-                            <div class="dsh">待审核</div>
+                            <div class="dsh" style="color: #7DA750">待审核</div>
                         @endif
                     </td>
                     <td style="vertical-align: middle">

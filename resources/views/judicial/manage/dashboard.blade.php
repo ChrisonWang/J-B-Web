@@ -3,7 +3,7 @@
 <!-- 引入公共头部 -->
 @include('judicial.manage.chips.head')
 <!-- 引入UEditor -->
-@include('UEditor::head');
+@include('UEditor::head')
 <body>
 <div id="wrapper">
 	<!-- Navigation -->

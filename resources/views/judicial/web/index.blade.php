@@ -239,7 +239,10 @@
         direction: 'vertical',
         watchActiveIndex : true,
         loop:true,
-        autoplay : 5000
+        autoplay : 5000,
+        paginationBulletRender: function (index, className) {
+            return '<span class="swiper-pagination-udf ' + className + '">' + (index + 1) + '</span>';
+        }
     });
     var swiper_ft = new Swiper('.ft_sid', {
         nextButton: '.ft_sid .swiper-button-next',

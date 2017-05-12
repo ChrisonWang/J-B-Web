@@ -132,6 +132,7 @@ class CmsLoadContent extends Controller
         }
         //返回到前段界面
         $this->page_data['pages'] = $pages;
+        $this->page_data['type_data'] = $type_data;
         $this->page_data['department_list'] = $department_data;
         $pageContent = view('judicial.manage.cms.departmentList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
