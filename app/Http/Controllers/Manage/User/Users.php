@@ -20,7 +20,7 @@ class Users extends Controller
     public function index($page = 1)
     {
         $user_list = array();
-        $managers = DB::table('user_manager')->get();
+        $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
         foreach($managers as $key=> $managers){
             $user_list[$key]['key'] = $managers->manager_code;
             $user_list[$key]['login_name'] = $managers->login_name;
@@ -201,7 +201,7 @@ class Users extends Controller
         }
         //插入数据成功取出管理员
         $user_list = array();
-        $managers = DB::table('user_manager')->get();
+        $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
         foreach($managers as $key=> $managers){
             $user_list[$key]['key'] = $managers->manager_code;
             $user_list[$key]['login_name'] = $managers->login_name;
@@ -212,7 +212,7 @@ class Users extends Controller
             $user_list[$key]['create_date'] = $managers->create_date;
         }
         //取出用户
-        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_member_info.create_date', 'desc')->get();
         $count = count($members);
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
@@ -568,7 +568,7 @@ class Users extends Controller
         }
         //修改成功则回调页面,取出数据
         $user_list = array();
-        $managers = DB::table('user_manager')->get();
+        $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
         foreach($managers as $key=> $managers){
             $user_list[$key]['key'] = $managers->manager_code;
             $user_list[$key]['login_name'] = $managers->login_name;
@@ -579,7 +579,7 @@ class Users extends Controller
             $user_list[$key]['create_date'] = $managers->create_date;
         }
         //取出用户
-        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
+        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_member_info.create_date', 'desc')->get();
         $count = count($members);
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;

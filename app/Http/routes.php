@@ -103,6 +103,8 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('suggestions/detail/{record_code}','Service\Suggestions@show');
 
+    Route::post('suggestions/detail','Service\Suggestions@ajax_show');
+
     Route::get('suggestions/add','Service\Suggestions@add');
 
     Route::post('suggestions/add','Service\Suggestions@doAdd');

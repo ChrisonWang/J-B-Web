@@ -27,7 +27,9 @@
                             待回复
                         @endif
                     </td>
-                    <td style="vertical-align: middle"><a href="{{ URL::to('suggestions/detail').'/'.$suggestions['record_code'] }}" class="tb_btn">查看</a></td>
+                    <td style="vertical-align: middle">
+                        <a href="javascript: void(0); " class="tb_btn" data-key="{{ $suggestions['record_code'] }}" style="color: #000000" onclick="member_show_reason($(this))">查看</a>
+                    </td>
                 </tr>
             @endforeach
             </tbody>

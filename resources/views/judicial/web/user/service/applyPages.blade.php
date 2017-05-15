@@ -38,7 +38,7 @@
         </tbody>
     </table>
     <!--分页-->
-    <div class="zwr_ft">
+    <div class="zwr_ft" hidden>
         <div class="fy_left">
                 <span>
                     <a href="javascript: void(0) ;" data-type="apply" data-method="first" data-now="{{ $pages['now_page'] }}" data-c="s_apply" onclick="service_page($(this))"> 首页</a>

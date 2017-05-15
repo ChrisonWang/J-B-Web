@@ -40,7 +40,7 @@
         </table>
 
         <!--分页-->
-        <div class="zwr_ft">
+        <div class="zwr_ft" style="display: none">
             <div class="fy_left">
                 <span>
                     <a href="javascript: void(0) ;" data-type="expertise" data-method="first" data-now="{{ $expertise_pages['now_page'] }}" data-c="s_expertise" onclick="service_page($(this))"> 首页</a>

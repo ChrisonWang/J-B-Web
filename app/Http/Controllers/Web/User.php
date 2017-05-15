@@ -689,25 +689,30 @@ class User extends Controller
             'count_page'=>($dispatch_count<=10) ? 1 : ceil($dispatch_count/10),
         );
 
+        $this->page_data['expertise_count'] = $expertise_count;
         $this->page_data['expertise_type'] = $expertise_type;
         $this->page_data['expertise_list'] = $expertise_list;
         $this->page_data['expertise_pages'] = $expertise_pages;
 
         $this->page_data['consultions_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        $this->page_data['consultions_count'] = $consultions_count;
         $this->page_data['consultions_list'] = json_decode(json_encode($consultions_list), true);
         $this->page_data['consultions_pages'] = $consultions_pages;
 
         $this->page_data['suggestions_type'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
         $this->page_data['suggestions_list'] = json_decode(json_encode($suggestions_list), true);
+        $this->page_data['suggestions_count'] = $suggestions_count;
         $this->page_data['suggestions_pages'] = $suggestions_pages;
 
         $this->page_data['apply_type'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
         $this->page_data['apply_list'] = $apply_list;
         $this->page_data['apply_pages'] = $apply_pages;
+        $this->page_data['apply_count'] = $apply_count;
 
         $this->page_data['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_data['dispatch_list'] = $dispatch_list;
         $this->page_data['dispatch_pages'] = $dispatch_pages;
+        $this->page_data['dispatch_count'] = $dispatch_count;
     }
 
     public function getServiceListPage(Request $request)

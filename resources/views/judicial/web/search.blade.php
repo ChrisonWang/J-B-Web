@@ -44,6 +44,8 @@
                         <span>总记录数： {{ $page['count'] }}</span>
                         <span>显示 {{ $page['count'] }} 条记录</span>
                         <span>当前页1/1</span>
+                        <span>跳转至第<input type="text" value="1">页</span>
+                        <span class="fy_btn">跳转</span>
                     </div>
                 </div>
             @else

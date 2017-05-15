@@ -58,8 +58,8 @@
                                 <a href="javascript:void(0);" data-node="cms-formMng">表单管理</a>
                                 <a href="javascript:void(0);" data-node="cms-justiceIntroduction">司法局简介</a>
                                 <a href="javascript:void(0);" data-node="cms-leaderIntroduction">领导简介</a>
-                                <a href="javascript:void(0);" data-node="cms-department">机构简介</a>
-                                <a href="javascript:void(0);" data-node="cms-departmentType">机构分类</a>
+                                <a href="javascript:void(0);" data-node="cms-department">机构管理</a>
+                                {{--<a href="javascript:void(0);" data-node="cms-departmentType">机构分类</a>--}}
                                 <a href="javascript:void(0);" data-node="cms-recommendLink">后台推荐链接</a>
                             </li>
                         </ul><!-- 子菜单End -->

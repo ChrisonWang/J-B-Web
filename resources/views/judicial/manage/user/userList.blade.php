@@ -37,7 +37,7 @@
                                     <option value="yes">禁用</option>
                                 </select>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <br/><br/>
                             <div class="form-group">
                                 <label for="search-type">用户类型：</label>
                                 <select id="search-type" name="search-type" class="form-control">

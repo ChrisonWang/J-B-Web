@@ -53,29 +53,75 @@
                 <div class="clear"></div>
             </div>
         </div>
+        @if(($expertise_count + $apply_count + $dispatch_count + $consultions_count + $suggestions_count) > 0)
         <div class="panel-member">
-            <div class="panel-member-top">
-                <div class="panel-member-switch on">
-                    <a href="javascript:void(0);" data-key="expertise" onclick="switch_service($(this))">司法鉴定申请记录</a>
+            <div class="panel-member-top" id="member_tabs">
+                <div class="panel-member-switch" data-sub="s_apply" @if($expertise_count == 0) style="display: none" @endif>
+                    <a href="javascript:void(0);" data-key="expertise" onclick="switch_service($(this))">
+                        司法鉴定申请记录
+                    </a>&nbsp;&nbsp;{{ $expertise_count }}
                 </div>
-                <div class="panel-member-switch">
-                    <a href="javascript:void(0);" data-key="apply" onclick="switch_service($(this))">法律援助预约记录</a>
+                <div class="panel-member-switch" data-sub="s_apply" @if($apply_count == 0) style="display: none" @endif>
+                    <a href="javascript:void(0);" data-key="apply" onclick="switch_service($(this))">
+                        法律援助预约记录
+                    </a>&nbsp;&nbsp;{{ $apply_count }}
                 </div>
-                <div class="panel-member-switch">
-                    <a href="javascript:void(0);" data-key="dispatch" onclick="switch_service($(this))">公检法指派申请记录</a>
+                <div class="panel-member-switch" data-sub="s_apply" @if($dispatch_count == 0) style="display: none" @endif>
+                    <a href="javascript:void(0);" data-key="dispatch" onclick="switch_service($(this))">
+                        公检法指派申请记录
+                    </a>&nbsp;&nbsp;{{ $dispatch_count }}
                 </div>
-                <div class="panel-member-switch">
-                    <a href="javascript:void(0);" data-key="consultions" onclick="switch_service($(this))">问题咨询记录</a>
+                <div class="panel-member-switch" data-sub="s_apply" @if($consultions_count == 0) style="display: none" @endif>
+                    <a href="javascript:void(0);" data-key="consultions" onclick="switch_service($(this))">
+                        问题咨询记录
+                    </a>&nbsp;&nbsp;{{ $consultions_count }}
                 </div>
-                <div class="panel-member-switch">
-                    <a href="javascript:void(0);" data-key="suggestions" onclick="switch_service($(this))">征求意见记录</a>
+                <div class="panel-member-switch" data-sub="s_apply" @if($suggestions_count == 0) style="display: none" @endif>
+                    <a href="javascript:void(0);" data-key="suggestions" onclick="switch_service($(this))">
+                        征求意见记录
+                    </a>&nbsp;&nbsp;{{ $suggestions_count }}
                 </div>
             </div>
             <!--弹窗-->
-            <div class="alert_sh" style="display: none">
+            <div class="alert_sh" id="alert_sh" style="display: none">
                 <a href="javascript:void(0)" class="closed">X</a>
                 <div class="als_top">审核不通过原因</div>
                 <div class="als_down">请按照流程填写申请表，重新提交审核。</div>
+            </div>
+            <!--弹窗-->
+            <div class="alert_sh" id="reason_model" style="display: none; height: auto; top: 20%;">
+                <a href="javascript:void(0)" class="closed">X</a>
+                <div class="als_top">征求意见详情</div>
+                <div class="als_down" style="padding-bottom: 40px">
+                    <div class="container-fluid" style="margin-top: 20px">
+                        <label for="record_no" class="reason_left">受理编号</label>
+                        <input id="record_no" type="text" class="reason_right" disabled/>
+                    </div>
+                    <div class="container-fluid" style="margin-top: 20px">
+                        <label for="type" class="reason_left">留言分类</label>
+                        <input id="type" type="text" class="reason_right" disabled/>
+                    </div>
+                    <div class="container-fluid" style="margin-top: 20px">
+                        <label for="create_date" class="reason_left">留言时间</label>
+                        <input id="create_date" type="text" class="reason_right" disabled/>
+                    </div>
+                    <div class="container-fluid" style="margin-top: 20px">
+                        <label for="title" class="reason_left">留言主题</label>
+                        <input id="title" type="text" class="reason_right" disabled/>
+                    </div>
+                    <div class="container-fluid" style="margin-top: 20px">
+                        <label for="content" class="reason_left">留言内容</label>
+                        <input id="content" type="text" class="reason_right" disabled/>
+                    </div>
+                    <div class="container-fluid" style="margin-top: 20px">
+                        <label for="answer_date" class="reason_left">回复时间</label>
+                        <input id="answer_date" type="text" class="reason_right" disabled/>
+                    </div>
+                    <div class="container-fluid" style="margin-top: 20px">
+                        <label for="answer_content" class="reason_left">回复内容</label>
+                        <input id="answer_content" type="text" class="reason_right" disabled/>
+                    </div>
+                </div>
             </div>
             @include('judicial.web.user.service.expertise')
             @include('judicial.web.user.service.aidApply')
@@ -83,6 +129,7 @@
             @include('judicial.web.user.service.consultions')
             @include('judicial.web.user.service.suggestions')
         </div>
+        @endif
     </div>
 
     @include('judicial.web.chips.foot')

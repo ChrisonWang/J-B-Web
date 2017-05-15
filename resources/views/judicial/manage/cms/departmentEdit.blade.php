@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label for="UE_Content" class="col-md-2 control-label">简介：</label>
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <script id="UE_Content" name="description" type="text/plain"></script>
                 </div>
             </div>

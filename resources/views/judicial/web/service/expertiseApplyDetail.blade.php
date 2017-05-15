@@ -27,7 +27,7 @@
                 <li><i>■</i>如果审批不通过，请按提示重新提交申请。</li>
             </ul>
         </div>
-        <div class="xx_tit">
+        <div class="xx_tit" style="padding-left: 148px">
             司法鉴定申请
             <span style="font-family: MicrosoftYaHei;font-size: 12px;color: #929292;letter-spacing: 0; float: right">
                 受理编号:{{$record_detail['record_code']}}
@@ -37,27 +37,29 @@
             <form id="expertiseForm">
             <ul>
                 <li>
-                    <span class="wsc_txt">申请人姓名</span>
+                    <span class="wsc_txt" style="width: 70px">申请人姓名</span>
                     <div class="cx_inp">
-                        <input disabled type="text" value="{{$record_detail['apply_name']}}" name="apply_name" placeholder="请输入申请人姓名" class="w250">
+                        <input disabled type="text" value="{{$record_detail['apply_name']}}" name="apply_name" placeholder="请输入申请人姓名"/>
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">联系电话</span>
+                    <span class="wsc_txt" style="width: 70px">联系电话</span>
                     <div class="cx_inp">
-                        <input disabled type="text" value="{{$record_detail['cell_phone']}}" name="cell_phone" placeholder="请输入联系电话" class="w250">
+                        <input disabled type="text" value="{{$record_detail['cell_phone']}}" name="cell_phone" placeholder="请输入联系电话"/>
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">类型</span>
+                    <span class="wsc_txt" style="width: 70px">类型</span>
                     <div class="cx_inp">
-                        <input disabled type="text" value="{{$record_detail['type']}}" name="cell_phone" placeholder="请输入联系电话" class="w250">
+                        <input disabled type="text" value="{{$record_detail['type']}}" name="cell_phone" placeholder="请输入联系电话"/>
                     </div>
                 </li>
             </ul>
             <div class="mt_btn">
-                <span class="mtb_text">附件:&nbsp;&nbsp;</span>
+                <span class="wsc_txt" style="width: 80px">附件</span>
+                <div class="cx_inp">
                     <a href="{{ $record_detail['apply_table'] }}" target="_blank" style="color:#4990E2;">{{ $record_detail['apply_table_name'] }}</a>
+                </div>
             </div>
 
             <div class="last_btn" style="background: #ECECEC">

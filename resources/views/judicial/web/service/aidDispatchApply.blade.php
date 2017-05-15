@@ -30,71 +30,72 @@
         <div class="xx_tit">
             公检法指派援助申请
         </div>
-        <div class="text_a post_btn gjf">
+        <div class="text_a post_btn gjf" style="padding-bottom: 40px">
             <form id="aidDispatchForm">
             <ul>
                 <li>
-                    <span class="wsc_txt">申请单位</span>
+                    <span class="wsc_txt" style="width: 80px;">申请单位</span>
                     <div class="cx_inp">
                         <input type="text" name="apply_office" placeholder="请输入申请单位名称" class="w250">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">申请援助单位</span>
+                    <span class="wsc_txt" style="width: 105px;">申请援助单位</span>
                     <div class="cx_inp">
-                        <input type="text" name="apply_aid_office" placeholder="请输入申请援助单位名称" class="w250">
+                        <input type="text" name="apply_aid_office" placeholder="请输入申请援助单位名称" style="width: 206px;">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">犯罪人姓名</span>
+                    <span class="wsc_txt" style="width: 80px;">犯罪人姓名</span>
                     <div class="cx_inp">
                         <input type="text" name="criminal_name" placeholder="请输入犯罪人姓名" class="w250">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">犯罪人身份证号码</span>
+                    <span class="wsc_txt" style="width: 105px;">犯罪人身份证号码</span>
                     <div class="cx_inp">
-                        <input type="text" name="criminal_id" placeholder="请输入犯罪人身份证号码" class="w250">
+                        <input type="text" name="criminal_id" placeholder="请输入犯罪人身份证号码" style="width: 206px;">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">案件名称</span>
+                    <span class="wsc_txt" style="width: 80px;">案件名称</span>
                     <div class="cx_inp">
                         <input type="text" name="case_name" placeholder="请输入案件名称" class="w590">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="vertical-align: top;">涉嫌犯罪内容</span>
+                    <span class="wsc_txt" style="vertical-align: top; width: 80px; padding-top: 5px;">涉嫌犯罪内容</span>
                     <div class="cx_inp">
                         <textarea name="case_description" placeholder="请输入涉嫌犯罪内容" class="w590"></textarea>
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">收押居住地</span>
+                    <span class="wsc_txt" style="width: 80px;">收押居住地</span>
                     <div class="cx_inp">
                         <input type="text" name="detention_location" placeholder="请输入收押居住地址" class="w590">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="vertical-align: top;">判刑处罚内容</span>
+                    <span class="wsc_txt" style="vertical-align: top; width: 80px; padding-top: 5px;">判刑处罚内容</span>
                     <div class="cx_inp">
                         <textarea name="judge_description" placeholder="请输入判刑处罚内容" class="w590"></textarea>
                     </div>
                 </li>
             </ul>
             <div class="mt_btn">
-                <span class="mtb_text">附件</span>
+                <span class="wsc_txt" style="width: 80px;">附件</span>
                 <span class="mtb_m">
-                    <input type="file" name="file">
+                    <input type="file" name="file"/>
                 </span>
             </div>
             <div class=mt_last>
-                <span class="mtl_txt">温馨提示</span>
-                <div class="mt_ul">
+                <span class="wsc_txt" style="width: 80px; float: left">温馨提示</span>
+                <div class="mt_ul" style="float: left">
                     <span>1. 如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
                     <span>2. 请上传《提供法律援助通知书》和案件材料（起诉书／证据）。</span>
                 </div>
             </div>
+            <div class="clear"></div>
             <div class="last_btn" onclick="aidDispatchApply()">
                 提交申请
             </div>

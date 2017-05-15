@@ -18,14 +18,16 @@
                 <td>{{ $suggestions['title'] }}</td>
                 <td>{{ date("Y-m-d H:i", strtotime($suggestions['create_date'])) }}</td>
                 <td>{{ empty(strtotime($suggestions['answer_date']))?'待答复':date("Y-m-d H:i", strtotime($suggestions['answer_date'])) }}</td>
-                <td><a href="{{ URL::to('suggestions/detail').'/'.$suggestions['record_code'] }}" class="tb_btn">查看</a></td>
+                <td>
+                    <a href="javascript: void(0); " class="tb_btn" data-key="{{ $suggestions['record_code'] }}" style="color: #000000" onclick="member_show_reason($(this))">查看</a>
+                </td>
             </tr>
         @endforeach
         </tbody>
     </table>
 
     <!--分页-->
-    <div class="zwr_ft">
+    <div class="zwr_ft" hidden>
         <div class="fy_left">
                 <span>
                     <a href="javascript: void(0) ;" data-type="suggestions" data-method="first" data-now="{{ $pages['now_page'] }}" data-c="s_suggestions" onclick="service_page($(this))"> 首页</a>

@@ -189,6 +189,27 @@ class Suggestions extends Controller
         return view('judicial.web.service.suggestionDetail', $this->page_data);
     }
 
+    public function ajax_show(Request $request){
+        $record_code = $request->input('code');
+        $record_detail = array();
+        $record = DB::table('service_suggestions')->where('record_code', $record_code)->first();
+        if(is_null($record) || count($record)<1){
+            json_response(['status'=>'failed']);
+        }
+        else{
+            $record_detail = array(
+                'record_code'=> $record->record_code,
+                'type'=> $this->page_data['type_list'][$record->type],
+                'create_date'=> date('Y-m-d H:i', strtotime($record->create_date)),
+                'title'=> $record->title,
+                'content'=> trim($record->content),
+                'answer_content'=> trim($record->answer_content)=='' ? '待回复' : trim($record->answer_content),
+                'answer_date'=> ($record->answer_date=='0000-00-00 00:00:00')? '待回复' : date('Y-m-d H:i', strtotime($record->answer_date)),
+            );
+        }
+        json_response(['status'=>'succ', 'res'=>$record_detail]);
+    }
+
     private function _checkInput($inputs){
         if(!isset($inputs['name']) || trim($inputs['name'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名必填/必选，请填写/选择']);

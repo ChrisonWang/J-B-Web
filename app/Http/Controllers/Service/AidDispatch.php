@@ -92,6 +92,7 @@ class AidDispatch extends Controller
                 'case_description'=> $record->case_description,
                 'detention_location'=> $record->detention_location,
                 'judge_description'=> $record->judge_description,
+                'status'=> $record->status,
                 'file'=> $record->file,
                 'file_name'=> $record->file_name,
             );

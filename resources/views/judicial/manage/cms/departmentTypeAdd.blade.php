@@ -5,6 +5,10 @@
         </h3>
     </div>
     <div class="panel-body">
+        {{--<div class="container-fluid">
+            <a type="button" data-key='none' data-method="add" onclick="departmentMethod($(this))" class="btn btn-danger">返回新增机构简介</a>
+        </div>
+        <hr/>--}}
         <form class="form-horizontal" id="typeAddForm">
             <div class="form-group">
                 <label for="typeName" class="col-md-2 control-label"><strong style="color: red">*</strong> 名称：</label>
@@ -29,7 +33,7 @@
                     <button type="button" class="btn btn-info btn-block" onclick="addDepartmentType()">确认</button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-danger btn-block" data-node="cms-departmentType" onclick="loadContent($(this))">返回列表</button>
+                    <button type="button" class="btn btn-danger btn-block" data-node="cms-departmentType" onclick="loadContent($(this))">返回分类列表</button>
                 </div>
             </div>
         </form>

@@ -7,6 +7,7 @@
     <div class="panel-body">
         <div class="container-fluid">
             <a type="button" data-tag-key='none' data-method="add" onclick="typeMethod($(this))" class="btn btn-primary">新增</a>
+            <a type="button" data-node="cms-department" onclick="loadContent($(this))" class="btn btn-danger">返回机构管理</a>
         </div>
         <hr/>
         <div class="container-fluid">

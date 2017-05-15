@@ -103,7 +103,7 @@ class Department extends Controller
         $save_data = array(
             'department_name'=> $inputs['department_name'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
-            'description'=> $inputs['description'],
+            'description'=> htmlspecialchars($inputs['description']),
             'type_id'=> keys_decrypt($inputs['type_id']),
             'create_date'=> $now,
             'update_date'=> $now
@@ -172,7 +172,7 @@ class Department extends Controller
         $department_detail['department_name'] = $types->department_name;
         $department_detail['type_id'] = $types->type_id;
         $department_detail['sort'] = $types->sort;
-        $department_detail['description'] = $types->description;
+        $department_detail['description'] = htmlspecialchars_decode($types->description);
         $department_detail['create_date'] = $types->create_date;
         $department_detail['update_date'] = $types->update_date;
         //取出分类
@@ -216,7 +216,7 @@ class Department extends Controller
         $department_detail['department_name'] = $types->department_name;
         $department_detail['type_id'] = $types->type_id;
         $department_detail['sort'] = $types->sort;
-        $department_detail['description'] = $types->description;
+        $department_detail['description'] = htmlspecialchars_decode($types->description);
         $department_detail['create_date'] = $types->create_date;
         $department_detail['update_date'] = $types->update_date;
         //取出分类
@@ -256,7 +256,7 @@ class Department extends Controller
         $save_data = array(
             'department_name'=> $inputs['department_name'],
             'sort'=> empty($inputs['sort']) ? 0 : $inputs['sort'],
-            'description'=> $inputs['description'],
+            'description'=> htmlspecialchars($inputs['description']),
             'type_id'=> keys_decrypt($inputs['type_id']),
             'update_date'=> $now
         );

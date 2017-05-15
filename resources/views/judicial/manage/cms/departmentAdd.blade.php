@@ -21,6 +21,9 @@
                         @endforeach
                     </select>
                 </div>
+                {{--<div class="col-md-1">
+                    <button type="button" class="btn btn-default btn-block" data-tag-key='none' data-method="add" onclick="typeMethod($(this))">新增分类</button>
+                </div>--}}
             </div>
             <div class="form-group">
                 <label for="typeName" class="col-md-2 control-label">排序：</label>
@@ -30,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label for="UE_Content" class="col-md-2 control-label"><strong style="color: red">*</strong> 简介：</label>
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <script id="UE_Content" name="description" type="text/plain"></script>
                 </div>
             </div>

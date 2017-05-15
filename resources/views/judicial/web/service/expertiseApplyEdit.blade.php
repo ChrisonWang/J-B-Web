@@ -27,32 +27,32 @@
                 <li><i>■</i>如果审批不通过，请按提示重新提交申请。</li>
             </ul>
         </div>
-        <div class="xx_tit">
+        <div class="xx_tit" style="padding-left: 148px">
             司法鉴定申请
             <span style="font-family: MicrosoftYaHei;font-size: 12px;color: #929292;letter-spacing: 0; float: right">
                 受理编号:{{$record_detail['record_code']}}
             </span>
         </div>
-        <div class="text_a post_btn gjf" style="height: auto">
+        <div class="text_a post_btn gjf" style="height: auto; padding-bottom: 40px">
             <form id="expertiseForm">
             <input type="hidden" name="record_code" value="{{$record_detail['record_code']}}" />
             <ul>
                 <li>
-                    <span class="wsc_txt">申请人姓名</span>
+                    <span class="wsc_txt" style="width: 70px">申请人姓名</span>
                     <div class="cx_inp">
-                        <input type="text" value="{{$record_detail['apply_name']}}" name="apply_name" placeholder="请输入申请人姓名" class="w250">
+                        <input type="text" value="{{$record_detail['apply_name']}}" name="apply_name" placeholder="请输入申请人姓名">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">联系电话</span>
+                    <span class="wsc_txt" style="width: 70px">联系电话</span>
                     <div class="cx_inp">
-                        <input type="text" value="{{$record_detail['cell_phone']}}" name="cell_phone" placeholder="请输入联系电话" class="w250">
+                        <input type="text" value="{{$record_detail['cell_phone']}}" name="cell_phone" placeholder="请输入联系电话">
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">类型</span>
+                    <span class="wsc_txt" style="width: 70px">类型</span>
                     <div class="cx_inp">
-                        <select name="type_id" style="width: 252px; height: 30px" onchange="loadExpertiseFile($(this))">
+                        <select name="type_id" onchange="loadExpertiseFile($(this))">
                             @if($type_list != 'none' && is_array($type_list))
                                 @foreach($type_list as $k=>$name)
                                     <option value="{{ $k }}">{{ $name }}</option>
@@ -65,19 +65,11 @@
                 </li>
             </ul>
                 <div class="mt_btn">
-                    <span class="mtb_text">附件:&nbsp;&nbsp;</span>
+                    <span class="wsc_txt" style="width: 80px">附件:&nbsp;&nbsp;</span>
                     <input type="file" name="file">
-
                 <span class="mtb_m" id="expertiseFile">
                     <a href="javascript: alert('请先选择司法鉴定类型！') ;">请先选择类型</a>
                 </span>
-                </div>
-
-                <div class=mt_last>
-                    <span class="mtl_txt" style="color: #E23939;">温馨提示</span>
-                    <div class="mt_ul">
-                        <span>如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
-                    </div>
                 </div>
             <div class="last_btn" onclick="expertiseApply()">
                 提交申请
@@ -88,6 +80,12 @@
 
 </div>
 
+<!--弹窗-->
+<div class="alert_sh" style="display: none">
+    <a href="javascript:void(0)" class="closed">X</a>
+    <div class="als_top">提交中</div>
+    <div class="als_down"></div>
+</div>
 
 <!--底部-->
 @include('judicial.web.chips.foot')

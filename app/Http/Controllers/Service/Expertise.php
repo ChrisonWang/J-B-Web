@@ -167,6 +167,7 @@ class Expertise extends Controller
                 'apply_date' => date('Y-m-d H:i:s', time()),
             );
             $re = DB::table('service_judicial_expertise')->where('record_code', $inputs['record_code'])->update($save_data);
+            $record_code = $inputs['record_code'];
         }
         else{
             $record_code = $this->get_record_code('JD');

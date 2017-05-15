@@ -76,8 +76,17 @@
     <div class="vd_left">
         <span class="vd_tit">宣传视频</span>
         <span class="vid_more"><a href="{{ URL::to('/video') }}" target="_blank">更多视频>></a></span>
-        <embed src='{!! isset($video['link']) ? $video['link'] : '' !!}' allowFullScreen='true' quality='high' width='300' height='200' align='middle' allowScriptAccess='always' type='application/x-shockwave-flash'></embed>
-        <span style="display: block;">{{ isset($video['title']) ? $video['title'] : '未添加' }}</span>
+        <div class="index_vedio">
+            <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
+                <img class="image_list" src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="300" height="200">
+            </a>
+            <a class="vd_btn" href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank" style="display: block">
+                <img src="{{ asset('/images/btn_play_50x50.png') }}" width="70" height="70">
+            </a>
+        </div>
+        <span style="display: block; font-family: MicrosoftYaHei; font-size: 12px; color: #222222; margin-top: 20px">
+            {{ isset($video['title']) ? $video['title'] : '未添加' }}
+        </span>
     </div>
 
     <div class="vd_mid">
@@ -116,10 +125,9 @@
                     <li @if($k === 0)class="idbr_topsd"@endif onclick="loadArticle($(this), $('#zwgk_c'))"data-channel="zwgk" data-key="{{ $zwgk_l['key'] }}" data-top="no">{{ $zwgk_l['channel_title'] }}</li>
                 @endforeach
             </ul>
-            <a href="{{ URL::to('/list').'/'.$zwgk_list[0]['key']}}" style="color: #000">更多>></a>
             @endif
         </div>
-        <div class="idbr_down">
+        <div class="idbr_down" id="idbr_down_2">
             <ul id="zwgk_c">
                 @if($zwgk_article_list != 'none' && is_array($zwgk_article_list))
                     @foreach($zwgk_article_list as $zwgk)
@@ -134,6 +142,9 @@
                     暂无数据
                 @endif
             </ul>
+            <div style="text-align: center; width: 100%; margin: 0 auto" id="more_2">
+                <a href="{{ URL::to('/list').'/'.$m_zwgk_list[0]['key']}}" class="more_2">查看更多 > ></a>
+            </div>
         </div>
     </div>
     <div class="new2_right vd_mid">
@@ -202,14 +213,16 @@
     <div class="last_link">
         @if($flink_type_list != 'none' && is_array($flink_type_list))
             @foreach($flink_type_list as $key=> $flink_type)
-                <span>
-                    <select onchange="jumpToFlink($(this))" style="text-align: center">
-                        <option value="type">==&nbsp;&nbsp;{{ $flink_type }}&nbsp;&nbsp;==</option>
-                        @foreach($flinks_list[$key] as $flinks)
-                            <option value="{{ $flinks['link'] }}" style="text-align: center">==&nbsp;&nbsp;{{ $flinks['title'] }}&nbsp;&nbsp;==</option>
-                        @endforeach
-                    </select>
-                </span>
+                <select onchange="jumpToFlink($(this))" style="text-align: center; padding-left: 10px">
+                    <option value="type" style="text-align: center">
+                        <span>====&nbsp;&nbsp;{{ $flink_type }}&nbsp;&nbsp;====</span>
+                    </option>
+                    @foreach($flinks_list[$key] as $flinks)
+                        <option value="{{ $flinks['link'] }}" style="text-align: center; padding-left: 10px">
+                            <span>====&nbsp;&nbsp;{{ $flinks['title'] }}&nbsp;&nbsp;====</span>
+                        </option>
+                    @endforeach
+                </select>
             @endforeach
         @endif
     </div>

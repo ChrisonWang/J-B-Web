@@ -122,7 +122,11 @@ $(document).ready(function(){
         $('#ico_4').show();
     });
 
+    //个人中心tab
+    $('#member_tabs').find('.panel-member-switch').eq(0).addClass('on');
+
 });
+
 function getBrowserInfo()
 {
     var agent = navigator.userAgent.toLowerCase() ;
@@ -323,10 +327,13 @@ function loadArticle(t,c){
                         a_list += '<li><a href="'+sub.url+'"> <span class="idbrd_l">'+sub.article_title+'</span> <span class="idbrd_r">'+sub.publish_date+'</span></a></li>';
                     });
                     c.html(a_list);
+                    $('#more_2').show();
+                    $('.more_2').attr('href', '/list/' + channel_id);
                 }
                 else if(re.status == 'failed'){
                     c.html('暂无数据');
-                    return;
+                    $('#more_2').hide();
+                    return false;
                 }
             }
             else if(channel == 'sfdt'){
@@ -340,12 +347,12 @@ function loadArticle(t,c){
                 }
                 else if(re.status == 'failed'){
                     c.html('暂无数据');
-                    return;
+                    return false;
                 }
             }
         }
     });
-    return;
+    return false;
 }
 
 function addSuggestion(){
@@ -582,7 +589,6 @@ function expertiseApply(){
             }
             else if(re.status == 'succ'){
                 $(".alert_sh").hide();
-                alert('提交成功！');
                 window.location.href=re.link;
             }
         },
@@ -655,8 +661,8 @@ function show_opinion(t){
         data: {record_code:record_code, type:type},
         success: function(re){
             if(re.status == 'succ'){
-                $('.alert_sh').show();
-                $('.alert_sh').find('.als_down').text(re.res);
+                $('#alert_sh').show();
+                $('#alert_sh').find('.als_down').text(re.res);
             }
         }
     });
@@ -699,4 +705,35 @@ function str_count_len(str){
             realLength += 1;
     }
     return realLength;
+}
+
+function member_show_reason(t){
+    var code = t.data('key');
+    var url = '/suggestions/detail';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: url,
+        method: "POST",
+        data: {code: code},
+        success: function(re){
+            if(re.status == 'succ'){
+                $("#record_no").val(re.res.record_code);
+                $("#type").val(re.res.type);
+                $("#title").val(re.res.title);
+                $("#create_date").val(re.res.create_date);
+                $("#content").val(re.res.content);
+                $("#answer_content").val(re.res.answer_content);
+                $("#answer_date").val(re.res.answer_date);
+
+                $('#reason_model').fadeIn(300);
+                return false
+            }
+            else {
+                $('#reason_model').hide();
+                return false;
+            }
+        }
+    });
 }

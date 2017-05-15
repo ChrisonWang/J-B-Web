@@ -7,6 +7,7 @@
     <div class="panel-body">
         <div class="container-fluid">
             <a type="button" data-key='none' data-method="add" onclick="departmentMethod($(this))" class="btn btn-primary">新增</a>
+            <a type="button" data-node="cms-departmentType" onclick="loadContent($(this))" class="btn btn-info">机构分类</a>
         </div>
         <hr/>
         <!--筛选-->

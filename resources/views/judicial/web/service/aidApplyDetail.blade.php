@@ -30,54 +30,48 @@
                 <li><i>■</i>如果审批不通过，请按提示重新提交申请。</li>
             </ul>
         </div>
-        <div class="xx_tit">
+        <div class="xx_tit" style="padding-left: 150px">
             群众预约援助申请
             <span style="font-family: MicrosoftYaHei;font-size: 12px;color: #929292;letter-spacing: 0; float: right">
                 受理编号:{{$record_detail['record_code']}}
             </span>
         </div>
-        <form id="aidApplyForm">
+        <form id="aidApplyForm" style="padding-bottom: 40px;">
             <div class="text_a">
                 <span class="vd_tit">申请人信息</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt">姓名</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">姓名</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['apply_name'] }}' name="apply_name" placeholder="请输入姓名">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">政治面貌</span>
+                        <span class="wsc_txt" style="width: 60px; margin-left: 0">政治面貌</span>
                         <div class="cx_inp">
-                            <select disabled name="political">
-                                <option value="citizen" @if($record_detail['political']=='citizen') selected @endif>群众</option>
-                                <option value="cp" @if($record_detail['political']=='cp') selected @endif>党员</option>
-                                <option value="cyl" @if($record_detail['political']=='cyl') selected @endif>团员</option>
-                            </select>
+                            <input disabled type="text" value='{{ $political[$record_detail['political']] }}' name="political" placeholder="">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">性别</span>
+                        <span class="wsc_txt" style="width: 60px; margin-left: 0">性别</span>
                         <div class="cx_inp">
-                            <select disabled name="sex">
-                                <option value="none" selected>{{ $record_detail['sex'] }}</option>
-                            </select>
+                            <input disabled type="text" value='{{ $record_detail['sex'] }}' name="sex" placeholder="">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">联系电话</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">联系电话</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['apply_phone'] }}' name="apply_phone" placeholder="请输入联系电话" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">身份证号码</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">身份证号码</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['apply_identity_no'] }}' name="apply_identity_no" placeholder="请输入身份证号码" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">通讯地址</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">通讯地址</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['apply_address'] }}' name="apply_address" placeholder="请输入通讯地址" class="w590">
                         </div>
@@ -88,25 +82,25 @@
                 <span class="vd_tit">被告人概况</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt">姓名</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">姓名</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['defendant_name'] }}' name="defendant_name" placeholder="请输入姓名" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">联系电话</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">联系电话</span>
                         <div class="cx_inp">
-                            <input disabled type="text" value='{{ $record_detail['defendant_phone'] }}' name="defendant_phone" placeholder="请输入联系电话" class="w250">
+                            <input disabled type="text" value='{{ $record_detail['defendant_phone'] }}' name="defendant_phone" placeholder="请输入联系电话" style="width: 240px">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">单位名称</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">单位名称</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['defendant_company'] }}' name="defendant_company" placeholder="请输入单位名称" class="w590">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">通讯地址</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">通讯地址</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['defendant_addr'] }}' name="defendant_addr" placeholder="请输入通讯地址" class="w590">
                         </div>
@@ -117,47 +111,39 @@
                 <span class="vd_tit">案件描述</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt">发生时间</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">发生时间</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['happened_date'] }}' name="happened_date" placeholder="例：YYYY-MM-DD" />
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">所属区域</span>
+                        <span class="wsc_txt" style="width: 60px; margin-left: 0">所属区域</span>
                         <div class="cx_inp">
-                            <select disabled name="case_area_id">
-                                @if(!isset($area_list) || !is_array($area_list) || count($area_list)<1)
-                                    <option value="none">未设置区域</option>
-                                @else
-                                    <option value="none">{{ $area_list[$record_detail['case_area_id']] }}</option>
-                                @endif
-                            </select>
+                            <input disabled type="text" value='{{ $area_list[$record_detail['case_area_id']] }}' name="case_area_id" placeholder="" />
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">案件分类</span>
+                        <span class="wsc_txt" style="width: 60px; margin-left: 0">案件分类</span>
                         <div class="cx_inp">
-                            <select disabled name="type">
-                                @foreach($type_list as $k=> $type)
-                                    <option value="none">{{ $type_list[$record_detail['type']] }}</option>
-                                @endforeach
-                            </select>
+                            <input disabled type="text" value='{{ $type_list[$record_detail['type']] }}' name="type" placeholder="" />
                         </div>
                     </li>
                     <li class="w590" style="margin-bottom: 10px">
-                        <span class="wsc_txt" style="width: 100px">
-                            是否为讨薪:&nbsp;&nbsp;
-                            <input disabled type="checkbox" name="salary_dispute" @if($record_detail['salary_dispute'] == 'yes') checked @endif value="yes" class=""/>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0;">
+                            是否为讨薪
                         </span>
+                        <div class="cx_inp">
+                            <input disabled type="checkbox" name="salary_dispute" @if($record_detail['salary_dispute'] == 'yes') checked @endif value="yes" style="width: 20px"/>
+                        </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">发生地点</span>
+                        <span class="wsc_txt" style="width: 80px; margin-left: 0">发生地点</span>
                         <div class="cx_inp">
                             <input disabled type="text" value='{{ $record_detail['case_location'] }}' name="case_location" placeholder="请输入发生的具体地点" class="w590">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="vertical-align: top;">举报问题描述</span>
+                        <span class="wsc_txt" style="vertical-align: top; width: 80px; padding-top: 5px; margin-left: 0">举报问题描述</span>
                         <div class="cx_inp">
                             <textarea disabled name="dispute_description" placeholder="请对举报的问题进行具体描述" class="w590">
                                 {{ $record_detail['dispute_description'] }}
@@ -166,18 +152,27 @@
                     </li>
                 </ul>
                 <div class="mt_btn">
-                    <span class="mtb_text">附件</span>
-                        <a href="{{ $record_detail['file'] }}" target="_blank">{{ $record_detail['file_name'] }}</a>
+                    <span class="wsc_txt" style="width: 80px">附件</span>
+                    <div class="cx_inp">
+                        <a href="{{ $record_detail['file'] }}" target="_blank" style="color: #4990E2; margin-left: 10px">{{ $record_detail['file_name'] }}</a>
+                    </div>
                 </div>
                 <div class=mt_last>
-                    <span class="mtl_txt">温馨提示</span>
-                    <div class="mt_ul">
+                    <span class="wsc_txt" style="width: 80px; color: #222222; float: left">温馨提示</span>
+                    <div class="mt_ul" style="display: inline-block; float: left">
                         <span>1. 如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
                         <span>2. 民工讨薪事件无需上传《法律援助经济状况证明表》。</span>
                     </div>
                 </div>
+                <div class="clear"></div>
                 <div class="last_btn" style="background: #ECECEC">
-                    提交申请
+                    @if($record_detail['status'] == 'reject')
+                        审核驳回
+                    @elseif($record_detail['status'] == 'pass')
+                        审核通过
+                    @else
+                        待审核
+                    @endif
                 </div>
             </div>
         </form>

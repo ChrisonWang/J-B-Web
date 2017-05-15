@@ -30,25 +30,25 @@
         <div class="xx_tit">
             司法鉴定申请
         </div>
-        <div class="text_a post_btn gjf" style="height: auto">
+        <div class="text_a post_btn gjf" style="height: auto; padding-bottom: 30px">
             <form id="expertiseForm">
             <ul>
                 <li>
-                    <span class="wsc_txt">申请人姓名&nbsp;&nbsp;</span>
+                    <span class="wsc_txt" style="width: 70px">申请人姓名</span>
                     <div class="cx_inp">
-                        <input type="text" name="apply_name" placeholder="请输入申请人姓名" class="w250">
+                        <input type="text" name="apply_name" placeholder="请输入申请人姓名" />
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">联系电话&nbsp;&nbsp;</span>
+                    <span class="wsc_txt" style="width: 70px">联系电话</span>
                     <div class="cx_inp">
-                        <input type="text" name="cell_phone" placeholder="请输入联系电话" class="w250">
+                        <input type="text" name="cell_phone" placeholder="请输入联系电话" />
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt">类型&nbsp;&nbsp;</span>
+                    <span class="wsc_txt" style="width: 70px">类型</span>
                     <div class="cx_inp">
-                        <select name="type_id" style="width: 252px; height: 40px" onchange="loadExpertiseFile($(this))">
+                        <select name="type_id" style="" onchange="loadExpertiseFile($(this))">
                             @if($type_list != 'none' && is_array($type_list))
                                 <option value="none">请选择类型！</option>
                                 @foreach($type_list as $k=>$name)
@@ -62,20 +62,16 @@
                 </li>
             </ul>
             <div class="mt_btn">
-                <span class="mtb_text">附件&nbsp;&nbsp;</span>
-                    <input type="file" name="file">
+                <span class="wsc_txt" style="width: 80px">附件</span>
+
+                    <input type="file" name="file" />
+
 
                 <span class="mtb_m" id="expertiseFile">
                     <a href="javascript: alert('请先选择司法鉴定类型！') ;">请先选择类型</a>
                 </span>
             </div>
 
-                <div class=mt_last>
-                    <span class="mtl_txt" style="color: #E23939;">温馨提示</span>
-                    <div class="mt_ul">
-                        <span>如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
-                    </div>
-                </div>
             <div class="last_btn" onclick="expertiseApply()">
                 提交申请
             </div>

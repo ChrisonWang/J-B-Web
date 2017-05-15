@@ -163,7 +163,7 @@ class Index extends Controller
         }
         //政务公开
         $zwgk_article_list = 'none';
-        $zwgk = DB::table('cms_channel')->where('zwgk', 'yes')->where('wsbs','no')->where('pid',0)->orderBy('create_date', 'desc')->skip(0)->take(5)->get();
+        $zwgk = DB::table('cms_channel')->where('zwgk', 'yes')->where('wsbs','no')->where('pid',0)->orderBy('channel_id', 'desc')->skip(0)->take(6)->get();
         $m_zwgk_list = array();
         if(count($zwgk) > 0) {
             foreach ($zwgk as $zw) {
@@ -192,6 +192,8 @@ class Index extends Controller
             $video = array(
                 'title'=> $videos->title,
                 'link'=> $videos->link,
+                'key'=> $videos->video_code,
+                'thumb'=> $videos->thumb,
             );
         }
 
@@ -538,7 +540,7 @@ class Index extends Controller
         else{
             $department_detail = array(
                 'department_name'=> $department->department_name,
-                'description'=> $department->description,
+                'description'=> htmlspecialchars_decode($department->description),
                 'create_date'=> $department->create_date,
             );
         }
@@ -558,7 +560,7 @@ class Index extends Controller
         }
         else{
             $intro_detail = array(
-                'introduce'=> $introduction->introduce,
+                'introduce'=> htmlspecialchars_decode($introduction->introduce),
                 'create_date'=> $introduction->create_date,
             );
         }
