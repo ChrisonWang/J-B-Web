@@ -1473,6 +1473,7 @@ function ajax_upload_file(t, type){
                 }
             }
             else if(re.status == 'failed') {
+                t.val('');
                 ajaxResult(re,$('#add-row-notice'));
             }
         }

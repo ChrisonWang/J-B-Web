@@ -23,6 +23,14 @@ class Controller extends BaseController
 
     public function get_left_list()
     {
+        //获取表单
+        $forms_channel = array();
+        $forms = DB::table('cms_forms')->where('disabled', 'no')->groupBy('channel_id')->orderBy('id', 'asc')->get();
+        if(!empty($forms)){
+            foreach($forms as $form){
+                $forms_channel[$form->channel_id] = $form->title;
+            }
+        }
         $channel_list = array();
         //获取一级频道
         $p_channels = DB::table('cms_channel')->where('pid', 0)->where('standard', 'no')->where('zwgk', 'yes')->orderBy('sort', 'desc')->get();
@@ -38,12 +46,23 @@ class Controller extends BaseController
                     $channel_list[$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
                 }
             }
+            if(isset($forms_channel[$p_channel->channel_id])){
+                $channel_list[$key]['forms'] = $p_channel->channel_id;
+            }
         }
         return $channel_list;
     }
 
     public function get_left_sub()
     {
+        //获取表单
+        $forms_channel = array();
+        $forms = DB::table('cms_forms')->where('disabled', 'no')->groupBy('channel_id')->orderBy('id', 'asc')->get();
+        if(!empty($forms)){
+            foreach($forms as $form){
+                $forms_channel[$form->channel_id] = $form->title;
+            }
+        }
         //左侧
         $s_lsfw = DB::table('cms_channel')->where('pid', 128)->where('wsbs','yes')->where('zwgk','no')->get();
         $s_sfks = DB::table('cms_channel')->where('pid', 126)->where('wsbs','yes')->where('zwgk','no')->get();
@@ -67,6 +86,10 @@ class Controller extends BaseController
                         $wsbs_left_list[$key]['sub_channel'][$sub_c->channel_id] = $sub_c->channel_title;
                     }
                 }
+                //判断表格下载
+                if(isset($forms_channel[$_p_channel->channel_id])){
+                    $wsbs_left_list[$key]['forms'] = $_p_channel->channel_id;
+                }
             }
         }
 
@@ -74,6 +97,11 @@ class Controller extends BaseController
         $this->page_data['s_sfks'] = json_decode(json_encode($s_sfks), true);
         $this->page_data['s_sfjd'] = json_decode(json_encode($s_sfjd), true);
         $this->page_data['s_flyz'] = json_decode(json_encode($s_flyz), true);
+
+        $this->page_data['s_sfks']['forms'] = isset($forms_channel[128]) ? 128 : 0;
+        $this->page_data['s_lsfw']['forms'] = isset($forms_channel[126]) ? 126 : 0;
+        $this->page_data['s_sfjd']['forms'] = isset($forms_channel[130]) ? 130 : 0;
+        $this->page_data['s_flyz']['forms'] = isset($forms_channel[133]) ? 133 : 0;
         $this->page_data['wsbs_left_list'] = $wsbs_left_list;
     }
 

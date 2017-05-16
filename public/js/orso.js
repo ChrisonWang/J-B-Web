@@ -35,6 +35,9 @@
 			});
 		});
 		$(outside.boxr).mouseover(function(){
+			$(outside.boxr).find(outside.boxlrX).on("click",function(){
+				$(this).addClass(outside.boxon).siblings().removeClass(outside.boxon)
+			});
 			$(outside.boxr).find(outside.boxlrX).on("dblclick",function(){
 				$(this).find("input").val('');
 				$(this).appendTo(outside.boxl).siblings().removeClass(outside.boxon);

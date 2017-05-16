@@ -317,6 +317,53 @@ class Index extends Controller
         }
     }
 
+    public function form_list($cid, $page = 1)
+    {
+        $channel_id = $cid;
+        $form_list = array();
+        $pages = '';
+        //频道信息
+        $channel = DB::table('cms_channel')->where('channel_id', $channel_id)->first();
+        if((count($channel)==0)){
+            return view('errors.404');
+        }
+        else{
+            $this->page_data['sub_title'] = $channel->channel_title;
+            $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
+            if(count($p_channel)!=0){
+                $this->page_data['title'] = $p_channel->channel_title;
+            }
+        }
+        $count = DB::table('cms_forms')->where(['channel_id'=>$channel_id, 'disabled'=>'no'])->count();
+        $count_page = ($count > 16)? ceil($count/16)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 16;
+        $forms = DB::table('cms_forms')->where(['channel_id'=>$channel_id, 'disabled'=>'no'])->orderBy('create_date', 'desc')->skip($offset)->take(16)->get();
+        if(count($forms) < 1){
+            $this->page_data['form_list'] = 'none';
+            return view('judicial.web.formList', $this->page_data);
+        }
+        else{
+            $count = 0;
+            foreach($forms as $form){
+                if(empty($form->file)){
+                    continue;
+                }
+                $form_list[] = array(
+                    'title'=> $form->title,
+                    'file'=> $form->file,
+                );
+            }
+            $this->page_data['page'] = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'forms',
+            );
+            $this->page_data['form_list'] = $form_list;
+            return view('judicial.web.formList', $this->page_data);
+        }
+    }
+
     /**
      * 返回视频新闻列表
      * @param Request $request

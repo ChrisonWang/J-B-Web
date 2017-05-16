@@ -40,6 +40,9 @@
                             @foreach($channel_list[$key]['sub_channel'] as $sub_key=> $sub_channel_title)
                                 <span><a href="{{ URL::to('/list/'.$sub_key.'/1')}}" style="color: #000000">{{ mb_spilt_title($sub_channel_title, 7, false) }}</a></span>
                             @endforeach
+                            @if(isset($channel_list[$key]['forms']))
+                                <span><a href="{{ URL::to('/forms/'.$channel_list[$key]['forms'].'/1')}}" style="color: #000000">表格下载</a></span>
+                            @endif
                         </div>
                     @endif
                 </li>

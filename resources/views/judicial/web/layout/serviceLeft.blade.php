@@ -9,6 +9,9 @@
                         <span onclick="javascript: window.location.href='{{URL::to('service/list'.'/'.$lsfw['channel_id'].'/1')}}';">{{ $lsfw['channel_title'] }}</span>
                     @endforeach
                 @endif
+                @if(isset($s_lsfw['forms']) && $s_lsfw['forms']!=0)
+                    <span onclick="javascript: window.location.href='{{URL::to('service/forms'.'/'.$s_lsfw['forms'].'/1')}}';">表格下载</span>
+                @endif
             </div>
         </li>
         <li><div>司法考试<i class="r_awry"></i></div>
@@ -17,6 +20,9 @@
                     @foreach($s_sfks as $sfks)
                         <span onclick="javascript: window.location.href='{{URL::to('service/list'.'/'.$sfks['channel_id'].'/1')}}';">{{ $sfks['channel_title'] }}</span>
                     @endforeach
+                @endif
+                @if(isset($s_sfks['forms']) && $s_sfks['forms']!=0)
+                    <span onclick="javascript: window.location.href='{{URL::to('service/forms'.'/'.$s_sfks['forms'].'/1')}}';">表格下载</span>
                 @endif
             </div>
         </li>
@@ -43,6 +49,9 @@
                         <span onclick="javascript: window.location.href='{{URL::to('service/list'.'/'.$flyz['channel_id'].'/1')}}';">{{ mb_spilt_title($flyz['channel_title'], 7, false) }}</span>
                     @endforeach
                 @endif
+                @if(isset($s_flyz['forms']) && $s_flyz['forms']!=0)
+                    <span onclick="javascript: window.location.href='{{URL::to('service/forms'.'/'.$flyz['forms'].'/1')}}';">表格下载</span>
+                @endif
             </div>
         </li>
         @if(isset($wsbs_left_list) && is_array($wsbs_left_list) && count($wsbs_left_list)>0)
@@ -57,6 +66,9 @@
                             @foreach($wsbs_p['sub_channel'] as $key=> $sub_channel)
                                 <span onclick="javascript: window.location.href='{{URL::to('service/list'.'/'.$key.'/1')}}';">{{ $sub_channel }}</span>
                             @endforeach
+                        @endif
+                        @if(isset($wsbs_p['forms']))
+                            <span><a href="{{ URL::to('/service/forms/'.$wsbs_p['forms'].'/1')}}" style="color: #000000">表格下载</a></span>
                         @endif
                     </div>
                 </li>

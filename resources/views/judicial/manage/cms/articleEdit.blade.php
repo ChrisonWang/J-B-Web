@@ -145,8 +145,9 @@
                             </tr>
                             </thead>
                             <tbody class="text-center" id="menu-nodes">
-                            @foreach($article_detail['files'] as $files)
-                                <form method="post">
+                            <form method="post">
+                                <input name="hasFile" type="hidden" value="yes" />
+                                @foreach($article_detail['files'] as $files)
                                     <tr>
                                         <td>
                                             <input type="text" class="form-control" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
@@ -158,8 +159,8 @@
                                             <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
                                         </td>
                                     </tr>
-                                </form>
-                            @endforeach
+                                @endforeach
+                            </form>
                             </tbody>
                         </table>
                         @else

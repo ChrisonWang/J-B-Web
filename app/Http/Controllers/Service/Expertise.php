@@ -273,6 +273,39 @@ class Expertise extends Controller
         return view('judicial.web.service.expertiseForm', $this->page_data);
     }
 
+    public function form_list($cid, $page = 1){
+        $pages = '';
+        $channel_id = $cid;
+        $form_list = array();
+        $count = DB::table('cms_forms')->where(['channel_id'=>$channel_id, 'disabled'=>'no'])->count();
+        $count_page = ($count > 16)? ceil($count/16)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 16;
+        $forms = DB::table('cms_forms')->where(['channel_id'=>$channel_id, 'disabled'=>'no'])->orderBy('create_date', 'desc')->skip($offset)->take(16)->get();
+        if(count($forms) > 0){
+            $form_list = array();
+            foreach($forms as $form){
+                if(empty($form->file)){
+                    continue;
+                }
+                $form_list[] = array(
+                    'title'=> $form->title,
+                    'file'=> $form->file,
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => $page,
+                'type' => 'service/forms',
+            );
+        }
+
+        $this->page_data['channel_id'] = $channel_id;
+        $this->page_data['pages'] = $pages;
+        $this->page_data['form_list'] = $form_list;
+        return view('judicial.web.service.formList', $this->page_data);
+    }
+
     public function loadFile(Request $request){
         $type_id = keys_decrypt($request->input('type_id'));
         $file = DB::table('service_judicial_expertise_type')->where('id', $type_id)->first();

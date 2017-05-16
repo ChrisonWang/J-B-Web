@@ -551,7 +551,14 @@ class Article extends Controller
             }
         }
         else{
-            $file_list = '';
+            $files = DB::table('cms_article')->where('article_code',$article_code)->first();
+            if(!empty($files)){
+                $files = json_decode($files->files, true);
+                $file_list[0] = array(
+                    'filename'=> $inputs['file-name'],
+                    'file'=> isset($files[0]['file']) ? $files[0]['file'] : ''
+                );
+            }
         }
 
         //标签去重
@@ -782,12 +789,16 @@ class Article extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的文件！']);
         }
         else{
+            if(empty(trim($inputs['file-name']))){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写附件名称！']);
+            }
             $destPath = realpath(public_path('uploads/files'));
             if(!file_exists($destPath)){
                 mkdir($destPath, 0755, true);
             }
             $extension = $file->getClientOriginalExtension();
-            $filename = gen_unique_code('FILE_').'.'.$extension;
+            $filename = explode('.', $inputs['file-name']);
+            $filename = $filename[0].'.'.$extension;
             if(!$file->move($destPath,$filename)){
                 $photo_path = '';
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>'文件上传失败！']);

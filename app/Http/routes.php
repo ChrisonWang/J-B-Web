@@ -173,6 +173,10 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('download','Web\Index@download');
 
+    Route::get('forms/{cid}/{page?}','Web\Index@form_list');
+
+    Route::get('service/forms/{cid}/{page?}','Service\Expertise@form_list');
+
 //后台相关路由
     Route::group(['middleware' => ['manage.verify']], function () {
 
