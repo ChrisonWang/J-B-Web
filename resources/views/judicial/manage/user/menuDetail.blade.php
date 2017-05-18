@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label for="node_schema" class="col-md-2 control-label">功能点：</label>
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <div class="container-fluid" style="margin-left: 0; padding-left: 0">
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>

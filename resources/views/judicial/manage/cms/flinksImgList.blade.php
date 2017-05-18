@@ -13,23 +13,23 @@
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th width="20%" class="text-center">操作</th>
-                        <th class="text-center">标题</th>
+                        <th class="text-center" style="width: 20%">操作</th>
+                        <th class="text-center" style="width: 20%">标题</th>
                         <th class="text-center">链接地址</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
                 @foreach($flink_list as $flink)
                 <tr>
-                    <td width="20%">
+                    <td>
                         <a href="javascript: void(0) ;" data-key="{{ $flink['key'] }}" data-method="show" onclick="flinkImgMethod($(this))">查看</a>
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $flink['key'] }}" data-method="edit" onclick="flinkImgMethod($(this))">编辑</a>
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $flink['key'] }}" data-method="delete" data-title="{{ $flink['fi_title'] }}" onclick="flinkImgMethod($(this))">删除</a>
                     </td>
-                    <td width="20%">{{ $flink['fi_title'] }}</td>
-                    <td width="760%"><a href="{{ $flink['fi_links'] }}" target="_blank">{{ $flink['fi_links'] }}</a></td>
+                    <td>{{ $flink['fi_title'] }}</td>
+                    <td><a href="{{ $flink['fi_links'] }}" target="_blank">{{ spilt_title($flink['fi_links'], 50) }}</a></td>
                 </tr>
                 @endforeach
                 </tbody>

@@ -19,12 +19,11 @@
                 <div class="panel-body">
                     <form class="form-inline">
                         <div class="container-fluid">
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="search-title">标题：</label>
                                 <input type="text" class="form-control" id="search-title" name="search-title" placeholder="请输入标题">
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="search-channel-key">频道：</label>
                                 <select id="search-channel-key" name="search-channel-key" class="form-control" onchange="getSubChannel_S($(this),$('#search-sub-channel-key'))">
                                     @if(isset($channel_list) && is_array($channel_list))
@@ -35,15 +34,13 @@
                                     @endif
                                 </select>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="search-sub-channel-key">二级频道：</label>
                                 <select id="search-sub-channel-key" name="search-sub-channel-key" class="form-control">
                                     <option value="none">不限二级频道</option>
                                 </select>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="search-tags-key">标签：</label>
                                 <select id="search-tags-key" name="search-tags-key" class="form-control">
                                     @if(isset($tag_list))

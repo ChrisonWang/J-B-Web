@@ -14,12 +14,11 @@
                 <div class="panel-body">
                     <form class="form-inline">
                         <div class="container-fluid">
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="name">姓名：</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="请输入律师姓名">
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="type">人员类型：</label>
                                 <select class="form-control" name="type" id="type">
                                     <option value="none">不限</option>
@@ -28,18 +27,15 @@
                                     @endforeach
                                 </select>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="certificate_code">执业证号：</label>
                                 <input type="text" class="form-control" id="certificate_code" name="certificate_code" placeholder="请输入执业证号">
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="lawyer_office_name">机构名称：</label>
                                 <input type="text" class="form-control" id="lawyer_office_name" name="lawyer_office_name" placeholder="请输入机构名称">
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 5px">
                                 <label for="status">状态：</label>
                                 <select class="form-control" name="status" id="status">
                                     <option value="none">不限</option>

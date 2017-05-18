@@ -10,7 +10,7 @@
                 <div class="panel-body">
                     <form class="form-inline">
                         <div class="container-fluid">
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 10px">
                                 <label for="manager">操作人：</label>
                                 <select class="form-control" id="manager" name="manager">
                                     <option value="none" selected>不限</option>
@@ -19,8 +19,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 10px">
                                 <label for="type">类型：</label>
                                 <select class="form-control" id="type" name="type">
                                     <option value="none" selected>不限</option>
@@ -29,8 +28,7 @@
                                     <option value="delete">删除</option>
                                 </select>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 10px">
                                 <label for="node">功能点：</label>
                                 <select class="form-control" id="node" name="node">
                                     <option value="none" selected>不限</option>
@@ -39,15 +37,14 @@
                                     @endforeach
                                 </select>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <br/>
                             <div class="form-group">
                                 <label for="create_date">时间范围：</label>
                                 <input type="text" class="form-control" id="start_date" name="start_date" />
                                 --
                                 <input type="text" class="form-control" id="end_date" name="end_date" />
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 10px">
                                 <label for="resource">资源ID：</label>
                                 <input type="text" class="form-control" id="resource" name="resource" placeholder="请输入资源ID">
                             </div>

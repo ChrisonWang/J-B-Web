@@ -62,7 +62,7 @@
                     <div class="form-group">
                         <label for="text" class="col-md-4 control-label">您的邮箱：</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" id="email" name="email" placeholder="请输入你的邮箱地址">
+                            <input type="text" class="form-control" id="email" name="email" placeholder="请输入您的邮箱地址">
                         </div>
                     </div>
                     <div class="form-group">
