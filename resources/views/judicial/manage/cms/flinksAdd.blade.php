@@ -79,7 +79,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <label class="text-left hidden control-label" id="addFlinksNotice" style="color: red"></label>
+                    <p class="text-left hidden" id="addFlinksNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">

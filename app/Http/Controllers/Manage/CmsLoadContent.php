@@ -340,7 +340,7 @@ class CmsLoadContent extends Controller
     {
         //取出频道
         $channels_data = array();
-        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
+        $channels = DB::table('cms_channel')->where('pid', 0)->orderBy('create_date', 'desc')->get();
         foreach($channels as $channel){
             $channels_data[keys_encrypt($channel->channel_id)] = $channel->channel_title;
         }

@@ -118,11 +118,14 @@ class Dashboard extends Controller
         $managerInfo = Manager::where('manager_code',$managerCode)->select('login_name','cell_phone','email','nickname','role_id','office_id','type_id','type_id','disabled','create_date')->first();
         $managerInfo = $managerInfo['attributes'];
         $officeInfo = DB::table('user_office')->select('office_name')->where('id', $managerInfo['office_id'])->get();
-        $roleInfo = DB::table('user_role')->select('role_name','role_permisson')->where('role_id', $managerInfo['role_id'])->get();
+        $roleInfo = DB::table('user_roles')->select('name')->where('id', $managerInfo['role_id'])->get();
         $typeInfo = DB::table('user_type')->select('type_name')->where('type_id', $managerInfo['type_id'])->get();
-        $managerInfo['office_name'] = isset($officeInfo[0]->office_name) ? $officeInfo[0]->office_name : '未设置';
-        $managerInfo['role_name'] = isset($roleInfo[0]->role_name) ? $roleInfo[0]->role_name : '未设置' ;
-        $managerInfo['type_name'] = isset($typeInfo[0]->type_name) ? $typeInfo[0]->type_name : '未设置';
+        $managerInfo['office_name'] = isset($officeInfo[0]->office_name) ? $officeInfo[0]->office_name : '未设置科室';
+        $managerInfo['role_name'] = isset($roleInfo[0]->name) ? $roleInfo[0]->name : '未设置用户名' ;
+        $managerInfo['type_name'] = isset($typeInfo[0]->type_name) ? $typeInfo[0]->type_name : '未设置类型';
+        if($managerInfo['role_id'] == 0){
+            $managerInfo['role_name'] = '超级管理员' ;
+        }
 
         return $managerInfo;
     }

@@ -246,10 +246,10 @@ class Flinks extends Controller
 
         //判断是否有重名的
         $id = keys_decrypt($inputs['key']);
-        $sql = 'SELECT `id` FROM cms_flinks WHERE `title` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';
+        $sql = 'SELECT `id` FROM cms_flinks WHERE `title` = "'.$inputs['title'].'" AND `id` != "'.$id.'" AND `pid` = 0';
         $res = DB::select($sql);
         if(count($res) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['title'].'的分类']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['title'].'的一级友情链接']);
         }
         //处理二级分类
         $del_data = array();
