@@ -22,7 +22,7 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
-                    <p>自动生成</p>
+                    <label for="create_date" class="control-label">自动生成</label>
                 </div>
             </div>
             <div class="form-group">

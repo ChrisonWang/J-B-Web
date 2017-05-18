@@ -404,15 +404,15 @@ class Channel extends Controller
         }
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        //检查文章
-        $article = DB::table('cms_article')->where('channel_id',$id)->orWhere('sub_channel',$id)->get();
-        if(count($article) > 0){
-            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含文章不能删除！']);
-        }
         //检查固定频道
         $standard_channel = DB::table('cms_channel')->where('channel_id',$id)->where('standard','yes')->first();
         if(!is_null($standard_channel)){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'频道《'.$standard_channel->channel_title.'》是固定频道，无法删除！']);
+        }
+        //检查文章
+        $article = DB::table('cms_article')->where('channel_id',$id)->orWhere('sub_channel',$id)->get();
+        if(count($article) > 0){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含文章不能删除！']);
         }
         //检查是否存在不能删除的频道
         $subs = DB::table('cms_channel')->where('pid', $id)->get();

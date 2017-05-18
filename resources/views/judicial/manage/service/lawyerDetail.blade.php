@@ -22,7 +22,9 @@
             @else
                 <div class="form-group" id="image-thumbnail">
                     <label for="leader_photo" class="col-md-2 control-label">照片：</label>
-                    <div class="col-md-3">未添加照片！</div>
+                    <div class="col-md-3">
+                        <label for="create_date" class="control-label">未添加照片！</label>
+                    </div>
                 </div>
             @endif
             <div class="form-group">
@@ -70,12 +72,18 @@
             </div>
             <div class="form-group">
                 <label for="is_partner" class="col-md-2 control-label">是否合伙人：</label>
-                <input disabled type="checkbox" class="" id="is_partner" name="is_partner" value="yes" @if($lawyer_detail['is_partner'] == 'yes') checked @endif/>
+                <div class="col-md-3">
+                    <label for="create_date" class="control-label">
+                        <label for="create_date" class="control-label">
+                            <input disabled type="checkbox" class="" id="is_partner" name="is_partner" value="yes" @if($lawyer_detail['is_partner'] == 'yes') checked @endif/>
+                        </label>
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label for="partnership_date" class="col-md-2 control-label">首次成为合伙人时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $lawyer_detail['partnership_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $lawyer_detail['partnership_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
@@ -87,7 +95,7 @@
             <div class="form-group">
                 <label for="certificate_date" class="col-md-2 control-label">证书取得时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $lawyer_detail['certificate_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $lawyer_detail['certificate_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
@@ -99,7 +107,7 @@
             <div class="form-group">
                 <label for="job_date" class="col-md-2 control-label">首次执业时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $lawyer_detail['job_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $lawyer_detail['job_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
@@ -175,7 +183,7 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
-                    <p>{{ $lawyer_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $lawyer_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

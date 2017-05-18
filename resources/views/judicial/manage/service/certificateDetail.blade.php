@@ -33,13 +33,13 @@
             <div class="form-group">
                 <label for="exam_date" class="col-md-2 control-label">司法考试参加时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $certificate_detail['exam_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $certificate_detail['exam_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="certificate_date" class="col-md-2 control-label">取得证书时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $certificate_detail['certificate_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $certificate_detail['certificate_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

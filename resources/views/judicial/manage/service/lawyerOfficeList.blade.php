@@ -74,9 +74,9 @@
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $office['key'] }}" data-method="delete" data-title="{{ $office['name'] }}" onclick="lawyerOfficeMethod($(this))">删除</a>
                     </td>
-                    <td>{{ $office['name'] }}</td>
+                    <td>{{ spilt_title($office['name'], 50) }}</td>
                     <td>{{ isset($office['director']) ? $office['director'] : '-' }}</td>
-                    <td>{{ isset($office['usc_code']) ? $office['usc_code'] : '-' }}</td>
+                    <td>{{ isset($office['usc_code']) ? spilt_title($office['usc_code'], 20) : '-' }}</td>
                     <td>{{ isset($area_list)&&is_array($area_list) ? $area_list[$office['area_id']] : '-' }}</td>
                     <td>{{ isset($type_list[$office['type']]) ? $type_list[$office['type']] : '-'}}</td>
                     <td>{{ $office['status']=='normal' ? '正常' : '注销' }}</td>

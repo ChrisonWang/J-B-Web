@@ -20,7 +20,7 @@
                         <th width="20%" class="text-center">操作</th>
                         <th width="20%" class="text-center">标题</th>
                         <th width="40%" class="text-center">视频地址</th>
-                        <th width="10%" class="text-center">是否发布</th>
+                        <th width="5%" class="text-center">是否发布</th>
                         <th width="10%" class="text-center">排序权重</th>
                     </tr>
                 </thead>
@@ -36,10 +36,10 @@
                             <a href="javascript: void(0) ;" data-key="{{ $video['key'] }}" data-method="delete" data-title="{{ $video['video_title'] }}" onclick="videoMethod($(this))">删除</a>
                         @endif
                     </td>
-                    <td>{{ $video['video_title'] }}</td>
-                    <td>{{ $video['video_link'] }}</td>
+                    <td>{{ spilt_title($video['video_title'], 18) }}</td>
+                    <td>{{ spilt_title($video['video_link'], 50) }}</td>
                     <td>@if($video['disabled']=='yes') 否 @else 是 @endif</td>
-                    <td>{{ $video['sort'] }}</td>
+                    <td>{{ spilt_title($video['sort'], 10) }}</td>
                 </tr>
                 @endforeach
                 </tbody>

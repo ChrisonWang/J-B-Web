@@ -113,13 +113,22 @@ class AidApply extends Controller
         $inputs = $request->input();
         $this->_checkInput($inputs);
         $member_code = $this->checkLoginStatus();
+        if(isset($inputs['key'])){
+            $record_code = $inputs['key'];
+        }
+        else{
+            $record_code = $this->get_record_code('GZ');
+        }
         //处理附件
+        $file_path = '';
+        $filename = '';
         $file = $request->file('file');
         if(is_null($file) || !$file->isValid()){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的附件（word/excel/图片/压缩文件,大小不超过10M）！']);
         }
         else{
             $destPath = realpath(public_path('uploads/system/aidApply'));
+            $destPath = rtrim($destPath,'/').'/'.$record_code;
             if(!file_exists($destPath)){
                 mkdir($destPath, 0755, true);
             }
@@ -132,12 +141,14 @@ class AidApply extends Controller
             if($size > 10){
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>'文件过大！请上传10M以内的文件！']);
             }
-            $filename = gen_unique_code('AD_').'.'.$extension;
+            $native_name = $file->getClientOriginalName();
+            $native_name = explode('.', $native_name);
+            $filename = $native_name[0].'.'.$extension;
             if(!$file->move($destPath,$filename)){
                 json_response(['status'=>'failed','type'=>'notice', 'res'=>'文件上传失败，请重试！']);
             }
             else{
-                $file_path = URL::to('/').'/uploads/system/aidApply/'.$filename;
+                $file_path = URL::to('/').'/uploads/system/aidApply/'.$record_code.'/'.$filename;
             }
         }
         if(isset($inputs['key'])){

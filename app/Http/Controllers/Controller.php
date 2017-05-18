@@ -65,7 +65,7 @@ class Controller extends BaseController
         }
         //左侧
         $s_lsfw = DB::table('cms_channel')->where('pid', 128)->where('wsbs','yes')->where('zwgk','no')->get();
-        $s_sfks = DB::table('cms_channel')->where('pid', 126)->where('wsbs','yes')->where('zwgk','no')->get();
+        $s_sfks = DB::table('cms_channel')->where('pid', 178)->where('wsbs','yes')->where('zwgk','no')->get();
         $s_sfjd = DB::table('cms_channel')->where('pid', 130)->where('wsbs','yes')->where('zwgk','no')->get();
         $s_flyz = DB::table('cms_channel')->where('pid', 133)->where('wsbs','yes')->where('zwgk','no')->get();
         //网上办事左侧其他菜单

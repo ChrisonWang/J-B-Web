@@ -163,9 +163,7 @@
                     <li>
                         <span class="wsc_txt" style="vertical-align: top;">举报问题描述</span>
                         <div class="cx_inp">
-                            <textarea name="dispute_description" placeholder="请对举报的问题进行具体描述" class="w590">
-                                {{ $record_detail['dispute_description'] }}
-                            </textarea>
+                            <textarea name="dispute_description" placeholder="请对举报的问题进行具体描述" class="w590">{{ $record_detail['dispute_description'] }}</textarea>
                         </div>
                     </li>
                 </ul>

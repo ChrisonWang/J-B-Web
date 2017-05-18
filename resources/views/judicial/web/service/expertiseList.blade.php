@@ -55,7 +55,7 @@
             </tbody>
         </table>
         <!--弹窗-->
-        <div class="alert_sh" style="display: none">
+        <div class="alert_sh" id="alert_sh" style="display: none">
             <a href="javascript:void(0)" class="closed">X</a>
             <div class="als_top">审核不通过原因</div>
             <div class="als_down">请按照流程填写申请表，重新提交审核。</div>

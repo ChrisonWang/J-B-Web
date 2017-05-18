@@ -32,9 +32,9 @@
             <div class="form-group">
                 <label for="disabled" class="col-md-2 control-label">是否发布：</label>
                 <div class="col-md-3">
-                    <h3>
+                    <label for="create_date" class="control-label">
                         <input type="checkbox" name="disabled" id="disabled" value="no" checked/>
-                    </h3>
+                    </label>
                 </div>
             </div>
             <div class="form-group">
@@ -46,7 +46,7 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
-                    <p>自动生成</p>
+                    <label for="create_date" class="control-label">自动生成</label>
                 </div>
             </div>
             <div class="form-group">

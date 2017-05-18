@@ -106,7 +106,7 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
-                    <p>{{ $send_detail['send_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $send_detail['send_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

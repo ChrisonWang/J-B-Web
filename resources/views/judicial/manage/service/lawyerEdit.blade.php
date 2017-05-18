@@ -31,7 +31,9 @@
             @else
                 <div class="form-group" id="image-thumbnail">
                     <label for="leader_photo" class="col-md-2 control-label">预览：</label>
-                    <div class="col-md-3" id="image-holder">未上传照片</div>
+                    <div class="col-md-3" id="image-holder">
+                        <label for="create_date" class="control-label">未上传照片！</label>
+                    </div>
                 </div>
             @endif
             <div class="form-group">
@@ -79,7 +81,11 @@
             </div>
             <div class="form-group">
                 <label for="is_partner" class="col-md-2 control-label">是否合伙人：</label>
-                <input type="checkbox" class="" id="is_partner" name="is_partner" value="yes" @if($lawyer_detail['is_partner'] == 'yes') checked @endif/>
+                <div class="col-md-3">
+                    <label for="create_date" class="control-label">
+                        <input type="checkbox" class="" id="is_partner" name="is_partner" value="yes" @if($lawyer_detail['is_partner'] == 'yes') checked @endif/>
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label for="partnership_date" class="col-md-2 control-label">首次成为合伙人时间：</label>
@@ -184,7 +190,7 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
-                    <p>{{ $lawyer_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $lawyer_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

@@ -77,7 +77,7 @@
                     <td>{{ $lawyer['sex']=='female'? '女' : '男' }}</td>
                     <td>{{ isset($type_list[$lawyer['type']]) ? $type_list[$lawyer['type']] : '-' }}</td>
                     <td>{{ $lawyer['certificate_code'] }}</td>
-                    <td>{{ isset($office_list[$lawyer['lawyer_office']]) ? $office_list[$lawyer['lawyer_office']] : '-' }}</td>
+                    <td>{{ isset($office_list[$lawyer['lawyer_office']]) ? spilt_title($office_list[$lawyer['lawyer_office']], 50) : '-' }}</td>
                     <td>{{ $lawyer['status']=='normal' ? '正常' : '注销' }}</td>
 
                 </tr>

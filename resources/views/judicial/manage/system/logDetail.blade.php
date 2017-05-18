@@ -15,37 +15,39 @@
             <div class="form-group">
                 <label for="manager" class="col-md-2 control-label">操作人：</label>
                 <div class="col-md-3">
-                    <p>{{ $log_detail['manager'] }}</p>
+                    <label for="create_date" class="control-label">{{ $log_detail['manager'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="type" class="col-md-2 control-label">类型：</label>
                 <div class="col-md-8">
-                    <p>{{ $type_list[$log_detail['type']] }}</p>
+                    <label for="create_date" class="control-label">{{ $type_list[$log_detail['type']] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">时间：</label>
                 <div class="col-md-3">
-                    <p>{{ $log_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $log_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="node" class="col-md-2 control-label">功能点：</label>
                 <div class="col-md-3">
-                    <p>{{ $node_list[$log_detail['node']] }}</p>
+                    <label for="create_date" class="control-label">{{ $node_list[$log_detail['node']] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="resource" class="col-md-2 control-label">资源ID：</label>
                 <div class="col-md-3">
-                    <p>{{ $log_detail['resource'] }}</p>
+                    <label for="create_date" class="control-label">{{ $log_detail['resource'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">标题：</label>
                 <div class="col-md-3">
-                    <p>{{ (isset($log_detail['title'])&&!empty($log_detail['title'])) ? $log_detail['title'] : '-' }}</p>
+                    <label for="create_date" class="control-label">
+                        {{ (isset($log_detail['title'])&&!empty($log_detail['title'])) ? $log_detail['title'] : '-' }}
+                    </label>
                 </div>
             </div>
             <div class="form-group">

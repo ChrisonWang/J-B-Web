@@ -16,16 +16,16 @@
                 <label for="create_date" class="col-md-2 control-label"><red>*</red>相关附件：</label>
                 <div class="col-md-8">
                     @if(!empty($type_detail['file_name']) && $type_detail['file_name'] != 'none')
-                        <p><a href="{{ $type_detail['file_url'] }}" target="_blank">{{ $type_detail['file_name'] }}</a></p>
+                        <label for="create_date" class="control-label"><a href="{{ $type_detail['file_url'] }}" target="_blank">{{ $type_detail['file_name'] }}</a></label>
                         @else
-                        <p>未添加附件！！！</p>
+                        <label for="create_date" class="control-label">未添加附件！！！</label>
                     @endif
                 </div>
             </div>
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
-                    <p>{{ $type_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $type_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

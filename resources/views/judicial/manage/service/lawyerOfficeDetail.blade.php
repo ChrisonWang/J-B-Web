@@ -60,7 +60,7 @@
             <div class="form-group">
                 <label for="certificate_date" class="col-md-2 control-label">发证日期：</label>
                 <div class="col-md-3">
-                    <p>{{ $office_detail['certificate_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $office_detail['certificate_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
@@ -154,7 +154,7 @@
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
-                    <p>{{ $office_detail['create_date'] }}</p>
+                    <label for="create_date" class="control-label">{{ $office_detail['create_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

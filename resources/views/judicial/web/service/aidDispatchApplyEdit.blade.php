@@ -70,9 +70,7 @@
                 <li>
                     <span class="wsc_txt" style="vertical-align: top;">涉嫌犯罪内容</span>
                     <div class="cx_inp">
-                        <textarea name="case_description" placeholder="请输入涉嫌犯罪内容" class="w590" >
-                            {{ $record_detail['case_description'] }}
-                        </textarea>
+                        <textarea name="case_description" placeholder="请输入涉嫌犯罪内容" class="w590" >{{ $record_detail['case_description'] }}</textarea>
                     </div>
                 </li>
                 <li>
@@ -84,9 +82,7 @@
                 <li>
                     <span class="wsc_txt" style="vertical-align: top;">判刑处罚内容</span>
                     <div class="cx_inp">
-                        <textarea name="judge_description" placeholder="请输入判刑处罚内容" class="w590" >
-                            {{ $record_detail['judge_description'] }}
-                        </textarea>
+                        <textarea name="judge_description" placeholder="请输入判刑处罚内容" class="w590" >{{ $record_detail['judge_description'] }}</textarea>
                     </div>
                 </li>
             </ul>
