@@ -114,7 +114,7 @@
                                             <input type="text" disabled class="form-control" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
                                         </td>
                                         <td>
-                                            <input type="file" class="btn btn-default form-control" name="file"/>
+                                            <input type="file" disabled class="btn btn-default form-control" name="file"/>
                                         </td>
                                     </tr>
                                 @endforeach

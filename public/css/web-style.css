@@ -138,8 +138,17 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .ft_last .swiper-button-next{background: url("../images/btn_arrowright_small_40x40.png") no-repeat center; background-size: 40px 40px; width: 40px; height: 40px;}
 .ft_last .swiper-button-prev{background: url("../images/btn_arrowleft_small_40x40.png") no-repeat center; background-size: 40px 40px; width: 40px; height: 40px;}
 .last_link span{width: 180px; display: inline-block; background: #FFFFFF; border: 1px solid #ECECEC; border-radius: 4px; margin-left: 9px; height: 30px; line-height: 30px; text-align: center; color: #929292;}
-.last_link select{width: 180px; text-align: center; display: inline-block; background: #FFFFFF;
-    border: 1px solid #ECECEC; border-radius: 4px; margin-left: 9px; height: 30px; line-height: 30px; color: #929292}
+.last_link select{width: 180px; text-align: center; display: inline-block;
+    border: 1px solid #ECECEC;
+    border-radius: 4px; margin-left: 9px;
+    height: 30px; line-height: 30px; color: #929292;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    background:url("../images/updown.png") no-repeat right center transparent;
+}
+.last_link select::-ms-expand{display: none; }
+
 .last_link{overflow: hidden; margin: 0 auto; margin-bottom: 10px;}
 
 /*底部*/
@@ -179,11 +188,14 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .zwr_ft{text-align: center; margin-top: 40px;}
 .zwr_ft div{display: inline-block;}
 .fy_left{margin-left: -50px;}
-.fy_left span{margin-left: 10px; color: #222222;}
+.fy_left span{margin-left: 10px; font-family: MicrosoftYaHei; font-size: 12px; color: #222222; letter-spacing: 0;}
+.fy_left span a{font-family: MicrosoftYaHei; font-size: 12px; color: #222222; letter-spacing: 0;}
+.fy_left span a:hover{color: #222222; text-decoration: none}
 .fy_right{margin-left: 30px;}
-.fy_right span{margin-left: 10px; color: #929292;}
-.fy_right input{width: 30px; margin: 0 10px; text-align: center;}
-.fy_btn{background-color: #E23939; color: #fff!important; padding: 3px 10px; border-radius: 2px;}
+.fy_right span{margin-left: 10px; color: #929292;font-family: MicrosoftYaHei; font-size: 12px; letter-spacing: 0;}
+.fy_right input{width: 30px; margin: 0 10px; text-align: center;background: #FFFFFF; border: 1px solid #ECECEC; border-radius: 2px; color: #222222}
+.fy_btn{background-color: #E23939; color: #fff!important; padding: 1px 10px; border-radius: 2px; margin-left: 5px; display: inline-block}
+.fy_btn:hover{background-color: #E23939; color: #fff!important; text-decoration: none}
 
 /*政务公开_文章详情*/
 .wz_top .h_tit{font-size: 18px; padding: 20px 0; text-align: center; border-bottom: 1px solid #ececec; display: block;}
@@ -223,7 +235,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .serach{margin: 0 auto; width: 700px; float: none; margin-bottom: 60px;}
 .serach_body{text-align: center; margin-top: 20px;}
 .serach_body input{width: 450px; font-size: 14px; text-indent: 20px; padding: 10px 0; vertical-align: middle;}
-.serach_btn{width: 100px; height: 40px; font-size: 14px; background-color: #DF3737; display: inline-block; vertical-align: middle; color: #fff; line-height: 40px; margin-left: 10px;}
+.serach_btn{border:none; width: 100px; height: 40px; font-size: 14px; background-color: #DF3737; display: inline-block; vertical-align: middle; color: #fff; line-height: 40px; margin-left: 10px;}
 .serach_mid{margin-top: 10px;}
 .serach_mid li div{display: inline-block; color: #222; font-size: 14px;}
 .serach_mid li{line-height: 40px; margin-left: 10px;}

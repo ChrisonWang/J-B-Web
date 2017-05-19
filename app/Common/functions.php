@@ -143,22 +143,46 @@ function keys_decrypt($string = '', $skey = 'JusticeBureau') {
     return base64_decode(join('', $strArr));
 }
 
-function spilt_title($str,$len,$end = true){
+function spilt_title($str, $len, $end = true){
     if($str === ''){
         return $str;
     }
+    $str = mb_convert_encoding($str,'UTF-8');
     $str_len = strlen($str);
+    $len = floatval($len/3) * 3;
     if($str_len <= $len)
     {
         return $str;
     }
     else{
         if($end === true){
-            $title = mb_substr($str, 0, $len).'...';
+            $title = mb_substr($str, 0, $len, 'utf-8').'...';
         }
         else{
-            $title = mb_substr($str, 0, $len);
+            $title = mb_substr($str, 0, $len, 'utf-8');
         }
+        return $title;
+    }
+}
+
+function spilt_link_title($str, $len){
+    if($str === ''){
+        return $str;
+    }
+    $str = mb_convert_encoding($str,'UTF-8');
+    $str_len = strlen($str);
+    $len = floor($len/3) * 3;
+    if($str_len <= $len)
+    {
+        $blank = ceil((30 - $str_len + 6)/2);
+        $empty = '';
+        for($i=1; $i<=$blank; $i++){
+            $empty .= "&nbsp;";
+        }
+        return $empty.'==&nbsp;'.$str.'&nbsp;==';
+    }
+    else{
+        $title = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&nbsp;'.substr($str, 0, $len).'...&nbsp;==';
         return $title;
     }
 }

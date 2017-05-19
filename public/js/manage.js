@@ -1452,6 +1452,23 @@ function addArticle(){
     });
 }
 
+function change_file(t){
+    t.hide();
+    $('#file_name').val('');
+    $('#new_file').removeClass('hidden');
+}
+
+function delFileRow(){
+    var c = confirm("确认删除附件："+ $('#file_name').val() +"？");
+    if(c != true){
+        return false;
+    }
+    $('#change_file').hide();
+    $('#new_file').removeClass('hidden');
+    $('#file-del').val('yes');
+    $('#file_name').val('');
+}
+
 function ajax_upload_file(t, type){
     var url = '/manage/cms/article/upload';
     var form = t.parents('form');

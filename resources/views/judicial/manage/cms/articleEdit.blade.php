@@ -150,13 +150,15 @@
                                 @foreach($article_detail['files'] as $files)
                                     <tr>
                                         <td>
-                                            <input type="text" class="form-control" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
+                                            <input type="text" id="file_name" class="form-control" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
+                                            <input type="hidden" id="file-del" class="form-control" name="file-del" value="no" />
                                         </td>
                                         <td>
-                                            <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'edit')"/>
+                                            <a href="javascript: void(0);" id="change_file" class="btn btn-default" onclick="change_file($(this))">点击修改附件</a>
+                                            <input type="file" id="new_file" class="btn btn-default form-control hidden" name="file" onchange="ajax_upload_file($(this), 'edit')"/>
                                         </td>
                                         <td>
-                                            <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                                            <a href="javascript: void(0) ;" onclick="delFileRow()">删除</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -176,6 +178,7 @@
                                     <tr>
                                         <td>
                                             <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
+                                            <input type="hidden" id="file-del" class="form-control" name="file-del" value="no" />
                                         </td>
                                         <td>
                                             <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'edit')"/>

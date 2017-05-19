@@ -215,11 +215,11 @@
             @foreach($flink_type_list as $key=> $flink_type)
                 <select onchange="jumpToFlink($(this))" style="text-align: center; padding-left: 10px">
                     <option value="type" style="text-align: center">
-                        <span>====&nbsp;&nbsp;{{ $flink_type }}&nbsp;&nbsp;====</span>
+                        <span>{{ spilt_link_title($flink_type, 21) }}</span>
                     </option>
                     @foreach($flinks_list[$key] as $flinks)
                         <option value="{{ $flinks['link'] }}" style="text-align: center; padding-left: 10px">
-                            <span>====&nbsp;&nbsp;{{ $flinks['title'] }}&nbsp;&nbsp;====</span>
+                            <span>{{ spilt_link_title($flinks['title'], 21) }}</span>
                         </option>
                     @endforeach
                 </select>

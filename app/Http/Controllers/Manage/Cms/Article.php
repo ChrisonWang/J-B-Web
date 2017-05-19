@@ -551,11 +551,16 @@ class Article extends Controller
             }
         }
         else{
+            if(trim($inputs['file-name'])==='' && $inputs['file-del']!='yes'){
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'附件标题不能为空！！']);
+            }
             $files = DB::table('cms_article')->where('article_code',$article_code)->first();
             if(!empty($files)){
+                $inputs['file-name'] = explode('.', $inputs['file-name']);
                 $files = json_decode($files->files, true);
+                $filename = explode('.', $files[0]['filename']);
                 $file_list[0] = array(
-                    'filename'=> $inputs['file-name'],
+                    'filename'=> isset($filename[1]) ? $inputs['file-name'][0].'.'.$filename[1] : $inputs['file-name'][0],
                     'file'=> isset($files[0]['file']) ? $files[0]['file'] : ''
                 );
             }
@@ -589,6 +594,9 @@ class Article extends Controller
         );
         if(empty($photo_path)){
             unset($save_data['thumb']);
+        }
+        if(isset($inputs['file-del']) && $inputs['file-del']=='yes'){
+            $save_data['files'] = '';
         }
         $article = DB::table('cms_article')->where('article_code',$article_code)->first();
         $article = json_decode(json_encode($article), true);
