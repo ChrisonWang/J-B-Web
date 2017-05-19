@@ -128,7 +128,7 @@
             @endif
         </div>
         <div class="idbr_down" id="idbr_down_2">
-            <ul id="zwgk_c">
+            <ul id="zwgk_c" style="height: 255px">
                 @if($zwgk_article_list != 'none' && is_array($zwgk_article_list))
                     @foreach($zwgk_article_list as $zwgk)
                     <li>

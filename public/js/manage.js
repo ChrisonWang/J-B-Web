@@ -1368,6 +1368,7 @@ function addForms(){
 }
 
 function changeFile(){
+    $('#has_file').val('no');
     $('#change_box').addClass("hidden");
     $('#file_box').removeClass("hidden");
 }

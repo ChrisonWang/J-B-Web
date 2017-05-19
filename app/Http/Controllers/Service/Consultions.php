@@ -63,6 +63,7 @@ class Consultions extends Controller
         $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->get_left_sub();
+        $this->page_data['_now'] = 'mzhd';
     }
 
     public function index($page = 1)

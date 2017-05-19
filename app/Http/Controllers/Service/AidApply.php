@@ -71,6 +71,7 @@ class AidApply extends Controller
         $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['area_list'] = $area_list;
         $this->page_data['channel_list'] = $this->get_left_list();
+        $this->page_data['_now'] = 'wsbs';
         $this->get_left_sub();
     }
 

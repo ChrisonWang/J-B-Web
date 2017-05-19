@@ -718,7 +718,7 @@ class Index extends Controller
             $articles = DB::table('cms_article')->where('sub_channel', $channel_id)->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date','desc')->skip(0)->take(6)->get();
         }
         else{
-            $articles = DB::table('cms_article')->where('channel_id', $channel_id)->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date','desc')->skip(0)->take(6)->get();
+            $articles = DB::table('cms_article')->where('channel_id', $channel_id)->where('archived', 'no')->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->orderBy('publish_date','desc')->skip(0)->take(7)->get();
         }
         if(count($articles) > 0){
             $article_list = array();

@@ -1,3 +1,6 @@
+<style>
+    .hd_lv3 span a{color: #676767}
+</style>
 <div class="w_100">
     <div class="w1024 index_hd head_banner">
         {{--<img src="{{ asset('images/bdg_bar.jpg') }}" width="100%">--}}
@@ -34,7 +37,8 @@
                         @endif
                     </div>
                 </li>
-                <li class="hdf_li"><a href="{{ URL::to('service') }}">网上办事</a>
+                <li class="hdf_li" @if(isset($_now) && $_now == 'wsbs') style="background: #FFFFFF;" @endif>
+                    <a href="{{ URL::to('service') }}" @if(isset($_now) && $_now == 'wsbs') style="color: #E23939!important;" @endif>网上办事</a>
                     <div class="hd_lv3" style="font-size: 12px; color: #676767">
                         <span><a href="{{ URL::to('service/lawyer/1') }}">律师服务</a></span>
                         <span><a href="{{ URL::to('service') }}">司法考试</a></span>
@@ -49,7 +53,8 @@
                         @endif
                     </div>
                 </li>
-                <li class="hdf_li"><a href="{{ URL::to('consultions/list/').'/1' }}">政民互动</a>
+                <li class="hdf_li" @if(isset($_now) && $_now == 'mzhd') style="background: #FFFFFF;" @endif>
+                    <a href="{{ URL::to('consultions/list/').'/1' }}" @if(isset($_now) && $_now == 'mzhd') style="color: #E23939!important;" @endif>政民互动</a>
                     <div class="hd_lv3" style=" width:200px; font-size: 12px; color: #676767; left: -60px;">
                         <span style="width: 80px"><a href="{{ URL::to('consultions/list').'/1' }}">问题咨询</a></span>
                         <span style="width: 80px"><a href="{{ URL::to('suggestions/list').'/1' }}">征求意见</a></span>

@@ -64,9 +64,6 @@ $(document).ready(function(){
         //$(this).parent().parent().siblings("li").removeClass("lb_select");
         $(this).parent().toggleClass("lb_select");
     });
-    $(".zw_left div").mouseover(function(){
-        $(this).parent().addClass("lb_select");
-    });
     $(".law_body span").click(function(){
         $(this).siblings("span").removeClass("lb_act");
         $(this).addClass("lb_act");
@@ -721,10 +718,10 @@ function member_show_reason(t){
             if(re.status == 'succ'){
                 $("#record_no").val(re.res.record_code);
                 $("#type").val(re.res.type);
-                $("#title").val(re.res.title);
+                $("#title").html(re.res.title);
                 $("#create_date").val(re.res.create_date);
-                $("#content").val(re.res.content);
-                $("#answer_content").val(re.res.answer_content);
+                $("#content").html(re.res.content);
+                $("#answer_content").html(re.res.answer_content);
                 $("#answer_date").val(re.res.answer_date);
 
                 $('#reason_model').fadeIn(300);

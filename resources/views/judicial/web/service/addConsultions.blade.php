@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-@include('judicial.web.chips.headIndex');
+@include('judicial.web.chips.headIndex')
 <body>
 <!--头部导航-->
-@include('judicial.web.chips.nav');
+@include('judicial.web.chips.nav')
 
 <!--内容-->
 <div class="w1024 zw_mb">

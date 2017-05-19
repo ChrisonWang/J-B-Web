@@ -83,8 +83,8 @@
                 </li>
             </ul>
             <div class="mt_btn">
-                <span class="wsc_txt" style="width: 80px;">附件</span>
-                <span class="mtb_m">
+                <span class="wsc_txt" style="width: 90px;">附件</span>
+                <span>
                     <input type="file" name="file"/>
                 </span>
             </div>

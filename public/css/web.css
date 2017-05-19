@@ -277,5 +277,5 @@ body a{
 }
 
 /**个人中心弹窗**/
-.reason_right{width:170px; height:30px; background: #ECECEC;text-indent: 10px; border: 1px solid #ECECEC; border-radius: 2px;font-family: MicrosoftYaHei;  font-size: 13px; color: #929292;  letter-spacing: 0;}
+.reason_right{width:170px; max-width: 170px; height:30px; background: #ECECEC;text-indent: 10px; border: 1px solid #ECECEC; border-radius: 2px;font-family: MicrosoftYaHei;  font-size: 13px; color: #929292;  letter-spacing: 0;}
 .reason_left{font-family: MicrosoftYaHei; font-size: 13px; color: #222222; letter-spacing: 0; margin-right: 10px}

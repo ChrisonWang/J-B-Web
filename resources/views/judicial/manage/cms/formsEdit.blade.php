@@ -39,7 +39,7 @@
                     </div>
                 @else
                     <div class="col-md-3" id="change_box">
-                        <input type="hidden" name="has_file" value="yes"/>
+                        <input type="hidden" name="has_file" value="yes" id="has_file"/>
                         <input class="btn btn-default" type="button" value="修改附件(会删除原有附件)" onclick="changeFile()">
                     </div>
                     <div class="col-md-3 hidden" id="file_box">

@@ -106,20 +106,20 @@
                         <input id="create_date" type="text" class="reason_right" disabled/>
                     </div>
                     <div class="container-fluid" style="margin-top: 20px">
-                        <label for="title" class="reason_left">留言主题</label>
-                        <input id="title" type="text" class="reason_right" disabled/>
+                        <label for="title" class="reason_left" style="vertical-align: top">留言主题</label>
+                        <textarea id="title" class="reason_right" disabled></textarea>
                     </div>
                     <div class="container-fluid" style="margin-top: 20px">
-                        <label for="content" class="reason_left">留言内容</label>
-                        <input id="content" type="text" class="reason_right" disabled/>
+                        <label for="content" class="reason_left" style="vertical-align: top">留言内容</label>
+                        <textarea id="content" class="reason_right" disabled></textarea>
                     </div>
                     <div class="container-fluid" style="margin-top: 20px">
                         <label for="answer_date" class="reason_left">回复时间</label>
                         <input id="answer_date" type="text" class="reason_right" disabled/>
                     </div>
                     <div class="container-fluid" style="margin-top: 20px">
-                        <label for="answer_content" class="reason_left">回复内容</label>
-                        <input id="answer_content" type="text" class="reason_right" disabled/>
+                        <label for="answer_content" class="reason_left" style="vertical-align: top">回复内容</label>
+                        <textarea id="answer_content" class="reason_right" disabled></textarea>
                     </div>
                 </div>
             </div>

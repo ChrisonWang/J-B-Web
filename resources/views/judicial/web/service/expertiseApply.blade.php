@@ -62,7 +62,7 @@
                 </li>
             </ul>
             <div class="mt_btn">
-                <span class="wsc_txt" style="width: 80px">附件</span>
+                <span class="wsc_txt" style="width: 42px">附件</span>
 
                     <input type="file" name="file" />
 
@@ -71,6 +71,14 @@
                     <a href="javascript: alert('请先选择司法鉴定类型！') ;">请先选择类型</a>
                 </span>
             </div>
+
+                <div class=mt_last>
+                    <span class="wsc_txt" style="width: 75px; float: left; color: #E23939; font-size: 12px">温馨提示：</span>
+                    <div class="mt_ul" style="float: left">
+                        <span style="font-size: 12px; margin-left: 0px">如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
+                    </div>
+                </div>
+                <div class="clear"></div>
 
             <div class="last_btn" onclick="expertiseApply()">
                 提交申请
