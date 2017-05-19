@@ -741,7 +741,7 @@ class Index extends Controller
     }
 
     public function verify(){
-        return view('judicial.web.verify');
+        return view('judicial.web.verify',$this->page_data);
     }
 
 }

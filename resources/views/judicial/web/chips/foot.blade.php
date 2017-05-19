@@ -1,3 +1,7 @@
+<!--弹窗-->
+<div class="alert_login" id="alert_login" style="display: none;">
+    请先登录账号！
+</div>
 <div class="foot_out">
     <div class="foot w1024">
         <div class="ft_top">

@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html>
-@include('judicial.web.chips.headIndex');
+@include('judicial.web.chips.head')
 <body>
-
-<!--内容-->
-<div class="w1024 zw_mb">
-
-            <h2>请先登录后再执行操作!<a href="/">返回首页</a></h2>
-
+<style>
+    .foot_out{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+<!--头部导航-->
+@include('judicial.web.chips.nav')
+<div class="wrapper">
+    <!-- 模态框 -->
+    @include('judicial.web.user.layout.memberModals')
+    <div class="container-mamber" style="height: 600px">
+        <h4 style="margin-left: 50px; margin-top: 50px">如未跳转请点击：<a href="/user/login">用户登录</a></h4>
+    </div>
+    @include('judicial.web.chips.foot')
 </div>
 </body>
 </html>
 <script>
     $(function(){
-        var c = confirm("请先登录！");
-        if(c == true){
-            window.location.href="/user/login";
-        }
-        else {
-            return false;
-        }
+        $("#alert_login").fadeIn(300);
+        setTimeout('window.location.href="/user/login";', 3000);
     });
 </script>

@@ -348,6 +348,19 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .closed{position: absolute; right: 15px; font-size: 18px; font-weight: bold; top: 10px;}
 .closed:hover{color: #222222;}
 
+.alert_login{
+    position: fixed; width: 300px;
+    height: 160px; background: rgba(34,34,34,0.60);
+    top: 45%; left: 50%; margin-left: -150px;
+    text-align: center;
+    font-family: MicrosoftYaHei;
+    font-size: 14px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    z-index: 100000000;
+    line-height: 160px;
+}
+
 /*政民互动*/
 .zmhd{margin: 0 auto; margin-top: 10px!important; overflow: hidden; margin-bottom: 100px;}
 .zmhd .zw_right{margin-right: 0px;}
