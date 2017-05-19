@@ -14,8 +14,13 @@
         </div>
         <div class="hd_nav">
             <ul class="hd_ful">
-                <li class="hdf_li"><a href="{{URL::to('/')}}">首页</a></li>
-                <li class="hdf_li"><a href="@if($zwgk_list != 'none' && is_array($zwgk_list)){{ URL::to('/list').'/'.$zwgk_list[0]['key'] }}@else{{URL::to('/')}}@endif">政务公开</a>
+                <li class="hdf_li" @if(isset($_now) && $_now == 'index') style="background: #FFFFFF;" @endif>
+                    <a href="{{URL::to('/')}}" @if(isset($_now) && $_now == 'index') style="color: #E23939!important;" @endif>首页</a>
+                </li>
+                <li class="hdf_li" @if(isset($_now) && $_now == 'zwgk') style="background: #FFFFFF;" @endif>
+                    <a href="@if($zwgk_list != 'none' && is_array($zwgk_list)){{ URL::to('/list').'/'.$zwgk_list[0]['key'] }}@else{{URL::to('/')}}@endif" @if(isset($_now) && $_now == 'zwgk') style="color: #E23939!important;" @endif>
+                        政务公开
+                    </a>
                     <div class="hd_lv3" style="font-size: 12px; color: #676767">
                         <span><a href="{{ URL::to('intro')}}">司法局介绍</a></span>
                         <span><a href="{{ URL::to('/picture/1')}}">图片中心</a></span>

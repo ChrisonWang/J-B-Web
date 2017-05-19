@@ -197,6 +197,7 @@ class Index extends Controller
             );
         }
 
+        $this->page_data['_now'] = 'index';
         $this->page_data['video'] = $video;
         $this->page_data['recommend_list'] = $recommend_list;
         $this->page_data['m_zwgk_list'] = $m_zwgk_list;
@@ -212,6 +213,7 @@ class Index extends Controller
 
     public function search(Request $request){
         $this->page_data['no_search'] = 'yes';
+        $this->page_data['_now'] = 'index';
         return view('judicial.web.search', $this->page_data);
     }
 
@@ -251,6 +253,7 @@ class Index extends Controller
                 );
             }
         }
+        $this->page_data['_now'] = 'index';
         $this->page_data['page'] = array(
             'count' => $count,
             'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
@@ -288,6 +291,7 @@ class Index extends Controller
         if(count($articles) < 1){
             $article_list = 'none';
             $this->page_data['article_list'] = $article_list;
+            $this->page_data['_now'] = 'zwgk';
             return view('judicial.web.list', $this->page_data);
         }
         else{
@@ -313,6 +317,7 @@ class Index extends Controller
                 'now_page' => $page,
             );
             $this->page_data['article_list'] = $article_list;
+            $this->page_data['_now'] = 'zwgk';
             return view('judicial.web.list', $this->page_data);
         }
     }
@@ -376,6 +381,7 @@ class Index extends Controller
         if($count < 1){
             $video_list = 'none';
             $this->page_data['video_list'] = $video_list;
+            $this->page_data['_now'] = 'zwgk';
             return view('judicial.web.videoList', $this->page_data);
         }
         else{
@@ -401,6 +407,7 @@ class Index extends Controller
                 'now_page' => $page,
             );
             $this->page_data['video_list'] = $video_list;
+            $this->page_data['_now'] = 'zwgk';
             return view('judicial.web.videoList', $this->page_data);
         }
     }
@@ -425,6 +432,7 @@ class Index extends Controller
         if($count < 1){
             $article_list = 'none';
             $this->page_data['article_list'] = $article_list;
+            $this->page_data['_now'] = 'zwgk';
             return view('judicial.web.tagList', $this->page_data);
         }
         else{
@@ -444,6 +452,7 @@ class Index extends Controller
                 'tag_name' => is_null($tag_name) ? '' : $tag_name->tag_title,
             );
             $this->page_data['article_list'] = $article_list;
+            $this->page_data['_now'] = 'zwgk';
             return view('judicial.web.tagList', $this->page_data);
         }
     }
@@ -482,6 +491,7 @@ class Index extends Controller
                 'now_page' => $page,
             );
             $this->page_data['article_list'] = $article_list;
+            $this->page_data['_now'] = 'zwgk';
             return view('judicial.web.pictureList', $this->page_data);
         }
     }
@@ -541,6 +551,7 @@ class Index extends Controller
         DB::table('cms_article')->where('article_code', $article_code)->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->where('archived', 'no')->update(['clicks'=> $clicks]);
         $this->page_data['tag_list'] = $tag_list;
         $this->page_data['article_detail'] = $article_detail;
+        $this->page_data['_now'] = 'zwgk';
         return view('judicial.web.content', $this->page_data);
     }
 
@@ -568,6 +579,7 @@ class Index extends Controller
             );
         }
         $this->page_data['video_detail'] = $video_detail;
+        $this->page_data['_now'] = 'zwgk';
         return view('judicial.web.videoContent', $this->page_data);
     }
 
@@ -592,6 +604,7 @@ class Index extends Controller
             );
         }
         $this->page_data['department_detail'] = $department_detail;
+        $this->page_data['_now'] = 'zwgk';
         return view('judicial.web.departmentIntro', $this->page_data);
     }
 
@@ -612,6 +625,7 @@ class Index extends Controller
             );
         }
         $this->page_data['intro_detail'] = $intro_detail;
+        $this->page_data['_now'] = 'zwgk';
         return view('judicial.web.intro', $this->page_data);
     }
 
@@ -658,6 +672,7 @@ class Index extends Controller
             }
         }
         $this->page_data['leader_list'] = $leader_list;
+        $this->page_data['_now'] = 'zwgk';
         return view('judicial.web.leaderList', $this->page_data);
     }
 
@@ -691,6 +706,7 @@ class Index extends Controller
             }
         }
         $this->page_data['department_list'] = $department_list;
+        $this->page_data['_now'] = 'zwgk';
         return view('judicial.web.departmentList', $this->page_data);
     }
 
