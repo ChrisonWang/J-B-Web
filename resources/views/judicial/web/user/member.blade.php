@@ -107,11 +107,11 @@
                     </div>
                     <div class="container-fluid" style="margin-top: 20px">
                         <label for="title" class="reason_left" style="vertical-align: top">留言主题</label>
-                        <textarea id="title" class="reason_right" disabled></textarea>
+                        <div id="title" class="reason_right text_content"></div>
                     </div>
                     <div class="container-fluid" style="margin-top: 20px">
                         <label for="content" class="reason_left" style="vertical-align: top">留言内容</label>
-                        <textarea id="content" class="reason_right" disabled></textarea>
+                        <div id="content" class="reason_right text_content"></div>
                     </div>
                     <div class="container-fluid" style="margin-top: 20px">
                         <label for="answer_date" class="reason_left">回复时间</label>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="container-fluid" style="margin-top: 20px">
                         <label for="answer_content" class="reason_left" style="vertical-align: top">回复内容</label>
-                        <textarea id="answer_content" class="reason_right" disabled></textarea>
+                        <div id="answer_content" class="reason_right text_content"></div>
                     </div>
                 </div>
             </div>
