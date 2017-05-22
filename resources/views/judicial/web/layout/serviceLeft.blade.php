@@ -1,6 +1,7 @@
 <div class="zw_left">
     <ul>
-        <li ><div>律师服务<i class="r_awry"></i></div>
+        <li @if(isset($now_title) && $now_title == '律师服务') class="lb_select" @endif>
+            <div>律师服务<i class="r_awry"></i></div>
             <div class="law_body">
                 <span onclick="javascript: window.location.href='{{URL::to('service/lawyer/1')}}';">律师查询</span>
                 <span onclick="javascript: window.location.href='{{URL::to('service/lawyerOffice/1')}}';">事务所查询</span>
@@ -14,7 +15,8 @@
                 @endif
             </div>
         </li>
-        <li><div>司法考试<i class="r_awry"></i></div>
+        <li @if(isset($now_title) && $now_title == '司法考试') class="lb_select" @endif>
+            <div>司法考试<i class="r_awry"></i></div>
             <div class="law_body">
                 @if(isset($s_sfks) && is_array($s_sfks) && count($s_sfks)>0)
                     @foreach($s_sfks as $sfks)
@@ -26,7 +28,8 @@
                 @endif
             </div>
         </li>
-        <li><div>司法鉴定<i class="r_awry"></i></div>
+        <li @if(isset($now_title) && $now_title == '司法鉴定') class="lb_select" @endif>
+            <div>司法鉴定<i class="r_awry"></i></div>
             <div class="law_body">
                 <span onclick="javascript: window.location.href='{{URL::to('service/expertise/apply')}}';">提交审核</span>
                 <span onclick="javascript: window.location.href='{{URL::to('service/expertise/list/1')}}';">审批状态查询</span>
@@ -38,7 +41,7 @@
                 <span onclick="javascript: window.location.href='{{URL::to('service/expertise/downloadForm')}}';">表格下载</span>
             </div>
         </li>
-        <li>
+        <li @if(isset($now_title) && $now_title == '法律援助') class="lb_select" @endif>
             <div>法律援助<i class="r_awry"></i></div>
             <div class="law_body">
                 <span onclick="javascript: window.location.href='{{URL::to('service/aidApply/apply')}}';">群众预约援助</span>
@@ -56,7 +59,7 @@
         </li>
         @if(isset($wsbs_left_list) && is_array($wsbs_left_list) && count($wsbs_left_list)>0)
             @foreach($wsbs_left_list as $wsbs_p)
-                <li>
+                <li @if(isset($now_title) && $wsbs_p['channel_title'] == $now_title) class="lb_select" @endif>
                     <div style="height: 40px; overflow: hidden">
                         <span class="zw_left_li_span">{{ mb_spilt_title($wsbs_p['channel_title'], 7, false) }}</span>
                         <i class="r_awry"></i>

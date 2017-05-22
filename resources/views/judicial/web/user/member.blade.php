@@ -89,7 +89,7 @@
                 <div class="als_down">请按照流程填写申请表，重新提交审核。</div>
             </div>
             <!--弹窗-->
-            <div class="alert_sh" id="reason_model" style="display: none; height: auto; top: 20%;">
+            <div class="alert_sh" id="reason_model" style="display: none; height: auto; top: 20%; max-height: 500px; overflow: scroll">
                 <a href="javascript:void(0)" class="closed">X</a>
                 <div class="als_top">征求意见详情</div>
                 <div class="als_down" style="padding-bottom: 40px">

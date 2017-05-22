@@ -63,6 +63,7 @@ class AidDispatch extends Controller
         $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->page_data['_now'] = 'wsbs';
+        $this->page_data['now_title'] = '法律援助';
         $this->get_left_sub();
     }
 

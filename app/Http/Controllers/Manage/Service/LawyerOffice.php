@@ -59,7 +59,7 @@ class LawyerOffice extends Controller
                 'count' => $count,
                 'count_page' => $count_page,
                 'now_page' => $page,
-                'type' => 'lawyer',
+                'type' => 'lawyerOffice',
             );
         }
         $this->page_data['pages'] = $pages;

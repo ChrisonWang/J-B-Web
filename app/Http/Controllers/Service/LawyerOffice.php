@@ -73,6 +73,7 @@ class LawyerOffice extends Controller
         $this->page_data['area_list'] = $area_list;
         $this->get_left_sub();
         $this->page_data['_now'] = 'wsbs';
+        $this->page_data['now_title'] = '律师服务';
     }
 
     public function index($page = 1)

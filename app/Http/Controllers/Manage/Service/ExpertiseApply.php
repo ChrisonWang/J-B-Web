@@ -39,7 +39,7 @@ class ExpertiseApply extends Controller
         $count = DB::table('service_judicial_expertise')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $applies = DB::table('service_judicial_expertise')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip($offset)->take(0)->get();
+        $applies = DB::table('service_judicial_expertise')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip($offset)->take(30)->get();
         if(count($applies) > 0){
             $types = DB::table('service_judicial_expertise_type')->get();
             if(count($types) > 0){
@@ -60,7 +60,7 @@ class ExpertiseApply extends Controller
             $pages = array(
                 'count' => $count,
                 'count_page' => $count_page,
-                'now_page' => 1,
+                'now_page' => $page,
                 'type' => 'expertiseApply',
             );
         }

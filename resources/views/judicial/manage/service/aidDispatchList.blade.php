@@ -53,12 +53,12 @@
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th width="20%" class="text-center">操作</th>
-                        <th class="text-center">申请编号</th>
-                        <th class="text-center">审批状态</th>
-                        <th class="text-center">申请单位</th>
-                        <th class="text-center">申请援助单位</th>
-                        <th class="text-center">案件名称</th>
+                        <th width="15%" class="text-center">操作</th>
+                        <th width="10%" class="text-center">申请编号</th>
+                        <th width="10%" class="text-center">审批状态</th>
+                        <th width="15%" class="text-center">申请单位</th>
+                        <th width="20%" class="text-center">申请援助单位</th>
+                        <th width="20%" class="text-center">案件名称</th>
 
                     </tr>
                 </thead>
@@ -83,9 +83,9 @@
                             <p style="color:#FFA500; font-weight: bold">待答复</p>
                         @endif
                     </td>
-                    <td>{{ $apply['apply_office'] }}</td>
-                    <td>{{ $apply['apply_aid_office'] }}</td>
-                    <td>{{ $apply['case_name'] }}</td>
+                    <td>{{ spilt_title($apply['apply_office'], 20) }}</td>
+                    <td>{{ spilt_title($apply['apply_aid_office'], 20) }}</td>
+                    <td>{{ spilt_title($apply['case_name'], 20) }}</td>
                 </tr>
                 @endforeach
                 </tbody>

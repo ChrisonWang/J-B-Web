@@ -282,6 +282,7 @@ class Index extends Controller
             $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
             if(count($p_channel)!=0){
                 $this->page_data['title'] = $p_channel->channel_title;
+                $this->page_data['now_title'] = $p_channel->channel_title;
             }
             $this->page_data['zwgk'] = $channel->zwgk;
             $this->page_data['wsbs'] = $channel->wsbs;
@@ -337,6 +338,7 @@ class Index extends Controller
             $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
             if(count($p_channel)!=0){
                 $this->page_data['title'] = $p_channel->channel_title;
+                $this->page_data['now_title'] = $p_channel->channel_title;
             }
         }
         $count = DB::table('cms_forms')->where(['channel_id'=>$channel_id, 'disabled'=>'no'])->count();
@@ -626,6 +628,7 @@ class Index extends Controller
         }
         $this->page_data['intro_detail'] = $intro_detail;
         $this->page_data['_now'] = 'zwgk';
+        $this->page_data['now_title'] = "司法局介绍";
         return view('judicial.web.intro', $this->page_data);
     }
 
@@ -673,6 +676,7 @@ class Index extends Controller
         }
         $this->page_data['leader_list'] = $leader_list;
         $this->page_data['_now'] = 'zwgk';
+        $this->page_data['now_title'] = "司法局介绍";
         return view('judicial.web.leaderList', $this->page_data);
     }
 
@@ -707,6 +711,7 @@ class Index extends Controller
         }
         $this->page_data['department_list'] = $department_list;
         $this->page_data['_now'] = 'zwgk';
+        $this->page_data['now_title'] = "司法局介绍";
         return view('judicial.web.departmentList', $this->page_data);
     }
 

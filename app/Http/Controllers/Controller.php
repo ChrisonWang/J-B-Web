@@ -98,8 +98,8 @@ class Controller extends BaseController
         $this->page_data['s_sfjd'] = json_decode(json_encode($s_sfjd), true);
         $this->page_data['s_flyz'] = json_decode(json_encode($s_flyz), true);
 
-        $this->page_data['s_sfks']['forms'] = isset($forms_channel[128]) ? 128 : 0;
-        $this->page_data['s_lsfw']['forms'] = isset($forms_channel[126]) ? 126 : 0;
+        $this->page_data['s_sfks']['forms'] = isset($forms_channel[178]) ? 178 : 0;
+        $this->page_data['s_lsfw']['forms'] = isset($forms_channel[128]) ? 128 : 0;
         $this->page_data['s_sfjd']['forms'] = isset($forms_channel[130]) ? 130 : 0;
         $this->page_data['s_flyz']['forms'] = isset($forms_channel[133]) ? 133 : 0;
         $this->page_data['wsbs_left_list'] = $wsbs_left_list;

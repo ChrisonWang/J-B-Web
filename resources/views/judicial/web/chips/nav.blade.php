@@ -1,5 +1,7 @@
 <style>
-    .hd_lv3 span a{color: #676767}
+    .hdf_li a:hover{text-decoration: none}
+    .hd_lv3 span a{color: #222222}
+    .hd_lv3 span a:hover{color: #DD3736; text-decoration: none}
 </style>
 <div class="w_100">
     <div class="w1024 index_hd head_banner">

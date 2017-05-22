@@ -128,6 +128,7 @@ class Index extends Controller
             $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
             if(count($p_channel)!=0){
                 $this->page_data['title'] = $p_channel->channel_title;
+                $this->page_data['now_title'] = $p_channel->channel_title;
             }
             $this->page_data['zwgk'] = $channel->zwgk;
             $this->page_data['wsbs'] = $channel->wsbs;

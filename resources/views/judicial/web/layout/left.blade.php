@@ -1,6 +1,6 @@
 <div class="zw_left">
     <ul>
-        <li>
+        <li @if(isset($now_title) && $now_title == '司法局介绍') class="lb_select" @endif>
             <div>司法局介绍<i class="r_awry"></i>
             </div>
             <div class="law_body">
@@ -9,7 +9,7 @@
                 <span><a href="{{ URL::to('/department')}}" style="color: #000000">机构设置</a></span>
             </div>
         </li>
-        <li>
+        <li @if(isset($now_title) && $now_title == '司法动态') class="lb_select" @endif>
             <div>司法动态<i class="r_awry"></i>
             </div>
             @if(isset($sfdt_list) && is_array($sfdt_list) && count($sfdt_list) > 0)
@@ -30,7 +30,7 @@
         <!--非固定-->
         @if(isset($channel_list) && is_array($channel_list) && count($channel_list) > 0)
             @foreach($channel_list as $key=> $channel)
-                <li>
+                <li @if(isset($now_title) && $channel['channel_title'] == $now_title) class="lb_select" @endif>
                     <div style="height: 40px; overflow: hidden">
                         <span class="zw_left_li_span">{{ mb_spilt_title($channel['channel_title'], 7, false) }}</span>
                         <i class="r_awry"></i>

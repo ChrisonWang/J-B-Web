@@ -56,7 +56,7 @@ class Consultions extends Controller
             $pages = array(
                 'count' => $count,
                 'count_page' => $count_page,
-                'now_page' => $pages,
+                'now_page' => $page,
                 'type' => 'consultions',
             );
         }

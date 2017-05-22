@@ -39,7 +39,7 @@ class Article extends Controller
         //取出频道
         $channels_data = 'none';
         $sub_channels_data = 'none';
-        $channels = DB::table('cms_channel')->where('archived', 'no')->orderBy('create_date', 'desc')->get();
+        $channels = DB::table('cms_channel')->orderBy('create_date', 'desc')->get();
         if(count($channels) > 0){
             $channels_data = array();
             foreach($channels as $key => $channel){
@@ -68,7 +68,7 @@ class Article extends Controller
         $count = DB::table('cms_article')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
         if(count($articles) > 0){
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;

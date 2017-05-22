@@ -63,6 +63,7 @@ class Expertise extends Controller
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->page_data['_now'] = 'wsbs';
         $this->get_left_sub();
+        $this->page_data['now_title'] = '司法鉴定';
     }
 
     public function index($page = 1)
@@ -289,6 +290,20 @@ class Expertise extends Controller
         $pages = '';
         $channel_id = $cid;
         $form_list = array();
+        //频道信息
+        $channel = DB::table('cms_channel')->where('channel_id', $channel_id)->first();
+        if((count($channel)==0)){
+            return view('errors.404');
+        }
+        else{
+            $this->page_data['sub_title'] = $channel->channel_title;
+            $this->page_data['now_title'] = $channel->channel_title;
+            $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
+            if(count($p_channel)!=0){
+                $this->page_data['title'] = $p_channel->channel_title;
+                $this->page_data['now_title'] = $p_channel->channel_title;
+            }
+        }
         $count = DB::table('cms_forms')->where(['channel_id'=>$channel_id, 'disabled'=>'no'])->count();
         $count_page = ($count > 16)? ceil($count/16)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 16;
