@@ -318,6 +318,7 @@ class CmsLoadContent extends Controller
                 $channel_data[$key]['channel_title'] = $channel->channel_title;
                 $channel_data[$key]['is_recommend'] = $channel->is_recommend;
                 $channel_data[$key]['form_download'] = $channel->form_download;
+                $channel_data[$key]['standard'] = $channel->standard;
                 $channel_data[$key]['zwgk'] = $channel->zwgk;
                 $channel_data[$key]['wsbs'] = $channel->wsbs;
                 $channel_data[$key]['sort'] = $channel->sort;

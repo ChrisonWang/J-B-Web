@@ -118,6 +118,7 @@ class Index extends Controller
     public function article_list($cid, $page = 1)
     {
         $channel_id = $cid;
+        $this->page_data['now_key'] = $channel_id;
         //频道信息
         $channel = DB::table('cms_channel')->where('channel_id', $channel_id)->first();
         if((count($channel)==0)){

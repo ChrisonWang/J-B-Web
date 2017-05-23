@@ -110,6 +110,7 @@ class LawyerOffice extends Controller
         }
         $this->page_data['pages'] = $pages;
         $this->page_data['office_list'] = $office_list;
+        $this->page_data['now_key'] = '事务所查询';
         return view('judicial.web.service.lawyerOffice', $this->page_data);
     }
 
@@ -145,6 +146,7 @@ class LawyerOffice extends Controller
         }
         $this->page_data['pages'] = $pages;
         $this->page_data['office_list'] = $office_list;
+        $this->page_data['now_key'] = '事务所查询';
         return view('judicial.web.service.lawyerOffice', $this->page_data);
     }
 
@@ -185,6 +187,7 @@ class LawyerOffice extends Controller
         }
         //律所列表
         $this->page_data['office_detail'] = $office_detail;
+        $this->page_data['now_key'] = '事务所查询';
         return view('judicial.web.service.lawyerOfficeDetail',$this->page_data)->render();
     }
 
@@ -243,6 +246,7 @@ class LawyerOffice extends Controller
         $this->page_data['last_search'] = $inputs;
         $this->page_data['pages'] = $pages;
         $this->page_data['office_list'] = $office_list;
+        $this->page_data['now_key'] = '事务所查询';
         return view('judicial.web.service.lawyerOffice', $this->page_data);
     }
 }

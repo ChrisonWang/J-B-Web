@@ -68,6 +68,7 @@ class Expertise extends Controller
 
     public function index($page = 1)
     {
+        $this->page_data['now_key'] = '审批状态查询';
         $member_code = $this->checkLoginStatus();
         //取出列表
         $type_list = array();
@@ -111,6 +112,7 @@ class Expertise extends Controller
 
     public function add()
     {
+        $this->page_data['now_key'] = '提交审核';
         $type_list = 'none';
         $types = DB::table('service_judicial_expertise_type')->get();
         if(count($types) > 0){
@@ -283,6 +285,7 @@ class Expertise extends Controller
 
         $this->page_data['pages'] = $pages;
         $this->page_data['form_list'] = $form_list;
+        $this->page_data['now_key'] = '司法鉴定表格下载';
         return view('judicial.web.service.expertiseForm', $this->page_data);
     }
 
@@ -290,6 +293,7 @@ class Expertise extends Controller
         $pages = '';
         $channel_id = $cid;
         $form_list = array();
+        $this->page_data['now_key'] = $channel_id;
         //频道信息
         $channel = DB::table('cms_channel')->where('channel_id', $channel_id)->first();
         if((count($channel)==0)){

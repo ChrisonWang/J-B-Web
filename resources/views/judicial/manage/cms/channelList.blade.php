@@ -28,7 +28,9 @@
                         &nbsp;&nbsp;
                         <a href="javascript: void(0) ;" data-key="{{ $channel['key'] }}" data-method="edit" onclick="channelMethod($(this))">编辑</a>
                         &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $channel['key'] }}" data-method="delete" data-title="{{ $channel['channel_title'] }}" onclick="channelMethod($(this))">删除</a>
+                        @if(isset($channel['standard']) && $channel['standard']=='no')
+                            <a href="javascript: void(0) ;" data-key="{{ $channel['key'] }}" data-method="delete" data-title="{{ $channel['channel_title'] }}" onclick="channelMethod($(this))">删除</a>
+                        @endif
                     </td>
                     <td>{{ $channel['channel_title'] }}</td>
                     <td>@if($channel['is_recommend'] == 'yes') 是 @else 否 @endif</td>

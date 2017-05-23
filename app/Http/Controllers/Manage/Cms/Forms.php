@@ -144,7 +144,7 @@ class Forms extends Controller
             $count = DB::table('cms_forms')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $forms = DB::table('cms_forms')->skip(0)->take($offset)->get();
+            $forms = DB::table('cms_forms')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
             if(count($forms) > 0){
                 foreach($forms as $key=> $form){
                     $forms_data[$key]['key'] = keys_encrypt($form->id);
@@ -360,7 +360,7 @@ class Forms extends Controller
             $count = DB::table('cms_forms')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $forms = DB::table('cms_forms')->skip(0)->take($offset)->get();
+            $forms = DB::table('cms_forms')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
             if(count($forms) > 0){
                 foreach($forms as $key=> $form){
                     $forms_data[$key]['key'] = keys_encrypt($form->id);

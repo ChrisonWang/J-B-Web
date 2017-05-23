@@ -111,6 +111,7 @@ class Lawyer extends Controller
         $this->page_data['pages'] = $pages;
         $this->page_data['office_list'] = $office_list;
         $this->page_data['lawyer_list'] = $lawyer_list;
+        $this->page_data['now_key'] = '律师查询';
         return view('judicial.web.service.lawyer', $this->page_data);
     }
 
@@ -161,6 +162,7 @@ class Lawyer extends Controller
         }
         $this->page_data['office_list'] = $office_list;
         $this->page_data['lawyer_detail'] = $lawyer_detail;
+        $this->page_data['now_key'] = '律师查询';
         return view('judicial.web.service.lawyerDetail',$this->page_data)->render();
     }
 
@@ -231,6 +233,7 @@ class Lawyer extends Controller
         $this->page_data['pages'] = $pages;
         $this->page_data['office_list'] = $office_list;
         $this->page_data['lawyer_list'] = $lawyer_list;
+        $this->page_data['now_key'] = '律师查询';
         return view('judicial.web.service.lawyer', $this->page_data);
     }
 }

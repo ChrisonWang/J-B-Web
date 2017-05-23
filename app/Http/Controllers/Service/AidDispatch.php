@@ -73,6 +73,7 @@ class AidDispatch extends Controller
 
     public function add()
     {
+        $this->page_data['now_key'] = '公检法指派援助';
         return view('judicial.web.service.aidDispatchApply', $this->page_data);
     }
 

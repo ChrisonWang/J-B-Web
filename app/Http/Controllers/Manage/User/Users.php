@@ -68,6 +68,10 @@ class Users extends Controller
         $this->page_data['type_list'] = $type_list;
         $this->page_data['user_list'] = $user_list;
         $this->page_data['office_list'] = $office_list;
+        //自己的信息
+        $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+        $managerCode = session($login_name);
+        $this->page_data['my_code'] = $managerCode;
         $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -249,6 +253,10 @@ class Users extends Controller
         $this->page_data['type_list'] = $type_list;
         $this->page_data['user_list'] = $user_list;
         $this->page_data['office_list'] = $office_list;
+        //自己的信息
+        $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+        $managerCode = session($login_name);
+        $this->page_data['my_code'] = $managerCode;
         $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -616,6 +624,10 @@ class Users extends Controller
         $this->page_data['type_list'] = $type_list;
         $this->page_data['user_list'] = $user_list;
         $this->page_data['office_list'] = $office_list;
+        //自己的信息
+        $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+        $managerCode = session($login_name);
+        $this->page_data['my_code'] = $managerCode;
         $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
@@ -703,6 +715,10 @@ class Users extends Controller
             $this->page_data['type_list'] = $type_list;
             $this->page_data['user_list'] = $user_list;
             $this->page_data['office_list'] = $office_list;
+            //自己的信息
+            $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+            $managerCode = session($login_name);
+            $this->page_data['my_code'] = $managerCode;
             $pageContent = view('judicial.manage.user.userList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }

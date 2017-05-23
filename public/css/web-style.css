@@ -172,9 +172,15 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .r_awry{background: url("../images/btn_arrowright_20x20.png") no-repeat center; background-size: 100%;}
 .lb_select .r_awry{background: url("../images/btn_arrowdown_20x20.png") no-repeat center; background-size: 100%;}
 .law_body span{display: block; text-align: center; text-indent: 0px;}
+.law_body a{color: #000000; text-decoration: none}
 .lb_act{background-color: #E23939; color: #fff;}
 .law_body{display: none;}
 .law_body .law_hover{background-color: #E23939; color: #FFFFFF}
+.law_body .law_hover a{color: #FFFFFF}
+
+.law_body .law_hover_b{background-color: #E23939; color: #FFFFFF}
+.law_body .law_hover_b a{color: #FFFFFF}
+
 .lb_select .law_body{display: block;}
 .zw_right{float: right; margin-right: 20px;}
 .zwr_top{background-color: #f9f9f9; line-height: 40px; text-indent: 10px; color: #929292;}

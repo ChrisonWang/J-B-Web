@@ -102,11 +102,13 @@ class AidApply extends Controller
 
         $this->page_data['dispatch_type'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_data['dispatch_list'] = $dispatch_list;
+        $this->page_data['now_key'] = '办理进度查询';
         return view('judicial.web.service.aidList', $this->page_data);
     }
 
     public function add()
     {
+        $this->page_data['now_key'] = '群众预约援助';
         return view('judicial.web.service.aidApply', $this->page_data);
     }
 

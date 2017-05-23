@@ -888,6 +888,11 @@ class Dashboard extends Controller
     {
         $type_list = array();
         $office_list = array();
+        //自己的信息
+        $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+        $managerCode = session($login_name);
+        $this->page_data['my_code'] = $managerCode;
+
         //取出管理员
         $user_list = array();
         $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
