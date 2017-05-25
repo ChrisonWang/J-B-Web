@@ -284,7 +284,12 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .ws_cxt ul{overflow: hidden; padding-top: 20px;}
 .ws_cxt ul li{float: left; margin-bottom: 20px; display:inline-block; margin-left: 20px;}
 .wsc_txt{display: inline-block; font-size: 13px; vertical-align: middle; margin: 0}
-.cx_inp{display: inline-block; position: relative; float: left; height: 34px!important; line-height: 34px;}
+.law_cx_inp{display: inline-block; position: relative; float: left; height: 34px!important; line-height: 34px;}
+.law_cx_inp input{width: 170px; padding: 7px 0; border-radius: 2px; text-indent: 10px; border: 1px solid #ECECEC; color: #222222; font-size: 13px;}
+.law_cx_inp select{width: 170px; padding: 7px 0; border-radius: 2px; text-indent: 10px; border: 1px solid #ECECEC; color: #222222; font-size: 13px;}
+.law_cx_inp .cx_t{position: absolute; right: 5px; top: 2px; color: #929292;}
+.law_cx_inp .cx_d{position: absolute; right: 5px; top: 12px; color: #929292;}
+.cx_inp{display: inline-block; position: relative; }
 .cx_inp input{width: 170px; padding: 7px 0; border-radius: 2px; text-indent: 10px; border: 1px solid #ECECEC; color: #222222; font-size: 13px;}
 .cx_inp select{width: 170px; padding: 7px 0; border-radius: 2px; text-indent: 10px; border: 1px solid #ECECEC; color: #222222; font-size: 13px;}
 .cx_inp .cx_t{position: absolute; right: 5px; top: 2px; color: #929292;}
