@@ -40,11 +40,9 @@ $(document).ready(function(){
     //左侧树状菜单
     $('.law_body span').hover(
         function(){
-            $(this).find("a").css({color: "#ffffff"});
             $(this).addClass('law_hover');
         },
         function(){
-            $(this).find("a").css({color: "#222222"});
             $(this).removeClass('law_hover');
         }
     );

@@ -8,7 +8,7 @@
 <!--内容-->
 <div class="w1024 zw_mb">
     <!-- 左侧菜单 -->
-    @include('judicial.web.layout.serviceLeft')
+    @include('judicial.web.layout.left')
 
     <div class="zw_right w810">
         <div class="zwr_top">

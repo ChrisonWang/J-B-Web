@@ -22,13 +22,17 @@
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <ul>
                     <li>
-                        <label for="name" class="wsc_txt">律师姓名</label>
+                        <div class="cx_inp">
+                            <label for="name" class="wsc_txt" style="margin-right: 10px!important;">律师姓名</label>
+                        </div>
                         <div class="cx_inp">
                             <input class="form-control" type="text" id="name" name="name" value="{{ isset($last_search['name']) ? $last_search['name'] : '' }}" placeholder="请输入律师姓名">
                         </div>
                     </li>
                     <li>
-                        <label for="sex" class="wsc_txt">性别</label>
+                        <div class="cx_inp">
+                            <label for="sex" class="wsc_txt" style="margin-right: 10px!important;">性别</label>
+                        </div>
                         <div class="cx_inp">
                             <select class="form-control" id="sex" name="sex">
                                 <option value="none">不限</option>
@@ -38,7 +42,9 @@
                         </div>
                     </li>
                     <li>
-                        <label for="type" class="wsc_txt">律师类型</label>
+                        <div class="cx_inp">
+                            <label for="type" class="wsc_txt" style="margin-right: 10px!important;">律师类型</label>
+                        </div>
                         <div class="cx_inp">
                             <select class="form-control" id="type" name="type">
                                 <option value="none">不限</option>
@@ -50,13 +56,17 @@
                         </div>
                     </li>
                     <li>
-                        <label for="lawyer_office_name" class="wsc_txt">机构名称</label>
+                        <div class="cx_inp">
+                            <label for="lawyer_office_name" class="wsc_txt" style="margin-right: 10px!important;">机构名称</label>
+                        </div>
                         <div class="cx_inp">
                             <input type="text" class="form-control" value="{{ isset($last_search['lawyer_office_name']) ? $last_search['lawyer_office_name'] : '' }}" id="lawyer_office_name" name="lawyer_office_name" placeholder="请输入机构名称">
                         </div>
                     </li>
                     <li>
-                        <label for="certificate_code" class="wsc_txt">执业证号</label>
+                        <div class="cx_inp">
+                            <label for="certificate_code" class="wsc_txt" style="margin-right: 10px!important;">执业证号</label>
+                        </div>
                         <div class="cx_inp">
                             <input type="text" class="form-control" value="{{ isset($last_search['certificate_code']) ? $last_search['certificate_code'] : '' }}" id="certificate_code" name="certificate_code" placeholder="请输入执业证号">
                         </div>

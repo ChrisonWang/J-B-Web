@@ -32,7 +32,8 @@
                     <div class="wztd_right">
                         @if(is_array($article_detail['tags']) && $article_detail['tags']!='none')
                             @foreach($article_detail['tags'] as $tag)
-                                <span style="margin-right: 0!important;"><a href="{{ URL::to('/tagList').'/'.$tag }}" style="color: red">#{{ $tag_list[$tag] }}</a>&nbsp;&nbsp;</span>
+                                <span style="margin-right: 0!important;">
+                                    <a href="{{ URL::to('/tagList').'/'.$tag }}" style="color: red">#{{ isset($tag_list[$tag])?$tag_list[$tag] : '已删除' }}</a>&nbsp;&nbsp;</span>
                             @endforeach
                         @endif
                     </div>
