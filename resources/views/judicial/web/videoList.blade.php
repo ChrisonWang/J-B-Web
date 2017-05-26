@@ -39,7 +39,7 @@
                     @endforeach
                 </ul>
             @else
-                <p>该频道下暂无文章！</p>
+                <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">该频道下暂无文章！</p>
             @endif
         </div>
         @if($video_list != 'none')

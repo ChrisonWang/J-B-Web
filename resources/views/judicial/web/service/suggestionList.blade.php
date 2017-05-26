@@ -43,7 +43,7 @@
                     </thead>
                     <tbody>
                     @foreach($record_list as $record)
-                        <tr>
+                        <tr  style="cursor: pointer">
                             <td>{{ $record['record_code'] }}</td>
                             <td>{{ $type_list[$record['type']] }}</td>
                             <td>{{ spilt_title($record['title'], 50) }}</td>
@@ -55,7 +55,9 @@
                     </tbody>
                 </table>
                 @else
-                <h3 class="text-center">没有搜索到结果！</h3>
+                <p style=" width:100%; margin: auto; text-align: center;font-family: MicrosoftYaHei;font-size: 14px;color: #929292;letter-spacing: 0; padding: 40px">
+                    没有相关联的搜索结果！
+                </p>
             @endif
         </div>
     </div>

@@ -91,7 +91,7 @@
             </thead>
             <tbody>
                 @foreach($office_list as $office)
-                    <tr onclick="javascript: window.location.href='{{ URL::to('service/lawyerOffice/detail').'/'.$office['key'] }}'">
+                    <tr onclick="javascript: window.location.href='{{ URL::to('service/lawyerOffice/detail').'/'.$office['key'] }}'"  style="cursor: pointer">
                         <td>{{ spilt_title($office['name'], 15) }}</td>
                         <td>{{ $office['director'] }}</td>
                         <td>{{ $office['usc_code'] }}</td>
@@ -102,7 +102,9 @@
                 @endforeach
             </tbody>
             @else
-                <h3 class="text-center">没有相关联的搜索结果！</h3>
+                <p style=" width:100%; margin: auto; text-align: center;font-family: MicrosoftYaHei;font-size: 14px;color: #929292;letter-spacing: 0; padding: 40px">
+                    没有相关联的搜索结果！
+                </p>
             @endif
         </table>
 

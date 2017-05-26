@@ -24,8 +24,10 @@
                 <ul>
                     @foreach($form_list as $form)
                         <li style="border-bottom: 1px dashed #D3D3D3">
-                            <div class="zwrm_a">{{ $form['title'] }}</div>
-                            <div class="zwrm_c"><a class="mtb_m" href="{{ $form['file'] }}" target="_blank">下载</a></div>
+                            <div class="zwrm_a"  style="cursor: pointer; color: #222222" >{{ $form['title'] }}</div>
+                            <div class="zwrm_c">
+                                <a class="mtb_m" href="{{ $form['file'] }}" target="_blank">下载</a>
+                            </div>
                         </li>
                     @endforeach
                 </ul>

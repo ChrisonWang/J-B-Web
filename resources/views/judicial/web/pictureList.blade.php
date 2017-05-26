@@ -20,7 +20,7 @@
             @if($article_list != 'none')
                 <ul>
                     @foreach($article_list as $article)
-                        <li>
+                        <li style="padding-right: 10px; margin-right: 0; overflow: hidden">
                             <a href="{{ URL::to('/article').'/'.$article['key'] }}">
                                 <img class="image_list" src="{{ $article['thumb'] }}"  controls="controls" width="250" height="167">
                             </a>
@@ -31,7 +31,7 @@
                     @endforeach
                 </ul>
             @else
-                <p>该频道下暂无文章！</p>
+                <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">该频道下暂无文章！</p>
             @endif
         </div>
         @if($article_list != 'none')

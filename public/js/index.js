@@ -65,6 +65,7 @@ $(document).ready(function(){
     $(".law_body span").click(function(){
         $(this).siblings("span").removeClass("lb_act");
         $(this).addClass("lb_act");
+        event.stopPropagation();
     });
 
     $(".closed").click(function(){
@@ -326,7 +327,8 @@ function loadArticle(t,c){
                     $('.more_2').attr('href', '/list/' + channel_id);
                 }
                 else if(re.status == 'failed'){
-                    c.html('暂无数据');
+                    var none_data = '<div style=" width: 100%; padding: 10px; margin: 0 auto; height: 250px; line-height: 250px; text-align: center; font-size: 14px; color: #929292">暂无数据</div>';
+                    c.html(none_data);
                     $('#more_2').hide();
                     return false;
                 }

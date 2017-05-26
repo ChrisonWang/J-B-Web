@@ -245,24 +245,38 @@ body a{
 }
 .login-box-top{
     width: 500px;
-    height: 60px;
+    height: 50px;
     margin: 0 auto;
     background: #F9F9F9;
     border-bottom: 1px solid #ECECEC;
 }
 .login-box-top div.login-box-tap{
     width: 50%;
-    height: 60px;
+    height: 50px;
     float: left;
-    line-height: 60px;
+    line-height: 50px;
     text-align: center;
     font-family: "微软雅黑";
     font-size: 14px;
     color: #222222;
     letter-spacing: 0;
+    text-decoration: none;
+}
+.login-box-top div a{
+    display: block;
+    margin: 0 auto;
+    width: 60px;
+    line-height: 50px;
+    height: 50px;
+    text-align: center;
+    font-family: "微软雅黑";
+    font-size: 14px;
+    color: #222222;
+    text-decoration: none;
 }
 
-.login-box-top div.on{
+.login-box-top div.on a{
+    text-decoration: none;
     color: #E23939;
     border-bottom: 2px solid #E23939;
 

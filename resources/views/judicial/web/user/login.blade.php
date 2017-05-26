@@ -9,8 +9,12 @@
     <div class="container-main">
         <div class="login-box">
             <div class="login-box-top" id="top-tab">
-                <div class="login-box-tap on"><a href="javascript:void(0);" data-page="login" id="tap-login">登录</a></div>
-                <div class="login-box-tap"><a href="javascript:void(0);" data-page="signup" id="tap-signup">注册</a></div>
+                <div class="login-box-tap on">
+                    <a href="javascript:void(0);" data-page="login" id="tap-login">登录</a>
+                </div>
+                <div class="login-box-tap">
+                    <a href="javascript:void(0);" data-page="signup" id="tap-signup">注册</a>
+                </div>
             </div>
             <div>
                 <div class="container-fluid" style="margin-top: 30px"  id="login-container">

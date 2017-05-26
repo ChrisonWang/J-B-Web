@@ -8,13 +8,13 @@
 <!--搜索栏-->
 <div class="index_search">
     <div class="id_sch_l">
-        今天是： {{ cn_date_format() }}
+        今日： {{ cn_date_format() }}
     </div>
     <div class="id_sch_r">
         <form action="{{ URL::route('search') }}" method="post">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
             <input type="search" name="keywords" placeholder="输入搜索关键词" value="">
-            <button type="submit">搜索</button>
+            <button type="submit" style="cursor: pointer">搜索</button>
         </form>
     </div>
 </div>
@@ -58,15 +58,19 @@
                 <ul id="sfdt_c">
                     @foreach($r_article_list as $r_article)
                         <li>
-                                <span class="idbrd_l">
-                                    <a href="{{ URL::to('/article').'/'.$r_article['key'] }}" target="_blank">{{ $r_article['article_title'] }}</a>
-                                </span>
+                            <span class="idbrd_l">
+                                    <a href="{{ URL::to('/article').'/'.$r_article['key'] }}" target="_blank"  style="color: #222222">
+                                        {{ $r_article['article_title'] }}
+                                    </a>
+                            </span>
                             <span class="idbrd_r">{{ $r_article['publish_date'] }}</span>
                         </li>
                     @endforeach
                 </ul>
             @else
-                暂无文章
+                <div style=" width: 100%; margin: 0 auto; height: 250px; line-height: 250px; text-align: center; font-size: 14px; color: #929292">
+                    暂无数据
+                </div>
             @endif
         </div>
     </div>
@@ -117,7 +121,7 @@
 </div>
 <!--新闻-->
 <div class="w980 news_2">
-    <div class="new2_left">
+    <div class="new2_left" style="height: 353px">
         <div class="idbr_top" id="_top_tab_b">
             @if(is_array($m_zwgk_list) && count($m_zwgk_list)>0)
             <ul>
@@ -132,14 +136,16 @@
                 @if($zwgk_article_list != 'none' && is_array($zwgk_article_list))
                     @foreach($zwgk_article_list as $zwgk)
                     <li>
-                        <a href="{{ URL::to('/article').'/'.$zwgk['key']}}">
-                            <span class="idbrd_l">{{ spilt_title($zwgk['article_title'], 30) }}</span>
-                            <span class="idbrd_r">{{ $zwgk['publish_date'] }}</span>
+                        <a href="{{ URL::to('/article').'/'.$zwgk['key']}}" target="_blank">
+                            <span class="idbrd_l" style="color: #222222">{{ spilt_title($zwgk['article_title'], 30) }}</span>
+                            <span class="idbrd_r" style="color: #222222">{{ $zwgk['publish_date'] }}</span>
                         </a>
                     </li>
                     @endforeach
                 @else
-                    暂无数据
+                    <div style=" width: 100%; margin: 0 auto; height: 250px; line-height: 250px; text-align: center; font-size: 14px; color: #929292">
+                        暂无数据
+                    </div>
                 @endif
             </ul>
             <div style="text-align: center; width: 100%; margin: 0 auto" id="more_2">

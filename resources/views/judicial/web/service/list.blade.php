@@ -21,14 +21,13 @@
                 <ul>
                     @foreach($article_list as $article)
                         <li>
-                            <div class="zwrm_a"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
-                            <div class="zwrm_b">{{ $article['publish_date'] }}</div>
-                            <div class="zwrm_c">浏览：{{ $article['clicks'] }}</div>
+                            <div class="zwrm_a" style="width: 650px; color: #222222"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
+                            <div class="zwrm_b" style="width: 120px; text-align: right; color: #222222">{{ $article['publish_date'] }}</div>
                         </li>
                     @endforeach
                 </ul>
             @else
-                <p>该频道下暂无文章！</p>
+                <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">该频道下暂无文章！</p>
             @endif
         </div>
         @if($article_list != 'none')

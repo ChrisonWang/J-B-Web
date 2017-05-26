@@ -20,10 +20,14 @@ function gen_unique_code($prefix='MEM_'){
     return $password;
 }
 
-function cn_date_format(){
+function cn_date_format($times = false){
     $date = date('Y-m-d',time());
+    $time = '';
+    if($times){
+        $time = date('H:i:s',time());
+    }
     $arr = array('天','一','二','三','四','五','六');
-    return $date.' 星期'.$arr[date('w',strtotime($date))];
+    return $date.' 星期'.$arr[date('w',strtotime($date))].'  '.$time;
 }
 
 function preg_phone($str){

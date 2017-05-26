@@ -90,7 +90,7 @@
             </thead>
             <tbody>
                 @foreach($lawyer_list as $lawyer)
-                    <tr onclick="javascript: window.location.href='{{ URL::to('service/lawyer/detail').'/'.$lawyer['key'] }}'">
+                    <tr onclick="javascript: window.location.href='{{ URL::to('service/lawyer/detail').'/'.$lawyer['key'] }}'" style="cursor: pointer">
                         <td>{{ $lawyer['name'] }}</td>
                         <td>{{ $lawyer['sex']=='female' ? '女' : '男' }}</td>
                         <td>{{ isset($type_list[$lawyer['type']]) ? $type_list[$lawyer['type']] : '-' }}</td>
@@ -101,7 +101,9 @@
                 @endforeach
             </tbody>
             @else
-                <h3 class="text-center">没有相关联的搜索结果！</h3>
+                <p style=" width:100%; margin: auto; text-align: center;font-family: MicrosoftYaHei;font-size: 14px;color: #929292;letter-spacing: 0; padding: 40px">
+                    没有相关联的搜索结果！
+                </p>
             @endif
         </table>
 

@@ -42,7 +42,7 @@
             </thead>
             <tbody>
             @foreach($apply_list as $apply)
-                <tr>
+                <tr style="cursor: pointer">
                     <td>{{ date("Y-m-d H:i", strtotime($apply->apply_date)) }}</td>
                     <td>{{ $apply->record_code }}</td>
                     <td>{{ isset($apply_type[$apply->type]) ? $apply_type[$apply->type] : '-' }}</td>
@@ -89,7 +89,7 @@
                     </thead>
                     <tbody>
                     @foreach($dispatch_list as $dispatch)
-                        <tr>
+                        <tr style="cursor: pointer">
                             <td>{{ date("Y-m-d H:i", strtotime($dispatch->apply_date)) }}</td>
                             <td>{{ $dispatch->record_code }}</td>
                             <td>{{ $dispatch->apply_office }}</td>
