@@ -12,9 +12,9 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
-            <span>政务公开&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #101010;">图片中心</span>
+            <span><a href="/" style="color: #222222">首页</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span><a href="/list/169" style="color: #222222">政务公开</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span style="color: #929292;">图片中心</span>
         </div>
         <div class="zw_vedio">
             @if($article_list != 'none')

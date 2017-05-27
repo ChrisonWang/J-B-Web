@@ -197,14 +197,15 @@
         </span>
     </span>
     <div class="ft_sid swiper-container w980">
-        <ul class="swiper-wrapper">
+        <ul class="swiper-wrapper" id="image_list">
             @if(isset($pic_list) && is_array($pic_list))
                 @foreach($pic_list as $pic)
-                <li class="swiper-slide">
-                    <a href="{{ URL::to('/article').'/'.$pic['key'] }}" target="_blank">
-                        <img src="{{ $pic['thumb'] }}" width="210" height="150"><span>{{ spilt_title($pic['article_title'], 15) }}</span>
-                    </a>
-                </li>
+                    <li class="swiper-slide">
+                        <a href="{{ URL::to('/article').'/'.$pic['key'] }}" target="_blank">
+                            <img src="{{ $pic['thumb'] }}" width="240" height="150">
+                            <span>{{ spilt_title($pic['article_title'], 15) }}</span>
+                        </a>
+                    </li>
                 @endforeach
             @endif
         </ul>
@@ -232,11 +233,12 @@
             @endforeach
         @endif
     </div>
+
     <div class="ft_sidlast swiper-container w980">
         @if(isset($img_flink_list) && is_array($img_flink_list))
             <ul class="swiper-wrapper">
                 @foreach($img_flink_list as $img_flink)
-                    <li class="swiper-slide">
+                    <li class="swiper-slide one_picture" style="margin-left: 10px;">
                         <a href="{{ $img_flink['links'] }}" target="_blank">
                             <img src="{{ $img_flink['image'] }}" width="150" height="50" alt="{{ $img_flink['title'] }}">
                         </a>
@@ -247,17 +249,20 @@
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
     </div>
+
 </div>
 
 <!--底部-->
 @include('judicial.web.chips.foot')
 <script>
+
     var swiper_banner = new Swiper('.banner_sd', {
         pagination: '.swiper-pagination',
         paginationClickable: true,
         direction: 'vertical',
         watchActiveIndex : true,
         loop:true,
+        width: 960,
         autoplay : 5000,
         paginationBulletRender: function (index, className) {
             return '<span class="swiper-pagination-udf ' + className + '">' + (index + 1) + '</span>';
@@ -270,7 +275,8 @@
         paginationClickable: true,
         spaceBetween: 0,
         loop:true,
-        autoplay : 2000
+        width: 960,
+        autoplay : 1500
     });
     var swiper_last = new Swiper('.ft_sidlast', {
         nextButton: '.ft_sidlast .swiper-button-next',
@@ -279,7 +285,22 @@
         paginationClickable: true,
         spaceBetween: 0,
         loop:true,
-        autoplay : 2000
+        autoplay : 1500
+    });
+
+    //滑过悬停
+    $(".ft_sid img").mouseenter(function () {
+        $(this).addClass('image_on');
+        swiper_ft.stopAutoplay();
+    }).mouseleave(function(){//离开开启
+        $(this).removeClass('image_on');
+        swiper_ft.startAutoplay();
+    });
+
+    $(".ft_sidlast img").mouseenter(function () {//滑过悬停
+        swiper_last.stopAutoplay();//mySwiper 为上面你swiper实例化的名称
+    }).mouseleave(function(){//离开开启
+        swiper_last.startAutoplay();
     });
 
 </script>

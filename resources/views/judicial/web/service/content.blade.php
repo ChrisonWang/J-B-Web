@@ -12,9 +12,10 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
-            <span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #101010;">{{ $sub_title }}</span>
+            <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span><a href="/service" style="color: #222222">网上办事</a>&nbsp;&nbsp;>&nbsp;</span>
+            {{--<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>--}}
+            <span style="color: #929292;">{{ $sub_title }}</span>
         </div>
         <div class="wz_body w700">
             <div class="wz_top">

@@ -213,7 +213,6 @@ class Index extends Controller
 
     public function search(Request $request){
         $this->page_data['no_search'] = 'yes';
-        $this->page_data['_now'] = 'index';
         return view('judicial.web.search', $this->page_data);
     }
 

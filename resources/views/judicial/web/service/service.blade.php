@@ -18,8 +18,8 @@
         <div class="id_sch_r">
             <form action="{{ URL::route('search') }}" method="post">
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                <input type="search" name="keywords" placeholder="输入搜索关键词">
-                <button type="submit">查询</button>
+                <input type="search" name="keywords" placeholder="输入搜索关键词"/>
+                <button type="submit" >查询</button>
             </form>
         </div>
     </div>
@@ -28,7 +28,7 @@
         <!--右部导航-->
         <div class="wsr_nav">
             <span class="vd_tit">律师事务所查询</span>
-            <a class="ws_tj" href="{{ URL::to('service/lawyerOffice') }}">条件查询 ></a>
+            <a class="ws_tj" href="{{ URL::to('service/lawyerOffice') }}" style="color: #222222">条件查询 ></a>
             <ul class="wsn_item">
                 @if(is_array($area_list) && count($area_list)>0)
                     @foreach($area_list as $k=> $v)
@@ -49,22 +49,26 @@
                     </ul>
                 </div>
                 @foreach($bszn_list as $key=> $bszn)
-                <div class="wsrb_right" @if($key!=0) hidden @endif id="c_{{$bszn['channel_id']}}">
+                <div class="wsrb_right" id="c_{{$bszn['channel_id']}}" style="@if($key!=0) display: none;@endif" >
+                    @if(is_array($bszn_article_list[$bszn['channel_id']]) && !empty($bszn_article_list[$bszn['channel_id']]))
                     <ul>
-                        @if(isset($bszn_article_list[$bszn['channel_id']]) && is_array($bszn_article_list[$bszn['channel_id']]))
-                            @foreach($bszn_article_list[$bszn['channel_id']] as $a)
-                                <li>
-                                    <a href="{{ URL::to('article').'/'.$a['article_code'] }}">
-                                        <i>{{ spilt_title($a['article_title'], 32) }}</i>
-                                        <b>{{ date('Y-m-d', strtotime($a['publish_date'])) }}</b>
-                                    </a>
-                                </li>
-                            @endforeach
-                        @else
-                            暂无文章！
-                        @endif
+                        @foreach($bszn_article_list[$bszn['channel_id']] as $a)
+                            <li>
+                                <a href="{{ URL::to('article').'/'.$a['article_code'] }}">
+                                    <i>{{ spilt_title($a['article_title'], 32) }}</i>
+                                    <b>{{ date('Y-m-d', strtotime($a['publish_date'])) }}</b>
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                     <a href="{{ URL::to('service/list').'/'.$bszn['sub_channel'].'/1' }}" class="wsrb_mor" style="color: #DD3938">查看更多 > ></a>
+                    @else
+                        <ul>
+                            <div style=" width: 100%; margin: 0 auto; height: 180px; line-height: 180px; text-align: center; font-size: 14px; color: #929292">
+                                暂无相关内容
+                            </div>
+                        </ul>
+                    @endif
                 </div>
                 @endforeach
             </div>

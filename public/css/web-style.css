@@ -126,17 +126,17 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .news_2{overflow: hidden;}
 
 /*底部滚动*/
-.ft_sid li img{width: 210px;}
-.ft_sid{width: 920px;}
+.ft_sid li img{width: 230px;}
+.ft_sid{width: 980px;}
 .ft_mall{background-color: #f9f9f9; padding-top: 60px; position: relative; padding-bottom: 10px; border: 1px solid #ECECEC; margin: 20px auto;}
 .ft_mall .swiper-button-next{background: url("../images/btn_arrowright_large_70x70.png") no-repeat center; background-size: 70px 70px; width: 70px; height: 70px;top:60px;}
 .ft_mall .swiper-button-prev{background: url("../images/btn_arrowleft_large_70x70.png") no-repeat center; background-size: 70px 70px; width: 70px; height: 70px;top: 60px;}
 .ft_mall li span{margin-top: 5px; display: block;}
 .ft_sidlast li img{width: 150px;}
-.ft_sidlast{width: 960px;}
+.ft_sidlast{width: 980px;}
 .ft_last{background-color: #f9f9f9; padding-top: 50px; position: relative; padding-bottom: 10px; border: 1px solid #ECECEC; margin: 20px auto;}
-.ft_last .swiper-button-next{background: url("../images/btn_arrowright_small_40x40.png") no-repeat center; background-size: 40px 40px; width: 40px; height: 40px;}
-.ft_last .swiper-button-prev{background: url("../images/btn_arrowleft_small_40x40.png") no-repeat center; background-size: 40px 40px; width: 40px; height: 40px;}
+.ft_last .swiper-button-next{background: url("../images/btn_arrowright_small_40x40.png") no-repeat center; background-size: 40px 40px; width: 40px; height: 40px; right: -5px}
+.ft_last .swiper-button-prev{background: url("../images/btn_arrowleft_small_40x40.png") no-repeat center; background-size: 40px 40px; width: 40px; height: 40px; left: -5px}
 .last_link span{width: 180px; display: inline-block; background: #FFFFFF; border: 1px solid #ECECEC; border-radius: 4px; margin-left: 9px; height: 30px; line-height: 30px; text-align: center; color: #929292;}
 .last_link select{width: 180px; text-align: center; display: inline-block;
     border: 1px solid #ECECEC;
@@ -150,6 +150,8 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .last_link select::-ms-expand{display: none; }
 
 .last_link{overflow: hidden; margin: 0 auto; margin-bottom: 10px;}
+
+.image_on{box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50); border-radius: 2px;}
 
 /*底部*/
 .foot_out{width: 100%; height: 100px; background: #F9F9F9; margin: 0 auto}

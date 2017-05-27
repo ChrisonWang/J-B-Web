@@ -12,11 +12,13 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span onclick="javascript: window.location.href='{{ URL::to('/') }}'">首页&nbsp;&nbsp;>&nbsp;</span>
-            <span onclick="javascript: window.location.href='{{ URL::to('service') }}'">网上办事&nbsp;&nbsp;>&nbsp;</span>
-            @if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif
-            @if(isset($sub_title))<span>{{ $sub_title }}&nbsp;&nbsp;>&nbsp;</span>@endif
-            <span style="color: #101010;">表单下载</span>
+            <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span><a href="/service" style="color: #222222">网上办事</a>&nbsp;&nbsp;>&nbsp;</span>
+            {{--@if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif--}}
+            @if(isset($sub_title))
+                <span><a href="/service/list/" style="color: #222222">{{ $sub_title }}</a>&nbsp;&nbsp;>&nbsp;</span>
+            @endif
+            <span style="color: #929292;">表单下载</span>
         </div>
 
         <div class="zwr_mid">

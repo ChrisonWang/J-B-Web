@@ -12,9 +12,15 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
-            @if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif
-            @if(isset($sub_title))<span style="color: #101010;">{{ $sub_title }}</span>@endif
+            <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span><a href="/list/169" style="color: #222222">政务公开</a>&nbsp;&nbsp;>&nbsp;</span>
+            {{--@if(isset($title))
+                <span>
+                <a href="/list/169" style="@if(isset($sub_title))color: #222222; @else color: #929292; @endif">{{ $title }}</a>
+                &nbsp;&nbsp;>&nbsp;
+                </span>
+            @endif--}}
+            @if(isset($sub_title))<span style="color: #929292;">{{ $sub_title }}</span>@endif
         </div>
         <div class="zwr_mid">
             @if($article_list != 'none')

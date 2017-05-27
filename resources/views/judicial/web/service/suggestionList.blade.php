@@ -7,7 +7,7 @@
 
 <!--内容-->
 <div class="w1024 zw_mb">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 30px">
         <div class="col-md-offset-3 col-md-3">
             <a href="{{ URL::to('consultions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px; line-height: 30px">咨询问题</a>
         </div>

@@ -320,7 +320,7 @@ function loadArticle(t,c){
                     var list = jQuery.parseJSON(re.res);
                     var a_list = '';
                     $.each(list, function(i,sub){
-                        a_list += '<li><a href="'+sub.url+'"> <span class="idbrd_l">'+sub.article_title+'</span> <span class="idbrd_r">'+sub.publish_date+'</span></a></li>';
+                        a_list += '<li><a href="'+sub.url+'" target="_blank"> <span class="idbrd_l" style="color: #222222">'+sub.article_title+'</span> <span class="idbrd_r" style="color: #222222">'+sub.publish_date+'</span></a></li>';
                     });
                     c.html(a_list);
                     $('#more_2').show();

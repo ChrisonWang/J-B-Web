@@ -12,8 +12,8 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
-            <span>标签： #{{ $page['tag_name'] }}的相关文章</span>
+            <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span style="color: #929292">标签： #{{ $page['tag_name'] }}的相关文章</span>
         </div>
         <div class="zwr_mid">
             @if($article_list != 'none')

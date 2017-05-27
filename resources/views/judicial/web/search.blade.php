@@ -10,7 +10,7 @@
     <div class="serach_body">
         <form action="{{ URL::route('search') }}" method="post">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-            <input type="search" name="keywords" placeholder="输入搜索关键词" value="" style="height: 40px; background: #FFFFFF; border: 1px solid #ECECEC;">
+            <input type="search" name="keywords" placeholder="输入搜索关键词" value="" style=" padding-right:10px; height: 40px; background: #FFFFFF; border: 1px solid #ECECEC;">
             <button type="submit" class="serach_btn">搜索</button>
         </form>
     </div>

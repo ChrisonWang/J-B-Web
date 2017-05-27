@@ -13,9 +13,9 @@
     <div class="zw_right w810">
         <div class="zwr_top">
             <span onclick="javascript: window.location.href='{{ URL::to('/') }}'">首页&nbsp;&nbsp;>&nbsp;</span>
-            <span>政务公开&nbsp;&nbsp;>&nbsp;</span>
-            @if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif
-            @if(isset($sub_title))<span>{{ $sub_title }}&nbsp;&nbsp;>&nbsp;</span>@endif
+            <span style="color: #222222">政务公开&nbsp;&nbsp;>&nbsp;</span>
+            {{--@if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif--}}
+            @if(isset($sub_title))<span><a href="/list/" style="color: #222222">{{ $sub_title }}</a>&nbsp;&nbsp;>&nbsp;</span>@endif
             <span style="color: #101010;">&nbsp;&nbsp;>&nbsp;表单下载</span>
         </div>
 

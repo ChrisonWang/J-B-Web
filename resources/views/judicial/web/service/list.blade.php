@@ -12,17 +12,18 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
-            @if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif
-            @if(isset($sub_title))<span style="color: #101010;">{{ $sub_title }}</span>@endif
+            <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span><a href="/service" style="color: #222222">网上办事</a>&nbsp;&nbsp;>&nbsp;</span>
+            {{--@if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif--}}
+            @if(isset($sub_title))<span style="color: #929292;">{{ $sub_title }}</span>@endif
         </div>
         <div class="zwr_mid">
             @if($article_list != 'none')
                 <ul>
                     @foreach($article_list as $article)
                         <li>
-                            <div class="zwrm_a" style="width: 650px; color: #222222"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
-                            <div class="zwrm_b" style="width: 120px; text-align: right; color: #222222">{{ $article['publish_date'] }}</div>
+                            <div class="zwrm_a" style="width: 650px;"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
+                            <div class="zwrm_b" style="width: 120px; text-align: right">{{ $article['publish_date'] }}</div>
                         </li>
                     @endforeach
                 </ul>

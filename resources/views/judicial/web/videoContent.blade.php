@@ -12,10 +12,10 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span><a href="{{ URL::to('/') }}">首页&nbsp;&nbsp;>&nbsp;</a></span>
-            <span>政务公开&nbsp;&nbsp;>&nbsp;</span>
-            <span>宣传视频&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #101010;">{{ $video_detail['title'] }}</span>
+            <span><a href="/" style="color: #222222">首页</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span><a href="/list/169" style="color: #222222">政务公开</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span><a href="/video" style="color: #222222">宣传视频</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span style="color: #929292;">{{ $video_detail['title'] }}</span>
         </div>
         <div class="wz_body w700">
             <div class="wz_top">

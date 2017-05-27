@@ -12,10 +12,10 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span onclick="javascript: window.location.href='{{ URL::to('/') }}'">首页&nbsp;&nbsp;>&nbsp;</span>
-            <span onclick="javascript: window.location.href='{{ URL::to('service') }}'">网上办事&nbsp;&nbsp;>&nbsp;</span>
-            <span>法律援助&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #101010;">公检法指派援助</span>
+            <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span><a href="/service" style="color: #222222">网上办事</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span><a href="/service/aidApply/apply" style="color: #222222">法律援助</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span style="color: #929292;">公检法指派援助</span>
         </div>
 
         <div class="wsfy_tit">

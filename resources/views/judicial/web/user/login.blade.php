@@ -5,48 +5,55 @@
 <body>
 <!--头部导航-->
 @include('judicial.web.chips.nav')
+<style>
+    input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px white inset;
+    }
+</style>
 <div class="wrapper">
     <div class="container-main">
         <div class="login-box">
             <div class="login-box-top" id="top-tab">
-                <div class="login-box-tap on">
-                    <a href="javascript:void(0);" data-page="login" id="tap-login">登录</a>
-                </div>
-                <div class="login-box-tap">
-                    <a href="javascript:void(0);" data-page="signup" id="tap-signup">注册</a>
+                <div style="width: 420px; margin: 0 auto">
+                    <div class="login-box-tap on">
+                        <a href="javascript:void(0);" data-page="login" id="tap-login">登录</a>
+                    </div>
+                    <div class="login-box-tap">
+                        <a href="javascript:void(0);" data-page="signup" id="tap-signup">注册</a>
+                    </div>
                 </div>
             </div>
-            <div>
-                <div class="container-fluid" style="margin-top: 30px"  id="login-container">
-                    <form class="form-horizontal" id="loginForm">
+            <div style="width: 300px; margin: 0 auto">
+                <div class="container-fluid" style="margin: 30px 0 0 0; padding: 0"  id="login-container">
+                    <form class="form-horizontal" id="loginForm" autocomplete="off">
                         <div class="form-group">
-                            <div class="col-md-offset-1 col-md-10">
+                            <div class="col-md-12">
                                 <input type="text" class="form-control" name="loginName" id="loginName" placeholder="请输入登录名/手机号">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-offset-1 col-md-10">
+                            <div class="col-md-12">
                                 <input type="password" class="form-control" name="passWord" id="passWord" placeholder="请输入密码">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-offset-1 col-md-10">
+                            <div class="col-md-12">
                                 <p class="text-left hidden" id="notice" style="color: red"></p>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-offset-1 col-md-10">
-                                <button type="button" class="btn btn-danger btn-block" onclick="do_login()">登录</button>
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-danger btn-block" onclick="do_login()" style="background: #E23939; ">登录</button>
                             </div>
                         </div>
                         <div class="form-group" style="padding-top: 20px">
                             <hr/>
-                            <div class="col-md-offset-1 col-md-10">
+                            <div class="col-md-12">
                                 <p class="login-link text-center"><a href="javascript:void(0);" onclick="javascript:$('#tap-signup').click();">没有账号？注册账号 >></a></p>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-offset-1 col-md-10">
+                            <div class="col-md-12">
                                 <p class="login-link text-center"><a href="{{ URL::to('user/forgetPassword') }}">忘记密码?</a></p>
                             </div>
                         </div>
