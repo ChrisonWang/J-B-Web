@@ -33,7 +33,11 @@
                     <div class="wztd_right">
                         @if(is_array($article_detail['tags']) && $article_detail['tags']!='none')
                             @foreach($article_detail['tags'] as $tag)
-                                <span style="margin-right: 0!important;"><a href="{{ URL::to('/tagList').'/'.$tag }}" style="color: red">#{{ $tag_list[$tag] }}</a></span>
+                                @if(isset($tag_list[$tag]))
+                                    <span style="margin-right: 0!important;">
+                                    <a href="{{ URL::to('/tagList').'/'.$tag }}" style="color: red">#{{ $tag_list[$tag] }}</a>
+                                </span>
+                                @endif
                             @endforeach
                         @endif
                     </div>
@@ -44,16 +48,14 @@
                     {!! $article_detail['content'] !!}
                 </div>
             </div>
-            <div class="wz_link">
-                @if($article_detail['files'] != 'none' && is_array($article_detail['files']))
+            @if($article_detail['files'] != 'none' && is_array($article_detail['files']))
+                <div class="wz_link">
                     <span class="vd_tit">相关附件</span>
                     @foreach($article_detail['files'] as $file)
-                        <span class="wz_btn">{{ $file['filename'] }}<i><a href="{{ $file['file'] }}" target="_blank">点击下载</a></i></span>
+                        <span class="wz_btn">{{ $file['filename'] }}<i><a href="{{ $file['file_url'] }}" target="_blank">点击下载</a></i></span>
                     @endforeach
-                @else
-                    <span class="vd_tit">无附件</span>
-                @endif
-            </div>
+                </div>
+            @endif
         </div>
     </div>
 

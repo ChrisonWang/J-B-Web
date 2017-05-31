@@ -33,7 +33,7 @@
             @endif
         </div>
 
-        @if(isset($pages) && is_array($pages))
+        @if(isset($pages) && is_array($pages) && $form_list != 'none' && count($form_list)>0)
             <div class="zwr_ft">
                 <div class="fy_left">
                     <span>@if($pages['count_page']>1 )<a href="{{ URL::to('service/'.$pages['type']) }}"> 首页</a> @else 首页 @endif</span>

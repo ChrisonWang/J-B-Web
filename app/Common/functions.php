@@ -21,13 +21,16 @@ function gen_unique_code($prefix='MEM_'){
 }
 
 function cn_date_format($times = false){
-    $date = date('Y-m-d',time());
+    $y = date('Y',time());
+    $m = date('m',time());
+    $d = date('d',time());
+    $date = $y.'年'.intval($m).'月'.$d.'日';
+    $weeks = array('天','一','二','三','四','五','六');
     $time = '';
     if($times){
         $time = date('H:i:s',time());
     }
-    $arr = array('天','一','二','三','四','五','六');
-    return $date.' 星期'.$arr[date('w',strtotime($date))].'  '.$time;
+    return $date.' 星期'.$weeks[date('w',strtotime($date))].'  '.$time;
 }
 
 function preg_phone($str){
@@ -180,7 +183,7 @@ function spilt_link_title($str, $len){
     {
         $blank = ceil((30 - $str_len + 6)/2);
         $empty = '';
-        for($i=1; $i<=$blank; $i++){
+        for($i=2; $i<=$blank; $i++){
             $empty .= "&nbsp;";
         }
         return $empty.'==&nbsp;'.$str.'&nbsp;==';

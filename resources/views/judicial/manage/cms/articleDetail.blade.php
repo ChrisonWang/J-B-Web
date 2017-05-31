@@ -98,7 +98,7 @@
             <div class="form-group">
                 <label class="col-md-2 col-sm-3 control-label">附件：</label>
                 <div class="col-md-8">
-                    <div class="container-fluid">
+                    <div class="container-fluid" style="margin-left: 0; padding-left: 0">
                         @if($article_detail['files'] != 'none' && is_array($article_detail['files']))
                             <table class="table table-bordered table-hover table-condensed">
                                 <thead>
@@ -111,10 +111,10 @@
                                 @foreach($article_detail['files'] as $files)
                                     <tr>
                                         <td>
-                                            <input type="text" disabled class="form-control" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
+                                            <input type="text" disabled class="form-control" style="height: 40px" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
                                         </td>
                                         <td>
-                                            <input type="file" disabled class="btn btn-default form-control" name="file"/>
+                                            <input type="file" disabled class="btn btn-default btn-file" name="file"/>
                                         </td>
                                     </tr>
                                 @endforeach

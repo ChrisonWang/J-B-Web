@@ -8,13 +8,13 @@
 <!--内容-->
 <div class="w1024 zw_mb">
     <!--左侧菜单-->
-    @include('judicial.web.layout.left')
+    @include('judicial.web.layout.serviceLeft')
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span><a href="/" style="color: #222222">首页</a>&nbsp;&nbsp;>&nbsp;</span>
-            <span><a href="/list/169" style="color: #222222">政务公开</a>&nbsp;&nbsp;>&nbsp;</span>
-            <span><a href="/list/{{$now_key}}" style="color: #222222">{{ $title }}</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span><a href="/service" style="color: #222222">网上办事</a>&nbsp;&nbsp;>&nbsp;</span>
+            <span><a href="/service/list/{{$now_key}}" style="color: #222222">{{ $title }}</a>&nbsp;&nbsp;>&nbsp;</span>
             <span style="color: #929292;">{{ $sub_title }}</span>
         </div>
         <div class="wz_body w700">
@@ -49,7 +49,7 @@
                 <div class="wz_link">
                     <span class="vd_tit">相关附件</span>
                         @foreach($article_detail['files'] as $file)
-                        <span class="wz_btn">{{ $file['filename'] }}<i><a href="{{ $file['file_url'] }}" target="_blank">点击下载</a></i></span>
+                        <span class="wz_btn">{{ $file['filename'] }}<i><a href="{{ $file['file'] }}" target="_blank">点击下载</a></i></span>
                         @endforeach
                 </div>
             @endif

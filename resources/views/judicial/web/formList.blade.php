@@ -12,11 +12,11 @@
 
     <div class="zw_right w810">
         <div class="zwr_top">
-            <span onclick="javascript: window.location.href='{{ URL::to('/') }}'">首页&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #222222">政务公开&nbsp;&nbsp;>&nbsp;</span>
+            <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
+            <span><a href="/list/169" style="color: #222222">政务公开</a>&nbsp;&nbsp;>&nbsp;</span>
             {{--@if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif--}}
-            @if(isset($sub_title))<span><a href="/list/" style="color: #222222">{{ $sub_title }}</a>&nbsp;&nbsp;>&nbsp;</span>@endif
-            <span style="color: #101010;">&nbsp;&nbsp;>&nbsp;表单下载</span>
+            @if(isset($now_title))<span><a href="/list/{{$now_key}}" style="color: #222222">{{ $now_title }}</a>&nbsp;&nbsp;>&nbsp;</span>@endif
+            <span style="color: #929292;">表单下载</span>
         </div>
 
         <div class="zwr_mid">
@@ -34,10 +34,10 @@
             @endif
         </div>
 
-        @if(isset($pages) && is_array($pages))
+        @if(isset($pages) && is_array($pages) && $form_list != 'none' && count($form_list)>0)
             <div class="zwr_ft">
                 <div class="fy_left">
-                    <span>@if($pages['count_page']>1 )<a href="{{ '/forms/'.$channel_id.'/1' }}"> 首页</a> @else 首页 @endif</span>
+                    <span>@if($pages['count_page']>1 && $pages['now_page'] != 1)<a href="{{ '/forms/'.$channel_id.'/1' }}"> 首页</a> @else 首页 @endif</span>
                 <span>
                     @if($pages['now_page'] >1 ) <a href="{{ '/forms/'.$channel_id.'/'.($pages['now_page']-1) }}">上一页</a> @else 上一页 @endif
                 </span>
@@ -45,6 +45,28 @@
                     @if($pages['now_page']<$pages['count_page'] ) <a href="{{ '/forms/'.$channel_id.'/'.($pages['now_page']+1) }}">下一页</a> @else 下一页 @endif
                 </span>
                     <span>@if($pages['count_page']>1 && $pages['now_page']<$pages['count_page'] )<a href="{{ '/forms/'.$channel_id.'/'.$pages['count_page'] }}"> 尾页</a> @else 尾页 @endif</span>
+                </div>
+                <div class="fy_right">
+                    <span>总记录数：{{ $pages['count'] }}</span>
+                    <span>每页显示16条记录</span>
+                    <span>当前页{{ $pages['now_page'] }}/{{ $pages['count_page'] }}</span>
+                    <span>跳转至第<input id="page_no_input" type="text" value="1"/>页</span>
+                    <a class="fy_btn" onclick="cms_page_jumps($(this))" data-type="{{ '/forms/'.$channel_id }}">跳转</a>
+                </div>
+            </div>
+        @else
+            <div class="zwr_ft">
+                <div class="fy_left">
+                    <span>首页</span>
+                <span>
+                    上一页
+                </span>
+                <span>
+                    下一页
+                </span>
+                <span>
+                    尾页
+                </span>
                 </div>
                 <div class="fy_right">
                     <span>总记录数：{{ $pages['count'] }}</span>

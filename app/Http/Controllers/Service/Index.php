@@ -183,17 +183,21 @@ class Index extends Controller
             foreach($tags as $tag){
                 $tag_list[$tag->id] = $tag->tag_title;
             }
-            //附件
-            if(!empty($article->files) && is_array($article->files)){
+            //取出文件
+            $files = DB::table('cms_files')->where('disabled', 'no')->where('article_code', $article_code)->get();
+            if($files == false || empty($files)){
+                $file_list = 'none';
+            }
+            else{
                 $file_list = array();
-                foreach(json_decode($article->files, true) as $file){
+                foreach($files as $file){
                     $file_list[] = array(
-                        'filename'=>$file['filename'],
-                        'file'=>$file['file'],
+                        'file_id' => $file->id,
+                        'filename' => $file->file_name,
+                        'file_path' => $file->file_path,
+                        'file_url' => $file->file_url,
                     );
                 }
-            }else{
-                $file_list = 'none';
             }
             $article_detail = array(
                 'article_title'=> $article->article_title,
@@ -215,9 +219,76 @@ class Index extends Controller
         }
         //更新访问
         $clicks = (isset($article->clicks)) ? $article->clicks + 1 : 1;
-        DB::table('cms_article')->where('article_code', $article_code)->update(['clicks'=> $clicks]);
+        DB::table('cms_article')->where('article_code', $article_code)->where('disabled', 'no')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->where('archived', 'no')->update(['clicks'=> $clicks]);
         $this->page_data['tag_list'] = $tag_list;
         $this->page_data['article_detail'] = $article_detail;
+        $this->page_data['_now'] = 'wsbs';
+        $this->page_data['now_key'] = $article_detail['sub_channel'];
+        $this->page_data['now_title'] = $channel->channel_title;
         return view('judicial.web.service.content', $this->page_data);
+    }
+
+    public function search(Request $request){
+        $this->page_data['no_search'] = 'yes';
+        return view('judicial.web.service.search', $this->page_data);
+    }
+
+    public function doSearch(Request $request)
+    {
+        $keywords = $request->input('keywords');
+        $count = 0;
+        if(empty($keywords)){
+            $this->page_data['page'] = array(
+                'count' => $count,
+                'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
+                'now_page' => 1,
+            );
+            $this->page_data['search_list'] = 'none';
+            return view('judicial.web.service.search', $this->page_data);
+        }
+
+        //获取网上办事频道
+        $channel = DB::table('cms_channel')->select('channel_id')->where('wsbs', 'yes')->where('pid', '!=', 0)->get();
+        $channel_list = array();
+        foreach($channel as $c){
+            $channel_list[] = $c->channel_id;
+        }
+
+        //搜索
+        $res = DB::table('cms_article')
+            ->where('article_title', 'like', '%'.$keywords.'%')
+            ->where('archived', 'no')
+            ->where('disabled', 'no')
+            ->where('publish_date','<=',date('Y-m-d H:i:s', time()))
+            ->whereIn('sub_channel', $channel_list)
+            ->get();
+        $count = count($res);
+        if(count($res) == 0){
+            $this->page_data['page'] = array(
+                'count' => $count,
+                'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
+                'now_page' => 1,
+            );
+            $this->page_data['search_list'] = 'none';
+            return view('judicial.web.service.search', $this->page_data);
+        }
+        else{
+            $search_list = array();
+            foreach($res as $re){
+                $search_list[] = array(
+                    'key'=> $re->article_code,
+                    'article_title'=> $re->article_title,
+                    'publish_date'=> $re->publish_date,
+                );
+            }
+        }
+        $this->page_data['_now'] = 'index';
+        $this->page_data['page'] = array(
+            'count' => $count,
+            'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
+            'now_page' => 1,
+        );
+        $this->page_data['search_list'] = $search_list;
+        return view('judicial.web.service.search', $this->page_data);
     }
 }

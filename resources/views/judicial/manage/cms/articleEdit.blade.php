@@ -8,19 +8,19 @@
     <div id="node-row" hidden >
         <table class="table table-bordered table-hover table-condensed">
             <tbody class="text-center">
-            <form method="post">
-                <tr>
-                    <td>
-                        <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
-                    </td>
-                    <td>
-                        <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'edit')"/>
-                    </td>
-                    <td>
-                        <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                    </td>
-                </tr>
-            </form>
+            <tr>
+                <td>
+                    <input type="text" class="form-control" name="file-name[]" placeholder="请输入附件名称"  style="height: 40px" />
+                    <input type="hidden" class="form-control" name="file-id[]" value="" />
+                    <input type="hidden" class="form-control" name="extension[]" value="" />
+                </td>
+                <td>
+                    <input type="file" class="btn btn-default btn-file" name="file" onchange="ajax_multi_upload_file($(this))"/>
+                </td>
+                <td>
+                    <a href="javascript: void(0) ;" onclick="delFileRow($(this))">删除</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -114,7 +114,7 @@
             <div class="form-group">
                 <label for="thumb" class="col-md-2 col-sm-3 control-label">封面图片(480 * 360)：</label>
                 <div class="col-md-8">
-                    <i class="fa fa-paperclip"></i>上传头像图片
+                    <i class="fa fa-paperclip"></i>上传封面图片
                     <input type="file" id="upload_photo" class="btn btn-default btn-file" name="thumb" onchange="upload_img($(this))"/>
                 </div>
             </div>
@@ -136,36 +136,7 @@
                 <div class="col-md-8">
                     <div class="container-fluid" style="margin-left: 0; padding-left: 0">
                         @if(is_array($article_detail['files']) && $article_detail['files'] != 'none')
-                            <table class="table table-bordered table-hover table-condensed">
-                            <thead>
-                            <tr>
-                                <th class="text-center">标题</th>
-                                <th class="text-center">附件</th>
-                                <th width="10%" class="text-center">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-center" id="menu-nodes">
-                            <form method="post">
-                                <input name="hasFile" type="hidden" value="yes" />
-                                @foreach($article_detail['files'] as $files)
-                                    <tr>
-                                        <td>
-                                            <input type="text" id="file_name" class="form-control" name="file-name" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
-                                            <input type="hidden" id="file-del" class="form-control" name="file-del" value="no" />
-                                        </td>
-                                        <td>
-                                            <a href="javascript: void(0);" id="change_file" class="btn btn-default" onclick="change_file($(this))">点击修改附件</a>
-                                            <input type="file" id="new_file" class="btn btn-default form-control hidden" name="file" onchange="ajax_upload_file($(this), 'edit')"/>
-                                        </td>
-                                        <td>
-                                            <a href="javascript: void(0) ;" onclick="delFileRow()">删除</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </form>
-                            </tbody>
-                        </table>
-                        @else
+                            <input type="hidden" value="{{ $article_detail['key'] }}" name="article_code"/>
                             <table class="table table-bordered table-hover table-condensed">
                                 <thead>
                                 <tr>
@@ -175,18 +146,48 @@
                                 </tr>
                                 </thead>
                                 <tbody class="text-center" id="menu-nodes">
+                                @foreach($article_detail['files'] as $files)
                                     <tr>
                                         <td>
-                                            <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
-                                            <input type="hidden" id="file-del" class="form-control" name="file-del" value="no" />
+                                            <input type="text" class="form-control" name="file-name[]" style="height: 40px" value="{{ $files['filename'] }}" placeholder="请输入附件名称" />
+                                            <input type="hidden" class="form-control" name="file-id[]" value="{{ $files['file_id'] }}" />
+                                            <input type="hidden" class="form-control" name="extension[]" value="{{ $files['extension'] }}" />
                                         </td>
                                         <td>
-                                            <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'edit')"/>
+                                            <a href="javascript: void(0);" class="btn btn-default" style="height: 40px" onclick="change_file($(this))">点击修改附件</a>
+                                            <input type="file" class="btn btn-default btn-file hidden" name="file" onchange="ajax_multi_upload_file($(this))"/>
                                         </td>
                                         <td>
-                                            <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
+                                            <a href="javascript: void(0) ;" onclick="delFileRow($(this))">删除</a>
                                         </td>
                                     </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <input type="hidden" value="{{ $article_detail['key'] }}" name="article_code"/>
+                            <table class="table table-bordered table-hover table-condensed">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">标题</th>
+                                    <th class="text-center">附件</th>
+                                    <th width="10%" class="text-center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center" id="menu-nodes">
+                                <tr>
+                                    <td>
+                                        <input type="text" class="form-control" name="file-name[]" placeholder="请输入附件名称"  style="height: 40px" />
+                                        <input type="hidden" class="form-control" name="file-id[]" value="" />
+                                        <input type="hidden" class="form-control" name="extension[]" value="" />
+                                    </td>
+                                    <td>
+                                        <input type="file" class="btn btn-default btn-file" name="file" onchange="ajax_multi_upload_file($(this))"/>
+                                    </td>
+                                    <td>
+                                        <a href="javascript: void(0) ;" onclick="delFileRow($(this))">删除</a>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         @endif
@@ -196,7 +197,7 @@
                     </div>
                     <div class="container-fluid">
                         <hr/>
-                        <div class="col-md-2" hidden>
+                        <div class="col-md-2">
                             <a class="btn btn-default btn-block" onclick="addRow()">
                                 添加
                             </a>

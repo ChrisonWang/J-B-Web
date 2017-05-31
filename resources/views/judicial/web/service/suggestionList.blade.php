@@ -61,7 +61,7 @@
             @endif
         </div>
     </div>
-    @if(isset($pages) && is_array($pages))
+    @if(isset($pages) && is_array($pages) && is_array($record_list) && count($record_list)>0))
         <div class="zwr_ft">
             <div class="fy_left">
                 <span>@if($pages['count_page']>1 )<a href="{{ URL::to(''.$pages['type']) }}"> 首页</a> @else 首页 @endif</span>

@@ -192,17 +192,33 @@ class Article extends Controller
             }
         }
 
-        $file_list = array();
-        if(isset($inputs['files']) && is_array($inputs['files'])){
-            foreach($inputs['files'] as $key=> $file){
-                $file_list[$key] = array(
-                    'filename'=> $inputs['file-names'][$key],
-                    'file'=> $file,
-                );
+        //新上传文件
+        $article_code = gen_unique_code('ART_');
+        $file_id = $inputs['file-id'];
+        $file_name = $inputs['file-name'];
+        $extension = $inputs['extension'];
+        //事物方式
+        DB::beginTransaction();
+        foreach($file_id as $f_k=> $f_id){
+            if(empty($f_id)){
+                continue;
             }
-        }
-        else{
-            $file_list = '';
+            if(trim($file_name[$f_k])===''){
+                DB::rollBack();
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'已上传文件的文件名不能为空！']);
+            }
+            $f_name = explode('.', $file_name[$f_k]);
+            $save_data = array(
+                'file_name'=> $f_name[0].'.'.$extension[$f_k],
+                'disabled'=> 'no',
+                'extension'=> $extension[$f_k],
+                'article_code'=> $article_code
+            );
+            $res = DB::table('cms_files')->where('id', $f_id)->update($save_data);
+            if($res === false){
+                DB::rollBack();
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'文件添加失败']);
+            }
         }
 
         //标签去重
@@ -219,7 +235,7 @@ class Article extends Controller
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
-            'article_code'=> gen_unique_code('ART_'),
+            'article_code'=> $article_code,
             'article_title'=> $inputs['article_title'],
             'channel_id'=> keys_decrypt($inputs['channel_id']),
             'sub_channel'=> keys_decrypt($inputs['sub_channel_id']),
@@ -237,8 +253,10 @@ class Article extends Controller
 
         $id = DB::table('cms_article')->insertGetId($save_data);
         if($id === false){
+            DB::rollBack();
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'添加失败']);
         }
+        DB::commit();
 
         //添加成功后刷新页面数据
         //日志
@@ -352,13 +370,21 @@ class Article extends Controller
             }
         }
 
-        //文件
-        if(!empty($article->files)){
-            $files = json_decode($article->files, true);
-        }
-        else{
+        //取出文件
+        $file_list = DB::table('cms_files')->where('disabled', 'no')->where('article_code', $article_code)->get();
+        if($file_list == false || empty($file_list)){
             $files = 'none';
         }
+        else{
+            $files = array();
+            foreach($file_list as $file){
+                $files[] = array(
+                    'file_id' => $file->id,
+                    'filename' => $file->file_name,
+                );
+            }
+        }
+
         $article_detail = array(
             'key'=> $article->article_code,
             'article_title'=> $article->article_title,
@@ -446,13 +472,22 @@ class Article extends Controller
             }
         }
 
-        //文件
-        if(!empty($article->files)){
-            $files = json_decode($article->files, true);
-        }
-        else{
+        //取出文件
+        $file_list = DB::table('cms_files')->where('disabled', 'no')->where('article_code', $article_code)->get();
+        if($file_list == false || empty($file_list)){
             $files = 'none';
         }
+        else{
+            $files = array();
+            foreach($file_list as $file){
+                $files[] = array(
+                    'file_id' => $file->id,
+                    'filename' => $file->file_name,
+                    'extension' => $file->extension,
+                );
+            }
+        }
+
         $article_detail = array(
             'key'=> $article->article_code,
             'article_title'=> $article->article_title,
@@ -540,30 +575,28 @@ class Article extends Controller
             }
         }
 
-        //处理上传文件
-        $file_list = array();
-        if(isset($inputs['files']) && is_array($inputs['files'])){
-            foreach($inputs['files'] as $key=> $file){
-                $file_list[$key] = array(
-                    'filename'=> $inputs['file-names'][$key],
-                    'file'=> $file,
-                );
+        //新上传文件
+        $file_id = $inputs['file-id'];
+        $file_name = $inputs['file-name'];
+        $extension = $inputs['extension'];
+        //事物方式
+        DB::beginTransaction();
+        foreach($file_id as $f_k=> $f_id){
+            if(empty($f_id)){
+                continue;
             }
-        }
-        else{
-            if(trim($inputs['file-name'])==='' && $inputs['file-del']!='yes'){
-                json_response(['status'=>'failed','type'=>'alert', 'res'=>'附件标题不能为空！！']);
+            if(trim($file_name[$f_k])===''){
+                DB::rollBack();
+                json_response(['status'=>'failed','type'=>'alert', 'res'=>'已上传文件的文件名不能为空！']);
             }
-            $files = DB::table('cms_article')->where('article_code',$article_code)->first();
-            if(!empty($files)){
-                $inputs['file-name'] = explode('.', $inputs['file-name']);
-                $files = json_decode($files->files, true);
-                $filename = explode('.', $files[0]['filename']);
-                $file_list[0] = array(
-                    'filename'=> isset($filename[1]) ? $inputs['file-name'][0].'.'.$filename[1] : $inputs['file-name'][0],
-                    'file'=> isset($files[0]['file']) ? $files[0]['file'] : ''
-                );
-            }
+            $f_name = explode('.', $file_name[$f_k]);
+            $save_data = array(
+                'file_name'=> $f_name[0].'.'.$extension[$f_k],
+                'disabled'=> 'no',
+                'extension'=> $extension[$f_k],
+                'article_code'=> $article_code
+            );
+            DB::table('cms_files')->where('id', $f_id)->update($save_data);
         }
 
         //标签去重
@@ -584,7 +617,6 @@ class Article extends Controller
             'sub_channel'=> keys_decrypt($inputs['sub_channel_id']),
             'content'=> $inputs['content'],
             'clicks'=> 0,
-            'files'=> empty($file_list) ? '' : json_encode($file_list),
             'thumb'=> $photo_path,
             'manager_code'=> $this->page_data['manager']['manager_code'],
             'disabled'=> (isset($inputs['disabled'])&&$inputs['disabled']=='no') ? 'no' : 'yes',
@@ -592,18 +624,14 @@ class Article extends Controller
             'publish_date'=> $inputs['publish_date'],
             'update_date'=> date('Y-m-d H:i:s',time())
         );
-        if(empty($photo_path)){
-            unset($save_data['thumb']);
-        }
-        if(isset($inputs['file-del']) && $inputs['file-del']=='yes'){
-            $save_data['files'] = '';
-        }
         $article = DB::table('cms_article')->where('article_code',$article_code)->first();
         $article = json_decode(json_encode($article), true);
         $re = DB::table('cms_article')->where('article_code', $article_code)->update($save_data);
         if($re === false){
+            DB::rollBack();
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'修改失败']);
         }
+        DB::commit();
 
         //日志
         $this->log_info['type'] = 'edit';
@@ -815,6 +843,70 @@ class Article extends Controller
                 $photo_path = URL::to('/').'/uploads/files/'.$filename;
                 json_response(['status'=>'succ','type'=>'notice', 'files'=>$photo_path, 'filenames'=>$filename]);
             }
+        }
+    }
+
+    public function MultiUploadFiles(Request $request)
+    {
+        $inputs = $request->input();
+        $file = $request->file('file');
+        $article_code = $inputs['article_code'];
+        $index = $inputs['index'];
+        if(is_null($file) || !$file->isValid()){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的文件！']);
+        }
+        else{
+            $destPath = realpath(public_path('uploads/files'));
+            if(!file_exists($destPath)){
+                mkdir($destPath, 0755, true);
+            }
+            $extension = $file->getClientOriginalExtension();
+            if(empty(trim($inputs['file-name'][$index]))){
+                $file_name = $file->getClientOriginalName();
+            }
+            else{
+                $file_name = explode('.', $inputs['file-name'][$index]);
+                $file_name = $file_name[0].'.'.$extension;
+            }
+            if(!$file->move($destPath,$file_name)){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'文件上传失败！']);
+            }
+            else{
+                $file_url = URL::to('/').'/uploads/files/'.$file_name;
+                $file_path = rtrim($destPath,'/').'/'.$file_name;
+                $save_data = array(
+                    'file_name'=> $file_name,
+                    'file_path'=> $file_path,
+                    'file_url'=> $file_url,
+                    'extension'=> $extension,
+                    'article_code'=> $article_code,
+                );
+                $id = $inputs['file-id'][$index];
+                if(empty($id)){
+                    $file_id = DB::table('cms_files')->insertGetId($save_data);
+                }
+                else{
+                    $file_id = DB::table('cms_files')->where('id', $id)->update($save_data);
+                }
+                if($file_id === false){
+                    json_response(['status'=>'failed','type'=>'notice', 'res'=>'文件上传失败！']);
+                }
+                else{
+                    json_response(['status'=>'succ','type'=>'notice', 'file_name'=>$file_name, 'file_id'=>$file_id, 'extension'=> $extension]);
+                }
+            }
+        }
+    }
+
+    public function deleteFiles(Request $request){
+        $inputs = $request->input();
+        $id = $inputs['id'];
+        $re = DB::table('cms_files')->where('id', $id)->delete();
+        if($re !== false){
+            json_response(['status'=>'succ']);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'删除附件失败！']);
         }
     }
 

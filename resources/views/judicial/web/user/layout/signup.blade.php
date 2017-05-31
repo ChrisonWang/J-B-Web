@@ -49,7 +49,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-12">
-            <button type="button" onclick="signup()" class="btn btn-danger btn-block" style="background: #E23939; width: 300px; height: 35px">
+            <button type="button" onclick="signup()" class="btn btn-danger btn-block" style="background: #E23939; width: 150px; height: 35px; margin: 0 auto">
                 注册
             </button>
         </div>

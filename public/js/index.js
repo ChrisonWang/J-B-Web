@@ -65,6 +65,7 @@ $(document).ready(function(){
     $(".law_body span").click(function(){
         $(this).siblings("span").removeClass("lb_act");
         $(this).addClass("lb_act");
+        cancelBubble();
         event.stopPropagation();
     });
 
@@ -122,6 +123,37 @@ $(document).ready(function(){
     $('#member_tabs').find('.panel-member-switch').eq(0).addClass('on');
 
 });
+
+function getEvent(){
+    if(window.event)    {return window.event;}
+    fun=getEvent.caller;
+    while(fun!=null){
+        var arg0=fun.arguments[0];
+        if(arg0){
+            if((arg0.constructor==Event || arg0.constructor ==MouseEvent
+                || arg0.constructor==KeyboardEvent)
+                ||(typeof(arg0)=="object" && arg0.preventDefault
+                && arg0.stopPropagation)){
+                return arg0;
+            }
+        }
+        fun=fun.caller;
+    }
+    return null;
+}
+
+//阻止冒泡
+function cancelBubble()
+{
+    var e=getEvent();
+    if(window.event){
+        //e.returnValue=false;//阻止自身行为
+        e.cancelBubble=true;//阻止冒泡
+    }else if(e.preventDefault){
+        //e.preventDefault();//阻止自身行为
+        e.stopPropagation();//阻止冒泡
+    }
+}
 
 function getBrowserInfo()
 {

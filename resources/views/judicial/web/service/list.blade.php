@@ -22,7 +22,7 @@
                 <ul>
                     @foreach($article_list as $article)
                         <li>
-                            <div class="zwrm_a" style="width: 650px;"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
+                            <div class="zwrm_a" style="width: 650px;"><a href="{{ URL::to('/service/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
                             <div class="zwrm_b" style="width: 120px; text-align: right">{{ $article['publish_date'] }}</div>
                         </li>
                     @endforeach
@@ -51,10 +51,22 @@
             @else
                 <div class="zwr_ft">
                     <div class="fy_left">
-                        <span><a href="/service/list/{{$page['channel_id']}}/1">首页</a></span>
+                        <span>
+                            @if($pages['count_page']>1 && $pages['now_page'] != 1)
+                                <a href="/service/list/{{$page['channel_id']}}/1">首页</a>
+                            @else
+                                首页
+                            @endif
+                        </span>
                         <span>@if(($page['now_page'] - 1) > 0)<a href="service/list/{{$page['channel_id']}}/{{$page['now_page'] - 1}}">@endif上一页</a></span>
                         <span>@if(($page['now_page'] + 1) <= $page['page_count'])<a href="service/list/{{$page['channel_id']}}/{{$page['now_page'] + 1}}">@endif下一页</a></span>
-                        <span><a href="service/list/{{$page['channel_id']}}/{{$page['page_count']}}">尾页</a></span>
+                        <span>
+                            @if($pages['count_page']>1 && $pages['now_page'] < $pages['count_page'])
+                                <a href="/service/list/{{$page['channel_id']}}/{{$page['page_count']}}">尾页</a>
+                            @else
+                                尾页
+                            @endif
+                        </span>
                     </div>
                     <div class="fy_right">
                         <span>总记录数：{{ $page['count'] }}</span>

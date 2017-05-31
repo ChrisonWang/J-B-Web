@@ -43,7 +43,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button type="button" class="btn btn-danger btn-block" onclick="do_login()" style="background: #E23939; ">登录</button>
+                                <button type="button" class="btn btn-danger btn-block" onclick="do_login()" style="background: #E23939; width: 150px; margin: 0 auto">登录</button>
                             </div>
                         </div>
                         <div class="form-group" style="padding-top: 20px">

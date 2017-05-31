@@ -275,6 +275,7 @@ class Expertise extends Controller
                     'file'=> $form->file,
                 );
             }
+            $count = count($form_list);
             $pages = array(
                 'count' => $count,
                 'count_page' => $count_page,
@@ -290,7 +291,11 @@ class Expertise extends Controller
     }
 
     public function form_list($cid, $page = 1){
-        $pages = '';
+        $pages = array(
+            'count_page' => 1,
+            'now_page' => 1,
+            'count' => 0,
+        );
         $channel_id = $cid;
         $form_list = array();
         $this->page_data['now_key'] = $channel_id;
@@ -323,6 +328,7 @@ class Expertise extends Controller
                     'file'=> $form->file,
                 );
             }
+            $count = count($form_list);
             $pages = array(
                 'count' => $count,
                 'count_page' => $count_page,

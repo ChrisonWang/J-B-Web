@@ -329,18 +329,14 @@ class Index extends Controller
         $form_list = array();
         $pages = '';
         $this->page_data['now_key'] = $channel_id;
+        $this->page_data['channel_id'] = $channel_id;
         //频道信息
         $channel = DB::table('cms_channel')->where('channel_id', $channel_id)->first();
         if((count($channel)==0)){
             return view('errors.404');
         }
         else{
-            $this->page_data['sub_title'] = $channel->channel_title;
-            $p_channel = DB::table('cms_channel')->where('channel_id', $channel->pid)->first();
-            if(count($p_channel)!=0){
-                $this->page_data['title'] = $p_channel->channel_title;
-                $this->page_data['now_title'] = $p_channel->channel_title;
-            }
+            $this->page_data['now_title'] = $channel->channel_title;
         }
         $count = DB::table('cms_forms')->where(['channel_id'=>$channel_id, 'disabled'=>'no'])->count();
         $count_page = ($count > 16)? ceil($count/16)  : 1;
@@ -361,7 +357,8 @@ class Index extends Controller
                     'file'=> $form->file,
                 );
             }
-            $this->page_data['page'] = array(
+            $count = count($form_list);
+            $this->page_data['pages'] = array(
                 'count' => $count,
                 'count_page' => $count_page,
                 'now_page' => $page,
@@ -379,6 +376,7 @@ class Index extends Controller
      */
     public function video_list($page = 1)
     {
+        $this->page_data['now_title'] = 'video';
         $offset = 9 * ($page-1);
         $count = DB::table('cms_video')->where(['disabled'=>'no'])->where('archived', 'no')->count();
         if($count < 1){
@@ -467,6 +465,7 @@ class Index extends Controller
      */
     public function picture_list($page = 1)
     {
+        $this->page_data['now_title'] = 'picture';
         $offset = 9 * ($page-1);
         $count = DB::table('cms_article')->where('disabled', 'no')->where('thumb','!=','')->where('publish_date','<=',date('Y-m-d H:i:s', time()))->where('archived', 'no')->count();
         if($count < 1){
@@ -519,18 +518,24 @@ class Index extends Controller
             foreach($tags as $tag){
                 $tag_list[$tag->id] = $tag->tag_title;
             }
-            //附件
-            if(!empty($article->files)){
-                $file_list = array();
-                foreach(json_decode($article->files, true) as $file){
-                    $file_list[] = array(
-                        'filename'=>$file['filename'],
-                        'file'=>$file['file'],
-                    );
-                }
-            }else{
+
+            //取出文件
+            $files = DB::table('cms_files')->where('disabled', 'no')->where('article_code', $article_code)->get();
+            if($files == false || empty($files)){
                 $file_list = 'none';
             }
+            else{
+                $file_list = array();
+                foreach($files as $file){
+                    $file_list[] = array(
+                        'file_id' => $file->id,
+                        'filename' => $file->file_name,
+                        'file_path' => $file->file_path,
+                        'file_url' => $file->file_url,
+                    );
+                }
+            }
+
             $article_detail = array(
                 'article_title'=> $article->article_title,
                 'content'=> $article->content,
@@ -555,6 +560,8 @@ class Index extends Controller
         $this->page_data['tag_list'] = $tag_list;
         $this->page_data['article_detail'] = $article_detail;
         $this->page_data['_now'] = 'zwgk';
+        $this->page_data['now_key'] = $article_detail['sub_channel'];
+        $this->page_data['now_title'] = $channel->channel_title;
         return view('judicial.web.content', $this->page_data);
     }
 
@@ -568,6 +575,7 @@ class Index extends Controller
         if(empty($video_code)){
             return view('errors.404');
         }
+        $this->page_data['now_title'] = 'video';
         //获取正文
         $video = DB::table('cms_video')->where(['video_code'=>$video_code, 'disabled'=>'no'])->where('archived', 'no')->first();
         if(is_null($video)){

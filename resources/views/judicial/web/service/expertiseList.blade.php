@@ -64,7 +64,7 @@
             暂无记录！
         @endif
 
-        @if(is_array($pages) && count($pages)>0)
+        @if(is_array($pages) && count($pages)>0 && isset($record_list) && is_array($record_list) && count($record_list)>0)
             <div class="zwr_ft">
                 <div class="fy_left">
                     <span>@if($pages['count_page']>1 )<a href="{{ URL::to('service/'.$pages['type']) }}"> 首页</a> @else 首页 @endif</span>

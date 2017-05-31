@@ -141,13 +141,17 @@ Route::group(['middleware' => ['web']], function () {
     //网上办事
     Route::get('service/list/{cid}/{page?}','Service\Index@article_list');
 
-    Route::get('/article/{article_code}','Service\Index@article_content');
+    Route::get('service/article/{article_code}','Service\Index@article_content');
 
 
     //前台CMS路由
     Route::get('search',['as'=>'search', 'uses'=>'Web\Index@search']);
 
     Route::post('search',['as'=>'search', 'uses'=>'Web\Index@doSearch']);
+
+    Route::post('service/search', 'Service\Index@search');
+
+    Route::post('service/search', 'Service\Index@doSearch');
 
     Route::get('list/{cid}/{page?}','Web\Index@article_list');
 
@@ -459,6 +463,10 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('manage/cms/article/delete','Manage\Cms\Article@doDelete');
 
         Route::post('manage/cms/article/upload','Manage\Cms\Article@uploadFiles');
+
+        Route::post('manage/cms/article/multi_upload','Manage\Cms\Article@multiUploadFiles');
+
+        Route::post('manage/cms/article/del_file','Manage\Cms\Article@deleteFiles');
 
         Route::post('manage/cms/article/searchTags','Manage\Cms\Article@searchTags');
 

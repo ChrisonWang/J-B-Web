@@ -16,7 +16,7 @@
             <span><a href="/service" style="color: #222222">网上办事</a>&nbsp;&nbsp;>&nbsp;</span>
             {{--@if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif--}}
             @if(isset($sub_title))
-                <span><a href="/service/list/" style="color: #222222">{{ $sub_title }}</a>&nbsp;&nbsp;>&nbsp;</span>
+                <span><a href="/service/list/{{$now_key}}" style="color: #222222">{{ $sub_title }}</a>&nbsp;&nbsp;>&nbsp;</span>
             @endif
             <span style="color: #929292;">表单下载</span>
         </div>
@@ -26,7 +26,7 @@
                 <ul>
                     @foreach($form_list as $form)
                         <li style="border-bottom: 1px dashed #D3D3D3">
-                            <div class="zwrm_a"  style="cursor: pointer; color: #222222" >{{ $form['title'] }}</div>
+                            <div class="zwrm_a"  style="cursor: pointer;" >{{ $form['title'] }}</div>
                             <div class="zwrm_c">
                                 <a class="mtb_m" href="{{ $form['file'] }}" target="_blank">下载</a>
                             </div>
@@ -38,10 +38,10 @@
             @endif
         </div>
 
-        @if(isset($pages) && is_array($pages))
+        @if(isset($pages) && is_array($pages) && $form_list != 'none')
             <div class="zwr_ft">
                 <div class="fy_left">
-                    <span>@if($pages['count_page']>1 )<a href="{{ '/service/forms/'.$channel_id.'/1' }}"> 首页</a> @else 首页 @endif</span>
+                    <span>@if($pages['count_page']>1 && $pages['now_page'] != 1)<a href="{{ '/service/forms/'.$channel_id.'/1' }}"> 首页</a> @else 首页 @endif</span>
                 <span>
                     @if($pages['now_page'] >1 ) <a href="{{ '/service/forms/'.$channel_id.'/'.($pages['now_page']-1) }}">上一页</a> @else 上一页 @endif
                 </span>

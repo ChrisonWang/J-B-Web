@@ -16,10 +16,10 @@
             办事事项查询
         </div>
         <div class="id_sch_r">
-            <form action="{{ URL::route('search') }}" method="post">
+            <form action="{{ URL::to('service/search') }}" method="post">
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <input type="search" name="keywords" placeholder="输入搜索关键词"/>
-                <button type="submit" >查询</button>
+                <button type="submit">查询</button>
             </form>
         </div>
     </div>

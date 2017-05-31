@@ -29,10 +29,14 @@
             @endif
         </li>
         <li>
-            <div class="zw_left_link"><a href="{{ URL::to('/picture/1')}}">图片中心</a></div>
+            <div class="zw_left_link @if(isset($now_title) && $now_title == 'picture') law_hover_first @endif ">
+                <a href="{{ URL::to('/picture/1')}}">图片中心</a>
+            </div>
         </li>
         <li>
-            <div class="zw_left_link"><a href="{{ URL::to('/video/1')}}">宣传视频</a></div>
+            <div class="zw_left_link @if(isset($now_title) && $now_title == 'video') law_hover_first @endif ">
+                <a href="{{ URL::to('/video/1')}}">宣传视频</a>
+            </div>
         </li>
 
         <!--非固定-->

@@ -1409,6 +1409,8 @@ function articleMethod(t){
 }
 
 function editArticle(){
+    $('#add-row-notice').html('');
+    $('#add-row-notice').addClass('hidden');
     var url = '/manage/cms/article/edit';
     $('#articleEditForm').ajaxSubmit({
         headers: {
@@ -1454,19 +1456,39 @@ function addArticle(){
 
 function change_file(t){
     t.hide();
-    $('#file_name').val('');
-    $('#new_file').removeClass('hidden');
+    t.parents("tr").find("input[name='file-name[]']").val('');
+    t.parents("tr").find("input[name='file']").removeClass('hidden');
 }
 
-function delFileRow(){
-    var c = confirm("确认删除附件："+ $('#file_name').val() +"？");
+function delFileRow(t){
+    var file_name = t.parents("tr").find("input[name='file-name[]']").val();
+    var c = confirm("确认删除附件："+ file_name +"？");
     if(c != true){
         return false;
     }
-    $('#change_file').hide();
-    $('#new_file').removeClass('hidden');
-    $('#file-del').val('yes');
-    $('#file_name').val('');
+    var id = t.parents("tr").find("input[name='file-id[]']").val();
+    var url = '/manage/cms/article/del_file';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "POST",
+        url: url,
+        data: {id: id},
+        success: function(re){
+            if(re.status == 'succ'){
+                t.parents("tr").find("input[name='file-name']").val('');
+                t.parents("tr").find("input[name='file-id']").val('');
+                t.parents("tr").find("input[name='file']").val('');
+                t.parents("tr").find("input[name='extension']").val('');
+                t.parents("tr").hide();
+            }
+            else if(re.status == 'failed') {
+                t.val('');
+                ajaxResult(re, $('#add-row-notice'));
+            }
+        }
+    });
 }
 
 function ajax_upload_file(t, type){
@@ -1487,8 +1509,38 @@ function ajax_upload_file(t, type){
 
                 }
                 else if(type == 'edit'){
+                    $("#file-none").val('no');
                     $("#articleEditForm").append('<input type="hidden" value='+re.files+' name="files[]"><input type="hidden" value='+re.filenames+' name="file-names[]">');
                 }
+            }
+            else if(re.status == 'failed') {
+                t.val('');
+                ajaxResult(re,$('#add-row-notice'));
+            }
+        }
+    });
+}
+
+function ajax_multi_upload_file(t){
+    $('#add-row-notice').html('');
+    $('#add-row-notice').addClass('hidden');
+    var url = '/manage/cms/article/multi_upload';
+    var form = t.parents('form');
+    var index = t.parents("tr").index();
+    form.ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "POST",
+        url: url,
+        data: {index: index},
+        success: function(re){
+            if(re.status == 'succ'){
+                t.parents("tr").find("input[name='file-name[]']").val(re.file_name);
+                t.parents("tr").find("input[name='file-id[]']").val(re.file_id);
+                t.parents("tr").find("input[name='extension[]']").val(re.extension);
+                $('#add-row-notice').removeClass('hidden');
+                $('#add-row-notice').html('<p style="color: green">上传附件：'+ re.file_name +'成功！</p>');
             }
             else if(re.status == 'failed') {
                 t.val('');

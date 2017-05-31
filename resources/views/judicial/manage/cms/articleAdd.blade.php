@@ -8,19 +8,19 @@
     <div id="node-row" hidden >
         <table class="table table-bordered table-hover table-condensed">
             <tbody class="text-center">
-            <form id="upload_files" method="post">
-                <tr>
-                    <td>
-                        <input type="text" class="form-control" name="file-name" placeholder="请输入附件名称" />
-                    </td>
-                    <td>
-                        <input type="file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'add')"/>
-                    </td>
-                    <td>
-                        <a href="javascript: void(0) ;" onclick="delRow($(this))">删除</a>
-                    </td>
-                </tr>
-            </form>
+            <tr>
+                <td>
+                    <input type="text" class="form-control" name="file-name[]" placeholder="请输入附件名称"  style="height: 40px" />
+                    <input type="hidden" class="form-control" name="file-id[]" value="" />
+                    <input type="hidden" class="form-control" name="extension[]" value="" />
+                </td>
+                <td>
+                    <input type="file" class="btn btn-default btn-file" name="file" onchange="ajax_multi_upload_file($(this))"/>
+                </td>
+                <td>
+                    <a href="javascript: void(0) ;" onclick="delFileRow($(this))">删除</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -104,7 +104,7 @@
             <div class="form-group">
                 <label for="thumb" class="col-md-2 col-sm-3 control-label">封面图片(480 * 360)：</label>
                 <div class="col-md-8">
-                    <i class="fa fa-paperclip"></i>上传头像图片
+                    <i class="fa fa-paperclip"></i>上传封面图片
                     <input type="file" id="upload_photo" class="btn btn-default btn-file" name="thumb" onchange="upload_img($(this))"/>
                 </div>
             </div>
@@ -116,6 +116,7 @@
                 <label class="col-md-2 col-sm-3 control-label">附件：</label>
                 <div class="col-md-8">
                     <div class="container-fluid" style="margin-left: 0; padding-left: 0">
+                        <input type="hidden" value="" name="article_code"/>
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
                             <tr>
@@ -125,20 +126,19 @@
                             </tr>
                             </thead>
                             <tbody class="text-center" id="menu-nodes">
-                            <form id="upload_files" method="post">
                             <tr>
-                                    <td>
-                                        <input type="text" id="file_name" class="form-control" name="file-name" placeholder="请输入附件名称" />
-                                        <input type="hidden" id="file-del" class="form-control" name="file-del" value="no" />
-                                    </td>
-                                    <td>
-                                        <input type="file" id="new_file" class="btn btn-default form-control" name="file" onchange="ajax_upload_file($(this), 'add')"/>
-                                    </td>
-                                    <td>
-                                        <a href="javascript: void(0) ;" onclick="delFileRow()">删除</a>
-                                    </td>
+                                <td>
+                                    <input type="text" class="form-control" name="file-name[]" placeholder="请输入附件名称"  style="height: 40px" />
+                                    <input type="hidden" class="form-control" name="file-id[]" value="" />
+                                    <input type="hidden" class="form-control" name="extension[]" value="" />
+                                </td>
+                                <td>
+                                    <input type="file" class="btn btn-default btn-file" name="file" onchange="ajax_multi_upload_file($(this))"/>
+                                </td>
+                                <td>
+                                    <a href="javascript: void(0) ;" onclick="delFileRow($(this))">删除</a>
+                                </td>
                             </tr>
-                            </form>
                             </tbody>
                         </table>
                     </div>
@@ -147,7 +147,7 @@
                     </div>
                     <div class="container-fluid">
                         <hr/>
-                        <div class="col-md-2" hidden>
+                        <div class="col-md-2">
                             <a class="btn btn-default btn-block" onclick="addRow()">
                                 添加
                             </a>

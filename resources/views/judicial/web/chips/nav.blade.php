@@ -18,7 +18,7 @@
             @endif
         </div>
         <div class="hd_nav">
-            <ul class="hd_ful">
+            <ul class="hd_ful" style="margin-bottom: 0">
                 <li class="hdf_li" @if(isset($_now) && $_now == 'index') style="background: #FFFFFF;" @endif>
                     <a href="{{URL::to('/')}}" @if(isset($_now) && $_now == 'index') style="color: #E23939!important;" @endif>首页</a>
                 </li>

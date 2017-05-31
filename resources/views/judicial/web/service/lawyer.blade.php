@@ -107,10 +107,13 @@
             @endif
         </table>
 
-        @if(isset($pages) && is_array($pages))
+        @if(isset($pages) && is_array($pages) && isset($lawyer_list) && is_array($lawyer_list) && count($lawyer_list)>0)
             <div class="zwr_ft">
                 <div class="fy_left">
-                    <span>@if($pages['count_page']>1 )<a href="{{ URL::to('service/'.$pages['type']) }}"> 首页</a> @else 首页 @endif</span>
+                <span>
+                    @if($pages['count_page']>1 && $pages['now_page'] != 1)
+                        <a href="{{ URL::to('service/'.$pages['type']) }}"> 首页</a> @else 首页 @endif
+                </span>
                 <span>
                     @if($pages['now_page'] >1 ) <a href="{{ URL::to('service/'.$pages['type']).'/'.($pages['now_page']-1) }}">上一页</a> @else 上一页 @endif
                 </span>

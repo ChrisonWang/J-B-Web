@@ -79,7 +79,7 @@
 <div class="w980 idx_vedio">
     <div class="vd_left">
         <span class="vd_tit">宣传视频</span>
-        <span class="vid_more"><a href="{{ URL::to('/video') }}" target="_blank">更多视频>></a></span>
+        <span class="vid_more"><a href="{{ URL::to('/video') }}">更多视频>></a></span>
         <div class="index_vedio">
             <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
                 <img class="image_list" src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="300" height="200">
@@ -96,16 +96,16 @@
     <div class="vd_mid">
         <span class="vd_tit">推荐链接</span>
             <ul>
-                <li class="ico_1" onclick="javascript: window.open('#'); ">
+                <li class="ico_1" onclick="javascript: window.open('#'); " style="cursor: pointer">
                     <span>公务员普法在线学习</span>
                 </li>
-                <li class="ico_2" onclick="javascript: window.open('http://www.64365.com/lawtxt/'); ">
+                <li class="ico_2" onclick="javascript: window.open('http://www.64365.com/lawtxt/'); " style="cursor: pointer">
                     <span>常用法律文书格式</span>
                 </li>
-                    <li class="ico_3" onclick="javascript: window.open('http://search.chinalaw.gov.cn/search.html'); ">
+                    <li class="ico_3" onclick="javascript: window.open('http://search.chinalaw.gov.cn/search.html'); " style="cursor: pointer">
                     <span>法律法规查询</span>
                 </li>
-                <li class="ico_4" onclick="javascript: window.open('http://www.sfjz.com.cn/'); ">
+                <li class="ico_4" onclick="javascript: window.open('http://www.sfjz.com.cn/'); " style="cursor: pointer">
                     <span>社区矫正</span>
                 </li>
             </ul>
@@ -160,31 +160,31 @@
                 <span>律师事务</span>
             </li>
             <li class="ico_btn" id="ico_1_sub" style="display: none">
-                <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/lawyer/1')}}';">律师查询</div>
-                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('service/lawyerOffice/1')}}';">事务所查询</div>
+                <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/lawyer/1')}}';" style="cursor: pointer">律师查询</div>
+                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('service/lawyerOffice/1')}}';" style="cursor: pointer">事务所查询</div>
             </li>
 
             <li class="ico_2" id="ico_2">
                 <span>法律援助</span>
             </li>
             <li class="ico_btn" id="ico_2_sub" style="display: none">
-                <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/aidApply/apply')}}';">群众预约援助</div>
-                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('service/aidDispatch/apply')}}';">公检法指派援助</div>
+                <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/aidApply/apply')}}';" style="cursor: pointer">群众预约援助</div>
+                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('service/aidDispatch/apply')}}';" style="cursor: pointer">公检法指派援助</div>
             </li>
 
             <li class="ico_3"  id="ico_3">
                 <span>司法鉴定</span>
             </li>
             <li class="ico_btn" id="ico_3_sub" style="display: none">
-                <div style="margin-top: 25px" class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/expertise/apply')}}';">司法鉴定申请</div>
+                <div style="margin-top: 25px; cursor: pointer" class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/expertise/apply')}}';">司法鉴定申请</div>
             </li>
 
             <li class="ico_4" id="ico_4">
                 <span>政民互动</span>
             </li>
             <li class="ico_btn" id="ico_4_sub" style="display: none">
-                <div style="margin-top: 25px" class="ib_top" onclick="javascript: window.location.href='{{URL::to('suggestions/add')}}';">征求意见</div>
-                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('consultions/add')}}';">问题咨询</div>
+                <div style="margin-top: 25px; cursor: pointer" class="ib_top" onclick="javascript: window.location.href='{{URL::to('suggestions/add')}}';">征求意见</div>
+                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('consultions/add')}}';" style="cursor: pointer">问题咨询</div>
             </li>
         </ul>
     </div>
