@@ -41,9 +41,13 @@ $(document).ready(function(){
     $('.law_body span').hover(
         function(){
             $(this).addClass('law_hover');
+            cancelBubble();
+            event.stopPropagation();
         },
         function(){
             $(this).removeClass('law_hover');
+            cancelBubble();
+            event.stopPropagation();
         }
     );
 

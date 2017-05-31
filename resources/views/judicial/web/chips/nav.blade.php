@@ -23,7 +23,7 @@
                     <a href="{{URL::to('/')}}" @if(isset($_now) && $_now == 'index') style="color: #E23939!important;" @endif>首页</a>
                 </li>
                 <li class="hdf_li" @if(isset($_now) && $_now == 'zwgk') style="background: #FFFFFF;" @endif>
-                    <a href="@if($zwgk_list != 'none' && is_array($zwgk_list)){{ URL::to('/list').'/'.$zwgk_list[0]['key'] }}@else{{URL::to('/')}}@endif" @if(isset($_now) && $_now == 'zwgk') style="color: #E23939!important;" @endif>
+                    <a href="@if($zwgk_list != 'none' && is_array($zwgk_list)){{ URL::to('/list').'/'.$zwgk_list[0]['key'].'/1' }}@else{{URL::to('/')}}@endif" @if(isset($_now) && $_now == 'zwgk') style="color: #E23939!important;" @endif>
                         政务公开
                     </a>
                     <div class="hd_lv3" style="font-size: 12px; color: #676767">
@@ -32,7 +32,7 @@
                         <span><a href="{{ URL::to('/video/1')}}">宣传视频</a></span>
                         @if($zwgk_list != 'none' && is_array($zwgk_list))
                             @foreach($zwgk_list as $zwgk)
-                                <span><a href="{{ URL::to('list').'/'.$zwgk['key'] }}">{{ mb_spilt_title($zwgk['channel_title'], 7, false) }}</a></span>
+                                <span><a href="{{ URL::to('list').'/'.$zwgk['key'].'/1' }}">{{ mb_spilt_title($zwgk['channel_title'], 7, false) }}</a></span>
                             @endforeach
                         @else
                             <span><a href="javascript:void(0)">请先添加子频道</a></span>
@@ -48,7 +48,7 @@
                         <span><a href="{{ URL::to('service/aid/list/1') }}">法律援助</a></span>
                         @if($wsbs_list != 'none' && is_array($wsbs_list))
                             @foreach($wsbs_list as $wsbs)
-                                <span><a href="{{ URL::to('service/list').'/'.$wsbs['key'] }}">{{ mb_spilt_title($wsbs['channel_title'], 7, false) }}</a></span>
+                                <span><a href="{{ URL::to('service/list').'/'.$wsbs['key'].'/1' }}">{{ mb_spilt_title($wsbs['channel_title'], 7, false) }}</a></span>
                             @endforeach
                         @else
                             <span><a href="javascript:void(0)">请先添加子频道</a></span>

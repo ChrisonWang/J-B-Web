@@ -209,8 +209,8 @@
                 @endforeach
             @endif
         </ul>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next" style="right: 0;"></div>
+        <div class="swiper-button-prev" style="left: 0;"></div>
     </div>
 </div>
 
