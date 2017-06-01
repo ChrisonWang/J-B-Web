@@ -193,16 +193,16 @@
                         @endif
                     </div>
                     <div class="container-fluid">
-                        <p class="text-left hidden" id="add-row-notice" style="color: red"></p>
-                    </div>
-                    <div class="container-fluid">
-                        <hr/>
                         <div class="col-md-2">
                             <a class="btn btn-default btn-block" onclick="addRow()">
                                 添加
                             </a>
                         </div>
+                        <div class="col-md-10">
+                            <p class="text-left hidden" id="add-row-notice" style="color: red; line-height: 34px; height: 34px"></p>
+                        </div>
                     </div>
+                    <hr/>
                 </div>
             </div>
             <div class="form-group">

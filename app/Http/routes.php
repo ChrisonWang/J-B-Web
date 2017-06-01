@@ -149,7 +149,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('search',['as'=>'search', 'uses'=>'Web\Index@doSearch']);
 
-    Route::post('service/search', 'Service\Index@search');
+    Route::get('service/search', 'Service\Index@search');
 
     Route::post('service/search', 'Service\Index@doSearch');
 

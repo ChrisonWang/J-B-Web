@@ -26,7 +26,7 @@
         <ul>
             @foreach($search_list as $search)
             <li>
-                <div class="serach_a"><a href="{{ URL::to('article').'/'.$search['key'] }}">{{ spilt_title($search['article_title'], 40) }}</a></div>
+                <div class="serach_a"><a href="{{ URL::to('service/article').'/'.$search['key'] }}">{{ spilt_title($search['article_title'], 40) }}</a></div>
                 <div class="serach_b">{{ date('Y-m-d',strtotime($search['publish_date'])) }}</div>
             </li>
             @endforeach
