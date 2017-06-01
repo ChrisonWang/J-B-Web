@@ -178,11 +178,11 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .lb_act{background-color: #E23939; color: #fff;}
 .law_body{display: none;}
 .law_body .law_hover{background-color: #E23939; color: #FFFFFF}
-.law_body .law_hover a{color: #FFFFFF}
+.law_body .law_hover a{color: #FFFFFF; text-decoration: none; display: block; width: 180px; height: 40px}
 .law_body .law_hover a:hover{color: #FFFFFF; text-decoration: none}
 
 .law_body .law_hover_b{background-color: #E23939; color: #FFFFFF}
-.law_body .law_hover_b a{color: #FFFFFF; text-decoration: none}
+.law_body .law_hover_b a{color: #FFFFFF; text-decoration: none; display: block; width: 180px; height: 40px}
 .law_body .law_hover_b a:hover{color: #FFFFFF; text-decoration: none}
 
 .zw_left .law_hover_first{background-color: #E23939; color: #FFFFFF; cursor: pointer}

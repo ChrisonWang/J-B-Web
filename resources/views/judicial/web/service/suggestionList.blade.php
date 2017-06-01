@@ -43,13 +43,13 @@
                     </thead>
                     <tbody>
                     @foreach($record_list as $record)
-                        <tr  style="cursor: pointer">
+                        <tr>
                             <td>{{ $record['record_code'] }}</td>
                             <td>{{ $type_list[$record['type']] }}</td>
                             <td>{{ spilt_title($record['title'], 50) }}</td>
                             <td>{{ $record['create_date'] }}</td>
                             <td>{{ $record['answer_date'] }}</td>
-                            <td><a href="{{ URL::to('suggestions/detail').'/'.$record['record_code'] }}" class="tb_btn" style="color: #000000">查看</a></td>
+                            <td><a href="{{ URL::to('suggestions/detail').'/'.$record['record_code'] }}" class="tb_btn" style="color: #000000; cursor: pointer">查看</a></td>
                         </tr>
                     @endforeach
                     </tbody>
