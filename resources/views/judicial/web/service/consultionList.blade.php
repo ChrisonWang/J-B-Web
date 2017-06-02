@@ -7,25 +7,24 @@
 
 <!--内容-->
 <div class="w1024 zw_mb">
-    <div class="container-fluid" style="margin-top: 30px">
-        <div class="col-md-offset-3 col-md-3">
-            <a href="{{ URL::to('consultions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px; line-height: 30px">咨询问题</a>
-        </div>
-        <div class=" col-md-3">
-            <a href="{{ URL::to('suggestions/add') }}" class="btn btn-danger btn-block" style="width: 180px; height:40px; line-height: 30px">征求意见</a>
+    <div class="container-fluid" style="margin-top: 20px; padding-right: 0">
+        <div class="mz_plus">
+            <a href="{{ URL::to('consultions/add') }}">
+                咨询问题
+            </a>
         </div>
     </div>
     <!--搜索栏-->
-    <div class="container-fluid" style="padding: 0px">
+    <div class="container-fluid" style="padding-right: 0">
         <div class="left_title">
             <span>问题咨询列表</span>
         </div>
-        <div class="id_sch_r" style="padding-top: 30px">
+        <div class="id_sch_r" style="padding-top: 20px; margin-right: 0">
             <form action="{{ URL::to('consultions/search') }}" method="post">
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <input type="search" name="keywords" placeholder="查询受理编号/问题标题" value="" style="width: 450px">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="submit">搜索</button>
+                &nbsp;&nbsp;
+                <button type="submit" style="right: 0">搜索</button>
             </form>
         </div>
     </div>

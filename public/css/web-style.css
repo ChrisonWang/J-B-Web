@@ -402,6 +402,12 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 
 .left_title span{ font-family: MicrosoftYaHei; font-size: 14px; color: #DD3938}
 
+.mz_plus{ width: 80px; height: 20px; line-height: 20px; background: url("../images/plus.png") left no-repeat; float: right; text-align: right}
+
+.mz_plus a{ font-family: MicrosoftYaHei;font-size: 14px;color: #E23939;letter-spacing: 0; text-decoration: none}
+
+.mz_plus a:hover{ font-family: MicrosoftYaHei;font-size: 14px;color: #E23939;letter-spacing: 0; text-decoration: none}
+
 
 
 

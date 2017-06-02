@@ -230,6 +230,7 @@ class Index extends Controller
 
     public function search(Request $request){
         $this->page_data['no_search'] = 'yes';
+        $this->page_data['_now'] = 'wsbs';
         return view('judicial.web.service.search', $this->page_data);
     }
 
@@ -237,6 +238,8 @@ class Index extends Controller
     {
         $keywords = $request->input('keywords');
         $count = 0;
+        $this->page_data['_now'] = 'wsbs';
+        $this->page_data['keywords'] = trim($keywords);
         if(empty($keywords)){
             $this->page_data['page'] = array(
                 'count' => $count,
@@ -282,7 +285,6 @@ class Index extends Controller
                 );
             }
         }
-        $this->page_data['_now'] = 'index';
         $this->page_data['page'] = array(
             'count' => $count,
             'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,

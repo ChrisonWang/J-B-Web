@@ -240,6 +240,7 @@ class Index extends Controller
                 'now_page' => 1,
             );
             $this->page_data['search_list'] = 'none';
+            $this->page_data['keywords'] = $keywords;
             return view('judicial.web.search', $this->page_data);
         }
         else{
@@ -258,6 +259,7 @@ class Index extends Controller
             'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
             'now_page' => 1,
         );
+        $this->page_data['keywords'] = $keywords;
         $this->page_data['search_list'] = $search_list;
         return view('judicial.web.search', $this->page_data);
     }
