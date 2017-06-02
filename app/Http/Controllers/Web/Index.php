@@ -219,6 +219,7 @@ class Index extends Controller
     public function doSearch(Request $request)
     {
         $keywords = $request->input('keywords');
+        $this->page_data['keywords'] = $keywords;
         $count = 0;
         if(empty($keywords)){
             $this->page_data['page'] = array(
@@ -259,7 +260,6 @@ class Index extends Controller
             'page_count' => ($count>16) ? (ceil($count / 16)) + 1 : 1,
             'now_page' => 1,
         );
-        $this->page_data['keywords'] = $keywords;
         $this->page_data['search_list'] = $search_list;
         return view('judicial.web.search', $this->page_data);
     }
