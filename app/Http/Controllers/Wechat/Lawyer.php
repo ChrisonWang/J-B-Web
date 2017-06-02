@@ -326,14 +326,15 @@ class Lawyer extends Controller
                     'update_date'=> $o->update_date,
                 );
             }
-            $this->page_data['inputs'] = $inputs;
-            $this->page_data['type'] = 'lawyerOffice';
-            $this->page_data['count_page'] = ceil($count/12);
-            $this->page_data['page_no'] = 1;
             $this->page_data['area_list'] = $area_list;
             $this->page_data['office_list'] = $office_list;
-            return view('judicial.wechat.lawyerOfficeList',$this->page_data)->render();
         }
+
+        $this->page_data['inputs'] = $inputs;
+        $this->page_data['type'] = 'lawyerOffice';
+        $this->page_data['count_page'] = ceil($count/12);
+        $this->page_data['page_no'] = 1;
+        return view('judicial.wechat.lawyerOfficeList',$this->page_data);
     }
 
     //下拉加载

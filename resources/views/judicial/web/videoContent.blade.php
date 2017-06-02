@@ -21,8 +21,9 @@
             <div class="wz_top">
                 <span class="h_tit">{{ $video_detail['title'] }}</span>
                 <div class="wzt_down" style="text-align: center">
-                    <div class="wztd_left">
+                    <div class="wztd_left" style='font-size:75%;line-height:1.5;font: 12px/1.5 "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB",\5FAE\8F6F\96C5\9ED1,tahoma,simsun,\5b8b\4f53; color: #000000'>
                         <span>{{ $video_detail['create_date'] }}</span>
+                        {{--<span>浏览数：{{ $video_detail['clicks'] }}</span>--}}
                     </div>
                 </div>
             </div>

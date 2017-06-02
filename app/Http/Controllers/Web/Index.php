@@ -585,10 +585,15 @@ class Index extends Controller
             $video_detail = array(
                 'title'=> $video->title,
                 'link'=> $video->link,
+                'clicks'=> $video->clicks,
                 'create_date'=> $video->create_date,
                 'update_date'=> $video->update_date,
             );
+            //更新访问
+            $clicks = (isset($video->clicks)) ? $video->clicks + 1 : 1;
+            DB::table('cms_video')->where(['video_code'=>$video_code, 'disabled'=>'no'])->where('archived', 'no')->update(['clicks'=> $clicks]);
         }
+
         $this->page_data['video_detail'] = $video_detail;
         $this->page_data['_now'] = 'zwgk';
         return view('judicial.web.videoContent', $this->page_data);

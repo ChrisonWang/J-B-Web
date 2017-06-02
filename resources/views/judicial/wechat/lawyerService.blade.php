@@ -12,8 +12,8 @@
     <hr/>
     <div class="container-fluid">
         @foreach($area_list as $key=> $area)
-            <div class="col-xs-4" style="margin-top: 10px">
-                <a class="btn btn-success btn-block" href="{{ URL::to('wechat/lawyerOfficeArea/').'/'.$key }}">{{ $area }}</a>
+            <div class="col-xs-4" style="margin-top: 5px; padding: 0 3px">
+                <a class="btn btn-success btn-block" href="{{ URL::to('wechat/lawyerOfficeArea/').'/'.$key }}">{{ mb_spilt_title($area, 4) }}</a>
             </div>
         @endforeach
     </div>

@@ -69,7 +69,9 @@
             </tbody>
         </table>
         @else
-            暂无记录！
+            <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">
+                暂无记录！
+            </p>
         @endif
 
         <!--我的公检法指派记录-->
@@ -116,7 +118,9 @@
                     </tbody>
                 </table>
         @else
-            暂无记录！
+                <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">
+                    暂无记录！
+                </p>
         @endif
 
     </div>

@@ -37,7 +37,7 @@ class Controller extends BaseController
         foreach($p_channels as $key=> $p_channel){
             $channel_list[$key]['key'] = keys_encrypt($p_channel->channel_id);
             $channel_list[$key]['channel_title'] = $p_channel->channel_title;
-            $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes'])->where('standard', 'no')->where('is_recommend', 'no')->get();
+            $sub_channels = DB::table('cms_channel')->where(['pid'=>$p_channel->channel_id, 'zwgk'=>'yes'])->where('standard', 'no')->get();
             if(count($sub_channels)<1){
                 $channel_list [$key]['sub_channel'] = 'none';
             }
@@ -77,7 +77,7 @@ class Controller extends BaseController
                     'key'=> $_p_channel->channel_id,
                     'channel_title'=> $_p_channel->channel_title,
                 );
-                $sub_channels = DB::table('cms_channel')->where('pid', $_p_channel->channel_id)->where('wsbs', 'yes')->where('is_recommend', 'no')->get();
+                $sub_channels = DB::table('cms_channel')->where('pid', $_p_channel->channel_id)->where('wsbs', 'yes')->get();
                 if(count($sub_channels)<1){
                     $wsbs_left_list[$key]['sub_channel'] = array();
                 }

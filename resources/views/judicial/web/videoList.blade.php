@@ -24,14 +24,14 @@
                 <ul>
                     @foreach($video_list as $video)
                         <li>
-                            <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
+                            <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" >
                                 <img class="image_list" src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="245" height="167">
                             </a>
-                            <a class="vd_btn" href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
+                            <a class="vd_btn" href="{{ URL::to('/videoContent').'/'.$video['key'] }}" >
                                 <img src="{{ asset('/images/btn_play_50x50.png') }}" width="50" height="50">
                             </a>
                             <span class="zwv_txt">
-                                <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
+                                <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" >
                                     {{ spilt_title($video['title'], 20) }}
                                 </a>
                             </span>
@@ -39,7 +39,9 @@
                     @endforeach
                 </ul>
             @else
-                <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">该频道下暂无文章！</p>
+                <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">
+                    暂无视频！
+                </p>
             @endif
         </div>
         @if($video_list != 'none')

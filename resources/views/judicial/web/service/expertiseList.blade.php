@@ -61,7 +61,9 @@
             <div class="als_down">请按照流程填写申请表，重新提交审核。</div>
         </div>
         @else
-            暂无记录！
+            <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">
+                暂无记录！
+            </p>
         @endif
 
         @if(is_array($pages) && count($pages)>0 && isset($record_list) && is_array($record_list) && count($record_list)>0)
