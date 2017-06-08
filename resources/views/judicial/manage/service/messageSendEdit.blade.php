@@ -15,7 +15,7 @@
                             <option value="none">请先设置短信模板！</option>
                         @else
                             @foreach($temp_list as $k=> $temp)
-                                <option value="{{ $temp['temp_code'] }}" @if($k == $send_detail['temp_code'] ) selected @endif >{{ $temp['title'] }}</option>
+                                <option value="{{ $temp['temp_code'] }}" @if($temp['temp_code'] == $send_detail['temp_code'] ) selected @endif >{{ $temp['title'] }}</option>
                             @endforeach
                         @endif
                     </select>
