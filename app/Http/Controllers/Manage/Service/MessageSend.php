@@ -351,7 +351,10 @@ class MessageSend extends Controller
         else{
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'不存在的记录！']);
         }
+        //模板内容
+        $content = DB::table('service_message_temp')->where('temp_code', $message->temp_code)->first();
         //页面中显示
+        $this->page_data['content'] = isset($content->content) ? $content->content : '';
         $this->page_data['send_detail'] = $send_detail;
         $pageContent = view('judicial.manage.service.messageSendDetail',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

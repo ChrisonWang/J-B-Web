@@ -25,7 +25,9 @@
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <p class="lead" id="temp_content">【三门峡司法局】{{ isset($temp_list[0]['content']) ? $temp_list[0]['content'] : '请先设置短信模板！' }}</p>
+                            <p class="lead" id="temp_content">
+                                【三门峡司法局】{!! $content !!}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -39,7 +41,7 @@
             <div class="form-group">
                 <label for="receiver_type" class="col-md-2 control-label"><strong style="color: red">*</strong> 发送用户类型：</label>
                 <div class="col-md-3">
-                    <p>
+                    <label for="create_date" class="control-label">
                         @if($send_detail['receiver_type'] == 'member')
                             前台用户
                         @elseif($send_detail['receiver_type'] == 'member')
@@ -47,7 +49,7 @@
                         @else
                             司法证书持有人
                         @endif
-                    </p>
+                    </label>
                 </div>
             </div>
             <div class="form-group">

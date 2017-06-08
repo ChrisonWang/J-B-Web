@@ -111,7 +111,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <p class="text-left hidden" id="addMessageSendNotice" style="color: red"></p>
+                    <p class="text-left hidden" id="editMessageSendNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
