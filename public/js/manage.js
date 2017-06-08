@@ -2317,7 +2317,7 @@ function getTempContent(t){
         data: 'temp_code='+temp_code,
         success: function(re){
             if(re.status == 'succ'){
-                $('#temp_content').text(re.res);
+                $('#temp_content').text('【三门峡司法局】' + re.res);
             }
         }
     });
@@ -2372,7 +2372,7 @@ function switch_hidden(){
                 if(re.status=='succ'){
                     var str = "";
                     $.each(re.res, function(i,v){
-                        str += '<li data-key="'+ v.key +'" style="list-style: none">'+ v.name +'->'+ v.cell_phone +'' +
+                        str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +'->'+ v.cell_phone +'' +
                             '<input type="hidden" name="member_list" value=""/></li>'
                     });
                     $(".box_l_2").html(str);

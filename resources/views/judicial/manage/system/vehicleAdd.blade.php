@@ -42,7 +42,7 @@
                     <textarea class="form-control" id="remarks" name="remarks" placeholder="请输入备注"></textarea>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <p>自动生成</p>

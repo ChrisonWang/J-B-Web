@@ -18,9 +18,9 @@
                 <thead>
                     <tr>
                         <th width="20%" class="text-center">操作</th>
-                        <th class="text-center">主题</th>
+                        <th class="text-center">模板</th>
                         <th class="text-center">发送时间</th>
-                        <th class="text-center">发送对象</th>
+                        <th class="text-center">发送用户类型</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">

@@ -120,6 +120,8 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('consultions/add','Service\Consultions@doAdd');
 
+    Route::get('consultions/search','Service\Consultions@index');
+
     Route::post('consultions/search','Service\Consultions@search');
 
     //律师管理

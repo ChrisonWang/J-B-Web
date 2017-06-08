@@ -25,7 +25,7 @@
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <p class="lead" id="temp_content">【三门峡司法局官网】{{ isset($temp_list[0]['content']) ? $temp_list[0]['content'] : '请先设置短信模板！' }}</p>
+                            <p class="lead" id="temp_content">【三门峡司法局】{{ isset($temp_list[0]['content']) ? $temp_list[0]['content'] : '请先设置短信模板！' }}</p>
                         </div>
                     </div>
                 </div>
@@ -37,10 +37,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="receiver_type" class="col-md-2 control-label"> 发送用户类型：</label>
+                <label for="receiver_type" class="col-md-2 control-label"><strong style="color: red">*</strong> 发送用户类型：</label>
                 <div class="col-md-3">
                     <select class="form-control" onchange="switch_hidden()" id="receiver_type" name="receiver_type">
-                        <option value="none" selected>请选择收信人类型</option>
+                        <option value="none" selected>请选择发送用户类型</option>
                         <option value="member">前台用户</option>
                         <option value="manager">后台用户</option>
                         <option value="certificate">证书持有人</option>
@@ -103,7 +103,7 @@
                 </div>
             </div><!-- 人员选择器End -->
 
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <label for="create_date" class="control-label">自动生成</label>

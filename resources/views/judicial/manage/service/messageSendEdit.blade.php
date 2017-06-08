@@ -27,7 +27,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <p class="lead" id="temp_content">
-                                {!! $content !!}
+                                【三门峡司法局】{!! $content !!}
                             </p>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="receiver_type" class="col-md-2 control-label"> 发送用户类型：</label>
+                <label for="receiver_type" class="col-md-2 control-label"><strong style="color: red">*</strong> 发送用户类型：</label>
                 <div class="col-md-3">
                     <select class="form-control" onchange="switch_hidden()" id="receiver_type" name="receiver_type">
                         <option value="member" @if($send_detail['receiver_type']=='member') selected @endif>前台用户</option>

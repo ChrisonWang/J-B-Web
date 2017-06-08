@@ -278,7 +278,7 @@ class MessageSend extends Controller
             $this->log_info['type'] = 'create';
             $this->log_info['title'] = '';
             $this->log_info['before'] = "新增数据";
-            $this->log_info['after'] = '模板ID:'.$save_date['temp_code'].'   发送对象:'.$save_date['receiver_type'].'   发送时间：'.$inputs['send_date'];
+            $this->log_info['after'] = '模板ID:'.$save_date['temp_code'].'   发送用户类型:'.$save_date['receiver_type'].'   发送时间：'.$inputs['send_date'];
             $this->log_info['log_type'] = 'str';
             Logs::manage_log($this->log_info);
 
@@ -472,7 +472,7 @@ class MessageSend extends Controller
             //日志
             $this->log_info['type'] = 'delete';
             $this->log_info['title'] = '';
-            $this->log_info['before'] = "发送对象:".$message->receiver_type.'   发送时间：'.$message->send_date;
+            $this->log_info['before'] = "发送用户类型:".$message->receiver_type.'   发送时间：'.$message->send_date;
             $this->log_info['after'] = "完全删除";
             $this->log_info['log_type'] = 'str';
             Logs::manage_log($this->log_info);
@@ -654,7 +654,7 @@ class MessageSend extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'发送时间不能小于当前时间！']);
         }
         if(!isset($inputs['receiver_type']) || $inputs['receiver_type']=='none'){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择收信人类型！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择发送用户类型！']);
         }
         return true;
     }

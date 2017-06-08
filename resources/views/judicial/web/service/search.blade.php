@@ -19,19 +19,21 @@
             <div class="id_sch_r">
                 <form action="{{ URL::to('service/search') }}" method="post">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                    <input type="search" name="keywords" placeholder="输入搜索关键词" value="@if(isset($keywords) && !empty($keywords)) {{ $keywords }} @endif"/>
+                    <input type="search" name="keywords" placeholder="输入搜索关键词" value="@if(isset($keywords) && !empty($keywords)){{ $keywords }}@endif"/>
                     <button type="submit">查询</button>
                 </form>
             </div>
         </div>
 
         <div class="zwr_mid">
-            @if($search_list != 'none')
+            @if(!isset($search_list))
+                <p style="width: 100%; text-align: center; margin: 0 auto; line-height: 50px; padding: 10px; font-size: 14px; color: #929292">请输入您要搜索的关键词！</p>
+            @elseif(isset($search_list) && $search_list != 'none')
                 <ul>
                     @foreach($search_list as $search)
                         <li>
                             <div class="zwrm_a" style="width: 650px; color: #222222">
-                                <a href="{{ URL::to('/article').'/'.$search['key'] }}">{{ spilt_title($search['article_title'], 40) }}</a>
+                                <a href="{{ URL::to('/service/article').'/'.$search['key'] }}">{{ spilt_title($search['article_title'], 40) }}</a>
                             </div>
                             <div class="zwrm_b" style="width: 120px; text-align: right">
                                 {{ date('Y-m-d',strtotime($search['publish_date'])) }}
@@ -45,7 +47,7 @@
         </div>
 
         <!--分页-->
-        @if($search_list != 'none')
+        @if(isset($search_list) && $search_list != 'none')
             @if($page['page_count'] == 1 )
                 <div class="zwr_ft">
                     <div class="fy_left">

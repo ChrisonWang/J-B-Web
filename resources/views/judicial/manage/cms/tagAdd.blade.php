@@ -12,7 +12,7 @@
                     <input type="text" class="form-control" id="tagTitle" name="tagTitle" placeholder="请输入标签名称" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="tagTitle" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p>自动生成</p>

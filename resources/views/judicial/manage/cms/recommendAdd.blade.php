@@ -18,7 +18,7 @@
                     <input type="text" class="form-control" id="r_link" name="r_link" placeholder="请输入链接地址" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <label for="create_date" class="control-label">自动生成</label>

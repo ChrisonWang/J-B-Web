@@ -15,7 +15,9 @@
                                 <select class="form-control" id="manager" name="manager">
                                     <option value="none" selected>不限</option>
                                     @foreach($manager_list as $manager_code=> $manager)
-                                        <option value="{{ $manager_code }}">{{ $manager }}</option>
+                                        <option value="{{ $manager_code }}">
+                                            {{ !empty($manager['nickname']) ? $manager['nickname'] : $manager['login_name'] }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -59,13 +61,13 @@
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th width="10%" class="text-center">操作</th>
-                        <th width="10%"class="text-center">操作人</th>
-                        <th width="10%" class="text-center">类型</th>
-                        <th width="20%"class="text-center">时间</th>
-                        <th width="10%"class="text-center">功能点</th>
-                        <th width="20%"class="text-center">资源ID</th>
-                        <th width="20%"class="text-center">标题/名称</th>
+                        <th width="5%" class="text-center" style="width: 5%">操作</th>
+                        <th width="10%"class="text-center" style="width: 10%">操作人</th>
+                        <th width="5%" class="text-center" style="width: 5%">类型</th>
+                        <th width="30%"class="text-center" style="width: 30%">时间</th>
+                        <th width="10%"class="text-center" style="width: 20%">功能点</th>
+                        <th width="20%"class="text-center" style="width: 15%">资源ID</th>
+                        <th width="20%"class="text-center" style="width: 15%">标题/名称</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
@@ -84,11 +86,11 @@
                 @endforeach
                 </tbody>
             </table>
+            <!--分页-->
+            @if(isset($pages) && is_array($pages) && $pages != 'none')
+                @include('judicial.manage.chips.systemPages')
+            @endif
         </div>
-        <!--分页-->
-        @if(isset($pages) && is_array($pages) && $pages != 'none')
-            @include('judicial.manage.chips.systemPages')
-        @endif
     </div>
 </div>
 <script type="text/javascript">

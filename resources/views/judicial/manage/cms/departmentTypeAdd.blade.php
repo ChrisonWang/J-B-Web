@@ -16,7 +16,7 @@
                     <input type="text" class="form-control" id="typeName" name="typeName" placeholder="请输入分类名称" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <p id="create_date">自动生成</p>

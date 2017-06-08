@@ -20,9 +20,8 @@
             <ul>
                 @foreach($article_list as $article)
                     <li>
-                        <div class="zwrm_a"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
-                        <div class="zwrm_b">{{ $article['publish_date'] }}</div>
-                        <div class="zwrm_c">浏览：{{ $article['clicks'] }}</div>
+                        <div class="zwrm_a" style="width: 650px; color: #222222"><a href="{{ URL::to('/article').'/'.$article['key'] }}">{{ spilt_title($article['article_title'],40) }}</a></div>
+                        <div class="zwrm_b" style="width: 120px; text-align: right">{{ $article['publish_date'] }}</div>
                     </li>
                 @endforeach
             </ul>

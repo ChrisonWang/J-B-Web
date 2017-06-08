@@ -19,7 +19,7 @@
                     <textarea rows="6" class="form-control" id="content" name="content" placeholder="请输入短信内容">{{ $temp_detail['content'] }}</textarea>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-6">
                     <label for="create_date" class="control-label">自动生成</label>

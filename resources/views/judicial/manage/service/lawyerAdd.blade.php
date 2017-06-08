@@ -174,7 +174,7 @@
                     <input type="text" class="form-control" id="certificate_code" name="certificate_code" placeholder="请输入执业资格证书编号" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-8">
                     <label for="create_date" class="control-label">自动生成</label>

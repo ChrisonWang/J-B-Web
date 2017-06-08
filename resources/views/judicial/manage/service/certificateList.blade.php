@@ -88,7 +88,7 @@
                                     <div class="col-md-10">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <p class="lead" id="temp_content">【三门峡司法局官网】{{ isset($temp_list[0]['content']) ? $temp_list[0]['content'] : '请先设置短信模板！' }}</p>
+                                                <p class="lead" id="temp_content">【三门峡司法局】{{ isset($temp_list[0]['content']) ? $temp_list[0]['content'] : '请先设置短信模板！' }}</p>
                                             </div>
                                         </div>
                                     </div>

@@ -84,7 +84,8 @@ class SystemLoadContent extends Controller
         $managers = DB::table('user_manager')->get();
         if(count($managers) > 0){
             foreach($managers as $manager){
-                $manager_list[$manager->manager_code] = $manager->nickname;
+                $manager_list[$manager->manager_code]['nickname'] = $manager->nickname;
+                $manager_list[$manager->manager_code]['login_name'] = $manager->login_name;
             }
         }
         $this->page_data['manager_list'] = $manager_list;

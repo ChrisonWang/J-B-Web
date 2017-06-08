@@ -12,7 +12,7 @@
                     <script id="UE_Content" name="intro" type="text/plain"></script>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <label for="create_date" class="control-label">自动生成</label>

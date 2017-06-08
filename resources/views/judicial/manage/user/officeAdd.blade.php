@@ -12,7 +12,7 @@
                     <input type="text" class="form-control" id="office_name" name="office_name" placeholder="请输入科室名称" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label for="create_date" class="col-md-2 control-label">创建时间：</label>
                 <div class="col-md-3">
                     <label for="create_date" class="control-label">自动生成</label>
