@@ -531,7 +531,7 @@ class Dashboard extends Controller
                 if(isset($inputs['search-channel-key']) && $inputs['search-channel-key']!='none'){
                     $where .= '`channel_id` = '.keys_decrypt($inputs['search-channel-key']).' AND ';
                 }
-                $sql = 'SELECT * FROM `cms_forms` '.$where.'1';
+                $sql = 'SELECT * FROM `cms_forms` '.$where.'1 ORDER BY `create_date` DESC';
                 $forms = DB::select($sql);
                 if($forms && count($forms) > 0){
                     //取出频道
@@ -576,7 +576,7 @@ class Dashboard extends Controller
                 }
                 //去掉已经归档的
                 $where .= '`archived` = "no" AND ';
-                $sql = 'SELECT * FROM `cms_article` '.$where.' 1';
+                $sql = 'SELECT * FROM `cms_article` '.$where.' 1 ORDER BY `publish_date` DESC';
                 $articles = DB::select($sql);
                 if($articles && count($articles) > 0){
                     //取出频道
@@ -653,7 +653,7 @@ class Dashboard extends Controller
                     $table = '`user_manager`';
                 }
 
-                $sql = 'SELECT * FROM '.$table.' '.$where.' 1';
+                $sql = 'SELECT * FROM '.$table.' '.$where.' 1 ORDER BY `create_date` DESC';
                 $members = DB::select($sql);
                 if($members && count($members) > 0){
                     $count = count($members);
@@ -665,7 +665,7 @@ class Dashboard extends Controller
                             'key'=> $inputs['search-type'] == 2 ? $member->manager_code : $member->member_code,
                             'login_name'=> $member->login_name,
                             'type_id'=> $inputs['search-type'] == 2 ? $member->type_id : $member->user_type,
-                            'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                            'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
                             'cell_phone'=> $member->cell_phone,
                             'disabled'=> $member->disabled,
                             'create_date'=> $member->create_date,
@@ -709,7 +709,7 @@ class Dashboard extends Controller
                 if(isset($inputs['search-type']) && $inputs['search-type']!='none'){
                     $where .= '`type_id` = '.$inputs['search-type'].' AND ';
                 }
-                $sql = 'SELECT * FROM `cms_department` '.$where.'1';
+                $sql = 'SELECT * FROM `cms_department` '.$where.'1 ORDER BY `sort` DESC';
                 $departments = DB::select($sql);
                 if($departments && count($departments) > 0){
                     $department_data = array();
@@ -901,10 +901,11 @@ class Dashboard extends Controller
                 $user_list[$key]['key'] = $manager->manager_code;
                 $user_list[$key]['login_name'] = $manager->login_name;
                 $user_list[$key]['type_id'] = $manager->type_id;
-                $user_list[$key]['nickname'] = $manager->nickname;
+                $user_list[$key]['nickname'] = empty($managers->nickname) ? '未设置' : $managers->nickname;
                 $user_list[$key]['cell_phone'] = $manager->cell_phone;
                 $user_list[$key]['disabled'] = $manager->disabled;
                 $user_list[$key]['create_date'] = $manager->create_date;
+                $user_list[$key]['_create_date'] = strtotime($manager->create_date);
             }
         }
         //取出用户
@@ -918,12 +919,14 @@ class Dashboard extends Controller
                 'key'=> $member->member_code,
                 'login_name'=> $member->login_name,
                 'type_id'=> $member->user_type,
-                'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
                 'cell_phone'=> $member->cell_phone,
                 'disabled'=> $member->disabled,
                 'create_date'=> $member->create_date,
+                '_create_date'=> strtotime($member->create_date)
             );
         }
+        $user_list = $this->multi_sort($user_list, '_create_date');
         $pages = array(
             'count' => $count,
             'count_page' => $count_page,
@@ -968,5 +971,35 @@ class Dashboard extends Controller
             }
             $this->page_data['left_tree'] = $list;
         }
+    }
+
+    /**
+     * 多维数组排序
+     * @param array $arr	输入数组
+     * @param string $field		排序字段
+     * @param string $type		排序类型 SORT_DESC升序	SORT_DESC降序
+     * @return array
+     */
+    private function multi_sort($arr = array(), $field='', $type = 'SORT_DESC')
+    {
+        if(empty($arr) || empty($field)){
+            return $arr;
+        }
+        $type = ($type != 'SORT_DESC') ? 'SORT_ASC' : 'SORT_DESC';
+        $sort = array(
+            'direction' => $type,
+            'field' => $field
+        );
+        $arrSort = array();
+        foreach($arr AS $uniqid => $row){
+            foreach($row AS $key=>$value){
+                $arrSort[$key][$uniqid] = $value;
+            }
+        }
+        if($sort['direction']){
+            array_multisort($arrSort[$sort['field']], constant($sort['direction']), $arr);
+        }
+
+        return $arr;
     }
 }

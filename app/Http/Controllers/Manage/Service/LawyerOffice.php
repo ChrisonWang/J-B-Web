@@ -481,7 +481,7 @@ class LawyerOffice extends Controller
         if(isset($inputs['area_id']) &&($inputs['area_id'])!='none'){
             $where .= ' `area_id` = "'.keys_decrypt($inputs['area_id']).'" AND ';
         }
-        $sql = 'SELECT * FROM `service_lawyer_office` '.$where.'1';
+        $sql = 'SELECT * FROM `service_lawyer_office` '.$where.'1 ORDER BY `create_date` DESC';
         $res = DB::select($sql);
         if($res && count($res) > 0){
             //加载列表数据

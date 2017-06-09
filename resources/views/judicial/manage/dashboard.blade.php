@@ -44,9 +44,9 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="temp_code" class="col-md-2 control-label">显示名：</label>
+								<label for="temp_code" class="col-md-2 control-label">姓名：</label>
 								<div class="col-md-10">
-									<input type="text" class="form-control" id="nickname" name="nickname" value="{{isset($managerInfo['nickname'])?$managerInfo['nickname']:''}}" placeholder="请输入显示名"/>
+									<input type="text" class="form-control" id="nickname" name="nickname" value="{{isset($managerInfo['nickname'])?$managerInfo['nickname']:''}}" placeholder="请输入姓名"/>
 								</div>
 							</div>
 							<div class="form-group">

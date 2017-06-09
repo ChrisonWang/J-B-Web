@@ -22,7 +22,7 @@
                             <thead>
                             <tr>
                                 <th class="text-center">登录名</th>
-                                <th class="text-center">显示名</th>
+                                <th class="text-center">姓名</th>
                                 <th class="text-center">电话</th>
                                 <th class="text-center">邮箱</th>
                                 <th class="text-center">创建时间</th>

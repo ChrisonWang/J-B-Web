@@ -210,7 +210,7 @@ class Consultions extends Controller
         }
         //去掉已经归档的
         $where .= '`archived` = "no" AND ';
-        $sql = 'SELECT * FROM `service_consultions` '.$where.'1';
+        $sql = 'SELECT * FROM `service_consultions` '.$where.'1 ORDER BY `create_date` DESC';
         $res = DB::select($sql);
         if($res && count($res) > 0){
             $consultion_list = array();
@@ -221,7 +221,7 @@ class Consultions extends Controller
                     'title'=> spilt_title($re->title, 30),
                     'type'=> $re->type,
                     'status'=> $re->status,
-                    'create_date'=> date('Y-m-d',strtotime($re->create_date)),
+                    'create_date'=> date('Y-m-d H:i',strtotime($re->create_date)),
                 );
             }
             $this->page_data['consultion_list'] = $consultion_list;

@@ -441,7 +441,7 @@ class Certificate extends Controller
         if(isset($inputs['last_status']) &&($inputs['last_status'])!='none'){
             $where .= ' `last_status` = "'.$inputs['last_status'].'" AND ';
         }
-        $sql = 'SELECT * FROM `service_certificate` '.$where.'1';
+        $sql = 'SELECT * FROM `service_certificate` '.$where.'1 ORDER BY `create_date` DESC';
         $res = DB::select($sql);
         if($res && count($res) > 0){
             $certificate_list = array();

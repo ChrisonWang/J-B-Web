@@ -33,7 +33,7 @@
             <dd id="dd_email">{{$managerInfo['email']}}</dd>
         </dl>
         <dl class="dl-horizontal">
-            <dt>显示名：</dt>
+            <dt>姓名：</dt>
             <dd id="dd_nickname">{{$managerInfo['nickname']}}</dd>
         </dl>
     </div>

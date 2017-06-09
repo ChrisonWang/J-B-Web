@@ -68,9 +68,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="nickname" class="col-md-2 control-label">显示名：</label>
+                <label for="nickname" class="col-md-2 control-label">姓名：</label>
                 <div class="col-md-3">
-                    <input disabled type="text" class="form-control" value="{{ !empty($user_detail['nickname']) ? $user_detail['nickname'] : '未设置' }}" id="nickname" name="nickname" placeholder="请输显示名" />
+                    <input disabled type="text" class="form-control" value="{{ !empty($user_detail['nickname']) ? $user_detail['nickname'] : '未设置' }}" id="nickname" name="nickname" placeholder="请输姓名" />
                 </div>
             </div>
             <div class="form-group">

@@ -59,7 +59,6 @@
                         <th width="15%" class="text-center">申请单位</th>
                         <th width="20%" class="text-center">申请援助单位</th>
                         <th width="20%" class="text-center">案件名称</th>
-
                     </tr>
                 </thead>
                 <tbody class="text-center">

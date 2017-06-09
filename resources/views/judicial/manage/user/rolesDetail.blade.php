@@ -25,7 +25,7 @@
                 </td>
                 <td>
                     <select name="permission" class="form-control node-row">
-                        <option value="r">查看</option>
+                        <option value="r" selected>查看</option>
                         <option value="rw">编辑</option>
                     </select>
                 </td>
@@ -58,30 +58,51 @@
                             </tr>
                             </thead>
                             <tbody class="text-center" id="menu-nodes">
-                            @foreach($role_detail['permissions'] as $p)
+                            @if(isset($role_detail['permissions']) && is_array($role_detail['permissions']))
+                                @foreach($role_detail['permissions'] as $p)
+                                    <tr>
+                                        <td>
+                                            <select disabled name="menus" class="form-control node-row" onchange="getSubNode($(this))">
+                                                <option value="{{ $p['menus'] }}">{{ $menu_list[$p['menus']]['menu_name'] }}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select disabled name="nodes" class="form-control node-row">
+                                                <option value="{{ $p['nodes'] }}">{{ $menu_nodes[$p['menus']][$p['nodes']] }}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select disabled name="permission" class="form-control node-row">
+                                                <option value="r" @if($p['permission'] == 'r') selected @endif>查看</option>
+                                                <option value="rw" @if($p['permission'] == 'rw') selected @endif>编辑</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
                                 <tr>
                                     <td>
-                                        <select disabled name="menus" class="form-control node-row" onchange="getSubNode($(this))">
+                                        <select name="menus" class="form-control node-row">
                                             @foreach($menu_list as $menu)
-                                                <option value="{{ $menu['key'] }}" @if($p['menus'] == $menu['key']) selected @endif>{{ $menu['menu_name'] }}</option>
+                                                <option value="{{ $menu['key'] }}">{{ $menu['menu_name'] }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td>
-                                        <select disabled name="nodes" class="form-control node-row">
+                                        <select name="nodes" class="form-control node-row">
                                             @foreach($f_node_list as $node)
-                                                <option value="{{ $node['node_key'] }}" @if($p['nodes'] == $node['node_key']) selected @endif>{{ $node['node_name'] }}</option>
+                                                <option value={{ $node['node_key'] }}>{{ $node['node_name'] }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td>
-                                        <select disabled name="permission" class="form-control node-row">
+                                        <select name="permission" class="form-control node-row">
                                             <option value="r" selected>查看</option>
                                             <option value="rw">编辑</option>
                                         </select>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>

@@ -516,7 +516,7 @@ class Lawyer extends Controller
         if(isset($inputs['status']) &&($inputs['status'])!='none'){
             $where .= ' `status` = "'.$inputs['status'].'" AND ';
         }
-        $sql = 'SELECT * FROM `service_lawyer` '.$where.'1';
+        $sql = 'SELECT * FROM `service_lawyer` '.$where.'1 ORDER BY `create_date` DESC';
         $res = DB::select($sql);
         if($res && count($res) > 0){
             $lawyer_list = array();

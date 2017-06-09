@@ -148,9 +148,11 @@ class Log extends Controller
             $log_list = array();
             foreach($res as $log){
                 $manager = DB::table('user_manager')->where('manager_code',$log->manager)->first();
+                if(!$manager || $manager==null || empty($manager))
+                    continue;
                 $log_list[] = array(
                     'key'=> keys_encrypt($log->id),
-                    'manager'=> $manager->nickname,
+                    'manager'=> isset($manager->nickname) ? $manager->nickname : $manager->login_name,
                     'type'=> $log->type,
                     'node'=> $log->node,
                     'resource'=> $log->resource,

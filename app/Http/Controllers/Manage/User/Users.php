@@ -25,7 +25,7 @@ class Users extends Controller
             $user_list[$key]['key'] = $managers->manager_code;
             $user_list[$key]['login_name'] = $managers->login_name;
             $user_list[$key]['type_id'] = $managers->type_id;
-            $user_list[$key]['nickname'] = $managers->nickname;
+            $user_list[$key]['nickname'] = empty($managers->nickname) ? '未设置' : $managers->nickname;
             $user_list[$key]['cell_phone'] = $managers->cell_phone;
             $user_list[$key]['disabled'] = $managers->disabled;
             $user_list[$key]['create_date'] = $managers->create_date;
@@ -41,12 +41,14 @@ class Users extends Controller
                 'key'=> $member->member_code,
                 'login_name'=> $member->login_name,
                 'type_id'=> $member->user_type,
-                'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
                 'cell_phone'=> $member->cell_phone,
                 'disabled'=> $member->disabled,
                 'create_date'=> $member->create_date,
+                '_create_date'=> strtotime($member->create_date)
             );
         }
+        $user_list = $this->multi_sort($user_list, '_create_date');
         $pages = array(
             'count' => $count,
             'count_page' => $count_page,
@@ -226,7 +228,7 @@ class Users extends Controller
                 'key'=> $member->member_code,
                 'login_name'=> $member->login_name,
                 'type_id'=> $member->user_type,
-                'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
                 'cell_phone'=> $member->cell_phone,
                 'disabled'=> $member->disabled,
                 'create_date'=> $member->create_date,
@@ -597,7 +599,7 @@ class Users extends Controller
                 'key'=> $member->member_code,
                 'login_name'=> $member->login_name,
                 'type_id'=> $member->user_type,
-                'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
                 'cell_phone'=> $member->cell_phone,
                 'disabled'=> $member->disabled,
                 'create_date'=> $member->create_date,
@@ -688,7 +690,7 @@ class Users extends Controller
                     'key'=> $member->member_code,
                     'login_name'=> $member->login_name,
                     'type_id'=> $member->user_type,
-                    'nickname'=> empty($member->citizen_name) ? '未命名' : $member->citizen_name,
+                    'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
                     'cell_phone'=> $member->cell_phone,
                     'disabled'=> $member->disabled,
                     'create_date'=> $member->create_date,
@@ -734,8 +736,12 @@ class Users extends Controller
      * @throws \Throwable
      */
     public function searchUser(Request $request){
-        $inputs = $request->input();
+        //自己的信息
+        $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+        $managerCode = session($login_name);
+        $this->page_data['my_code'] = $managerCode;
 
+        $inputs = $request->input();
         $data_list = array();
         $data_member = array();
         $data_manager = array();
@@ -842,6 +848,7 @@ class Users extends Controller
                     'cell_phone'=> $member->cell_phone,
                     'disabled'=> $member->disabled,
                     'create_date'=> $member->create_date,
+                    '_create_date'=> strtotime($member->create_date)
                 );
             }
         }
@@ -855,6 +862,7 @@ class Users extends Controller
                     'cell_phone'=> $manager->cell_phone,
                     'disabled'=> $manager->disabled,
                     'create_date'=> $manager->create_date,
+                    '_create_date'=> strtotime($manager->create_date)
                 );
             }
         }
@@ -864,6 +872,7 @@ class Users extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
         }
         else{
+            $data_list = $this->multi_sort($data_list, '_create_date');
             //取出用户类型
             $type_list = array();
             $user_type = DB::table('user_type')->get();
@@ -1077,6 +1086,36 @@ class Users extends Controller
         }else{
             return true;
         }
+    }
+
+    /**
+     * 多维数组排序
+     * @param array $arr	输入数组
+     * @param string $field		排序字段
+     * @param string $type		排序类型 SORT_DESC升序	SORT_DESC降序
+     * @return array
+     */
+    private function multi_sort($arr = array(), $field='', $type = 'SORT_DESC')
+    {
+        if(empty($arr) || empty($field)){
+            return $arr;
+        }
+        $type = ($type != 'SORT_DESC') ? 'SORT_ASC' : 'SORT_DESC';
+        $sort = array(
+            'direction' => $type,
+            'field' => $field
+        );
+        $arrSort = array();
+        foreach($arr AS $uniqid => $row){
+            foreach($row AS $key=>$value){
+                $arrSort[$key][$uniqid] = $value;
+            }
+        }
+        if($sort['direction']){
+            array_multisort($arrSort[$sort['field']], constant($sort['direction']), $arr);
+        }
+
+        return $arr;
     }
 
 }

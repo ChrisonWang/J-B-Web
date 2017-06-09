@@ -56,9 +56,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="nickname" class="col-md-2 control-label">显示名：</label>
+                <label for="nickname" class="col-md-2 control-label">姓名：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" value="{{ $user_detail['nickname'] }}" id="nickname" name="nickname" placeholder="请输显示名" />
+                    <input type="text" class="form-control" value="{{ $user_detail['nickname'] }}" id="nickname" name="nickname" placeholder="请输姓名" />
                 </div>
             </div>
             <div class="form-group">

@@ -18,12 +18,14 @@
                 &nbsp;&nbsp;
                 <a href="javascript: void(0) ;" data-key="{{ $user['key'] }}" data-type="{{ $user['type_id'] }}" data-method="edit" onclick="userMethod($(this))">编辑</a>
                 &nbsp;&nbsp;
-                <a href="javascript: void(0) ;" data-key="{{ $user['key'] }}" data-type="{{ $user['type_id'] }}" data-method="delete" data-title="{{ $user['login_name'] }}" onclick="userMethod($(this))">删除</a>
+                @if($user['key'] != $my_code)
+                    <a href="javascript: void(0) ;" data-key="{{ $user['key'] }}" data-type="{{ $user['type_id'] }}" data-method="delete" data-title="{{ $user['login_name'] }}" onclick="userMethod($(this))">删除</a>
+                @endif
             </td>
             <td>{{ $user['login_name'] }}</td>
             <td>{{ $user['nickname'] }}</td>
             <td>{{ $user['cell_phone'] }}</td>
-            <td>{{ $type_list[$user['type_id']] }}</td>
+            <td>{{ isset($type_list[$user['type_id']]) ? $type_list[$user['type_id']] : '超级用户' }}</td>
             <td>@if($user['disabled'] == 'no') 是 @else 否 @endif</td>
             <td>{{ $user['create_date'] }}</td>
         </tr>

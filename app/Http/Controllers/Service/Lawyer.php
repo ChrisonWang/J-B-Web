@@ -184,7 +184,7 @@ class Lawyer extends Controller
         if(isset($inputs['sex']) &&($inputs['sex'])!='none'){
             $where .= ' `sex` = "'.$inputs['sex'].'" AND ';
         }
-        $sql = 'SELECT * FROM `service_lawyer` '.$where.'1';
+        $sql = 'SELECT * FROM `service_lawyer` '.$where.'1 ORDER BY `create_date` DESC';
         $res = DB::select($sql);
         if($res && count($res) > 0){
             $lawyer_list = array();

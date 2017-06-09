@@ -413,7 +413,7 @@ class CmsLoadContent extends Controller
         $count = DB::table('cms_article')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take($offset)->get();
+        $articles = DB::table('cms_article')->where('archived', 'no')->orderBy('publish_date', 'desc')->skip(0)->take($offset)->get();
         if(count($articles) > 0){
             foreach($articles as $key=> $article){
                 $article_data[$key]['key'] = $article->article_code;

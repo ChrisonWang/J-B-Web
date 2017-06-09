@@ -13,11 +13,11 @@
 <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <p style="color: white"><strong>{{empty($managerInfo['nickname']) ? '未设置昵称' : $managerInfo['nickname']}}<span class="caret"></span></strong></p>
+            <p style="color: white"><strong>{{empty($managerInfo['nickname']) ? '未设置姓名' : $managerInfo['nickname']}}<span class="caret"></span></strong></p>
         </a>
         <ul class="dropdown-menu">
             <li class="dropdown-menu-header">
-                <strong>昵称： {{empty($managerInfo['nickname']) ? '未设置昵称' : $managerInfo['nickname']}}</strong>
+                <strong>姓名： {{empty($managerInfo['nickname']) ? '未设置姓名' : $managerInfo['nickname']}}</strong>
             </li>
         </ul>
     </li>

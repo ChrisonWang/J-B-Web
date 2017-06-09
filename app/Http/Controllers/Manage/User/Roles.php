@@ -55,7 +55,7 @@ class Roles extends Controller
         $menus = DB::table('user_menus')->get();
         //取出菜单
         foreach($menus as $key=> $menu){
-            $menu_list[$key]['key'] = keys_encrypt($menu->id);
+            $menu_list[$key]['key'] = $menu->id;
             $menu_list[$key]['menu_name'] = $menu->menu_name;
             $menu_list[$key]['nodes'] = json_decode($menu->nodes,true);
         }
@@ -66,7 +66,7 @@ class Roles extends Controller
             $nodes = json_decode($menu_first->nodes, true);
             foreach($nodes as $node_key => $node_name){
                 $node_list[] = array(
-                    'node_key'=> keys_encrypt($node_key),
+                    'node_key'=> $node_key,
                     'node_name'=> $node_name
                 );
             }
@@ -98,7 +98,7 @@ class Roles extends Controller
         $subs = json_decode($inputs['sub'], true);
         $permission = array();
         foreach($subs as $sub){
-            $permission[] = keys_decrypt($sub['menus']).'||'.keys_decrypt($sub['nodes']).'||'.$sub['permission'];
+            $permission[] = $sub['menus'].'||'.$sub['nodes'].'||'.$sub['permission'];
         }
         $permission = array_unique($permission);
         //执行插入数据操作
@@ -155,10 +155,10 @@ class Roles extends Controller
         $menus = DB::table('user_menus')->get();
         $menu_nodes = array();
         foreach($menus as $key=> $menu){
-            $menu_list[$key]['key'] = keys_encrypt($menu->id);
-            $menu_list[$key]['menu_name'] = $menu->menu_name;
+            $menu_list[$menu->id]['key'] = $menu->id;
+            $menu_list[$menu->id]['menu_name'] = $menu->menu_name;
             foreach(json_decode($menu->nodes, true) as $n_k=> $_node){
-                $menu_nodes[$menu->id][keys_encrypt($n_k)] = $_node;
+                $menu_nodes[$menu->id][$n_k] = $_node;
             }
         }
         //取出详情
@@ -192,11 +192,12 @@ class Roles extends Controller
         $menu_first = DB::table('user_menus')->first();
         foreach(json_decode($menu_first->nodes, true) as $node_key => $node_name){
             $f_node_list[] = array(
-                'node_key'=> keys_encrypt($node_key),
+                'node_key'=> $node_key,
                 'node_name'=> $node_name
             );
         }
         //页面中显示
+        $this->page_data['menu_nodes'] = $menu_nodes;
         $this->page_data['f_node_list'] = $f_node_list;
         $this->page_data['menu_list'] = $menu_list;
         $this->page_data['role_detail'] = $role_detail;
@@ -225,10 +226,10 @@ class Roles extends Controller
         $menus = DB::table('user_menus')->get();
         $menu_nodes = array();
         foreach($menus as $key=> $menu){
-            $menu_list[$key]['key'] = keys_encrypt($menu->id);
-            $menu_list[$key]['menu_name'] = $menu->menu_name;
+            $menu_list[$menu->id]['key'] = $menu->id;
+            $menu_list[$menu->id]['menu_name'] = $menu->menu_name;
             foreach(json_decode($menu->nodes, true) as $n_k=> $_node){
-                $menu_nodes[$menu->id][keys_encrypt($n_k)] = $_node;
+                $menu_nodes[$menu->id][$n_k] = $_node;
             }
         }
         //取出详情
@@ -242,8 +243,8 @@ class Roles extends Controller
             $permissions = json_decode($roles->permission,true);
             foreach($permissions as $key=> $permission){
                 $permission = explode("||", $permission);
-                $p_list[$key]['menus'] = keys_encrypt($permission[0]);
-                $p_list[$key]['nodes'] = keys_encrypt($permission[1]);
+                $p_list[$key]['menus'] = $permission[0];
+                $p_list[$key]['nodes'] = $permission[1];
                 $p_list[$key]['permission'] = $permission[2];
                 $p_list[$key]['node_list'] = $menu_nodes[$permission[0]];
             }
@@ -253,7 +254,7 @@ class Roles extends Controller
         }
         //处理详情
         $role_detail = array(
-            'key'=> keys_encrypt($roles->id),
+            'key'=> $roles->id,
             'title' => $roles->name,
             'permissions' => $p_list,
             'create_date' => $roles->create_date
@@ -263,11 +264,12 @@ class Roles extends Controller
         $menu_first = DB::table('user_menus')->first();
         foreach(json_decode($menu_first->nodes, true) as $node_key => $node_name){
             $f_node_list[] = array(
-                'node_key'=> keys_encrypt($node_key),
+                'node_key'=> $node_key,
                 'node_name'=> $node_name
             );
         }
         //页面中显示
+        $this->page_data['menu_nodes'] = $menu_nodes;
         $this->page_data['f_node_list'] = $f_node_list;
         $this->page_data['menu_list'] = $menu_list;
         $this->page_data['role_detail'] = $role_detail;
@@ -281,7 +283,7 @@ class Roles extends Controller
         if(trim($inputs['title'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'必填项不能为空']);
         }
-        $id = keys_decrypt($inputs['key']);
+        $id = $inputs['key'];
         //判断是否有重名的
         $sql = 'SELECT `id` FROM user_roles WHERE `name` = "'.$inputs['title'].'" AND `id` != "'.$id.'"';
         $res = DB::select($sql);
@@ -292,7 +294,7 @@ class Roles extends Controller
         $subs = json_decode($inputs['sub'], true);
         $permission = array();
         foreach($subs as $sub){
-            $permission[] = keys_decrypt($sub['menus']).'||'.keys_decrypt($sub['nodes']).'||'.$sub['permission'];
+            $permission[] = $sub['menus'].'||'.$sub['nodes'].'||'.$sub['permission'];
         }
         $permission = array_unique($permission);
         //执行更新数据操作
@@ -367,14 +369,14 @@ class Roles extends Controller
 
     public function getSubNode(Request $request)
     {
-        $menu_key = keys_decrypt($request->input('menu_key'));
+        $menu_key = $request->input('menu_key');
         $nodes = DB::table('user_menus')->select('nodes')->where('id', $menu_key)->first();
         if(!is_null($nodes->nodes)){
             $nodes = json_decode($nodes->nodes ,true);
             $node_list = array();
             foreach($nodes as $key=>$node){
                 $node_list[] = array(
-                    'node_key'=> keys_encrypt($key),
+                    'node_key'=> $key,
                     'node_name'=> $node,
                 );
             }

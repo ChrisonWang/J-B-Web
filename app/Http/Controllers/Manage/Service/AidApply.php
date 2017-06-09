@@ -311,7 +311,7 @@ class AidApply extends Controller
         }
         //去掉已经归档的
         $where .= '`archived` = "no" AND ';
-        $sql = 'SELECT * FROM `service_legal_aid_apply` '.$where.'1';
+        $sql = 'SELECT * FROM `service_legal_aid_apply` '.$where.'1 ORDER BY `apply_date` DESC';
         $res = DB::select($sql);
         if($res && count($res) > 0){
             $apply_list = array();

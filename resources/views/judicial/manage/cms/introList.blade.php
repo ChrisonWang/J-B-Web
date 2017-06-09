@@ -32,10 +32,10 @@
                 </tbody>
             </table>
             @endif
+            <!--分页-->
+            @if(isset($pages) && is_array($pages) && $pages != 'none')
+                @include('judicial.manage.chips.pages')
+            @endif
         </div>
-        <!--分页-->
-        @if(isset($pages) && is_array($pages) && $pages != 'none')
-            @include('judicial.manage.chips.pages')
-        @endif
     </div>
 </div>
