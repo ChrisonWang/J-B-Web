@@ -8,13 +8,13 @@
         <form class="form-horizontal" id="recommendEditForm">
             <input type="hidden" value="{{ $r_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="r_title" class="col-md-2 control-label">标题：</label>
+                <label for="r_title" class="col-md-2 control-label"><strong style="color: red">*</strong>标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="r_title" name="r_title" value="{{ $r_detail['r_title'] }}" placeholder="请输入链接标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="r_link" class="col-md-2 control-label">链接：</label>
+                <label for="r_link" class="col-md-2 control-label"><strong style="color: red">*</strong>链接：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="r_link" name="r_link" value="{{ $r_detail['r_link'] }}" placeholder="请输入链接地址" />
                 </div>

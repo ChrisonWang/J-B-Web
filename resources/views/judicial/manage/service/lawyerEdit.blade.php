@@ -182,7 +182,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="certificate_code" class="col-md-2 control-label">执业资格证书编号</label>
+                <label for="certificate_code" class="col-md-2 control-label"><strong style="color: red">*</strong>执业资格证书编号</label>
                 <div class="col-md-3">
                     <input type="text" value="{{ $lawyer_detail['certificate_code'] }}" class="form-control" id="certificate_code" name="certificate_code" placeholder="请输入执业资格证书编号" />
                 </div>

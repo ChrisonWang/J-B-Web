@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="tagEditForm">
             <input type="hidden" value="{{ $tag_detail['tag_key'] }}" name="tagKey"/>
             <div class="form-group">
-                <label for="tagTitle" class="col-md-2 control-label">名称：</label>
+                <label for="tagTitle" class="col-md-2 control-label"><strong style="color: red">*</strong>名称：</label>
                 <div class="col-md-3">
                     <input type="text" value="{{ $tag_detail['tag_title'] }}" class="form-control" id="tagTitle" name="tagTitle" placeholder="请输入标签名称" />
                 </div>

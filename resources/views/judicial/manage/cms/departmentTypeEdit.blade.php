@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="typeEditForm">
             <input type="hidden" value="{{ $type_detail['type_key'] }}" name="typeKey"/>
             <div class="form-group">
-                <label for="tagTitle" class="col-md-2 control-label">名称：</label>
+                <label for="tagTitle" class="col-md-2 control-label"><strong style="color: red">*</strong>名称：</label>
                 <div class="col-md-3">
                     <input type="text" value="{{ $type_detail['type_name'] }}" class="form-control" id="typeName" name="typeName" placeholder="请输入标签名称" />
                 </div>
