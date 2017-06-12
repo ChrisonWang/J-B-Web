@@ -27,13 +27,13 @@
     <div class="panel-body">
         <form class="form-horizontal" id="menuAddForm">
             <div class="form-group">
-                <label for="menu_name" class="col-md-2 control-label"><strong style="color: red">*</strong>菜单名称：</label>
+                <label for="menu_name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 菜单名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="menu_name" name="menu_name" placeholder="请输菜单名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="node_schema" class="col-md-2 control-label"><strong style="color: red">*</strong>功能点：</label>
+                <label for="node_schema" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 功能点：</label>
                 <div class="col-md-8">
                     <div class="container-fluid" style="margin-left: 0; padding-left: 0">
                         <table class="table table-bordered table-hover table-condensed">

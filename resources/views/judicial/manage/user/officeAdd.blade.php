@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="officeAddForm">
             <div class="form-group">
-                <label for="office_name" class="col-md-2 control-label"><strong style="color: red">*</strong>科室名称：</label>
+                <label for="office_name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 科室名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="office_name" name="office_name" placeholder="请输入科室名称" />
                 </div>

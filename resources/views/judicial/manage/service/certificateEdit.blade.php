@@ -27,19 +27,19 @@
         <form class="form-horizontal" id="editCertificateForm">
             <input type="hidden" name="key" value="{{ $certificate_detail['key'] }}" />
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label"><red>*</red> 姓名：</label>
+                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 姓名：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" value="{{ $certificate_detail['name'] }}" id="name" name="name" placeholder="请输入姓名" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="phone" class="col-md-2 control-label"><red>*</red> 联系电话：</label>
+                <label for="phone" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 联系电话：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" value="{{ $certificate_detail['phone'] }}" id="phone" name="phone" placeholder="请输入联系电话" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="citizen_code" class="col-md-2 control-label"><red>*</red> 证件号：</label>
+                <label for="citizen_code" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 证件号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" value="{{ $certificate_detail['citizen_code'] }}" id="citizen_code" name="citizen_code" placeholder="请输入证件号" />
                 </div>

@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="editMessageSendForm">
             <input type="hidden" name="key" value="{{ $send_detail['key'] }}"/>
             <div class="form-group">
-                <label for="temp_code" class="col-md-2 control-label"><strong style="color: red">*</strong> 模板：</label>
+                <label for="temp_code" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 模板：</label>
                 <div class="col-md-3">
                     <select class="form-control" id="temp_code" name="temp_code" onchange="getTempContent($(this))">
                         @if(!isset($temp_list) || count($temp_list)<1)
@@ -34,13 +34,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="send_date" class="col-md-2 control-label"><strong style="color: red">*</strong> 发送时间：</label>
+                <label for="send_date" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 发送时间：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="send_date" name="send_date" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="receiver_type" class="col-md-2 control-label"><strong style="color: red">*</strong> 发送用户类型：</label>
+                <label for="receiver_type" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 发送用户类型：</label>
                 <div class="col-md-3">
                     <select class="form-control" onchange="switch_hidden()" id="receiver_type" name="receiver_type">
                         <option value="member" @if($send_detail['receiver_type']=='member') selected @endif>前台用户</option>

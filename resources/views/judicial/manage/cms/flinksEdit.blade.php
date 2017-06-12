@@ -27,13 +27,13 @@
         <form class="form-horizontal" id="flinksEditForm">
             <input type="hidden" id="key" name="key" value="{{ $flinks_detail['key'] }}" />
             <div class="form-group">
-                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong>名称：</label>
+                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" value="{{ $flinks_detail['title'] }}" placeholder="请输一级分类名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="menu-nodes" class="col-md-2 control-label"><strong style="color: red">*</strong>子链接：</label>
+                <label for="menu-nodes" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 子链接：</label>
                 <div class="col-md-8">
                     <div class="container-fluid" style="padding-left: 0; margin-left: 0">
                         <table class="table table-bordered table-hover table-condensed">

@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="officeEditForm">
             <input type="hidden" value="{{ $office_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="office_name" class="col-md-2 control-label"><strong style="color: red">*</strong>科室名称：</label>
+                <label for="office_name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 科室名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="office_name" name="office_name" value="{{ $office_detail['office_name'] }}" placeholder="请输入链接标题" />
                 </div>

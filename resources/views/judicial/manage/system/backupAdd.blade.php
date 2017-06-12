@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="addBackupForm">
             <div class="form-group">
-                <label for="backup_date" class="col-md-2 control-label"><strong style="color: red">*</strong> 备份时间：</label>
+                <label for="backup_date" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 备份时间：</label>
                 <div class="col-md-3">
                     <input id="backup_date" class="form-control" name="backup_date" type="text" >
                 </div>

@@ -40,13 +40,13 @@
     <div class="panel-body">
         <form class="form-horizontal" id="rolesAddForm">
             <div class="form-group">
-                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong>角色名称：</label>
+                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 角色名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" placeholder="请输如角色名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_links" class="col-md-2 control-label"><strong style="color: red">*</strong>功能菜单：</label>
+                <label for="sub_links" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 功能菜单：</label>
                 <div class="col-md-10">
                     <div class="container-fluid" style="padding-left: 0; margin-left: 0">
                         <table class="table table-bordered table-hover table-condensed">

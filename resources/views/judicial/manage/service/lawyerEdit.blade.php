@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="editLawyerForm">
             <input type="hidden" value="{{ $lawyer_detail['key'] }}" id="key" name="key" />
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> 姓名：</label>
+                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 姓名：</label>
                 <div class="col-md-3">
                     <input type="text" value="{{ $lawyer_detail['name'] }}" class="form-control" id="name" name="name" placeholder="请输入律师姓名" />
                 </div>
@@ -182,7 +182,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="certificate_code" class="col-md-2 control-label"><strong style="color: red">*</strong>执业资格证书编号</label>
+                <label for="certificate_code" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 执业资格证书编号</label>
                 <div class="col-md-3">
                     <input type="text" value="{{ $lawyer_detail['certificate_code'] }}" class="form-control" id="certificate_code" name="certificate_code" placeholder="请输入执业资格证书编号" />
                 </div>

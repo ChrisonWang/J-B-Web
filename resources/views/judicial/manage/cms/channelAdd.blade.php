@@ -32,7 +32,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="channelAddForm">
             <div class="form-group">
-                <label for="channel_title" class="col-md-2 control-label"><strong style="color: red">*</strong> 频道名称：</label>
+                <label for="channel_title" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 频道名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="channel_title" name="channel_title" placeholder="请输频道名称" />
                 </div>

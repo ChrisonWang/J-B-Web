@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="introEditForm">
             <input type="hidden" value="{{ $intro['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="intro" class="col-md-2 control-label"><strong style="color: red">*</strong>简介：</label>
+                <label for="intro" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 简介：</label>
                 <div class="col-md-8">
                     <script id="UE_Content" name="intro" type="text/plain"></script>
                 </div>
