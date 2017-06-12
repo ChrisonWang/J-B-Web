@@ -1147,12 +1147,6 @@ function channelMethod(t){
     var key = t.data('key');
     var method = t.data('method');
     var url = '/manage/cms/channel/'+method;
-    if(method == 'delete'){
-        var c = confirm("确认删除："+ t.data('title')+"？该频道下的子频道也会被删除！");
-        if(c != true){
-            return false;
-        }
-    }
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

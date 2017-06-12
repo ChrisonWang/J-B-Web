@@ -75,7 +75,7 @@ class Tags extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['tagTitle'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标签名不能为空！']);
         }
 
         //判断是否有重名的
@@ -185,7 +185,7 @@ class Tags extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['tagTitle'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标签名不能为空！']);
         }
 
         $tag_id = keys_decrypt($inputs['tagKey']);
