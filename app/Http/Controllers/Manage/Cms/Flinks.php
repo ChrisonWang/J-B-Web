@@ -70,7 +70,7 @@ class Flinks extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['title'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'菜单名称不能为空！']);
         }
 
         //判断是否有重名的
@@ -80,7 +80,7 @@ class Flinks extends Controller
         }
         //判断子链接是否有没有填写的
         if(count($inputs['sub_title']) != count($inputs['sub_link'])){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的链接名称与链接地址']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'填写完整的子链接名称与链接地址']);
         }
         else{
             $inputs['sub_title'] = array_unique($inputs['sub_title']);
@@ -241,7 +241,7 @@ class Flinks extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['title'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'菜单名称不能为空！']);
         }
 
         //判断是否有重名的

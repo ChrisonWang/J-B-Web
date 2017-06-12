@@ -64,7 +64,7 @@ class ExpertiseType extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['name']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'类型名称不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'名称不能为空！']);
         }
         //判断是否有重名的
         $re = DB::table('service_judicial_expertise_type')->select('id')->where('name',$inputs['name'])->get();
@@ -196,7 +196,7 @@ class ExpertiseType extends Controller
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         if(trim($inputs['name']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'类型名称不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'名称不能为空！']);
         }
         //判断是否有重名的
         $sql = 'SELECT `id` FROM `service_judicial_expertise_type` WHERE `name` = "'.$inputs['name'].'" AND `id` !='.$id;

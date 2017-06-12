@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="certi_code" class="col-md-2 control-label"><red>*</red> 证书编号：</label>
+                <label for="certi_code" class="col-md-2 control-label">证书编号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" value="{{ $certificate_detail['certi_code'] }}" id="certi_code" name="certi_code" placeholder="请输入证件号" />
                 </div>

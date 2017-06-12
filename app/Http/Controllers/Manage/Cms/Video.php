@@ -85,10 +85,10 @@ class Video extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['video_title'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频名称不能为空！']);
         }
         elseif(trim($inputs['video_link'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频地址不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频链接不能为空！']);
         }
         $disabled = 'no';
         //判断是否有重名的
@@ -249,10 +249,10 @@ class Video extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['video_title'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频名称不能为空！']);
         }
         elseif(trim($inputs['video_link'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频地址不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'视频链接不能为空！']);
         }
 
         $video_code = keys_decrypt($inputs['key']);

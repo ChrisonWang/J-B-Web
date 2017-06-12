@@ -87,7 +87,7 @@ class Department extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['department_name'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'机构名称不能为空！']);
         }
         elseif(trim($inputs['description'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);
@@ -238,7 +238,7 @@ class Department extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['department_name'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'机构名称不能为空！']);
         }
         elseif(trim($inputs['description'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'简介不能为空！']);

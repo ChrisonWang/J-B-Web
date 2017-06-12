@@ -65,7 +65,7 @@ class Area extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['area_name']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'区域名称不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'名称不能为空！']);
         }
         //判断是否有重名的
         $area_id = DB::table('service_area')->select('id')->where('area_name',$inputs['area_name'])->get();
@@ -164,7 +164,7 @@ class Area extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['area_name'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'区域名称不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'名称不能为空！']);
         }
         $id = keys_decrypt($inputs['key']);
         //判断是否重名

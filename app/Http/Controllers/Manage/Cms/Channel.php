@@ -76,7 +76,7 @@ class Channel extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['channel_title'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'频道名称不能为空！']);
         }
         //判断是否存在首页推荐的
         if(isset($inputs['is_recommend']) && $inputs['is_recommend']=='yes'){
@@ -276,7 +276,7 @@ class Channel extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['channel_title'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'频道名称不能为空！']);
         }
         $id = keys_decrypt($inputs['key']);
         //判断是否存在首页推荐的

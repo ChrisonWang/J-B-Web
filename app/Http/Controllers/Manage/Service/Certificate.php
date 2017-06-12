@@ -88,13 +88,13 @@ class Certificate extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['name']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'持证人姓名不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
         }
         elseif(trim($inputs['phone']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系方式不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系电话不能为空！']);
         }
         elseif(trim($inputs['citizen_code']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'证件号码不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'证件号不能为空！']);
         }
 
         $register_year = $inputs['register-year'];
@@ -271,13 +271,13 @@ class Certificate extends Controller
         $id = keys_decrypt($inputs['key']);
 
         if(trim($inputs['name']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'持证人姓名不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
         }
         elseif(trim($inputs['phone']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系方式不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系电话不能为空！']);
         }
         elseif(trim($inputs['citizen_code']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'证件号码不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'证件号不能为空！']);
         }
 
         $register_year = $inputs['register-year'];

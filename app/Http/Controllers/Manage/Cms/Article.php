@@ -164,10 +164,10 @@ class Article extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'发布时间不能为空！']);
         }
         elseif(trim($inputs['channel_id'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择完整的频道！']);
         }
         elseif(trim($inputs['sub_channel_id'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择完整的频道！']);
         }
         elseif(!isset($inputs['content']) || trim($inputs['content'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请输入正文内容！']);
@@ -540,10 +540,10 @@ class Article extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'发布时间不能为空！']);
         }
         elseif(trim($inputs['channel_id'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择完整的频道！']);
         }
         elseif(trim($inputs['sub_channel_id'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写完整的频道！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择完整的频道！']);
         }
         elseif(!isset($inputs['content']) || trim($inputs['content'])===''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请输入正文内容！']);
