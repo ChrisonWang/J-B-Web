@@ -471,7 +471,13 @@ class Channel extends Controller
 
     public function checkSub(Request $request)
     {
-        $key = keys_decrypt($request->input('key'));
+        $key = $request->input('key');
+        if(empty($key)){
+            json_response(['status'=>'succ','type'=>'alert', 'res'=>'']);
+        }
+        else{
+            $key = keys_decrypt($key);
+        }
         $article = DB::table('cms_article')->where('sub_channel', $key)->get();
         if(!empty($article) || $article != null){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含子频道不能删除！']);
