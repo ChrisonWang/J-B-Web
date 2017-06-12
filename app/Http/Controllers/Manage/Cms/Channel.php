@@ -469,4 +469,16 @@ class Channel extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    public function checkSub(Request $request)
+    {
+        $key = keys_decrypt($request->input('key'));
+        $article = DB::table('cms_article')->where('sub_channel', $key)->get();
+        if(!empty($article) || $article != null){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含子频道不能删除！']);
+        }
+        else{
+            json_response(['status'=>'succ','type'=>'alert', 'res'=>'']);
+        }
+    }
+
 }
