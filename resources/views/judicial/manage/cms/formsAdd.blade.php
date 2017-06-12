@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="formsAddForm">
             <div class="form-group">
-                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong> 标题：</label>
+                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" placeholder="请输入标题" />
                 </div>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="channel_id" class="col-md-2 control-label"><strong style="color: red">*</strong> 频道：</label>
+                <label for="channel_id" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 频道：</label>
                 <div class="col-md-3">
                     <select class="form-control" id="channel_id" name="channel_id">
                         @foreach($channel_list as $key=> $channel)
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="leader_photo" class="col-md-2 control-label"><strong style="color: red">*</strong> 附件：</label>
+                <label for="leader_photo" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 附件：</label>
                 <div class="col-md-3">
                     <i class="fa fa-paperclip"></i>上传附件
                     <input type="file" id="upload_photo" class="btn btn-default btn-file" name="file"/>

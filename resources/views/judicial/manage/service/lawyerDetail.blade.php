@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal">
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> 姓名：</label>
+                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 姓名：</label>
                 <div class="col-md-3">
                     <input disabled type="text" value="{{ $lawyer_detail['name'] }}" class="form-control" id="name" name="name" placeholder="请输入律师姓名" />
                 </div>

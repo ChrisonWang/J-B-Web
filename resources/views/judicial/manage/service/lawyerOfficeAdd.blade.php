@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="addLawyerOfficeForm">
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> 名称：</label>
+                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="name" name="name" placeholder="请输入事务所名称" />
                 </div>
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="usc_code" class="col-md-2 control-label"><strong style="color: red">*</strong> 统一社会信用代码：</label>
+                <label for="usc_code" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 统一社会信用代码：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="usc_code" name="usc_code" placeholder="请输入统一社会信用代码" />
                 </div>

@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="videoAddForm">
             <div class="form-group">
-                <label for="video_title" class="col-md-2 control-label"><strong style="color: red">*</strong> 视频名称：</label>
+                <label for="video_title" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 视频名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="video_title" name="video_title" placeholder="请输入视频名称" />
                 </div>
@@ -24,7 +24,7 @@
                 <div class="col-md-3" id="image-holder"></div>
             </div>
             <div class="form-group">
-                <label for="video_link" class="col-md-2 control-label"><strong style="color: red">*</strong> 视频链接：</label>
+                <label for="video_link" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 视频链接：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="video_link" name="video_link" placeholder="请输入视频链接地址" />
                 </div>
