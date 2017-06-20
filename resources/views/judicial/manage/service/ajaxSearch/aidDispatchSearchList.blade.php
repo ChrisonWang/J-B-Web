@@ -25,7 +25,7 @@
                 @if($apply['status'] == 'pass')
                     <p style="color:green; font-weight: bold">审核通过</p>
                 @elseif($apply['status'] == 'reject')
-                    <p style="color:red; font-weight: bold">审核未通过</p>
+                    <p style="color:red; font-weight: bold">驳回</p>
                 @else
                     <p style="color:#FFA500; font-weight: bold">待答复</p>
                 @endif

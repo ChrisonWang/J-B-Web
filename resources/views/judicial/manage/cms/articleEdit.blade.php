@@ -29,7 +29,7 @@
         <form class="form-horizontal" id="articleEditForm">
             <input type="hidden" value="{{ $article_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="article_title" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong>标题：</label>
+                <label for="article_title" class="col-md-2 col-sm-3 control-label">标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="article_title" name="article_title" value="{{ $article_detail['article_title'] }}" placeholder="请输入文章标题" />
                 </div>
@@ -92,7 +92,7 @@
                 </div>
             </div><!-- 标签选择器 End -->
             <div class="form-group">
-                <label for="channel_id" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong>频道：</label>
+                <label for="channel_id" class="col-md-2 col-sm-3 control-label">频道：</label>
                 <div class="col-md-3">
                     <select name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
                         @foreach($channel_list as $channel)
@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_channel_id" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong>二级频道：</label>
+                <label for="sub_channel_id" class="col-md-2 col-sm-3 control-label">二级频道：</label>
                 <div class="col-md-3">
                     <select id="sub_channel_id" name="sub_channel_id" class="form-control">
                         @foreach($sub_channel_list as $sub_channel)
@@ -206,7 +206,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="UE_Content" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong>正文：</label>
+                <label for="UE_Content" class="col-md-2 col-sm-3 control-label">正文：</label>
                 <div class="col-md-10">
                     <script id="UE_Content" name="content" type="text/plain"></script>
                 </div>

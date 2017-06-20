@@ -26,25 +26,25 @@
     <div class="panel-body">
         <form class="form-horizontal" id="addCertificateForm">
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 姓名：</label>
+                <label for="name" class="col-md-2 control-label"><red>*</red> 姓名：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="name" name="name" placeholder="请输入姓名" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="phone" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 联系电话：</label>
+                <label for="phone" class="col-md-2 control-label"><red>*</red> 联系电话：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入联系电话" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="citizen_code" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 证件号：</label>
+                <label for="citizen_code" class="col-md-2 control-label"><red>*</red> 证件号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="citizen_code" name="citizen_code" placeholder="请输入证件号" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="certi_code" class="col-md-2 control-label">证书编号：</label>
+                <label for="certi_code" class="col-md-2 control-label"><red>*</red> 证书编号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="certi_code" name="certi_code" placeholder="请输入证件号" />
                 </div>

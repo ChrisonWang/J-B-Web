@@ -31,20 +31,20 @@
             </ul>
         </div>
         <div class="xx_tit">
-            群众预约援助流程
+            群众预约援助申请
         </div>
         <form id="aidApplyForm" style="padding-bottom: 40px">
             <div class="text_a">
                 <span class="vd_tit">申请人信息</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">姓名</span>
+                        <span class="wsc_txt" style="width: 80px"><b style="color: red; vertical-align: middle"> * </b>姓名</span>
                         <div class="cx_inp">
                             <input type="text" name="apply_name" placeholder="请输入姓名">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 55px">政治面貌</span>
+                        <span class="wsc_txt" style="width: 65px"><b style="color: red; vertical-align: middle"> * </b>政治面貌</span>
                         <div class="cx_inp">
                             <select name="political">
                                 <option value="citizen" selected>群众</option>
@@ -54,7 +54,7 @@
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 55px">性别</span>
+                        <span class="wsc_txt" style="width: 55px"><b style="color: red; vertical-align: middle"> * </b>性别</span>
                         <div class="cx_inp">
                             <select name="sex">
                                 <option value="male" selected>男</option>
@@ -63,19 +63,19 @@
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">联系电话</span>
+                        <span class="wsc_txt" style="width: 80px"><b style="color: red; vertical-align: middle"> * </b>联系电话</span>
                         <div class="cx_inp">
                             <input type="text" name="apply_phone" placeholder="请输入联系电话" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">身份证号码</span>
+                        <span class="wsc_txt" style="width: 80px"><b style="color: red; vertical-align: middle"> * </b>身份证号码</span>
                         <div class="cx_inp">
                             <input type="text" name="apply_identity_no" placeholder="请输入身份证号码" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">通讯地址</span>
+                        <span class="wsc_txt" style="width: 80px"><b style="color: red; vertical-align: middle"> * </b>通讯地址</span>
                         <div class="cx_inp">
                             <input type="text" name="apply_address" placeholder="请输入通讯地址" class="w590">
                         </div>
@@ -86,25 +86,25 @@
                 <span class="vd_tit">被告人概况</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">姓名</span>
+                        <span class="wsc_txt" style="width: 80px"><b style="color: red; vertical-align: middle"> * </b>姓名</span>
                         <div class="cx_inp">
                             <input type="text" name="defendant_name" placeholder="请输入姓名" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 60px">联系电话</span>
+                        <span class="wsc_txt" style="width: 70px"><b style="color: red; vertical-align: middle"> * </b>联系电话</span>
                         <div class="cx_inp">
                             <input type="text" name="defendant_phone" placeholder="请输入联系电话" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">单位名称</span>
+                        <span class="wsc_txt" style="width: 80px"><b style="color: red; vertical-align: middle"> * </b>单位名称</span>
                         <div class="cx_inp">
                             <input type="text" name="defendant_company" placeholder="请输入单位名称" class="w590">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">通讯地址</span>
+                        <span class="wsc_txt" style="width: 80px"><b style="color: red; vertical-align: middle"> * </b>通讯地址</span>
                         <div class="cx_inp">
                             <input type="text" name="defendant_addr" placeholder="请输入通讯地址" class="w590">
                         </div>
@@ -115,13 +115,13 @@
                 <span class="vd_tit">案件描述</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">发生时间</span>
+                        <span class="wsc_txt" style="width: 90px"><b style="color: red; vertical-align: middle"> * </b>发生时间</span>
                         <div class="cx_inp">
                             <input type="text" id="happened_date" name="happened_date" placeholder="例：YYYY-MM-DD" />
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 55px">所属区域</span>
+                        <span class="wsc_txt" style="width: 65px"><b style="color: red; vertical-align: middle"> * </b>所属区域</span>
                         <div class="cx_inp">
                             <select name="case_area_id">
                                 @if(!isset($area_list) || !is_array($area_list) || count($area_list)<1)
@@ -135,7 +135,7 @@
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 55px">案件分类</span>
+                        <span class="wsc_txt" style="width: 65px"><b style="color: red; vertical-align: middle"> * </b>案件分类</span>
                         <div class="cx_inp">
                             <select name="type">
                                 @foreach($type_list as $k=> $type)
@@ -145,7 +145,7 @@
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">
+                        <span class="wsc_txt" style="width: 90px">
                             是否为讨薪
                         </span>
                         <div class="cx_inp">
@@ -153,20 +153,20 @@
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="width: 80px">发生地点</span>
+                        <span class="wsc_txt" style="width: 90px"><b style="color: red; vertical-align: middle"> * </b>发生地点</span>
                         <div class="cx_inp">
                             <input type="text" name="case_location" placeholder="请输入发生的具体地点" class="w590">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="vertical-align: top; width: 80px; padding-top: 5px">举报问题描述</span>
+                        <span class="wsc_txt" style="vertical-align: top; width: 90px; padding-top: 5px"><b style="color: red; vertical-align: middle"> * </b>举报问题描述</span>
                         <div class="cx_inp">
                             <textarea name="dispute_description" placeholder="请对举报的问题进行具体描述" class="w590"></textarea>
                         </div>
                     </li>
                 </ul>
                 <div class="mt_btn">
-                    <span class="wsc_txt" style="width: 80px">附件</span>
+                    <span class="wsc_txt" style="width: 90px"><b style="color: red; vertical-align: middle"> * </b>附件</span>
                     <span class="" style="margin-left: 10px;">
                         <input type="file" name="file">
                     </span>

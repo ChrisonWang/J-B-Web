@@ -34,13 +34,13 @@
                 <td>{{ isset($type_list[$record['type_id']]) ? $type_list[$record['type_id']] : '-' }}</td>
                 <td>
                     @if($record['approval_result'] == 'pass')
-                        <div class="shtg">审核通过</div>
+                        <div class="shtg" style="color: #4684CD;">审核通过</div>
                     @elseif($record['approval_result'] == 'reject')
                         <div class="btg">审核不通过/
-                            <a href="#" data-key="{{ $record['record_code'] }}" data-type="service_judicial_expertise" onclick="show_opinion($(this))">查看原因</a>
+                            <a href="#" data-key="{{ $record['record_code'] }}" style="color: #E23939;" data-type="service_judicial_expertise" onclick="show_opinion($(this))">查看原因</a>
                         </div>
                     @else
-                        <div class="dsh">待审核</div>
+                        <div class="dsh" style="color: #7DA750;">待审核</div>
                     @endif
                 </td>
                 <td>

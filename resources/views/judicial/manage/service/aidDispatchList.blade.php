@@ -24,9 +24,9 @@
                                 <label for="status">审批状态：</label>
                                 <select class="form-control" name="status" id="status">
                                     <option value="none">不限</option>
-                                    <option value="waiting">待审批</option>
-                                    <option value="pass">审批通过</option>
-                                    <option value="reject">审批未通过</option>
+                                    <option value="waiting">待审核</option>
+                                    <option value="pass">通过</option>
+                                    <option value="reject">驳回</option>
                                 </select>
                             </div>
                             <div class="form-group" style="padding: 10px">
@@ -75,9 +75,9 @@
                     <td>{{ $apply['record_code'] }}</td>
                     <td>
                         @if($apply['status'] == 'pass')
-                            <p style="color:green; font-weight: bold">审核通过</p>
+                            <p style="color:green; font-weight: bold">通过</p>
                         @elseif($apply['status'] == 'reject')
-                            <p style="color:red; font-weight: bold">审核未通过</p>
+                            <p style="color:red; font-weight: bold">驳回</p>
                         @else
                             <p style="color:#FFA500; font-weight: bold">待答复</p>
                         @endif

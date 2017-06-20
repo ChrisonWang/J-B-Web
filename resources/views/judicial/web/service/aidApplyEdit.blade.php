@@ -42,13 +42,13 @@
                 <span class="vd_tit">申请人信息</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt">姓名</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>姓名</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['apply_name'] }}' name="apply_name" placeholder="请输入姓名">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">政治面貌</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>政治面貌</span>
                         <div class="cx_inp">
                             <select name="political">
                                 <option value="citizen" @if($record_detail['political']=='citizen') selected @endif>群众</option>
@@ -58,7 +58,7 @@
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">性别</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>性别</span>
                         <div class="cx_inp">
                             <select name="sex">
                                 <option value="male" selected>男</option>
@@ -67,19 +67,19 @@
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">联系电话</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>联系电话</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['apply_phone'] }}' name="apply_phone" placeholder="请输入联系电话" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">身份证号码</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>身份证号码</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['apply_identity_no'] }}' name="apply_identity_no" placeholder="请输入身份证号码" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">通讯地址</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>通讯地址</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['apply_address'] }}' name="apply_address" placeholder="请输入通讯地址" class="w590">
                         </div>
@@ -90,25 +90,25 @@
                 <span class="vd_tit">被告人概况</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt">姓名</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>姓名</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['defendant_name'] }}' name="defendant_name" placeholder="请输入姓名" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">联系电话</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>联系电话</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['defendant_phone'] }}' name="defendant_phone" placeholder="请输入联系电话" class="w250">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">单位名称</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>单位名称</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['defendant_company'] }}' name="defendant_company" placeholder="请输入单位名称" class="w590">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">通讯地址</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>通讯地址</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['defendant_addr'] }}' name="defendant_addr" placeholder="请输入通讯地址" class="w590">
                         </div>
@@ -116,16 +116,16 @@
                 </ul>
             </div>
             <div class="text_a post_btn">
-                <span class="vd_tit">案件描述</span>
+                <span class="vd_tit"><b style="color: red; vertical-align: middle"> * </b>案件描述</span>
                 <ul>
                     <li>
-                        <span class="wsc_txt">发生时间</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>发生时间</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['happened_date'] }}' name="happened_date" placeholder="例：YYYY-MM-DD" />
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">所属区域</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>所属区域</span>
                         <div class="cx_inp">
                             <select name="case_area_id">
                                 @if(!isset($area_list) || !is_array($area_list) || count($area_list)<1)
@@ -139,7 +139,7 @@
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt">案件分类</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>案件分类</span>
                         <div class="cx_inp">
                             <select name="type">
                                 @foreach($type_list as $k=> $type)
@@ -155,31 +155,32 @@
                         </span>
                     </li>
                     <li>
-                        <span class="wsc_txt">发生地点</span>
+                        <span class="wsc_txt"><b style="color: red; vertical-align: middle"> * </b>发生地点</span>
                         <div class="cx_inp">
                             <input type="text" value='{{ $record_detail['case_location'] }}' name="case_location" placeholder="请输入发生的具体地点" class="w590">
                         </div>
                     </li>
                     <li>
-                        <span class="wsc_txt" style="vertical-align: top;">举报问题描述</span>
+                        <span class="wsc_txt" style="vertical-align: top;"><b style="color: red; vertical-align: middle"> * </b>举报问题描述</span>
                         <div class="cx_inp">
                             <textarea name="dispute_description" placeholder="请对举报的问题进行具体描述" class="w590">{{ $record_detail['dispute_description'] }}</textarea>
                         </div>
                     </li>
                 </ul>
                 <div class="mt_btn">
-                    <span class="mtb_text">附件</span>
-                    <span class="mtb_m">
+                    <span class="mtb_text"><b style="color: red; vertical-align: middle"> * </b>附件</span>
+                    <span class="" style="margin-left: 10px;">
                         <input type="file" name="file">
                     </span>
                 </div>
                 <div class=mt_last>
-                    <span class="mtl_txt">温馨提示</span>
-                    <div class="mt_ul">
+                    <span class="wsc_txt" style="display: inline-block; float: left; width: 80px">温馨提示</span>
+                    <div class="mt_ul" style="display: inline-block; float: left">
                         <span>1. 如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
                         <span>2. 民工讨薪事件无需上传《法律援助经济状况证明表》。</span>
                     </div>
                 </div>
+                <div class="clear"></div>
                 <div class="last_btn" onclick="aidApply()">
                     提交申请
                 </div>

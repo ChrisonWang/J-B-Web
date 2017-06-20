@@ -8,13 +8,13 @@
         <form class="form-horizontal" id="editExpertiseTypeForm">
             <input type="hidden" name="key" value="{{ $type_detail['key'] }}"/>
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 名称：</label>
+                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> 名称：</label>
                 <div class="col-md-3">
                     <input type="text" value="{{ $type_detail['name'] }}"  class="form-control" id="name" name="name" placeholder="请输入名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="file" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 附件：</label>
+                <label for="file" class="col-md-2 control-label"><strong style="color: red">*</strong> 附件：</label>
                 <div class="col-md-3">
                     <i class="fa fa-paperclip"></i>上传附件
                     <input type="file" class="btn btn-default btn-file form-control" id="file" name="file" />

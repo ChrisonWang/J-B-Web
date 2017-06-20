@@ -11,26 +11,7 @@ function delRow(t){
 }
 
 function delRowChannel(t){
-    var key = t.parents('tr').find('input[name="sub-channel_title"]').data('key');
-    var url = '/manage/cms/channel/checkSub';
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        async: false,
-        type: "post",
-        url: url,
-        data: {key: key},
-        success: function(re){
-            if(re.status == 'succ'){
-                t.parents("tr").remove();
-            }
-            else if(re.status == 'failed'){
-                alert('该频道下包含文章，无法删除！');
-                return false;
-            }
-        }
-    });
+    t.parents("tr").remove();
 }
 
 function addRow(){

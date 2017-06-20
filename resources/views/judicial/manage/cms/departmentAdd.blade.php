@@ -7,13 +7,13 @@
     <div class="panel-body">
         <form class="form-horizontal" id="departmentAddForm">
             <div class="form-group">
-                <label for="department_name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 名称：</label>
+                <label for="department_name" class="col-md-2 control-label"><strong style="color: red">*</strong> 名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="department_name" name="department_name" placeholder="请输入分类名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="type_id" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 分类：</label>
+                <label for="type_id" class="col-md-2 control-label"><strong style="color: red">*</strong> 分类：</label>
                 <div class="col-md-3">
                     <select id="type_id" name="type_id" class="form-control">
                         @foreach ($type_list as $type)
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="UE_Content" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 简介：</label>
+                <label for="UE_Content" class="col-md-2 control-label"><strong style="color: red">*</strong> 简介：</label>
                 <div class="col-md-8">
                     <script id="UE_Content" name="description" type="text/plain"></script>
                 </div>

@@ -74,7 +74,7 @@ class FlinksImg extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
         elseif(trim($inputs['fi_links'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'链接地址不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'链接不能为空！']);
         }
 
         //判断是否有重名的

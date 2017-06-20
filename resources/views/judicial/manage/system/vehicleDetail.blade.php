@@ -7,19 +7,19 @@
     <div class="panel-body">
         <form class="form-horizontal">
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 车辆名称：</label>
+                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> 车辆名称：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" id="name" name="name" value="{{ $vehicle_detail['name'] }}" placeholder="请输入车辆名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="license" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 车牌号：</label>
+                <label for="license" class="col-md-2 control-label"><strong style="color: red">*</strong> 车牌号：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" id="license" name="license" value="{{ $vehicle_detail['license'] }}" placeholder="请输入车牌号" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="imei" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 定位设备ID：</label>
+                <label for="imei" class="col-md-2 control-label"><strong style="color: red">*</strong> 定位设备ID：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" id="imei" name="imei" value="{{ $vehicle_detail['imei'] }}" placeholder="请输入定位设备ID" />
                 </div>

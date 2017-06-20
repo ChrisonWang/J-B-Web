@@ -432,8 +432,6 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/cms/channel/edit','Manage\Cms\Channel@doEdit');
 
-        Route::post('manage/cms/channel/checkSub','Manage\Cms\Channel@checkSub');
-
         Route::get('manage/cms/channel/delete','Manage\Cms\Channel@doDelete');
 
         Route::post('manage/cms/channelList/{page?}','Manage\Cms\Channel@index');

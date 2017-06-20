@@ -8,19 +8,19 @@
         <form class="form-horizontal" id="flinkImgEditForm">
             <input type="hidden" value="{{ $flink_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="fi_title" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 标题：</label>
+                <label for="fi_title" class="col-md-2 control-label">标题：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="fi_title" name="fi_title" value="{{ $flink_detail['fi_title'] }}" placeholder="请输入链接标题" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="fi_links" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 链接：</label>
+                <label for="fi_links" class="col-md-2 control-label">链接：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="fi_links" name="fi_links" value="{{ $flink_detail['fi_links'] }}" placeholder="请输入链接地址" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="upload_photo" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 图片(120 * 50)：</label>
+                <label for="upload_photo" class="col-md-2 control-label">图片(120 * 50)：</label>
                 <div class="col-md-3">
                     <i class="fa fa-paperclip"></i>上传图片
                     <input type="file" id="upload_photo" class="btn btn-default btn-file" name="fi_photo" onchange="upload_img($(this))"/>

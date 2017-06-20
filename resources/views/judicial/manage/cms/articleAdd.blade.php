@@ -28,7 +28,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="articleAddForm">
             <div class="form-group">
-                <label for="article_title" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 标题：</label>
+                <label for="article_title" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> 标题：</label>
                 <div class="col-md-2">
                     <input type="text" class="form-control" id="article_title" name="article_title" placeholder="请输入文章标题" />
                 </div>
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="publish_date" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 发布时间：</label>
+                <label for="publish_date" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> 发布时间：</label>
                 <div class="col-md-2">
                     <input id="publish_date" class="form-control" name="publish_date" type="text" >
                 </div>
@@ -82,7 +82,7 @@
                 </div>
             </div><!-- 标签选择器 End -->
             <div class="form-group">
-                <label for="channel_id" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 频道：</label>
+                <label for="channel_id" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> 频道：</label>
                 <div class="col-md-2">
                     <select name="channel_id" class="form-control" onchange="getSubChannel($(this), $('#sub_channel_id'))">
                         @foreach($channel_list as $channel)
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="sub_channel_id" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 二级频道：</label>
+                <label for="sub_channel_id" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> 二级频道：</label>
                 <div class="col-md-2">
                     <select name="sub_channel_id" class="form-control" id="sub_channel_id">
                         @foreach($sub_channel_list as $sub_channel)
@@ -156,7 +156,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="UE_Content" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 正文：</label>
+                <label for="UE_Content" class="col-md-2 col-sm-3 control-label"><strong style="color: red">*</strong> 正文：</label>
                 <div class="col-md-10">
                     <script id="UE_Content" name="content" type="text/plain"></script>
                 </div>

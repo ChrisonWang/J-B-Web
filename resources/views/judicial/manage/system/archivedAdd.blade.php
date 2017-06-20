@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="addArchivedForm">
             <div class="form-group">
-                <label for="type" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 功能点：</label>
+                <label for="type" class="col-md-2 control-label"><strong style="color: red">*</strong> 功能点：</label>
                 <div class="col-md-3">
                     <select id="type" name="type" class="form-control">
                         @if(isset($type_list) && is_array($type_list) && count($type_list)>0)
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="date" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 数据创建截止日期：</label>
+                <label for="date" class="col-md-2 control-label"><strong style="color: red">*</strong> 数据创建截止日期：</label>
                 <div class="col-md-3">
                     <input id="date" class="form-control" name="date" type="text" >
                 </div>

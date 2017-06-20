@@ -24,11 +24,11 @@
             <td>{{ $apply['record_code'] }}</td>
             <td>
                 @if($apply['status'] == 'pass')
-                    <p style="color:green; font-weight: bold">审核通过</p>
+                    <p style="color:green; font-weight: bold">通过</p>
                 @elseif($apply['status'] == 'reject')
-                    <p style="color:red; font-weight: bold">审核未通过</p>
+                    <p style="color:red; font-weight: bold">驳回</p>
                 @else
-                    <p style="color:#FFA500; font-weight: bold">待答复</p>
+                    <p style="color:#FFA500; font-weight: bold">待审核</p>
                 @endif
             </td>
             <td>{{ $apply['apply_name'] }}</td>

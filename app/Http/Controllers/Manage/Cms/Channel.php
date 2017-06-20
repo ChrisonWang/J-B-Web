@@ -76,7 +76,7 @@ class Channel extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['channel_title'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'频道名称不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
         //判断是否存在首页推荐的
         if(isset($inputs['is_recommend']) && $inputs['is_recommend']=='yes'){
@@ -276,7 +276,7 @@ class Channel extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['channel_title'])===''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'频道名称不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'标题不能为空！']);
         }
         $id = keys_decrypt($inputs['key']);
         //判断是否存在首页推荐的
@@ -467,24 +467,6 @@ class Channel extends Controller
         $this->page_data['channel_list'] = $channel_data;
         $pageContent = view('judicial.manage.cms.channelList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
-    }
-
-    public function checkSub(Request $request)
-    {
-        $key = $request->input('key');
-        if(empty($key)){
-            json_response(['status'=>'succ','type'=>'alert', 'res'=>'']);
-        }
-        else{
-            $key = keys_decrypt($key);
-        }
-        $article = DB::table('cms_article')->where('sub_channel', $key)->get();
-        if(!empty($article) || $article != null){
-            json_response(['status'=>'failed','type'=>'alert', 'res'=>'该频道包含子频道不能删除！']);
-        }
-        else{
-            json_response(['status'=>'succ','type'=>'alert', 'res'=>'']);
-        }
     }
 
 }

@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="userEditForm">
             <input type="hidden" name="key" value="{{ $user_detail['key'] }}" />
             <div class="form-group">
-                <label for="login_name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 账号：</label>
+                <label for="login_name" class="col-md-2 control-label"><strong style="color: red">*</strong> 账号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" value="{{ $user_detail['login_name'] }}" id="login_name" name="login_name" placeholder="请输菜单名称" />
                 </div>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="cell_phone" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 手机号码：</label>
+                <label for="cell_phone" class="col-md-2 control-label"><strong style="color: red">*</strong> 手机号码：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" value="{{ $user_detail['cell_phone'] }}" id="cell_phone" name="cell_phone" placeholder="请输手机号码" />
                 </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="password" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 密码：</label>
+                <label for="password" class="col-md-2 control-label"><strong style="color: red">*</strong> 密码：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="password" name="password" placeholder="请输入密码,留空则不修改" autocomplete="off" onfocus="this.type='password'"/>
                 </div>

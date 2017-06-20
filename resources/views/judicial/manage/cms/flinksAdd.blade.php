@@ -26,7 +26,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="flinksAddForm">
             <div class="form-group">
-                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 菜单名称：</label>
+                <label for="title" class="col-md-2 control-label"><strong style="color: red">*</strong> 菜单名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="title" name="title" placeholder="请输菜单名称" />
                 </div>

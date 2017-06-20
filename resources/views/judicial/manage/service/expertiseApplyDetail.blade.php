@@ -53,11 +53,11 @@
                 <label for="create_date" class="col-md-2 control-label">审批结果：</label>
                 <div class="col-md-8">
                     @if($apply_detail['approval_result'] == 'pass')
-                        <label for="create_date" class="control-label">审批通过</label>
+                        <label for="create_date" class="control-label">通过</label>
                     @elseif($apply_detail['approval_result'] == 'reject')
-                        <label for="create_date" class="control-label">审批驳回</label>
+                        <label for="create_date" class="control-label">驳回</label>
                     @else
-                        <label for="create_date" class="control-label">待审批</label>
+                        <label for="create_date" class="control-label">待审核</label>
                     @endif
                 </div>
             </div>

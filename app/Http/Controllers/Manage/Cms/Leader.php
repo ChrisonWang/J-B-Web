@@ -84,7 +84,7 @@ class Leader extends Controller
         $file = $request->file('leader_photo');
         if(is_null($file) || !$file->isValid()){
             $photo_path = '';
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传照片！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传头像照片！']);
         }
         else{
             $destPath = realpath(public_path('uploads/images'));
@@ -233,7 +233,7 @@ class Leader extends Controller
         if(is_null($file) || !$file->isValid()){
             $photo_path = '';
             if(!isset($inputs['have_photo']) || $inputs['have_photo'] != 'yes'){
-                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传照片！']);
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传头像照片！']);
             }
         }
         else{

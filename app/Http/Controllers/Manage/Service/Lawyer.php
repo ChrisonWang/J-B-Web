@@ -92,10 +92,10 @@ class Lawyer extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['name']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'律师姓名不能为空！']);
         }
         if(trim($inputs['certificate_code']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'执业资格证书编号不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'执业证书编号不能为空！']);
         }
         elseif($inputs['lawyer_office'] == 'none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请先设置事务所！']);
@@ -321,10 +321,10 @@ class Lawyer extends Controller
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
         if(trim($inputs['name']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'姓名不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'律师姓名不能为空！']);
         }
         if(trim($inputs['certificate_code']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'执业资格证书编号不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'执业证书编号不能为空！']);
         }
         elseif($inputs['lawyer_office'] == 'none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请先设置事务所！']);

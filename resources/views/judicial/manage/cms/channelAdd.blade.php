@@ -32,7 +32,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="channelAddForm">
             <div class="form-group">
-                <label for="channel_title" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 频道名称：</label>
+                <label for="channel_title" class="col-md-2 control-label"><strong style="color: red">*</strong> 频道名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="channel_title" name="channel_title" placeholder="请输频道名称" />
                 </div>
@@ -40,7 +40,7 @@
             <div class="form-group">
                 <label for="is_recommend" class="col-md-2 control-label">是否首页推荐：</label>
                 <div class="col-md-3">
-                    <input type="checkbox" class="" id="is_recommend" name="is_recommend" value="yes"/>
+                    <input type="checkbox" class="" id="is_recommend" name="is_recommend" value="yes" checked/>
                 </div>
             </div>
             <div class="form-group">
@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-2 control-label">子频道：</label>
+                <label class="col-md-2 control-label"><strong style="color: red">*</strong> 子频道：</label>
                 <div class="col-md-10">
                     <div class="container-fluid" style="padding-left: 0; margin-left: 0">
                         <table class="table table-bordered table-hover table-condensed">

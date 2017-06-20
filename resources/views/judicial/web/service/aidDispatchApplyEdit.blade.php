@@ -38,67 +38,68 @@
                 <input type="hidden" name="key" value="{{$record_detail['record_code']}}">
             <ul>
                 <li>
-                    <span class="wsc_txt" style="width: 80px;">申请单位</span>
+                    <span class="wsc_txt" style="width: 90px;"><b style="color: red; vertical-align: middle"> * </b>申请单位</span>
                     <div class="cx_inp">
                         <input type="text" value="{{ $record_detail['apply_office'] }}" name="apply_office" placeholder="请输入申请单位名称" class="w250" >
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="width: 105px;">申请援助单位</span>
+                    <span class="wsc_txt" style="width: 115px;"><b style="color: red; vertical-align: middle"> * </b>申请援助单位</span>
                     <div class="cx_inp">
-                        <input type="text" value="{{ $record_detail['apply_aid_office'] }}" name="apply_aid_office" placeholder="请输入申请援助单位名称" style="width: 206px;"/>
+                        <input type="text" value="{{ $record_detail['apply_aid_office'] }}" name="apply_aid_office" placeholder="请输入申请援助单位名称" style="width: 200px;"/>
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="width: 80px;">犯罪人姓名</span>
+                    <span class="wsc_txt" style="width: 90px;"><b style="color: red; vertical-align: middle"> * </b>犯罪人姓名</span>
                     <div class="cx_inp">
                         <input type="text"value="{{ $record_detail['criminal_name'] }}"  name="criminal_name" placeholder="请输入犯罪人姓名" class="w250" >
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="width: 105px;">犯罪人身份证号码</span>
+                    <span class="wsc_txt" style="width: 115px;"><b style="color: red; vertical-align: middle"> * </b>犯罪人身份证号码</span>
                     <div class="cx_inp">
-                        <input type="text"value="{{ $record_detail['criminal_id'] }}"  name="criminal_id" placeholder="请输入犯罪人身份证号码" style="width: 206px;" />
+                        <input type="text"value="{{ $record_detail['criminal_id'] }}"  name="criminal_id" placeholder="请输入犯罪人身份证号码" style="width: 200px;" />
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="width: 80px;">案件名称</span>
+                    <span class="wsc_txt" style="width: 90px;"><b style="color: red; vertical-align: middle"> * </b>案件名称</span>
                     <div class="cx_inp">
                         <input type="text"value="{{ $record_detail['case_name'] }}"  name="case_name" placeholder="请输入案件名称" class="w590" >
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="vertical-align: top; width: 80px; padding-top: 5px;">涉嫌犯罪内容</span>
+                    <span class="wsc_txt" style="vertical-align: top; width: 90px; padding-top: 5px;"><b style="color: red; vertical-align: middle"> * </b>涉嫌犯罪内容</span>
                     <div class="cx_inp">
                         <textarea name="case_description" placeholder="请输入涉嫌犯罪内容" class="w590" >{{ $record_detail['case_description'] }}</textarea>
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="width: 80px;">收押居住地</span>
+                    <span class="wsc_txt" style="width: 90px;"><b style="color: red; vertical-align: middle"> * </b>收押居住地</span>
                     <div class="cx_inp">
                         <input type="text"value="{{ $record_detail['detention_location'] }}"  name="detention_location" placeholder="请输入收押居住地址" class="w590" >
                     </div>
                 </li>
                 <li>
-                    <span class="wsc_txt" style="vertical-align: top; width: 80px; padding-top: 5px;">判刑处罚内容</span>
+                    <span class="wsc_txt" style="vertical-align: top; width: 90px; padding-top: 5px;"><b style="color: red; vertical-align: middle"> * </b>判刑处罚内容</span>
                     <div class="cx_inp">
                         <textarea name="judge_description" placeholder="请输入判刑处罚内容" class="w590" >{{ $record_detail['judge_description'] }}</textarea>
                     </div>
                 </li>
             </ul>
                 <div class="mt_btn">
-                    <span class="wsc_txt" style="width: 90px;">附件</span>
+                    <span class="wsc_txt" style="width: 100px;"><b style="color: red; vertical-align: middle"> * </b>附件</span>
                 <span>
                     <input type="file" name="file">
                 </span>
                 </div>
-            <div class=mt_last>
-                <span class="mtl_txt">温馨提示</span>
-                <div class="mt_ul">
-                    <span>1. 如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
-                    <span>2. 请上传《提供法律援助通知书》和案件材料（起诉书／证据）。</span>
+                <div class=mt_last>
+                    <span class="wsc_txt" style="width: 90px; float: left">温馨提示</span>
+                    <div class="mt_ul" style="float: left">
+                        <span>1. 如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
+                        <span>2. 请上传《提供法律援助通知书》和案件材料（起诉书／证据）。</span>
+                    </div>
                 </div>
-            </div>
+                <div class="clear"></div>
                 <div class="last_btn" onclick="aidDispatchApply()">
                 提交申请
             </div>

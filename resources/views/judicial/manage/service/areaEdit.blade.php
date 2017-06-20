@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="editAreaForm">
             <input name="key" value="{{ $area_detail['key'] }}" type="hidden">
             <div class="form-group">
-                <label for="area_name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 名称：</label>
+                <label for="area_name" class="col-md-2 control-label"><red>*</red> 名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" value="{{ $area_detail['area_name'] }}"  id="area_name" name="area_name" placeholder="请输入名称" />
                 </div>

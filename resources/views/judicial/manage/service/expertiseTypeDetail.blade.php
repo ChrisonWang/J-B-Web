@@ -7,13 +7,13 @@
     <div class="panel-body">
         <form class="form-horizontal">
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 名称：</label>
+                <label for="name" class="col-md-2 control-label"><red>*</red> 名称：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" value="{{ $type_detail['name'] }}" id="name" name="name" placeholder="请输入名称" />
                 </div>
             </div>
             <div class="form-group">
-                <label for="create_date" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp;相关附件：</label>
+                <label for="create_date" class="col-md-2 control-label"><red>*</red>相关附件：</label>
                 <div class="col-md-8">
                     @if(!empty($type_detail['file_name']) && $type_detail['file_name'] != 'none')
                         <label for="create_date" class="control-label"><a href="{{ $type_detail['file_url'] }}" target="_blank">{{ $type_detail['file_name'] }}</a></label>

@@ -78,11 +78,11 @@
                 <div class="col-md-3">
                     <label for="name" class="control-label" style="text-align: left">
                         @if($apply_detail['status'] == 'pass')
-                            审批通过
+                            通过
                         @elseif($apply_detail['status'] == 'reject')
-                            审批未通过
+                            驳回
                         @else
-                            待审批
+                            待审核
                         @endif
                     </label>
                 </div>

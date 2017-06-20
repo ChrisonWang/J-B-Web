@@ -8,7 +8,7 @@
         <form class="form-horizontal" id="nodeEditForm">
             <input type="hidden" value="{{ $node_detail['key'] }}" name="key"/>
             <div class="form-group">
-                <label for="node_name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 功能点名称：</label>
+                <label for="node_name" class="col-md-2 control-label">功能点名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="node_name" name="node_name" value="{{ $node_detail['node_name'] }}" placeholder="请输入功能点名称" />
                 </div>

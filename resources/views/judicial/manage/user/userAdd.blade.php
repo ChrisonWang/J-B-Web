@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form class="form-horizontal" id="userAddForm">
             <div class="form-group">
-                <label for="login_name" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 账号：</label>
+                <label for="login_name" class="col-md-2 control-label"><strong style="color: red">*</strong> 账号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="login_name" name="login_name" placeholder="请输入账号" required=true/>
                 </div>
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="cell_phone" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 手机号码：</label>
+                <label for="cell_phone" class="col-md-2 control-label"><strong style="color: red">*</strong> 手机号码：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="cell_phone" name="cell_phone" placeholder="请输手机号码" required=true/>
                 </div>
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="password" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 密码：</label>
+                <label for="password" class="col-md-2 control-label"><strong style="color: red">*</strong> 密码：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="password" name="password" placeholder="请输入密码" autocomplete="off" onfocus="this.type='password'"/>
                 </div>

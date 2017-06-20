@@ -94,7 +94,7 @@ class LawyerOffice extends Controller
     {
         $inputs = $request->input();
         if(trim($inputs['name']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'名称不能为空！']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'事务所名称不能为空！']);
         }
         if(trim($inputs['usc_code']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不能为空！']);

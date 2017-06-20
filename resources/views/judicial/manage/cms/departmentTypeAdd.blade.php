@@ -11,7 +11,7 @@
         <hr/>--}}
         <form class="form-horizontal" id="typeAddForm">
             <div class="form-group">
-                <label for="typeName" class="col-md-2 control-label"><strong style="color: red">*</strong> &nbsp;&nbsp; 名称：</label>
+                <label for="typeName" class="col-md-2 control-label"><strong style="color: red">*</strong> 名称：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" id="typeName" name="typeName" placeholder="请输入分类名称" />
                 </div>
