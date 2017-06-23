@@ -266,6 +266,7 @@ class Article extends Controller
         $this->log_info['after'] = "标题:".$save_data['article_title'].'   一级频道ID：'.$save_data['channel_id'].'   二级频道ID：'.$save_data['sub_channel'];
         $this->log_info['after'] .= "正文:".$save_data['content'].'   标签：'.$save_data['tags'].'   缩略图：'.$save_data['thumb'].'   附件：'.$save_data['files'];
         $this->log_info['log_type'] = 'str';
+        $this->log_info['resource_id'] = $id;
         Logs::manage_log($this->log_info);
 
         $channels_data = 'none';
@@ -641,6 +642,7 @@ class Article extends Controller
         $this->log_info['after'] = "标题:".$save_data['article_title'].'   一级频道ID：'.$save_data['channel_id'].'   二级频道ID：'.$save_data['sub_channel'];
         $this->log_info['after'] .= "正文:".$save_data['content'].'   标签：'.$save_data['tags'];
         $this->log_info['log_type'] = 'str';
+        $this->log_info['resource_id'] = $article_code;
         Logs::manage_log($this->log_info);
 
         //修改成功后,取出频道
@@ -728,6 +730,7 @@ class Article extends Controller
             $this->log_info['before'] .= "正文:".$article['content'].'   标签：'.$article['tags'];
             $this->log_info['after'] = "完全删除";
             $this->log_info['log_type'] = 'str';
+            $this->log_info['resource_id'] = $article_code;
             Logs::manage_log($this->log_info);
 
             //删除完成后取出频道

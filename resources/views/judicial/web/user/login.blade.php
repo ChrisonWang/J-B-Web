@@ -147,9 +147,9 @@
     function do_login(){
         $('#notice').text("");
         $('#notice').addClass('hidden');
-        if(checkLoginInput()=="no"){
+        /*if(checkLoginInput()=="no"){
             return;
-        }
+        }*/
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

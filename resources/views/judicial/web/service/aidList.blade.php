@@ -26,7 +26,7 @@
         </div>
 
         <!--我的法律援助预约记录-->
-        <div style="width: 800px; height: 40px; margin-top:20px; border-left: 5px solid #DD3938; background: #F9F9F9">
+        <div style="width: 805px; height: 40px; margin-top:20px; border-left: 5px solid #DD3938; background: #F9F9F9">
             <span style="font-family: MicrosoftYaHei;font-size: 14px;color: #DD3938;letter-spacing: 0; line-height: 40px; padding-left: 10px";>
                 我的法律援助预约记录
             </span>
@@ -75,7 +75,7 @@
         @endif
 
         <!--我的公检法指派记录-->
-        <div style="width: 800px; height: 40px; margin-top:20px; border-left: 5px solid #DD3938; background: #F9F9F9">
+        <div style="width: 805px; height: 40px; margin-top:20px; border-left: 5px solid #DD3938; background: #F9F9F9">
             <span style="font-family: MicrosoftYaHei;font-size: 14px;color: #DD3938;letter-spacing: 0; line-height: 40px; padding-left: 10px";>
                 我的公检法指派记录
             </span>

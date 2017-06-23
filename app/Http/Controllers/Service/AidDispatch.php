@@ -174,7 +174,7 @@ class AidDispatch extends Controller
             }
         }
         if(isset($inputs['key'])){
-            $approval_count = DB::table('service_legal_aid_dispatch')->where('record_code', $inputs['key']);
+            $approval_count = DB::table('service_legal_aid_dispatch')->where('record_code', $inputs['key'])->first();
             $save_data = array(
                 'apply_office' => $inputs['apply_office'],
                 'apply_aid_office' => $inputs['apply_aid_office'],

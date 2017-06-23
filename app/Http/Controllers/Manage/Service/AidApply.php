@@ -112,7 +112,10 @@ class AidApply extends Controller
                 'file_name' => $apply->file_name,
                 'status' => $apply->status,
                 'approval_count' => $apply->approval_count,
+                'approval' => $apply->approval,
                 'approval_opinion' => $apply->approval_opinion,
+                'approval_date' => $apply->approval_date,
+                'apply_date' => $apply->apply_date,
             );
         }
         //页面中显示
@@ -157,7 +160,10 @@ class AidApply extends Controller
                 'file_name' => $apply->file_name,
                 'status' => $apply->status,
                 'approval_count' => $apply->approval_count,
+                'approval' => $apply->approval,
                 'approval_opinion' => $apply->approval_opinion,
+                'approval_date' => $apply->approval_date,
+                'apply_date' => $apply->apply_date,
             );
         }
         //页面中显示
@@ -170,11 +176,10 @@ class AidApply extends Controller
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        $approval_count = DB::table('service_legal_aid_apply')->where('id', $id)->first();
         $save_data = array(
             'approval_opinion'=> trim($inputs['approval_opinion']),
             'status'=> 'pass',
-            'approval_count'=> intval($approval_count->approval_count) + 1,
+            'approval'=> 'yes',
             'approval_date'=> date('Y-m-d H:i:s', time()),
         );
         $rs = DB::table('service_legal_aid_apply')->where('id',$id)->update($save_data);
@@ -187,11 +192,16 @@ class AidApply extends Controller
             $this->log_info['before'] = "审批状态：待审批";
             $this->log_info['after'] = "审批状态：通过    审批意见：".$save_data['approval_opinion'];
             $this->log_info['log_type'] = 'str';
+            $this->log_info['resource_id'] = $id;
             Logs::manage_log($this->log_info);
             //发短信
-            $phone = DB::table('service_legal_aid_apply')->where('id',$id)->first();
-            if(isset($phone->apply_phone)){
-                Message::send($phone->apply_phone,'管理员通过了您编号为“'.$phone->record_code.'”的法律援助申请！');
+            $phone = array();
+            $member_code = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+            if(isset($member_code->member_code) && !empty($member_code->member_code)){
+                $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
+            }
+            if(isset($phone->cell_phone)){
+                Message::send($phone->cell_phone,'管理员通过了您编号为“'.$member_code->record_code.'”的法律援助申请！');
             }
             //审核成功，加载列表数据
             $apply_list = array();
@@ -234,11 +244,10 @@ class AidApply extends Controller
         if(trim($inputs['approval_opinion']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批意见不能为空！']);
         }
-        $approval_count = DB::table('service_legal_aid_apply')->where('id', $id)->first();
         $save_data = array(
             'approval_opinion'=> trim($inputs['approval_opinion']),
             'status'=> 'reject',
-            'approval_count'=> intval($approval_count->approval_count) + 1,
+            'approval'=> 'yes',
             'approval_date'=> date('Y-m-d H:i:s', time()),
         );
         $rs = DB::table('service_legal_aid_apply')->where('id',$id)->update($save_data);
@@ -251,11 +260,16 @@ class AidApply extends Controller
             $this->log_info['before'] = "审批状态：待审批";
             $this->log_info['after'] = "审批状态：拒绝    审批意见：".$save_data['approval_opinion'];
             $this->log_info['log_type'] = 'str';
+            $this->log_info['resource_id'] = $id;
             Logs::manage_log($this->log_info);
             //发短信
-            $phone = DB::table('service_legal_aid_apply')->where('archived', 'no')->where('id',$id)->first();
-            if(isset($phone->apply_phone)){
-                Message::send($phone->apply_phone,'管理员驳回了您编号为“'.$phone->record_code.'”的法律援助申请，请登录PC官网查看原因！');
+            $phone = array();
+            $member_code = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+            if(isset($member_code->member_code) && !empty($member_code->member_code)){
+                $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
+            }
+            if(isset($phone->cell_phone)){
+                Message::send($phone->cell_phone,'管理员驳回了您编号为“'.$member_code->record_code.'”的法律援助申请，请登录PC官网查看原因！');
             }
             //审核成功，加载列表数据
             $apply_list = array();

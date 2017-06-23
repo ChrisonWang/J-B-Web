@@ -43,12 +43,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <hr/>
-                <label for="create_date" class="col-md-2 control-label">审批意见：</label>
-                <div class="col-md-8">
-                    <label for="create_date" class="control-label">{{ empty($apply_detail['approval_opinion']) ? '未填写，表示无异议' : $apply_detail['approval_opinion'] }}</label>
+                <label for="name" class="col-md-2 control-label">最新提交时间：</label>
+                <div class="col-md-5">
+                    <label for="name" class="control-label" style="text-align: left">
+                        {{ $apply_detail['apply_date'] }}
+                        （第 {{ $apply_detail['approval_count'] + 1 }} 次提交）
+                    </label>
                 </div>
             </div>
+            <hr/>
             <div class="form-group">
                 <label for="create_date" class="col-md-2 control-label">审批结果：</label>
                 <div class="col-md-8">
@@ -61,6 +64,35 @@
                     @endif
                 </div>
             </div>
+            @if(isset($apply_detail['approval']) && $apply_detail['approval'] == 'yes')
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">
+                        最近一次审批意见：
+                    </label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">{{ empty($apply_detail['approval_opinion']) ? '未填写，默认无异议' : $apply_detail['approval_opinion'] }}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">最近一次审批时间：</label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            {{ $apply_detail['approval_date'] }}
+                        </label>
+                    </div>
+                </div>
+            @else
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">
+                        审批意见：
+                    </label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            待审核
+                        </label>
+                    </div>
+                </div>
+            @endif
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-2">

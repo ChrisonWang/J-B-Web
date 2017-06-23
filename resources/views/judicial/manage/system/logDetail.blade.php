@@ -37,9 +37,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="resource" class="col-md-2 control-label">资源ID：</label>
+                <label for="resource_id" class="col-md-2 control-label">资源ID：</label>
                 <div class="col-md-3">
-                    <label for="create_date" class="control-label">{{ $log_detail['resource'] }}</label>
+                    <label for="create_date" class="control-label">{{ $log_detail['resource_id'] }}</label>
                 </div>
             </div>
             <div class="form-group">

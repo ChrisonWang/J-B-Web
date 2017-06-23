@@ -156,7 +156,7 @@ class AidApply extends Controller
             }
         }
         if(isset($inputs['key'])){
-            $approval_count = DB::table('service_judicial_expertise')->where('record_code', $inputs['key']);
+            $approval_count = DB::table('service_legal_aid_apply')->where('record_code', $inputs['key'])->first();
             $save_data = array(
                 'approval_count' => isset($approval_count->approval_count)? intval($approval_count->approval_count) + 1 : 1,
                 'apply_name' => $inputs['apply_name'],

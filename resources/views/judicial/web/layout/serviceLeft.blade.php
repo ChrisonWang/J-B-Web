@@ -98,8 +98,8 @@
                     @endforeach
                 @endif
                 @if(isset($s_flyz['forms']) && $s_flyz['forms']!=0)
-                    <span @if(isset($now_key) && $flyz == $flyz['forms']) class="law_hover_b" @endif>
-                        <a href="{{URL::to('service/forms'.'/'.$flyz['forms'].'/1')}}">表格下载</a>
+                    <span @if(isset($now_key) && $now_key == $s_sfks['forms']) class="law_hover_b" @endif>
+                        <a href="{{URL::to('service/forms'.'/'.$s_flyz['forms'].'/1')}}">表格下载</a>
                     </span>
                 @endif
             </div>

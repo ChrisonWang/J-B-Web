@@ -147,6 +147,7 @@ class Video extends Controller
             $this->log_info['before'] = "";
             $this->log_info['after'] = "标题:".$save_data['title'].'   链接：'.$save_data['link'].'   权重：'.$save_data['sort'];
             $this->log_info['log_type'] = 'str';
+            $this->log_info['resource_id'] = $id;
             Logs::manage_log($this->log_info);
 
             //取出数据
@@ -314,6 +315,7 @@ class Video extends Controller
         $this->log_info['before'] = "标题:".$video->title.'   链接：'.$video->link.'   权重：'.$video->sort;
         $this->log_info['after'] = "标题:".$save_data['title'].'   链接：'.$save_data['link'].'   权重：'.$save_data['sort'];
         $this->log_info['log_type'] = 'str';
+        $this->log_info['resource_id'] = $video_code;
         Logs::manage_log($this->log_info);
 
         //修改成功则回调页面,取出数据
@@ -364,6 +366,7 @@ class Video extends Controller
             $this->log_info['before'] = "标题:".$video->title.'   链接：'.$video->link.'   权重：'.$video->sort;
             $this->log_info['after'] = "完全删除";
             $this->log_info['log_type'] = 'str';
+            $this->log_info['resource_id'] = $video_code;
             Logs::manage_log($this->log_info);
 
             //删除成功则回调页面,取出数据

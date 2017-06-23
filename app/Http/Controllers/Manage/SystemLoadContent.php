@@ -105,7 +105,7 @@ class SystemLoadContent extends Controller
                     'manager'=> $manager->nickname,
                     'type'=> $log->type,
                     'node'=> $log->node,
-                    'resource'=> $log->resource,
+                    'resource_id'=> $log->resource_id,
                     'title'=> $log->title,
                     'create_date'=> $log->create_date,
                 );

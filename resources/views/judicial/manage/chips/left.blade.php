@@ -147,7 +147,7 @@
                         <!-- 子菜单 -->
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="javascript:void(0);" data-node="system-logMng" >系统日志</a>
+                                <a href="javascript:void(0);" data-node="system-logMng" >日志管理</a>
                                 <a href="javascript:void(0);" data-node="system-backupMng" >数据备份</a>
                                 <a href="javascript:void(0);" data-node="system-archivedMng" >归档管理</a>
                             </li>

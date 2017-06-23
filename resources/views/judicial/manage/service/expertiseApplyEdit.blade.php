@@ -43,15 +43,43 @@
                     </label>
                 </div>
             </div>
+            <hr/>
             <div class="form-group">
-                <hr/>
-                @if(isset($apply_detail['approval_count']) && $apply_detail['approval_count'] > 0)
+                <label for="name" class="col-md-2 control-label">最新提交时间：</label>
+                <div class="col-md-5">
+                    <label for="name" class="control-label" style="text-align: left">
+                        {{ $apply_detail['apply_date'] }}
+                        （第 {{ $apply_detail['approval_count'] + 1 }} 次提交）
+                    </label>
+                </div>
+            </div>
+            @if(isset($apply_detail['approval']) && $apply_detail['approval'] == 'yes')
+                <div class="form-group">
                     <label for="approval_opinion" class="col-md-2 control-label">最近一次审批意见：</label>
                     <div class="col-md-8">
                         <label for="create_date" class="control-label">{{ $apply_detail['approval_opinion'] }}</label>
                     </div>
-                @endif
-            </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">最近一次审批时间：</label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            {{ $apply_detail['approval_date'] }}
+                        </label>
+                    </div>
+                </div>
+            @else
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">
+                        审批意见：
+                    </label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            待审核
+                        </label>
+                    </div>
+                </div>
+            @endif
             <div class="form-group">
                 <label for="approval_opinion" class="col-md-2 control-label">审批意见：</label>
                 <div class="col-md-8">

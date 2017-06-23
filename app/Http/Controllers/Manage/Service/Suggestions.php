@@ -157,6 +157,7 @@ class Suggestions extends Controller
             $this->log_info['before'] = "答复状态：待答复";
             $this->log_info['after'] = "答复状态：已答复    答复内容：".$save_data['answer_content'];
             $this->log_info['log_type'] = 'str';
+            $this->log_info['resource_id'] = $id;
             Logs::manage_log($this->log_info);
 
             $phone = DB::table('service_suggestions')->where('id',$id)->first();

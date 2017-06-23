@@ -33,7 +33,7 @@
                 受理编号:{{$record_detail['record_code']}}
             </span>
         </div>
-        <div class="text_a post_btn gjf">
+        <div class="text_a post_btn gjf" style="padding-bottom: 40px">
             <form id="aidDispatchForm">
                 <input type="hidden" name="key" value="{{$record_detail['record_code']}}">
             <ul>
@@ -107,6 +107,13 @@
         </div>
     </div>
 
+</div>
+
+<!--弹窗-->
+<div class="alert_sh" style="display: none">
+    <a href="javascript:void(0)" class="closed">X</a>
+    <div class="als_top">提交中</div>
+    <div class="als_down"></div>
 </div>
 
 

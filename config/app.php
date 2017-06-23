@@ -243,7 +243,7 @@ return [
         'service-aidDispatchMng'=> '公检法指派援助管理',
         'service-consultionsMng'=> '问题咨询管理',
         'service-suggestionsMng'=> '征求意见管理',
-        'system-logMng'=> '系统日志',
+        'system-logMng'=> '日志管理',
         'system-backupMng'=> '数据备份',
         'system-archivedMng'=> '归档管理'
     ],

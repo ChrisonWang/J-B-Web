@@ -136,15 +136,44 @@
                     </label>
                 </div>
             </div>
-
-            <hr/>
-            @if(isset($apply_detail['approval_count']) && $apply_detail['approval_count'] > 0)
             <div class="form-group">
-                <label for="name" class="col-md-2 control-label">最近一次审批意见：</label>
-                <div class="col-md-3">
-                    {{ $apply_detail['approval_opinion'] }}
+                <label for="name" class="col-md-2 control-label">最新提交时间：</label>
+                <div class="col-md-5">
+                    <label for="name" class="control-label" style="text-align: left">
+                        {{ $apply_detail['apply_date'] }}
+                        （第 {{ $apply_detail['approval_count'] + 1 }} 次提交）
+                    </label>
                 </div>
             </div>
+            <hr/>
+            @if(isset($apply_detail['approval']) && $apply_detail['approval'] == 'yes')
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">最近一次审批意见：</label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            {{ $apply_detail['approval_opinion'] }}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">最近一次审批时间：</label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            {{ $apply_detail['approval_date'] }}
+                        </label>
+                    </div>
+                </div>
+            @else
+                <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">
+                        审批意见：
+                    </label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            待审核
+                        </label>
+                    </div>
+                </div>
             @endif
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">审批意见：</label>
@@ -155,7 +184,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <p class="text-left hidden" id="editAidApplyNotice" style="color: red"></label>
+                    <p class="text-left hidden" id="editAidApplyNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">

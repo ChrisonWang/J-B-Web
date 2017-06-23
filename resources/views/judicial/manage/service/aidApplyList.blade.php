@@ -85,7 +85,7 @@
                         @elseif($apply['status'] == 'reject')
                             <p style="color:red; font-weight: bold">驳回</p>
                         @else
-                            <p style="color:#FFA500; font-weight: bold">待答复</p>
+                            <p style="color:#FFA500; font-weight: bold">待审核</p>
                         @endif
                     </td>
                     <td>{{ $apply['apply_name'] }}</td>

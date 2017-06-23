@@ -47,8 +47,8 @@
                                 <input type="text" class="form-control" id="end_date" name="end_date" />
                             </div>
                             <div class="form-group" style="padding: 10px">
-                                <label for="resource">资源ID：</label>
-                                <input type="text" class="form-control" id="resource" name="resource" placeholder="请输入资源ID">
+                                <label for="resource_id">资源ID：</label>
+                                <input type="text" class="form-control" id="resource_id" name="resource_id" placeholder="请输入资源ID">
                             </div>
                             <button id="search" type="button" class="btn btn-info" onclick="search_log($(this), $('#this-container'))">搜索</button>
                         </div>
@@ -80,7 +80,7 @@
                     <td>{{ $type_list[$log['type']] }}</td>
                     <td>{{ $log['create_date'] }}</td>
                     <td>{{ $node_list[$log['node']] }}</td>
-                    <td>{{ $log['resource'] }}</td>
+                    <td>{{ $log['resource_id'] }}</td>
                     <td>{{ empty($log['title']) ? '-' : $log['title'] }}</td>
                 </tr>
                 @endforeach

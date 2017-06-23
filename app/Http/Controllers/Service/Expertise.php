@@ -169,7 +169,7 @@ class Expertise extends Controller
             }
         }
         if(isset($inputs['record_code'])){
-            $approval_count = DB::table('service_judicial_expertise')->where('record_code', $inputs['record_code']);
+            $approval_count = DB::table('service_judicial_expertise')->where('record_code', $inputs['record_code'])->first();
             $save_data = array(
                 'apply_name' => $inputs['apply_name'],
                 'cell_phone' => $inputs['cell_phone'],

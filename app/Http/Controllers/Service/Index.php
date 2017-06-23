@@ -135,6 +135,7 @@ class Index extends Controller
             $this->page_data['wsbs'] = $channel->wsbs;
         }
         $offset = 16 * ($page-1);
+        $article_list = array();
         $articles = DB::table('cms_article')->where(['sub_channel'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->orWhere(['channel_id'=>$channel_id, 'archived'=> 'no','disabled'=>'no'])->skip($offset)->take(16)->get();
         if(count($articles) < 1){
             $article_list = 'none';

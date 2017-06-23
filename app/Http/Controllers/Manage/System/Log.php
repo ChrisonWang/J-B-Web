@@ -61,7 +61,7 @@ class Log extends Controller
                     'manager'=> $manager->nickname,
                     'type'=> $log->type,
                     'node'=> $log->node,
-                    'resource'=> $log->resource,
+                    'resource_id'=> $log->resource_id,
                     'title'=> $log->title,
                     'create_date'=> $log->create_date,
                 );
@@ -93,7 +93,7 @@ class Log extends Controller
                 'manager'=> $manager->nickname,
                 'type'=> $log->type,
                 'node'=> $log->node,
-                'resource'=> $log->resource,
+                'resource_id'=> $log->resource_id,
                 'title'=> $log->title,
                 'before'=> $log->before,
                 'after'=> $log->after,
@@ -139,8 +139,8 @@ class Log extends Controller
                 $where .= ' `create_date` >= "'.$inputs['start_date'].'" AND ';
             }
         }
-        if(isset($inputs['resource']) && trim($inputs['resource'])!==''){
-            $where .= ' `resource` LIKE "%'.$inputs['resource'].'%" AND ';
+        if(isset($inputs['resource_id']) && trim($inputs['resource_id'])!==''){
+            $where .= ' `resource_id` LIKE "%'.$inputs['resource_id'].'%" AND ';
         }
         $sql = 'SELECT * FROM `system_log` '.$where.'1 ORDER BY `create_date` DESC';
         $res = DB::select($sql);
@@ -155,7 +155,7 @@ class Log extends Controller
                     'manager'=> isset($manager->nickname) ? $manager->nickname : $manager->login_name,
                     'type'=> $log->type,
                     'node'=> $log->node,
-                    'resource'=> $log->resource,
+                    'resource_id'=> $log->resource_id,
                     'title'=> $log->title,
                     'create_date'=> $log->create_date,
                 );

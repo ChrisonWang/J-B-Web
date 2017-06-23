@@ -172,7 +172,7 @@
                     </span>
                 </div>
                 <div class=mt_last>
-                    <span class="wsc_txt" style="display: inline-block; float: left; width: 80px">温馨提示</span>
+                    <span class="wsc_txt" style="display: inline-block; float: left; width: 90px">温馨提示</span>
                     <div class="mt_ul" style="display: inline-block; float: left">
                         <span>1. 如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
                         <span>2. 民工讨薪事件无需上传《法律援助经济状况证明表》。</span>
