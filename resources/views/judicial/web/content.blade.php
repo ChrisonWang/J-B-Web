@@ -14,8 +14,13 @@
         <div class="zwr_top">
             <span><a href="/" style="color: #222222">首页</a>&nbsp;&nbsp;>&nbsp;</span>
             <span><a href="/list/169" style="color: #222222">政务公开</a>&nbsp;&nbsp;>&nbsp;</span>
-            <span><a href="/list/{{$now_key}}" style="color: #222222">{{ $title }}</a>&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #929292;">{{ $sub_title }}</span>
+            @if(isset($title) && isset($p_key))
+                <span>
+                    <a href="/list/{{$p_key}}" style="@if(isset($sub_title))color: #222222; @else color: #929292; @endif">{{ $title }}</a>
+                    &nbsp;&nbsp;>&nbsp;
+                </span>
+            @endif
+            @if(isset($sub_title))<span style="color: #929292;">{{ $sub_title }}</span>@endif
         </div>
         <div class="wz_body w700">
             <div class="wz_top">
@@ -34,7 +39,9 @@
                         @if(is_array($article_detail['tags']) && $article_detail['tags']!='none')
                             @foreach($article_detail['tags'] as $tag)
                                 <span style="margin-right: 0!important;">
-                                    <a href="{{ URL::to('/tagList').'/'.$tag }}" style="color: red">#{{ isset($tag_list[$tag])?$tag_list[$tag] : '已删除' }}</a>&nbsp;&nbsp;</span>
+                                    @if(isset($tag_list[$tag]))
+                                        <a href="{{ URL::to('/tagList').'/'.$tag }}" style="color: red">#{{ $tag_list[$tag] }}</a>&nbsp;&nbsp;</span>
+                                    @endif
                             @endforeach
                         @endif
                     </div>

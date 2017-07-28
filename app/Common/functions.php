@@ -213,3 +213,25 @@ function mb_spilt_title($str, $len, $end = true){
         return $title;
     }
 }
+
+/*参照标准：
+《GB_32100-2015_法人和其他组织统一社会信用代码编码规则.》
+按照编码规则:
+统一代码为18位，统一代码由十八位的数字或大写英文字母（不适用I、O、Z、S、V）组成，由五个部分组成：
+第一部分（第1位）为登记管理部门代码，9表示工商部门；(数字或大写英文字母)
+第二部分（第2位）为机构类别代码;(数字或大写英文字母)
+第三部分（第3-8位）为登记管理机关行政区划码；(数字)
+第四部分（第9-17位）为全国组织机构代码；(数字或大写英文字母)
+第五部分（第18位）为校验码(数字或大写英文字母)
+*/
+function preg_usc($usc_code)
+{
+    $pattern = '/[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}/';
+    return(preg_match($pattern, $usc_code));
+}
+
+function preg_certificate_code($certificate_code)
+{
+    $pattern = '/^[\w\s]{17}$/';
+    return(preg_match($pattern, $certificate_code));
+}

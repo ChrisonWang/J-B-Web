@@ -97,6 +97,9 @@ class Lawyer extends Controller
         if(trim($inputs['certificate_code']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'执业证书编号不能为空！']);
         }
+        if(!preg_certificate_code($inputs['certificate_code'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'职业证书编号应为17位非汉字字符！']);
+        }
         elseif($inputs['lawyer_office'] == 'none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请先设置事务所！']);
         }
@@ -325,6 +328,9 @@ class Lawyer extends Controller
         }
         if(trim($inputs['certificate_code']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'执业证书编号不能为空！']);
+        }
+        if(!preg_certificate_code($inputs['certificate_code'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'职业证书编号应为17位非汉字字符！']);
         }
         elseif($inputs['lawyer_office'] == 'none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请先设置事务所！']);

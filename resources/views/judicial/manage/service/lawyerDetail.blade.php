@@ -59,8 +59,9 @@
                 <div class="col-md-3">
                     <select disabled class="form-control" id="political" name="political">
                         <option value="citizen" @if( $lawyer_detail['political'] == 'citizen') selected @endif>群众</option>
-                        <option value="cp" @if( $lawyer_detail['political'] == 'cp' ) selected @endif>党员</option>
                         <option value="cyl" @if( $lawyer_detail['political'] == 'cyl' ) selected @endif>团员</option>
+                        <option value="cp" @if( $lawyer_detail['political'] == 'cp' ) selected @endif>党员</option>
+                        <option value="others" @if( $lawyer_detail['political'] == 'others' ) selected @endif>其他党派人士</option>
                     </select>
                 </div>
             </div>

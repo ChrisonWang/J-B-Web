@@ -62,7 +62,7 @@ class Lawyer extends Controller
         $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->page_data['type_list'] = ['full_time'=>'专职', 'part_time'=>'兼职', 'company'=>'公司', 'officer'=>'公职'];
-        $this->page_data['political'] = ['cp'=>'党员', 'cyl'=>'团员', 'citizen'=>'群众'];
+        $this->page_data['political'] = ['cp'=>'党员', 'cyl'=>'团员', 'citizen'=>'群众', 'others'=> '其他党派人士'];
         $this->get_left_sub();
         $this->page_data['_now'] = 'wsbs';
         $this->page_data['now_title'] = '律师服务';

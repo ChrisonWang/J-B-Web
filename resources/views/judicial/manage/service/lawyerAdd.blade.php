@@ -54,9 +54,10 @@
                 <label for="political" class="col-md-2 control-label">政治面貌：</label>
                 <div class="col-md-3">
                     <select class="form-control" id="political" name="political">
-                        <option value="citizen">群众</option>
-                        <option value="cp">党员</option>
+                        <option value="citizen" selected>群众</option>
                         <option value="cyl">团员</option>
+                        <option value="cp">党员</option>
+                        <option value="others">其他党派人士</option>
                     </select>
                 </div>
             </div>

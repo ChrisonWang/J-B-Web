@@ -14,7 +14,12 @@
         <div class="zwr_top">
             <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
             <span><a href="/service" style="color: #222222">网上办事</a>&nbsp;&nbsp;>&nbsp;</span>
-            {{--@if(isset($title))<span>{{ $title }}&nbsp;&nbsp;>&nbsp;</span>@endif--}}
+            @if(isset($title) && isset($p_key))
+                <span>
+                    <a href="/list/{{$p_key}}" style="@if(isset($sub_title))color: #222222; @else color: #929292; @endif">{{ $title }}</a>
+                    &nbsp;&nbsp;>&nbsp;
+                </span>
+            @endif
             @if(isset($sub_title))<span style="color: #929292;">{{ $sub_title }}</span>@endif
         </div>
         <div class="zwr_mid">

@@ -17,6 +17,7 @@ use App\Libs\Logs;
 class Article extends Controller
 
 {
+    private $log_info = array();
     private $page_data = array();
 
     public function __construct()
@@ -358,10 +359,11 @@ class Article extends Controller
         //取出标签
         $tag_list = array();
         $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
+        $_article_tags = array();
         if(count($tags) > 0){
             foreach($tags as $tag){
                 if(isset($article_tags[keys_encrypt($tag->id)])){
-                    $article_tags[keys_encrypt($tag->id)] = $tag->tag_title;
+                    $_article_tags[keys_encrypt($tag->id)] = $tag->tag_title;
                     continue;
                 }
                 $tag_list[] = array(
@@ -394,7 +396,7 @@ class Article extends Controller
             'channel_id'=> keys_encrypt($article->channel_id),
             'sub_channel_id'=> keys_encrypt($article->sub_channel),
             'thumb'=> empty($article->thumb)? 'none' :$article->thumb,
-            'tags'=> $article_tags,
+            'tags'=> $_article_tags,
             'files'=> $files,
             'content'=> $article->content,
             'publish_date'=> $article->publish_date ,
@@ -460,10 +462,11 @@ class Article extends Controller
         //取出标签
         $tag_list = array();
         $tags = DB::table('cms_tags')->orderBy('tag_title', 'ASC')->get();
+        $_article_tags = array();
         if(count($tags) > 0){
             foreach($tags as $tag){
                 if(isset($article_tags[keys_encrypt($tag->id)])){
-                    $article_tags[keys_encrypt($tag->id)] = $tag->tag_title;
+                    $_article_tags[keys_encrypt($tag->id)] = $tag->tag_title;
                     continue;
                 }
                 $tag_list[] = array(
@@ -498,7 +501,7 @@ class Article extends Controller
             'sub_channel_id'=> keys_encrypt($article->sub_channel),
             'thumb'=> empty($article->thumb)? 'none' :$article->thumb,
             'content'=> $article->content,
-            'tags'=> $article_tags,
+            'tags'=> $_article_tags,
             'files'=> $files,
             'publish_date'=> $article->publish_date ,
             'create_date'=> $article->create_date,
@@ -557,22 +560,25 @@ class Article extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在标题为：'.$inputs['article_title'].'的文章']);
         }*/
         //处理上传的图片
-        $file = $request->file('thumb');
-        if(is_null($file) || !$file->isValid()){
-            $photo_path = '';
-        }
-        else{
-            $destPath = realpath(public_path('uploads/images'));
-            if(!file_exists($destPath)){
-                mkdir($destPath, 0755, true);
-            }
-            $extension = $file->getClientOriginalExtension();
-            $filename = gen_unique_code('THUMB_').'.'.$extension;
-            if(!$file->move($destPath,$filename)){
+        $photo_path = '';
+        if($inputs['have_photo'] == 'no'){
+            $file = $request->file('thumb');
+            if(is_null($file) || !$file->isValid()){
                 $photo_path = '';
             }
             else{
-                $photo_path = URL::to('/').'/uploads/images/'.$filename;
+                $destPath = realpath(public_path('uploads/images'));
+                if(!file_exists($destPath)){
+                    mkdir($destPath, 0755, true);
+                }
+                $extension = $file->getClientOriginalExtension();
+                $filename = gen_unique_code('THUMB_').'.'.$extension;
+                if(!$file->move($destPath,$filename)){
+                    $photo_path = '';
+                }
+                else{
+                    $photo_path = URL::to('/').'/uploads/images/'.$filename;
+                }
             }
         }
 
@@ -625,6 +631,9 @@ class Article extends Controller
             'publish_date'=> $inputs['publish_date'],
             'update_date'=> date('Y-m-d H:i:s',time())
         );
+        if($inputs['have_photo'] == 'yes'){
+            unset($save_data['thumb']);
+        }
         $article = DB::table('cms_article')->where('article_code',$article_code)->first();
         $article = json_decode(json_encode($article), true);
         $re = DB::table('cms_article')->where('article_code', $article_code)->update($save_data);

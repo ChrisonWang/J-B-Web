@@ -99,6 +99,9 @@ class LawyerOffice extends Controller
         if(trim($inputs['usc_code']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不能为空！']);
         }
+        if(!preg_usc($inputs['usc_code'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不合法，请参照GB_32100-2015标准！']);
+        }
         if(trim($inputs['area']) === '' || trim($inputs['area'])=='none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的区域！']);
         }
@@ -311,6 +314,9 @@ class LawyerOffice extends Controller
         }
         if(trim($inputs['usc_code']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不能为空！']);
+        }
+        if(!preg_usc($inputs['usc_code'])){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不合法，请参照GB_32100-2015标准！']);
         }
         if(trim($inputs['area']) === '' || trim($inputs['area'])=='none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的区域！']);

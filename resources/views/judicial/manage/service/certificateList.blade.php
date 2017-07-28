@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <i class="fa fa-paperclip"></i>导入文件
                         <input type="file" class="form-control btn btn-default btn-file" id="batch_file" name="batch_file" />
-                        <a href="http://106.14.68.254/uploads/system/temp/batch.csv" target="_blank">下载模板文件</a>
+                        <a href="http://125.45.181.13/uploads/system/temp/batch.csv" target="_blank">下载模板文件</a>
                     </div>
                     <button type="button" class="btn btn-default" onclick="batchImport()">导入</button>
                 </form>

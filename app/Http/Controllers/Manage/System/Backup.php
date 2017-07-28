@@ -85,15 +85,17 @@ class Backup extends Controller
 
         //mysql_dump
         $params = array(
-            'h'=>'rm-uf69m2545v5938q3o.mysql.rds.aliyuncs.com',
-            'u'=>'sanmenxia1',
-            'p'=>'sanmenxia1@0208',
-            'db'=> 'sanmenxia1'
+            'h'=>'localhost',
+            'u'=>'root',
+            'p'=>'Sanmenxia@2017',
+            'db'=> 'sanmenxia'
         );
-        $cmd = 'mysqldump -h'.$params['h'].' -u'.$params['u'].' -p'.$params['p'].' '.$params['db'].'  --set-gtid-purged=off > '.$file_path;
+        //$cmd = 'mysqldump -h'.$params['h'].' -u'.$params['u'].' -p'.$params['p'].' '.$params['db'].' --set-gtid-purged=off > '.$file_path;
+        $cmd = 'mysqldump -h'.$params['h'].' '.$params['db'].' --set-gtid-purged=off > '.$file_path;
         system($cmd, $i);
+        //var_dump($cmd.' '.$i);
 
-        if($i == 0){
+        if($i != 4){
             $save_date = array(
                 'backup_date'=> $inputs['backup_date'],
                 'create_date'=> $now,

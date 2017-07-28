@@ -323,9 +323,9 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/cms/flinkImg/edit','Manage\Cms\FlinksImg@doEdit');
 
-        Route::get('manage/cms/flinkImg/delete','Manage\Cms\flinkImg@doDelete');
+        Route::get('manage/cms/flinkImg/delete','Manage\Cms\FlinksImg@doDelete');
 
-        Route::post('manage/cms/flinkImgList/{page?}','Manage\Cms\flinkImg@index');
+        Route::post('manage/cms/flinkImgList/{page?}','Manage\Cms\FlinksImg@index');
 
         //CMS二级友情链接管理
         Route::get('manage/cms/flinks/show','Manage\Cms\Flinks@show');

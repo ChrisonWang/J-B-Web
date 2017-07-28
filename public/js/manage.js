@@ -13,6 +13,10 @@ function delRow(t){
 function delRowChannel(t){
     var key = t.parents('tr').find('input[name="sub-channel_title"]').data('key');
     var url = '/manage/cms/channel/checkSub';
+    if(key == '' || typeof(key) == 'undefined'){
+        t.parents("tr").remove();
+        return false;
+    }
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1474,6 +1478,7 @@ function change_file(t){
 }
 
 function delFileRow(t){
+    $('#add-row-notice').text('');
     var file_name = t.parents("tr").find("input[name='file-name[]']").val();
     var c = confirm("确认删除附件："+ file_name +"？");
     if(c != true){

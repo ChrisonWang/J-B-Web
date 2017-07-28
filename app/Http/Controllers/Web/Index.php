@@ -285,6 +285,7 @@ class Index extends Controller
             if(count($p_channel)!=0){
                 $this->page_data['title'] = $p_channel->channel_title;
                 $this->page_data['now_title'] = $p_channel->channel_title;
+                $this->page_data['p_key'] = $channel->pid;
             }
             $this->page_data['zwgk'] = $channel->zwgk;
             $this->page_data['wsbs'] = $channel->wsbs;
@@ -550,11 +551,14 @@ class Index extends Controller
             );
             if(is_array($article_detail['tags']) && count($article_detail['tags'])>3)
                 $article_detail['tags'] = array_slice($article_detail['tags'],0,3);
+
             //频道信息
-            $channel = DB::table('cms_channel')->where('channel_id', $article_detail['channel_id'])->orWhere('channel_id', $article_detail['sub_channel'])->first();
             $sub_channel = DB::table('cms_channel')->where('channel_id', $article_detail['sub_channel'])->first();
-            $this->page_data['title'] = isset($channel->channel_title) ? $channel->channel_title : '频道已被删除';
-            $this->page_data['sub_title'] = isset($sub_channel->channel_title) ? $sub_channel->channel_title : '频道已被删除';
+            $channel = DB::table('cms_channel')->where('channel_id', $article_detail['channel_id'])->first();
+            $this->page_data['sub_title'] = $sub_channel->channel_title;
+            $this->page_data['title'] = $channel->channel_title;
+            $this->page_data['p_key'] = $sub_channel->pid;
+
         }
         //更新访问
         $clicks = (isset($article->clicks)) ? $article->clicks + 1 : 1;
