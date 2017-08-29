@@ -58,7 +58,16 @@ class Consultions extends Controller
                 );
             }
         }
-        $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+        //获取分类
+        $type_list = array();
+	    $types = DB::table('service_consultion_types')->get();
+	    if(!is_null($types)){
+		    foreach ($types as $type){
+		        $type_list[$type->type_id] = $type->type_name;
+		    }
+	    }
+        $this->page_data['type_list'] = $type_list;
+	    
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['wsbs_list'] = $wsbs_list;
         $this->page_data['channel_list'] = $this->get_left_list();
@@ -77,13 +86,13 @@ class Consultions extends Controller
             return view('errors.404');
         }
         $offset = $page > $count_page ? 0 : ($page - 1) * 12;
-        $records = DB::table('service_consultions')->orderBy('create_date', 'desc')->skip($offset)->take(12)->get();
+        $records = DB::table('service_consultions')->where('is_hidden', 'no')->orderBy('create_date', 'desc')->skip($offset)->take(12)->get();
         if(count($records) > 0){
             //格式化数据
             foreach($records as $record){
                 $record_list[] = array(
                     'record_code'=> $record->record_code,
-                    'type'=> $record->type,
+                    'type_id'=> $record->type_id,
                     'title'=> $record->title,
                     'create_date'=> date('Y-m-d H:i', strtotime($record->create_date)),
                     'answer_date'=> $record->status=='waiting' ? '待回复' : date('Y-m-d H:i', strtotime($record->answer_date)),
@@ -113,7 +122,7 @@ class Consultions extends Controller
             foreach($res as $record){
                 $record_list[] = array(
                     'record_code'=> $record->record_code,
-                    'type'=> $record->type,
+                    'type_id'=> $record->type_id,
                     'title'=> $record->title,
                     'create_date'=> date('Y-m-d H:i', strtotime($record->create_date)),
                     'answer_date'=> $record->status=='waiting' ? '待回复' : date('Y-m-d H:i', strtotime($record->answer_date)),
@@ -155,7 +164,7 @@ class Consultions extends Controller
             'cell_phone'=> $inputs['cell_phone'],
             'email'=> $inputs['email'],
             'member_code'=> $this->checkLoginStatus() ? $this->checkLoginStatus() : '',
-            'type'=> $inputs['type'],
+            'type_id'=> $inputs['type_id'],
             'title'=> $inputs['title'],
             'content'=> $inputs['content'],
             'create_date'=> date('Y-m-d H:i:s', time())
@@ -178,7 +187,7 @@ class Consultions extends Controller
         else{
             $record_detail = array(
                 'record_code'=> $record->record_code,
-                'type'=> $record->type,
+                'type_id'=> $record->type_id,
                 'create_date'=> date('Y-m-d H:i', strtotime($record->create_date)),
                 'title'=> $record->title,
                 'content'=> trim($record->content),
@@ -209,7 +218,7 @@ class Consultions extends Controller
         if(!preg_phone($inputs['cell_phone']) && !preg_phone2($inputs['cell_phone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写正确的联系电话！（13800000000 或 0398-1234567 或 010-12345678）']);
         }
-        if(!isset($inputs['type']) || trim($inputs['type'])==='' || trim($inputs['type'])=='none'){
+        if(!isset($inputs['type_id']) || trim($inputs['type_id'])==='' || trim($inputs['type_id'])=='none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'问题分类必填/必选，请填写/选择']);
         }
         if(!isset($inputs['title']) || trim($inputs['title'])===''){

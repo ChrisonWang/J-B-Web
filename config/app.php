@@ -241,8 +241,10 @@ return [
         'service-expertiseApplyMng'=> '司法鉴定申请管理',
         'service-aidApplyMng'=> '群众预约援助管理',
         'service-aidDispatchMng'=> '公检法指派援助管理',
-        'service-consultionsMng'=> '问题咨询管理',
         'service-suggestionsMng'=> '征求意见管理',
+        'service-suggestionTypesMng'=> '征求意见分类管理',
+        'service-consultionsMng'=> '问题咨询管理',
+        'service-consultionTypesMng'=> '问题咨询分类管理',
         'system-logMng'=> '日志管理',
         'system-backupMng'=> '数据备份',
         'system-archivedMng'=> '归档管理'

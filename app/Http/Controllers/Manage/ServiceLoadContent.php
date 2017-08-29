@@ -358,10 +358,110 @@ class ServiceLoadContent extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+    /**
+     * 征求意见分类
+     * @param $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function _content_SuggestionTypesMng($request)
+    {
+        $this->page_data['thisPageName'] = '征求意见分类管理';
+        //加载列表数据
+        $suggestionType_list = array();
+        $pages = '';
+        $count = DB::table('service_suggestion_types')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $suggestionTypes = DB::table('service_suggestion_types')
+            ->leftJoin('user_manager', 'service_suggestion_types.manager_code', '=', 'user_manager.manager_code')
+            ->select('service_suggestion_types.*', 'user_manager.office_id', 'user_manager.login_name', 'user_manager.cell_phone', 'user_manager.nickname')
+            ->orderBy('service_suggestion_types.create_date', 'asc')
+            ->skip(0)->take($offset)->get();
+        if(count($suggestionTypes) > 0){
+            foreach($suggestionTypes as $type){
+                $suggestionType_list[] = array(
+                    'key' => keys_encrypt($type->type_id),
+                    'type_name' => $type->type_name,
+                    'manager_name' => !empty($type->nickname) ? $type->nickname.' ['.$type->cell_phone.']' : $type->login_name.' ['.$type->cell_phone.']',
+                    'create_date' => date('Y-m-d H:i', strtotime($type->create_date)),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'suggestions',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['type_list'] = $suggestionType_list;
+        $pageContent = view('judicial.manage.service.suggestionTypesList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
+        /**
+     * 问题咨询分类
+     * @param $request
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    private function _content_ConsultionTypesMng($request)
+    {
+        $this->page_data['thisPageName'] = '问题咨询分类管理';
+
+        //加载列表数据
+        $consultionType_list = array();
+        $pages = '';
+        $count = DB::table('service_consultion_types')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 30;
+        $suggestionTypes = DB::table('service_consultion_types')
+            ->leftJoin('user_manager', 'service_consultion_types.manager_code', '=', 'user_manager.manager_code')
+            ->select('service_consultion_types.*', 'user_manager.office_id', 'user_manager.login_name', 'user_manager.cell_phone')
+            ->orderBy('service_consultion_types.create_date', 'asc')
+            ->skip(0)->take($offset)->get();
+        if(count($suggestionTypes) > 0){
+            foreach($suggestionTypes as $type){
+                $consultionType_list[] = array(
+                    'key' => keys_encrypt($type->type_id),
+                    'type_name' => $type->type_name,
+                    'manager_name' => $type->login_name.'['.$type->cell_phone.']',
+                    'create_date' => date('Y-m-d H:i', strtotime($type->create_date)),
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'suggestions',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['type_list'] = $consultionType_list;
+        $pageContent = view('judicial.manage.service.consultionTypesList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
     private function _content_SuggestionsMng($request)
     {
+	    //获取权限
+	    $this->page_data['is_rm'] = 'no';
+	    $node_p = session('node_p');
+        if(isset($node_p['service-suggestionsMng']) && $node_p['service-suggestionsMng']=='rw'){
+            $this->page_data['is_rm'] = 'yes';
+        }
+		//获取分类
+	    $type_list = array();
+	    $types = DB::table('service_suggestion_types')->get();
+	    if(!is_null($types)){
+		    foreach ($types as $type){
+		        $type_list[$type->type_id] = $type->type_name;
+		    }
+	    }
+        $this->page_data['type_list'] = $type_list;
         $this->page_data['thisPageName'] = '征求意见管理';
-        $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+
         //加载列表数据
         $suggestion_list = array();
         $pages = '';
@@ -375,7 +475,8 @@ class ServiceLoadContent extends Controller
                     'key' => keys_encrypt($suggestion->id),
                     'record_code' => $suggestion->record_code,
                     'title'=> spilt_title($suggestion->title, 30),
-                    'type' => $suggestion->type,
+                    'type_id' => $suggestion->type_id,
+                    'is_hidden' => $suggestion->is_hidden,
                     'status' => $suggestion->status,
                     'create_date' => date('Y-m-d H:i', strtotime($suggestion->create_date)),
                 );
@@ -395,8 +496,22 @@ class ServiceLoadContent extends Controller
 
     private function _content_ConsultionsMng($request)
     {
-        $this->page_data['thisPageName'] = '问题咨询管理';
-        $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+	    //获取权限
+	    $this->page_data['is_rm'] = 'no';
+	    $node_p = session('node_p');
+        if(isset($node_p['service-consultionsMng']) && $node_p['service-consultionsMng']=='rw'){
+            $this->page_data['is_rm'] = 'yes';
+        }
+	    //获取分类
+        $type_list = array();
+	    $types = DB::table('service_consultion_types')->get();
+	    if(!is_null($types)){
+		    foreach ($types as $type){
+		        $type_list[$type->type_id] = $type->type_name;
+		    }
+	    }
+        $this->page_data['type_list'] = $type_list;
+	    $this->page_data['thisPageName'] = '问题咨询管理';
         //加载列表数据
         $consultion_list = array();
         $pages = '';
@@ -410,7 +525,8 @@ class ServiceLoadContent extends Controller
                     'key'=> keys_encrypt($consultion->id),
                     'record_code'=> $consultion->record_code,
                     'title'=> spilt_title($consultion->title, 30),
-                    'type'=> $consultion->type,
+                    'type_id'=> $consultion->type_id,
+                    'is_hidden'=> $consultion->is_hidden,
                     'status'=> $consultion->status,
                     'create_date'=> date('Y-m-d H:i',strtotime($consultion->create_date)),
                 );

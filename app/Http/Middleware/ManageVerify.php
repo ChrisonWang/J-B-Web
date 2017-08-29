@@ -80,6 +80,8 @@ class ManageVerify
                 'service-aidDispatchMng'=> 'rw',
                 'service-consultionsMng'=> 'rw',
                 'service-suggestionsMng'=> 'rw',
+                'service-consultionTypesMng'=> 'rw',
+                'service-suggestionTypesMng'=> 'rw',
                 'system-logMng'=> 'rw',
                 'system-backupMng'=> 'rw',
                 'system-archivedMng'=> 'rw'

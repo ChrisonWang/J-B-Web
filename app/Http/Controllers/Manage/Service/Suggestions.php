@@ -29,14 +29,26 @@ class Suggestions extends Controller
             'node'=> 'service_suggestions',
             'resource'=> 'service_suggestions',
         );
-        $this->page_data['thisPageName'] = '征求意见管理';
-        $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
+	    //获取权限
+	    $this->page_data['is_rm'] = 'no';
+	    $node_p = session('node_p');
+        if(isset($node_p['service-suggestionsMng']) && $node_p['service-suggestionsMng']=='rw'){
+            $this->page_data['is_rm'] = 'yes';
+        }
+	    //获取分类
+	    $type_list = array();
+	    $types = DB::table('service_suggestion_types')->get();
+	    if(!is_null($types)){
+		    foreach ($types as $type){
+			    $type_list[$type->type_id] = $type->type_name;
+		    }
+	    }
+        $this->page_data['type_list'] = $type_list;
+	    $this->page_data['thisPageName'] = '征求意见管理';
     }
 
     public function index($page = 1)
     {
-        $this->page_data['thisPageName'] = '征求意见管理';
-        $this->page_data['type_list'] = ['opinion'=>'意见','suggest'=>'建议','complaint'=>'投诉','other'=>'其他'];
         //加载列表数据
         $suggestion_list = array();
         $pages = '';
@@ -50,7 +62,8 @@ class Suggestions extends Controller
                     'key' => keys_encrypt($suggestion->id),
                     'record_code' => $suggestion->record_code,
                     'title'=> spilt_title($suggestion->title, 30),
-                    'type' => $suggestion->type,
+                    'type_id' => $suggestion->type_id,
+	                'is_hidden' => $suggestion->is_hidden,
                     'status' => $suggestion->status,
                     'create_date' => date('Y-m-d H:i', strtotime($suggestion->create_date)),
                 );
@@ -83,7 +96,7 @@ class Suggestions extends Controller
                 'key' => keys_encrypt($suggestion->id),
                 'record_code' => $suggestion->record_code,
                 'title' => $suggestion->title,
-                'type' => $suggestion->type,
+                'type_id' => $suggestion->type_id,
                 'status' => $suggestion->status,
                 'name' => $suggestion->name,
                 'cell_phone' => $suggestion->cell_phone,
@@ -117,7 +130,7 @@ class Suggestions extends Controller
                 'key' => keys_encrypt($suggestion->id),
                 'record_code' => $suggestion->record_code,
                 'title' => $suggestion->title,
-                'type' => $suggestion->type,
+                'type_id' => $suggestion->type_id,
                 'status' => $suggestion->status,
                 'name' => $suggestion->name,
                 'cell_phone' => $suggestion->cell_phone,
@@ -177,7 +190,8 @@ class Suggestions extends Controller
                         'key' => keys_encrypt($suggestion->id),
                         'record_code' => $suggestion->record_code,
                         'title'=> spilt_title($suggestion->title, 30),
-                        'type' => $suggestion->type,
+                        'type_id' => $suggestion->type_id,
+	                    'is_hidden' => $suggestion->is_hidden,
                         'status' => $suggestion->status,
                         'create_date' => date('Y-m-d H:i', strtotime($suggestion->create_date)),
                     );
@@ -205,8 +219,8 @@ class Suggestions extends Controller
         if(isset($inputs['record_code']) && trim($inputs['record_code'])!==''){
             $where .= ' `record_code` LIKE "%'.$inputs['record_code'].'%" AND ';
         }
-        if(isset($inputs['type']) &&($inputs['type'])!='none'){
-            $where .= ' `type` = "'.$inputs['type'].'" AND ';
+        if(isset($inputs['type_id']) &&($inputs['type_id'])!='none'){
+            $where .= ' `type_id` = "'.$inputs['type_id'].'" AND ';
         }
         if(isset($inputs['status']) &&($inputs['status'])!='none'){
             $where .= ' `status` = "'.$inputs['status'].'" AND ';
@@ -222,7 +236,8 @@ class Suggestions extends Controller
                     'key'=> keys_encrypt($re->id),
                     'record_code'=> $re->record_code,
                     'title'=> spilt_title($re->title, 30),
-                    'type'=> $re->type,
+                    'type_id'=> $re->type_id,
+	                'is_hidden' => $re->is_hidden,
                     'status'=> $re->status,
                     'create_date'=> date('Y-m-d H:i',strtotime($re->create_date)),
                 );
@@ -235,5 +250,24 @@ class Suggestions extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>"未能检索到信息!"]);
         }
     }
+
+	public function setHidden(Request $request)
+	{
+		$msg = array(
+			'no'=> '隐藏',
+			'yes'=> '取消隐藏'
+		);
+		$is_hidden = $request->input('is_hidden');
+		$type = $request->input('type');
+		$id = keys_decrypt($request->input('key'));
+		
+		$rs = DB::table('service_'.$type)->where('id', $id)->update(['is_hidden'=> $is_hidden]);
+		if($rs == 1){
+			json_response(['status'=>'succ', 'msg'=> $msg[$is_hidden]]);
+		}
+		else{
+			json_response(['status'=>'failed']);
+		}
+	}
 
 }

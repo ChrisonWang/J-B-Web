@@ -2885,6 +2885,112 @@ function editExpertiseApply(t){
     });
 }
 
+//征求意见和问题咨询中科室与负责人的联动
+function getManager(t, sub) {
+    sub.html('<option value="none" selected>未设置负责人</option>');
+    var url = '/manage/service/suggestionTypes/searchManager';
+    var office_id = t.find("option:selected").val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: url,
+        method: "POST",
+        data: 'office_id='+office_id,
+        success:function(re){
+            if(re.status == 'succ'){
+                var list = re.res;
+                var options = '';
+                $.each(list, function(i,sub){
+                    options += '<option value="'+sub.manager_code+'">'+sub.manager+'</option>';
+                });
+                sub.html(options);
+            }
+            else if(re.status == 'failed'){
+                return;
+            }
+            return;
+        }
+    });
+}
+
+//征求意见分类管理
+function suggestionTypesMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/suggestionTypes/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('type_name')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+ key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editSuggestionTypes(){
+    var url = '/manage/service/suggestionTypes/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editSuggestionTypesForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editSuggestionTypesNotice'));
+            }
+        }
+    });
+}
+
+function addSuggestionTypes(){
+    var url = '/manage/service/suggestionTypes/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addSuggestionTypesForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addSuggestionTypesNotice'));
+            }
+        }
+    });
+}
+
 //征求意见管理
 function suggestionsMethod(t){
     var key = t.data('key');
@@ -2963,6 +3069,108 @@ function search_suggestions(t, c){
         }
     });
     return;
+}
+
+function setHidden(t) {
+    var is_hidden = t.data('is_hidden');
+    var type = t.data('type');
+    var key = t.data('key');
+    var url = '/manage/service/suggestions/setHidden';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: {is_hidden: is_hidden, type: type, key: key},
+        success: function(re){
+            if(re.status == 'succ'){
+                t.data('is_hidden', 'no');
+                t.text(re.msg);
+            }
+            else if(re.status == 'failed'){
+                return false;
+            }
+        }
+    });
+}
+
+//问题咨询分类管理
+function consultionTypesMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/consultionTypes/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('type_name')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+ key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editConsultionTypes(){
+    var url = '/manage/service/consultionTypes/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editConsultionTypesForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editConsultionTypesNotice'));
+            }
+        }
+    });
+}
+
+function addConsultionTypes(){
+    var url = '/manage/service/consultionTypes/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addConsultionTypesForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("操作成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addConsultionTypesNotice'));
+            }
+        }
+    });
 }
 
 //问题咨询管理

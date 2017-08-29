@@ -14,11 +14,18 @@
         <tr>
             <td>
                 <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="show" onclick="suggestionsMethod($(this))">查看</a>
-                @if($suggestion['status'] == 'waiting' && !isset($is_archived))
-                    &nbsp;&nbsp;
-                    <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="edit" onclick="suggestionsMethod($(this))">答复</a>
-                    &nbsp;&nbsp;
-                @endif
+                @if( isset($is_rm) && $is_rm == 'yes')
+		            @if($suggestion['status'] == 'waiting' && !isset($is_archived))
+			            &nbsp;&nbsp;
+			            <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-method="edit" onclick="suggestionsMethod($(this))">答复</a>
+		            @endif
+		            &nbsp;&nbsp;
+	                @if($suggestion['is_hidden'] == 'yes')
+						<a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-is_hidden="no" data-type="suggestions" onclick=setHidden($(this))>取消隐藏</a>
+					@else
+			            <a href="javascript: void(0) ;" data-key="{{ $suggestion['key'] }}" data-is_hidden="yes" data-type="suggestions" onclick=setHidden($(this))>隐藏</a>
+					@endif
+	            @endif
             </td>
             <td>{{ $suggestion['record_code'] }}</td>
             <td>{{ $suggestion['title'] }}</td>
@@ -29,7 +36,7 @@
                     <p style="color:#FFA500; font-weight: bold">待答复</p>
                 @endif
             </td>
-            <td>@if(isset($type_list) && is_array($type_list) && count($type_list)>0){{ isset($type_list[$suggestion['type']]) ? $type_list[$suggestion['type']] : '-' }}@else - @endif</td>
+            <td>@if(isset($type_list) && is_array($type_list) && count($type_list)>0){{ isset($type_list[$suggestion['type_id']]) ? $type_list[$suggestion['type_id']] : '-' }}@else - @endif</td>
             <td>{{ $suggestion['create_date'] }}</td>
         </tr>
     @endforeach

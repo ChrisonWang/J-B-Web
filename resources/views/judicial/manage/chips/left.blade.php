@@ -125,6 +125,8 @@
                         <!-- 子菜单 -->
                         <ul class="nav nav-second-level">
                             <li>
+                                <a href="javascript:void(0);" data-node="service-consultionTypesMng" >问题咨询分类管理</a>
+                                <a href="javascript:void(0);" data-node="service-suggestionTypesMng" >征求意见分类管理</a>
                                 <a href="javascript:void(0);" data-node="service-consultionsMng" >问题咨询管理</a>
                                 <a href="javascript:void(0);" data-node="service-suggestionsMng" >征求意见管理</a>
                             </li>

@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label for="cell_phone" class="col-md-2 control-label">分类：</label>
                 <div class="col-md-3">
-                    <label for="content" class="control-label" style="text-align: left">{{ isset($type_list[$consultion_detail['type']]) ? $type_list[$consultion_detail['type']] : '-' }}</label>
+                    <label for="content" class="control-label" style="text-align: left">{{ isset($type_list[$consultion_detail['type_id']]) ? $type_list[$consultion_detail['type_id']] : '-' }}</label>
                 </div>
             </div>
             <div class="form-group">

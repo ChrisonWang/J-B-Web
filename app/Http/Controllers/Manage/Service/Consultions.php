@@ -29,8 +29,22 @@ class Consultions extends Controller
             'node'=> 'service_consultions',
             'resource'=> 'service_consultions',
         );
-        $this->page_data['thisPageName'] = '问题咨询管理';
-        $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
+	    //获取权限
+	    $this->page_data['is_rm'] = 'no';
+	    $node_p = session('node_p');
+        if(isset($node_p['service-consultionsMng']) && $node_p['service-consultionsMng']=='rw'){
+            $this->page_data['is_rm'] = 'yes';
+        }
+	    //获取分类
+        $type_list = array();
+	    $types = DB::table('service_consultion_types')->get();
+	    if(!is_null($types)){
+		    foreach ($types as $type){
+		        $type_list[$type->type_id] = $type->type_name;
+		    }
+	    }
+        $this->page_data['type_list'] = $type_list;
+	    $this->page_data['thisPageName'] = '问题咨询管理';
     }
 
     public function index($page = 1)
@@ -48,7 +62,8 @@ class Consultions extends Controller
                     'key'=> keys_encrypt($consultion->id),
                     'record_code'=> $consultion->record_code,
                     'title'=> spilt_title($consultion->title, 30),
-                    'type'=> $consultion->type,
+                    'type_id'=> $consultion->type_id,
+	                'is_hidden'=> $consultion->is_hidden,
                     'status'=> $consultion->status,
                     'create_date'=> date('Y-m-d H:i',strtotime($consultion->create_date)),
                 );
@@ -81,7 +96,7 @@ class Consultions extends Controller
                 'key' => keys_encrypt($consultion->id),
                 'record_code' => $consultion->record_code,
                 'title' => $consultion->title,
-                'type' => $consultion->type,
+                'type_id' => $consultion->type_id,
                 'status' => $consultion->status,
                 'name' => $consultion->name,
                 'cell_phone' => $consultion->cell_phone,
@@ -115,7 +130,7 @@ class Consultions extends Controller
                 'key' => keys_encrypt($consultion->id),
                 'record_code' => $consultion->record_code,
                 'title' => $consultion->title,
-                'type' => $consultion->type,
+                'type_id' => $consultion->type_id,
                 'status' => $consultion->status,
                 'name' => $consultion->name,
                 'cell_phone' => $consultion->cell_phone,
@@ -175,7 +190,8 @@ class Consultions extends Controller
                         'key'=> keys_encrypt($consultion->id),
                         'record_code'=> $consultion->record_code,
                         'title'=> spilt_title($consultion->title, 30),
-                        'type'=> $consultion->type,
+                        'type_id'=> $consultion->type_id,
+	                    'is_hidden'=> $consultion->is_hidden,
                         'status'=> $consultion->status,
                         'create_date'=> date('Y-m-d H:i',strtotime($consultion->create_date)),
                     );
@@ -203,8 +219,8 @@ class Consultions extends Controller
         if(isset($inputs['record_code']) && trim($inputs['record_code'])!==''){
             $where .= ' `record_code` LIKE "%'.$inputs['record_code'].'%" AND ';
         }
-        if(isset($inputs['type']) &&($inputs['type'])!='none'){
-            $where .= ' `type` = "'.$inputs['type'].'" AND ';
+        if(isset($inputs['type_id']) &&($inputs['type_id'])!='none'){
+            $where .= ' `type_id` = "'.$inputs['type_id'].'" AND ';
         }
         if(isset($inputs['status']) &&($inputs['status'])!='none'){
             $where .= ' `status` = "'.$inputs['status'].'" AND ';
@@ -220,7 +236,8 @@ class Consultions extends Controller
                     'key'=> keys_encrypt($re->id),
                     'record_code'=> $re->record_code,
                     'title'=> spilt_title($re->title, 30),
-                    'type'=> $re->type,
+                    'type_id'=> $re->type_id,
+	                'is_hidden'=> $consultion->is_hidden,
                     'status'=> $re->status,
                     'create_date'=> date('Y-m-d H:i',strtotime($re->create_date)),
                 );

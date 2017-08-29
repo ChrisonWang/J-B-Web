@@ -622,6 +622,24 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/service/expertiseApplyList/{page?}','Manage\Service\ExpertiseApply@index');
 
         //征求意见管理
+	    Route::get('manage/service/suggestions/setHidden','Manage\Service\Suggestions@setHidden');
+
+	    Route::post('manage/service/suggestionTypes/searchManager','Manage\Service\SuggestionTypes@searchManager');
+
+	    Route::get('manage/service/suggestionTypes/add','Manage\Service\SuggestionTypes@create');
+
+        Route::post('manage/service/suggestionTypes/add','Manage\Service\SuggestionTypes@store');
+
+        Route::get('manage/service/suggestionTypes/show','Manage\Service\SuggestionTypes@show');
+
+        Route::get('manage/service/suggestionTypes/edit','Manage\Service\SuggestionTypes@edit');
+
+        Route::post('manage/service/suggestionTypes/edit','Manage\Service\SuggestionTypes@doEdit');
+
+        Route::get('manage/service/suggestionTypes/delete','Manage\Service\SuggestionTypes@doDelete');
+
+        Route::post('manage/service/suggestionTypesList/{page?}','Manage\Service\SuggestionTypes@index');
+
         Route::get('manage/service/suggestions/show','Manage\Service\Suggestions@show');
 
         Route::get('manage/service/suggestions/edit','Manage\Service\Suggestions@edit');
@@ -635,11 +653,25 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/service/suggestionsList/{page?}','Manage\Service\Suggestions@index');
 
         //问题咨询管理
+	    Route::get('manage/service/consultionTypes/add','Manage\Service\ConsultionTypes@create');
+
+        Route::post('manage/service/consultionTypes/add','Manage\Service\ConsultionTypes@store');
+
+        Route::get('manage/service/consultionTypes/show','Manage\Service\ConsultionTypes@show');
+
+        Route::get('manage/service/consultionTypes/edit','Manage\Service\ConsultionTypes@edit');
+
+        Route::post('manage/service/consultionTypes/edit','Manage\Service\ConsultionTypes@doEdit');
+
+        Route::post('manage/service/consultionTypesList/{page?}','Manage\Service\ConsultionTypes@index');
+
         Route::get('manage/service/consultions/show','Manage\Service\Consultions@show');
 
         Route::get('manage/service/consultions/edit','Manage\Service\Consultions@edit');
 
         Route::post('manage/service/consultions/edit','Manage\Service\Consultions@doEdit');
+
+        Route::get('manage/service/consultions/delete','Manage\Service\Consultions@doDelete');
 
         Route::post('manage/service/consultions/answer','Manage\Service\Consultions@doAnswer');
 
