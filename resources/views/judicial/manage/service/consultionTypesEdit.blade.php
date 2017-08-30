@@ -5,7 +5,7 @@
         </h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" id="editSuggestionTypesForm">
+        <form class="form-horizontal" id="editConsultionTypesForm">
 	        <input type="hidden" id="key" name="key" value="{{ $type_detail['key'] }}" />
             <div class="form-group">
                 <label for="type_name" class="col-md-2 control-label"><strong style="color: red">*</strong> 分类名称：</label>
@@ -45,16 +45,16 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <p class="text-left hidden" id="editSuggestionTypesNotice" style="color: red"></label>
+                    <p class="text-left hidden" id="editConsultionTypesNotice" style="color: red"></label>
                 </div>
             </div>
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-2">
-                    <button type="button" class="btn btn-info btn-block" data-method="pass" onclick="editSuggestionTypes()">提交</button>
+                    <button type="button" class="btn btn-info btn-block" data-method="pass" onclick="editConsultionTypes()">提交</button>
                 </div>
                 <div class="col col-md-2">
-                    <button type="button" class="btn btn-danger btn-block" data-node="service-suggestionTypesMng" onclick="loadContent($(this))">返回列表</button>
+                    <button type="button" class="btn btn-danger btn-block" data-node="service-consultionTypesMng" onclick="loadContent($(this))">返回列表</button>
                 </div>
             </div>
         </form>

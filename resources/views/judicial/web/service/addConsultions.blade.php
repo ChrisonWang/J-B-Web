@@ -36,14 +36,15 @@
                 <div class="form-group">
                     <label for="type" class="col-md-2 control-label text-right"><b style="color: red">*</b>&nbsp;&nbsp;问题分类：</label>
                     <div class="col-md-9">
-                        <select class="form-control" id="type" name="type">
-                            <option value="none" selected>请选择问题类型</option>
-                            <option value="exam">司法考试</option>
-                            <option value="lawyer">律师管理</option>
-                            <option value="notary">司法公证</option>
-                            <option value="expertise">司法鉴定</option>
-                            <option value="aid">法律援助</option>
-                            <option value="other">其他</option>
+                        <select class="form-control" id="type_id" name="type_id">
+                            @if(isset($type_list) && count($type_list)>0)
+                                <option value="none" selected>请选择问题类型</option>
+                                @foreach($type_list as $type_id=> $type_name)
+                                    <option value="{{ $type_id }}" >{{ $type_name }}</option>
+                                @endforeach
+                            @else
+                                <option value="none" selected>未设置问题类型</option>
+                            @endif
                         </select>
                     </div>
                 </div>

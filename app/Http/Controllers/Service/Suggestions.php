@@ -112,7 +112,7 @@ class Suggestions extends Controller
 
     public function search(Request $request){
         $keywords = $request->input('keywords');
-        $sql = 'SELECT * FROM `service_suggestions` WHERE `record_code` LIKE "%'.$keywords.'%" OR `title` LIKE "%'.$keywords.'%"';
+        $sql = 'SELECT * FROM `service_suggestions` WHERE `record_code` LIKE "%'.$keywords.'%" OR `title` LIKE "%'.$keywords.'%" AND `is_hidden` = "no"';
         $res = DB::select($sql);
         $record_list = array();
         if($res && count($res)>0){
@@ -239,7 +239,7 @@ class Suggestions extends Controller
         if(!preg_phone($inputs['cell_phone']) && !preg_phone2($inputs['cell_phone'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写正确的联系电话！（13800000000 或 0398-1234567 或 010-12345678）']);
         }
-        if(!isset($inputs['type_id']) || trim($inputs['type_id'])===''){
+        if(!isset($inputs['type_id']) || trim($inputs['type_id'])==='' || trim($inputs['type_id'])=='none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择留言分类！']);
         }
         if(!isset($inputs['title']) || trim($inputs['title'])===''){

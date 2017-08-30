@@ -112,7 +112,7 @@ class Consultions extends Controller
 
     public function search(Request $request){
         $keywords = $request->input('keywords');
-        $sql = 'SELECT * FROM `service_consultions` WHERE `record_code` LIKE "%'.$keywords.'%" OR `title` LIKE "%'.$keywords.'%"';
+        $sql = 'SELECT * FROM `service_consultions` WHERE `record_code` LIKE "%'.$keywords.'%" OR `title` LIKE "%'.$keywords.'%" AND `is_hidden` = "no"';
         $res = DB::select($sql);
         $record_list = array();
         if($res && count($res)>0){

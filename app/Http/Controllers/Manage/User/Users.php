@@ -751,6 +751,11 @@ class Users extends Controller
         $cell_phone = isset($inputs['search-cell-phone']) ? $inputs['search-cell-phone'] : '';
         $status = isset($inputs['search-status']) ? $inputs['search-status'] : '';
         $office = isset($inputs['search-office']) ? $inputs['search-office'] : '';
+        $start_date = isset($inputs['start_date']) ? $inputs['start_date'] : 0;
+        $end_date = isset($inputs['end_date']) ? $inputs['end_date'] : date('Y-m-d H:i:s', time());
+        if($end_date <= $start_date){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>"结束时间不能大于开始时间!"]);
+        }
 
         //搜索类型
         switch($type){
@@ -768,6 +773,9 @@ class Users extends Controller
                 }
                 if($status !== '' && $status!='none'){
                     $where .= 'a.`disabled` = "'.$status.'" AND ';
+                }
+                if($start_date !== '' || $end_date!='none'){
+                    $where .= 'a.`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
                 }
                 $sql .= $where.'1';
                 $data_member = DB::select($sql);
@@ -791,6 +799,9 @@ class Users extends Controller
                 if($office !== '' && $office!='none'){
                     $where .= ' `office_id` = "'.keys_decrypt($office).'" AND ';
                 }
+                if($start_date !== '' || $end_date!='none'){
+                    $where .= '`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
+                }
                 $sql .= $where.'1';
                 $data_manager = DB::select($sql);
                 break;
@@ -810,6 +821,9 @@ class Users extends Controller
                 }
                 if($status !== '' && $status!='none'){
                     $where_member .= 'a.`disabled` = "'.$status.'" AND ';
+                }
+                if($start_date !== '' || $end_date!='none'){
+                    $where_member .= 'a.`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
                 }
                 $sql_member .= $where_member.'1';
                 $data_member = DB::select($sql_member);
@@ -831,6 +845,9 @@ class Users extends Controller
                 }
                 if($office !== '' && $office!='none'){
                     $where_manager .= ' `office_id` = "'.keys_decrypt($office).'" AND ';
+                }
+                if($start_date !== '' || $end_date!='none'){
+                    $where_manager .= '`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
                 }
                 $sql_manager .= $where_manager.'1';
                 $data_manager = DB::select($sql_manager);

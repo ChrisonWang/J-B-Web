@@ -663,6 +663,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/consultionTypes/edit','Manage\Service\ConsultionTypes@doEdit');
 
+        Route::get('manage/service/consultionTypes/delete','Manage\Service\ConsultionTypes@doDelete');
+
         Route::post('manage/service/consultionTypesList/{page?}','Manage\Service\ConsultionTypes@index');
 
         Route::get('manage/service/consultions/show','Manage\Service\Consultions@show');

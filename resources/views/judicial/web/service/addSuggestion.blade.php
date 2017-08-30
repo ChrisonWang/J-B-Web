@@ -35,11 +35,14 @@
                 </div>
                 <div class="form-group">
                     <label for="type" class="col-md-2 control-label text-right"><b style="color: red">*</b>&nbsp;&nbsp;留言分类：</label>
-                    <div class="col-md-3">
-                        <input name="type" type="radio" value="opinion" checked> 意见&nbsp;&nbsp;
-                        <input name="type" type="radio" value="suggest"> 建议&nbsp;&nbsp;
-                        <input name="type" type="radio" value="complaint"> 投诉&nbsp;&nbsp;
-                        <input name="type" type="radio" value="other"> 其他
+                    <div class="col-md-10">
+                        @if(isset($type_list) && count($type_list)>0)
+                            @foreach($type_list as $type_id=> $type_name)
+                                <input name="type_id" type="radio" value="{{ $type_id }}" checked> {{ $type_name }}&nbsp;&nbsp;
+                            @endforeach
+                        @else
+                            未设置分类
+                        @endif
                     </div>
                 </div>
                 <div class="form-group">

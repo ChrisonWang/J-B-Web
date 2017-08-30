@@ -20,7 +20,7 @@
             <span class="vd_tit">咨询内容</span>
             <ul>
                 <li class="w295">受理编号：{{ $record_detail['record_code'] }}</li>
-                <li class="w295">问题分类：{{ $type_list[$record_detail['type']] }}</li>
+                <li class="w295">问题分类：{{ $type_list[$record_detail['type_id']] }}</li>
                 <li class="w295">咨询时间：{{ $record_detail['create_date'] }}</li>
                 <li class="qui_q">{{ $record_detail['title'] }}</li>
                 <li class="mor_d">

@@ -44,7 +44,7 @@
                 @foreach($record_list as $record)
                     <tr>
                         <td>{{ $record['record_code'] }}</td>
-                        <td>{{ $type_list[$record['type']] }}</td>
+                        <td>{{ $type_list[$record['type_id']] }}</td>
                         <td>{{ spilt_title($record['title'], 50) }}</td>
                         <td>{{ $record['create_date'] }}</td>
                         <td>{{ $record['answer_date'] }}</td>

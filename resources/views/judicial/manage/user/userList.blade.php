@@ -53,6 +53,12 @@
                                     @endif
                                 </select>
                             </div>
+                            <div class="form-group" style="padding: 5px">
+                                <label for="create_date">创建时间：</label>
+                                <input type="text" class="form-control" id="start_date" name="start_date" />
+                                --
+                                <input type="text" class="form-control" id="end_date" name="end_date" />
+                            </div>
                             <input type="hidden" name="s_type" value="users"/>
                             <button type="button" class="btn btn-info" onclick="searchUser($(this), $('#this-container'))">搜索</button>
                         </div>
@@ -66,7 +72,10 @@
                 <thead>
                     <tr>
                         <th width="20%" class="text-center">操作</th>
-                        <th class="text-center">账号</th>
+                        <th class="text-center" style="cursor : pointer" onclick="change_user_sort($(this))">
+                            账号&nbsp;&nbsp;
+                            <i class="fa fa-sort fa-2x" aria-hidden="true"></i>
+                        </th>
                         <th class="text-center">姓名</th>
                         <th class="text-center">手机号码</th>
                         <th class="text-center">用户类型</th>
@@ -103,3 +112,35 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $.datetimepicker.setLocale('zh');
+    var logic = function( currentDateTime ){
+        if (currentDateTime && currentDateTime.getDay() == 6){
+            this.setOptions({
+                minTime:'11:00'
+            });
+        }else
+            this.setOptions({
+                minTime:'8:00'
+            });
+    };
+    $('#start_date').datetimepicker({
+        lang: 'zh',
+        format: "Y-m-d H:i",
+        formatDate: "Y-m-d H:i",
+        todayButton: true,
+        timepicker:true,
+        onChangeDateTime: logic,
+        onShow: logic
+    });
+    $('#end_date').datetimepicker({
+        lang: 'zh',
+        format: "Y-m-d H:i",
+        formatDate: "Y-m-d H:i",
+        todayButton: true,
+        timepicker:true,
+        onChangeDateTime: logic,
+        onShow: logic
+    });
+</script>

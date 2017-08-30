@@ -1761,6 +1761,23 @@ function addUser(){
     });
 }
 
+function change_user_sort(t)
+{
+    var sort_icon = t.find('i');
+    if(sort_icon.hasClass('fa-sort')){
+        sort_icon.removeClass('fa-sort');
+        sort_icon.addClass('fa-sort-desc');
+    }
+    else if(sort_icon.hasClass('fa-sort-desc')){
+        sort_icon.removeClass('fa-sort-desc');
+        sort_icon.addClass('fa-sort-up');
+    }
+    else if(sort_icon.hasClass('fa-sort-up')){
+        sort_icon.removeClass('fa-sort-up');
+        sort_icon.addClass('fa-sort');
+    }
+}
+
 function checkBoxDisabled(cb){
     var c_name = cb.attr('name');
     if(c_name == 'wsbs'){
@@ -1844,7 +1861,12 @@ function searchUser(t, c){
                 c.html(re.res);
             }
             else if(re.status == 'failed'){
-                c.html('<h4 class="text-center">未能检索到信息！</h4>');
+                if(re.type == 'alert'){
+                    alert(re.res);
+                }
+                else {
+                    c.html('<h4 class="text-center">未能检索到信息！</h4>');
+                }
             }
         }
     });
