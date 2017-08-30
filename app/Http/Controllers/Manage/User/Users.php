@@ -49,10 +49,6 @@ class Users extends Controller
 	    else{
 		    $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_members.create_date', 'desc')->get();
 	    }
-        $count = count($members);
-        $count_page = ($count > 30)? ceil($count/30)  : 1;
-        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $members = array_slice($members, 0, $offset);
         foreach($members as $member){
             $user_list[] = array(
                 'key'=> $member->member_code,
@@ -65,6 +61,10 @@ class Users extends Controller
                 '_create_date'=> strtotime($member->create_date)
             );
         }
+	    $count = count($user_list);
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = $page > $count_page ? 0 : ($page - 1) * 30;
+        $user_list = array_slice($user_list, $offset, 30);
 	    //用户排序
 	    if($sort == 'ASC'){
 		    $this->page_data['sort_icon'] = 'fa-sort-desc';
@@ -1148,11 +1148,16 @@ class Users extends Controller
         $arrSort = array();
         foreach($arr AS $uniqid => $row){
             foreach($row AS $key=>$value){
-                $arrSort[$key][$uniqid] = $value;
+	            if($key == 'login_name'){
+		            $arrSort[$key][$uniqid] = strtolower($value);
+	            }
+	            else{
+		            $arrSort[$key][$uniqid] = $value;
+	            }
             }
         }
         if($sort['direction']){
-            array_multisort($arrSort[$sort['field']], constant($sort['direction']), $arr);
+            array_multisort($arrSort[$sort['field']], constant($sort['direction']), SORT_STRING , $arr);
         }
 
         return $arr;
