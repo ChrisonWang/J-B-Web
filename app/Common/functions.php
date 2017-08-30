@@ -235,3 +235,32 @@ function preg_certificate_code($certificate_code)
     $pattern = '/^[\w\s]{17}$/';
     return(preg_match($pattern, $certificate_code));
 }
+
+/**
+	 * 多维数组排序
+	 * @param array $arr	输入数组
+	 * @param string $field		排序字段
+	 * @param string $type		排序类型 SORT_DESC升序	SORT_DESC降序
+	 * @return array
+	 */
+function multi_sort($arr = array(), $field='', $type = 'SORT_DESC')
+{
+	if(empty($arr) || empty($field)){
+			return $arr;
+		}
+	$type = ($type != 'SORT_DESC') ? 'SORT_ASC' : 'SORT_DESC';
+	$sort = array(
+			'direction' => $type,
+			'field' => $field
+		);
+	$arrSort = array();
+	foreach($arr AS $uniqid => $row){
+			foreach($row AS $key=>$value){
+				$arrSort[$key][$uniqid] = $value;
+			}
+		}
+	if($sort['direction']){
+		array_multisort($arrSort[$sort['field']], constant($sort['direction']), $arr);
+	}
+	return $arr;
+}

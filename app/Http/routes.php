@@ -385,7 +385,7 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::get('manage/user/users/delete','Manage\User\Users@doDelete');
 
-        Route::post('manage/cms/usersList/{page?}','Manage\User\Users@index');
+        Route::post('manage/cms/usersList/{page?}/{sort?}','Manage\User\Users@index');
 
         Route::post('manage/user/users/searchUser','Manage\User\Users@searchUser');
 

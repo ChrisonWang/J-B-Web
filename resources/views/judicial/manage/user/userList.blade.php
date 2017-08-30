@@ -74,7 +74,7 @@
                         <th width="20%" class="text-center">操作</th>
                         <th class="text-center" style="cursor : pointer" onclick="change_user_sort($(this))">
                             账号&nbsp;&nbsp;
-                            <i class="fa fa-sort fa-2x" aria-hidden="true"></i>
+                            <i class="fa fa-2x {{ isset($sort_icon) ? $sort_icon : 'fa-sort' }}" aria-hidden="true"></i>
                         </th>
                         <th class="text-center">姓名</th>
                         <th class="text-center">手机号码</th>

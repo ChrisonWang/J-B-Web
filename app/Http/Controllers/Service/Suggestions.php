@@ -16,6 +16,8 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
+use App\Libs\Message;
+
 class Suggestions extends Controller
 {
     public $page_data = array();
@@ -174,6 +176,14 @@ class Suggestions extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'提交失败！']);
         }
         else{
+	        //通过分类id发短信给负责人
+	        $manager = DB::table('service_suggestion_types')
+		        ->leftJoin('user_manager', 'service_suggestion_types.manager_code', '=', 'user_manager.manager_code' )
+		        ->where('service_suggestion_types.type_id', $inputs['type_id'])
+	            ->first();
+			if(isset($manager->cell_phone) && preg_phone($manager->cell_phone)) {
+				Message::send($manager->cell_phone,'征求意见（编号:'.$save_data['record_code'].'）已提交，请及时处理');
+			}
             json_response(['status'=>'succ','type'=>'notice', 'res'=>'提交成功！']);
         }
     }

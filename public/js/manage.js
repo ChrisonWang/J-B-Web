@@ -1765,17 +1765,37 @@ function change_user_sort(t)
 {
     var sort_icon = t.find('i');
     if(sort_icon.hasClass('fa-sort')){
+        var url = '/manage/cms/usersList/1/ASC';
         sort_icon.removeClass('fa-sort');
         sort_icon.addClass('fa-sort-desc');
     }
     else if(sort_icon.hasClass('fa-sort-desc')){
+        var url = '/manage/cms/usersList/1/DESC';
         sort_icon.removeClass('fa-sort-desc');
         sort_icon.addClass('fa-sort-up');
     }
     else if(sort_icon.hasClass('fa-sort-up')){
+        var url = '/manage/cms/usersList/1/NO';
         sort_icon.removeClass('fa-sort-up');
         sort_icon.addClass('fa-sort');
     }
+    //排序
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: true,
+        type: "POST",
+        url: url,
+        success: function(re){
+            if(re.status == 'succ'){
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult();
+            }
+        }
+    });
 }
 
 function checkBoxDisabled(cb){

@@ -17,10 +17,18 @@ class Users extends Controller
 {
     private $page_data = array();
 
-    public function index($page = 1)
+    public function index($page = 1, $sort = '')
     {
         $user_list = array();
-        $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
+	    if($sort == 'ASC'){
+		    $managers = DB::table('user_manager')->orderBy('login_name', 'asc')->get();
+	    }
+	    elseif($sort == 'DESC'){
+		    $managers = DB::table('user_manager')->orderBy('login_name', 'desc')->get();
+	    }
+	    else{
+		    $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
+	    }
         foreach($managers as $key=> $managers){
             $user_list[$key]['key'] = $managers->manager_code;
             $user_list[$key]['login_name'] = $managers->login_name;
@@ -29,9 +37,18 @@ class Users extends Controller
             $user_list[$key]['cell_phone'] = $managers->cell_phone;
             $user_list[$key]['disabled'] = $managers->disabled;
             $user_list[$key]['create_date'] = $managers->create_date;
+            $user_list[$key]['_create_date'] = strtotime($managers->create_date);
         }
         //取出用户
-        $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_member_info.create_date', 'desc')->get();
+	    if($sort == 'ASC'){
+		    $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_members.login_name', 'asc')->get();
+	    }
+	    elseif($sort == 'DESC'){
+		    $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_members.login_name', 'desc')->get();
+	    }
+	    else{
+		    $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_members.create_date', 'desc')->get();
+	    }
         $count = count($members);
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
@@ -48,7 +65,19 @@ class Users extends Controller
                 '_create_date'=> strtotime($member->create_date)
             );
         }
-        $user_list = $this->multi_sort($user_list, '_create_date');
+	    //用户排序
+	    if($sort == 'ASC'){
+		    $this->page_data['sort_icon'] = 'fa-sort-desc';
+		    $user_list = $this->multi_sort($user_list, 'login_name', 'SORT_ASC');
+	    }
+	    elseif($sort == 'DESC'){
+		    $this->page_data['sort_icon'] = 'fa-sort-up';
+		    $user_list = $this->multi_sort($user_list, 'login_name', 'SORT_DESC');
+	    }
+	    else{
+		    $this->page_data['sort_icon'] = 'fa-sort';
+		    $user_list = $this->multi_sort($user_list, '_create_date', 'SORT_DESC');
+	    }
         $pages = array(
             'count' => $count,
             'count_page' => $count_page,
@@ -751,9 +780,9 @@ class Users extends Controller
         $cell_phone = isset($inputs['search-cell-phone']) ? $inputs['search-cell-phone'] : '';
         $status = isset($inputs['search-status']) ? $inputs['search-status'] : '';
         $office = isset($inputs['search-office']) ? $inputs['search-office'] : '';
-        $start_date = isset($inputs['start_date']) ? $inputs['start_date'] : 0;
-        $end_date = isset($inputs['end_date']) ? $inputs['end_date'] : date('Y-m-d H:i:s', time());
-        if($end_date <= $start_date){
+        $start_date = (isset($inputs['start_date']) && !empty($inputs['start_date'])) ? $inputs['start_date'] : date('Y-m-d H:i:s', '0000000000');
+        $end_date = (isset($inputs['end_date']) && !empty($inputs['end_date'])) ? $inputs['end_date'] : date('Y-m-d H:i:s', time());
+        if(($start_date != 0) && ($end_date <= $start_date)){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>"结束时间不能大于开始时间!"]);
         }
 
@@ -774,7 +803,7 @@ class Users extends Controller
                 if($status !== '' && $status!='none'){
                     $where .= 'a.`disabled` = "'.$status.'" AND ';
                 }
-                if($start_date !== '' || $end_date!='none'){
+                if($start_date != 0 || $end_date!='none'){
                     $where .= 'a.`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
                 }
                 $sql .= $where.'1';
@@ -799,9 +828,7 @@ class Users extends Controller
                 if($office !== '' && $office!='none'){
                     $where .= ' `office_id` = "'.keys_decrypt($office).'" AND ';
                 }
-                if($start_date !== '' || $end_date!='none'){
-                    $where .= '`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
-                }
+                $where .= '`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
                 $sql .= $where.'1';
                 $data_manager = DB::select($sql);
                 break;
@@ -822,9 +849,7 @@ class Users extends Controller
                 if($status !== '' && $status!='none'){
                     $where_member .= 'a.`disabled` = "'.$status.'" AND ';
                 }
-                if($start_date !== '' || $end_date!='none'){
-                    $where_member .= 'a.`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
-                }
+                $where_member .= 'a.`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
                 $sql_member .= $where_member.'1';
                 $data_member = DB::select($sql_member);
 
@@ -846,9 +871,7 @@ class Users extends Controller
                 if($office !== '' && $office!='none'){
                     $where_manager .= ' `office_id` = "'.keys_decrypt($office).'" AND ';
                 }
-                if($start_date !== '' || $end_date!='none'){
-                    $where_manager .= '`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
-                }
+                $where_manager .= '`create_date` between "'.$start_date.'" AND "'.$end_date.'" AND ';
                 $sql_manager .= $where_manager.'1';
                 $data_manager = DB::select($sql_manager);
                 break;
