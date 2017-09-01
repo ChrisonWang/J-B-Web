@@ -3128,7 +3128,7 @@ function setHidden(t) {
         data: {is_hidden: is_hidden, type: type, key: key},
         success: function(re){
             if(re.status == 'succ'){
-                t.data('is_hidden', 'no');
+                t.data('is_hidden', re.res);
                 t.text(re.msg);
             }
             else if(re.status == 'failed'){

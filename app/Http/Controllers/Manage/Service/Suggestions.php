@@ -257,13 +257,17 @@ class Suggestions extends Controller
 			'no'=> '隐藏',
 			'yes'=> '取消隐藏'
 		);
+		$res = array(
+			'no'=> 'yes',
+			'yes'=> 'no'
+		);
 		$is_hidden = $request->input('is_hidden');
 		$type = $request->input('type');
 		$id = keys_decrypt($request->input('key'));
 		
 		$rs = DB::table('service_'.$type)->where('id', $id)->update(['is_hidden'=> $is_hidden]);
 		if($rs == 1){
-			json_response(['status'=>'succ', 'msg'=> $msg[$is_hidden]]);
+			json_response(['status'=>'succ', 'msg'=> $msg[$is_hidden], 'res'=> $res[$is_hidden]]);
 		}
 		else{
 			json_response(['status'=>'failed']);

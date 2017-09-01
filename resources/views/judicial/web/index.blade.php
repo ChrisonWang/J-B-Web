@@ -80,6 +80,7 @@
     <div class="vd_left">
         <span class="vd_tit">宣传视频</span>
         <span class="vid_more"><a href="{{ URL::to('/video') }}">更多视频>></a></span>
+	    @if(!empty($video))
         <div class="index_vedio">
             <a href="{{ URL::to('/videoContent').'/'.$video['key'] }}" target="_blank">
                 <img class="image_list" src="{{ isset($video['thumb']) ? $video['thumb'] : '' }}"  controls="controls" width="300" height="200">
@@ -88,6 +89,7 @@
                 <img src="{{ asset('/images/btn_play_50x50.png') }}" width="70" height="70">
             </a>
         </div>
+	    @endif
         <span style="display: block; font-family: MicrosoftYaHei; font-size: 12px; color: #222222; margin-top: 20px">
             {{ isset($video['title']) ? $video['title'] : '未添加' }}
         </span>

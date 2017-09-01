@@ -237,7 +237,7 @@ class Consultions extends Controller
                     'record_code'=> $re->record_code,
                     'title'=> spilt_title($re->title, 30),
                     'type_id'=> $re->type_id,
-	                'is_hidden'=> $consultion->is_hidden,
+	                'is_hidden'=> $re->is_hidden,
                     'status'=> $re->status,
                     'create_date'=> date('Y-m-d H:i',strtotime($re->create_date)),
                 );
