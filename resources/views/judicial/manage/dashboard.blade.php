@@ -17,6 +17,7 @@
 	<!-- 中间容器 -->
 	<div id="page-wrapper" style="padding-top: 15px">
 		<div class="container-fluid" id="manageContainer">
+		@include('judicial.manage.layout.notice')
 		@include('judicial.manage.layout.indexRecommends')
 		</div>
 		<!--修改个人信息模态框-->
