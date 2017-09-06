@@ -726,6 +726,15 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/aidTypeList/{page?}','Manage\Service\AidType@index');
 
+	    //法律援助流程管理
+        Route::get('manage/service/aidIntro/show','Manage\Service\AidIntro@show');
+
+        Route::get('manage/service/aidIntro/edit','Manage\Service\AidIntro@edit');
+
+        Route::post('manage/service/aidIntro/edit','Manage\Service\AidIntro@doEdit');
+
+        Route::post('manage/service/aidIntroList/{page?}','Manage\Service\AidIntro@index');
+
         //车辆管理
         Route::get('manage/system/vehicle/show','Manage\System\Vehicles@show');
 
@@ -762,9 +771,13 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('manage/system/logList/{page?}','Manage\System\Log@index');
 
         //备份管理
+        Route::get('manage/system/backup/getDatetime/{cycle?}','Manage\System\Backup@getDatetime');
+
         Route::get('manage/system/backup/add','Manage\System\Backup@create');
 
         Route::post('manage/system/backup/add','Manage\System\Backup@store');
+
+        Route::post('manage/system/backup/addAuto','Manage\System\Backup@storeAuto');
 
         Route::get('manage/system/backup/delete','Manage\System\Backup@doDelete');
 

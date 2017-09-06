@@ -5,12 +5,12 @@
         </h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" id="introEditForm">
+        <form class="form-horizontal" id="editAidIntroForm">
             <input type="hidden" value="{{ $intro['key'] }}" name="key"/>
             <div class="form-group">
                 <label for="intro" class="col-md-2 control-label">简介：</label>
                 <div class="col-md-8">
-                    <script id="UE_Content" name="intro" type="text/plain"></script>
+                    <script id="UE_Content" name="content" type="text/plain"></script>
                 </div>
             </div>
             <div class="form-group">
@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-10">
-                    <p class="text-left hidden" id="aidIntroEditNotice" style="color: red"></p>
+                    <p class="text-left hidden" id="editAidIntroNotice" style="color: red"></p>
                 </div>
             </div>
             <div class="form-group">
@@ -42,7 +42,7 @@
         var UE_Content = UE.getEditor('UE_Content');
 
         UE_Content.ready(function(){
-            var value = '{!! $intro['introduce'] !!}';
+            var value = '{!! $intro['content'] !!}';
             UE_Content.execCommand('insertHtml',value);
         });
     });

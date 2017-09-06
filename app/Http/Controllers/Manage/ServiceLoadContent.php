@@ -646,4 +646,27 @@ class ServiceLoadContent extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+	private function _content_AidIntroMng($request)
+    {
+        $this->page_data['thisPageName'] = '法律援助申请流程管理';
+        //加载列表数据
+        $aidIntro = array();
+        $intros = DB::table('service_legal_intro')->orderBy('create_date', 'desc')->get();
+        if(count($intros) > 0){
+            foreach($intros as $intro){
+                $aidIntro[] = array(
+                    'key'=> keys_encrypt($intro->id),
+                    'type'=> $intro->type,
+                    'create_date'=> $intro->create_date,
+                    'update_date'=> $intro->update_date,
+                );
+            }
+        }
+
+        $this->page_data['type'] = ['aid'=>'群众预约援助申请流程', 'dispatch'=>'公检法指派援助申请流程'];
+        $this->page_data['aidIntro'] = $aidIntro;
+        $pageContent = view('judicial.manage.service.aidIntroList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
 }

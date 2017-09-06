@@ -2537,6 +2537,35 @@ function searchMembers(t){
     });
 }
 
+//异步加载用户
+function loadMembers(t){
+    var url = '/manage/service/messageSend/loadMembers';
+    var type = $("#receiver_type option:selected").val();
+    var keywords = t.val();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: {keywords: keywords, type:type},
+        success: function(re){
+            if(re.status=='succ'){
+                var str = "";
+                $.each(re.res, function(i,v){
+                    str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +' -> '+ v.cell_phone +'' +
+                        '<input type="hidden" name="member_list" value=""/></li>'
+                });
+                $(".box_l_2").html(str);
+            }
+            else if(re.status=='failed'){
+                $(".box_l_2").html('无结果！');
+            }
+        }
+    });
+}
+
 //短信模板管理
 function messageTmpMethod(t){
     var key = t.data('key');
@@ -3556,6 +3585,61 @@ function addAidType(){
     });
 }
 
+//法律援助申请流程管理
+function aidIntroMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/aidIntro/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editAidIntro(){
+    var url = '/manage/service/aidIntro/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editAidIntroForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editAidIntroNotice'));
+            }
+        }
+    });
+}
+
 //车辆管理
 function vehicleMethod(t){
     var key = t.data('key');
@@ -3799,6 +3883,50 @@ function backupMethod(t){
             }
             else if(re.status == 'failed'){
                 alert(re.res);
+            }
+        }
+    });
+}
+
+function confirmSetting() {
+    var url = '/manage/system/backup/addAuto';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#setting_form').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("设置成功！下次备份的时间为" + re.res);
+                $('#setting_modal').modal('hide');
+            }
+            else if(re.status == 'failed') {
+                alert("设置失败！" + rs.res);
+            }
+        }
+    });
+}
+
+function changeCycle(t) {
+    var cycle = t.val();
+    var url = '';
+    var url = '/manage/system/backup/getDatetime/' + cycle;
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        success: function(re){
+            if(re.status == 'succ'){
+                $('#cycle_date').val(re.res.date);
+                $('#date').val(re.res.date);
+                $('#cycle_time').val(re.res.time);
+                $('#time').val(re.res.time);
             }
         }
     });

@@ -97,6 +97,12 @@
                             <a href="javascript:" id="right_2" class="btn btn-default">
                                 <span class="glyphicon glyphicon-arrow-right"></span>
                             </a>
+	                        <a href="javascript:" id="allleft_2" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                            </a>
+	                        <a href="javascript:" id="allright_2" class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                            </a>
                         </div>
                         <div class="box_r_2"></div>
                     </div>

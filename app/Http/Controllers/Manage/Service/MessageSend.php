@@ -152,7 +152,8 @@ class MessageSend extends Controller
                     }
                 }
                 else{
-                    if(is_array($office_list) && !empty($office_list) && count($office_list)>0){
+	                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择需要发送的个人！']);
+                    /*if(is_array($office_list) && !empty($office_list) && count($office_list)>0){
                         $sql = 'SELECT * FROM `user_manager`';
                         $where = ' WHERE ';
                         foreach($office_list as $office){
@@ -177,7 +178,7 @@ class MessageSend extends Controller
                             }
                         }
                         $save_manager_log = 'all';
-                    }
+                    }*/
                 }
                 break;
 

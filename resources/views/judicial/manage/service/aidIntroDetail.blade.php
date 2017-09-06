@@ -5,12 +5,12 @@
         </h3>
     </div>
     <div class="panel-body">
-        <form class="form-horizontal" id="aidIntroEditForm">
+        <form class="form-horizontal" id="editAidIntroForm">
             <input type="hidden" value="{{ $intro['key'] }}" name="key"/>
             <div class="form-group">
                 <label for="intro" class="col-md-2 control-label">简介：</label>
                 <div class="col-md-8">
-                    <script id="UE_Content" name="intro" type="text/plain"></script>
+                    <script id="UE_Content" name="content" type="text/plain"></script>
                 </div>
             </div>
             <div class="form-group">
@@ -41,7 +41,7 @@
         });
         
         UE_Content.ready(function(){
-            var value = '{!! $intro['introduce'] !!}';
+            var value = '{!! $intro['content'] !!}';
             UE_Content.execCommand('insertHtml',value);
         });
     });

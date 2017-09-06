@@ -14,7 +14,7 @@
                                 {{ $notice_type[$n['type']] }} [{{$n['record_code']}}]  待审核
                             </div>
                             <div class="col-md-4 text-left">
-                                <a >审核</a>
+                                <a data-key="{{ $n['key'] }}" data-method="edit" onclick="{{ $n['method'] }}" style="cursor: pointer">审核</a>
                             </div>
                         </div>
                     @endforeach

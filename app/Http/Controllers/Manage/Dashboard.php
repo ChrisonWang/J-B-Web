@@ -74,7 +74,9 @@ class Dashboard extends Controller
                 foreach($consultions as $c){
                     $notice_list[] = array(
                         'type'=> 'consultions',
-                        'record_code'=> $c->record_code
+                        'record_code'=> $c->record_code,
+                        'key'=> keys_encrypt($c->id),
+	                    'method'=> 'consultionsMethod($(this))'
                     );
                 }
             }
@@ -82,7 +84,9 @@ class Dashboard extends Controller
                 foreach($suggestions as $s){
                     $notice_list[] = array(
                         'type'=> 'suggestions',
-                        'record_code'=> $s->record_code
+                        'record_code'=> $s->record_code,
+	                    'key'=> keys_encrypt($s->id),
+	                    'method'=> 'suggestionsMethod($(this))'
                     );
                 }
             }

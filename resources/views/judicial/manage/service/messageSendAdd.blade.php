@@ -73,7 +73,7 @@
                                 <span class="glyphicon glyphicon-arrow-right"></span>
                             </a>
                         </div>
-                        <div class="box_r"></div>
+                        <div class="box_r" id="office_box_r"></div>
                     </div>
                 </div>
             </div><!-- 科室选择器End -->
@@ -96,6 +96,12 @@
                             </a>
                             <a href="javascript:" id="right_2" class="btn btn-default">
                                 <span class="glyphicon glyphicon-arrow-right"></span>
+                            </a>
+	                        <a href="javascript:" id="allleft_2" class="btn btn-default">
+                                <span class="glyphicon glyphicon-backward"></span>
+                            </a>
+	                        <a href="javascript:" id="allright_2" class="btn btn-default">
+                                <span class="glyphicon glyphicon-forward"></span>
                             </a>
                         </div>
                         <div class="box_r_2"></div>

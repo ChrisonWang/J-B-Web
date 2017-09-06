@@ -138,6 +138,7 @@ class SystemLoadContent extends Controller
                 $backup_list[$key] = array(
                     'key'=> keys_encrypt($backup->id),
                     'backup_date'=> $backup->backup_date,
+                    'type'=> $backup->type,
                     'file_url'=> $backup->file_url,
                     'file_path'=> $backup->file_path,
                 );
@@ -155,6 +156,15 @@ class SystemLoadContent extends Controller
                 'type' => 'backup',
             );
         }
+	    //下次备份
+	    $next = DB::table('system_backup_auto')->first();
+	    $next_info = array(
+		    'date' => date('Y-m-d', $next->next_date),
+		    'time' => date('H:i', $next->next_date),
+		    'cycle_type' => $next->cycle_type
+	    );
+	    $this->page_data['next_info'] = $next_info;
+	    
         $this->page_data['pages'] = $pages;
         $this->page_data['backup_list'] = $backup_list;
         $pageContent = view('judicial.manage.system.backupList',$this->page_data)->render();

@@ -35,6 +35,7 @@ class Backup extends Controller
                 $backup_list[$key] = array(
                     'key'=> keys_encrypt($backup->id),
                     'backup_date'=> $backup->backup_date,
+                    'type'=> $backup->type,
                     'file_url'=> $backup->file_url,
                     'file_path'=> $backup->file_path,
                 );
@@ -52,6 +53,15 @@ class Backup extends Controller
                 'type' => 'backup',
             );
         }
+	    //下次备份
+	    $next = DB::table('system_backup_auto')->first();
+	    $next_info = array(
+		    'date' => date('Y-m-d', $next->next_date),
+		    'time' => date('H:i', $next->next_date),
+		    'cycle_type' => $next->cycle_type
+	    );
+	    $this->page_data['next_info'] = $next_info;
+
         $this->page_data['pages'] = $pages;
         $this->page_data['backup_list'] = $backup_list;
         $pageContent = view('judicial.manage.system.backupList',$this->page_data)->render();
@@ -120,6 +130,7 @@ class Backup extends Controller
                         $backup_list[$key] = array(
                             'key'=> keys_encrypt($backup->id),
                             'backup_date'=> $backup->backup_date,
+                            'type'=> $backup->type,
                             'file_url'=> $backup->file_url,
                             'file_path'=> $backup->file_path,
                         );
@@ -137,6 +148,15 @@ class Backup extends Controller
                         'type' => 'backup',
                     );
                 }
+	            //下次备份
+			    $next = DB::table('system_backup_auto')->first();
+			    $next_info = array(
+				    'date' => date('Y-m-d', $next->next_date),
+				    'time' => date('H:i', $next->next_date),
+				    'cycle_type' => $next->cycle_type
+			    );
+			    $this->page_data['next_info'] = $next_info;
+
                 $this->page_data['pages'] = $pages;
                 $this->page_data['backup_list'] = $backup_list;
                 $pageContent = view('judicial.manage.system.backupList',$this->page_data)->render();
@@ -147,6 +167,43 @@ class Backup extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'生成备份文件失败！']);
         }
 
+    }
+
+	public function storeAuto(Request $request)
+    {
+        $inputs = $request->input();
+	    if($inputs['cycle'] != 'no'){
+		    $date = $inputs['cycle_date'];
+	        $time = $inputs['cycle_time'];
+	    }
+	    else{
+		    $next = DB::table('system_backup_auto')->first();
+		    $res = DB::table('system_backup_auto')->where('id', $next->id)->update(['is_cycle'=> 'no', 'cycle_type'=> 'no']);
+		    if($res === false){
+		        json_response(['status'=>'failed','type'=>'notice', 'res'=> '更新设置失败！']);
+		    }
+		    else{
+			    $datetime = date('Y-m-d H:i', $next->next_date);
+		        json_response(['status'=>'succ','type'=>'notice', 'res'=> $datetime]);
+		    }
+	    }
+
+	    //保存周期备份
+	    $next = DB::table('system_backup_auto')->first();
+	    $next_date = strtotime($date.' '.$time);
+		$save_date = array(
+			'is_cycle'=> 'yes',
+			'cycle_type'=> $inputs['cycle'],
+			'next_date'=> $next_date,
+			'update_date'=> date('Y-m-d H:i:s', time()),
+		);
+		$res = DB::table('system_backup_auto')->where('id', $next->id)->update($save_date);
+	    if($res === false){
+		    json_response(['status'=>'failed','type'=>'notice', 'res'=> '更新设置失败！']);
+	    }
+	    else{
+		    json_response(['status'=>'succ','type'=>'notice', 'res'=> date('Y-m-d H:i:s', $next_date)]);
+	    }
     }
 
     public function doDelete(Request $request)
@@ -173,6 +230,7 @@ class Backup extends Controller
                     $backup_list[$key] = array(
                         'key'=> keys_encrypt($backup->id),
                         'backup_date'=> $backup->backup_date,
+                        'type'=> $backup->type,
                         'file_url'=> $backup->file_url,
                         'file_path'=> $backup->file_path,
                     );
@@ -190,11 +248,55 @@ class Backup extends Controller
                     'type' => 'backup',
                 );
             }
+	        //下次备份
+		    $next = DB::table('system_backup_auto')->first();
+		    $next_info = array(
+			    'date' => date('Y-m-d', $next->next_date),
+			    'time' => date('H:i', $next->next_date),
+			    'cycle_type' => $next->cycle_type
+		    );
+		    $this->page_data['next_info'] = $next_info;
+
             $this->page_data['pages'] = $pages;
             $this->page_data['backup_list'] = $backup_list;
             $pageContent = view('judicial.manage.system.backupList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
     }
+
+	public function getDatetime($cycle)
+	{
+		$date_time = array();
+		switch ($cycle){
+			case 'day':
+				$date_time = array(
+					'date'=> date("Y-m-d",strtotime("+1 day")),
+					'time'=> '02:00'
+				);
+				break;
+
+			case 'week':
+				$date_time = array(
+					'date'=> date("Y-m-d",strtotime("+1 week")),
+					'time'=> '02:00'
+				);
+				break;
+
+			case 'month':
+				$date_time = array(
+					'date'=> date("Y-m-d",strtotime("+1 month")),
+					'time'=> '02:00'
+				);
+				break;
+
+			default:
+				$date_time = array(
+					'date'=> '',
+					'time'=> ''
+				);
+				break;
+		}
+		json_response(['status'=>'succ','type'=> 'notice', 'res'=> $date_time]);
+	}
 
 }
