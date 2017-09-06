@@ -616,4 +616,34 @@ class ServiceLoadContent extends Controller
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }
 
+	private function _content_AidTypeMng($request)
+    {
+        $this->page_data['thisPageName'] = '法律援助事项分类管理';
+        //加载列表数据
+        $type_list = array();
+        $pages = '';
+        $count = DB::table('service_legal_types')->count();
+        $count_page = ($count > 30)? ceil($count/30)  : 1;
+        $offset = 0;
+        $types = DB::table('service_legal_types')->orderBy('create_date', 'desc')->skip($offset)->take(30)->get();
+        if(count($types) > 0){
+            foreach($types as $type){
+                $type_list[] = array(
+                    'key'=> keys_encrypt($type->type_id),
+                    'type_name'=> $type->type_name,
+                );
+            }
+            $pages = array(
+                'count' => $count,
+                'count_page' => $count_page,
+                'now_page' => 1,
+                'type' => 'aidType',
+            );
+        }
+        $this->page_data['pages'] = $pages;
+        $this->page_data['type_list'] = $type_list;
+        $pageContent = view('judicial.manage.service.aidTypeList',$this->page_data)->render();
+        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+    }
+
 }

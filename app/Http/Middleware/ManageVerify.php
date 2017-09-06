@@ -76,6 +76,8 @@ class ManageVerify
                 'service-certificateMng'=> 'rw',
                 'service-expertiseTypeMng'=> 'rw',
                 'service-expertiseApplyMng'=> 'rw',
+                'service-aidTypeMng'=> 'rw',
+                'service-aidIntroMng'=> 'rw',
                 'service-aidApplyMng'=> 'rw',
                 'service-aidDispatchMng'=> 'rw',
                 'service-consultionsMng'=> 'rw',

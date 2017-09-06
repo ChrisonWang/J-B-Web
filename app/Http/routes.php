@@ -711,6 +711,21 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/aidDispatchList/{page?}','Manage\Service\AidDispatch@index');
 
+	    //法律援助事项分类
+        Route::get('manage/service/aidType/show','Manage\Service\AidType@show');
+
+        Route::get('manage/service/aidType/add','Manage\Service\AidType@create');
+
+        Route::post('manage/service/aidType/add','Manage\Service\AidType@store');
+
+        Route::get('manage/service/aidType/edit','Manage\Service\AidType@edit');
+
+        Route::post('manage/service/aidType/edit','Manage\Service\AidType@doEdit');
+
+        Route::get('manage/service/aidType/delete','Manage\Service\AidType@doDelete');
+
+        Route::post('manage/service/aidTypeList/{page?}','Manage\Service\AidType@index');
+
         //车辆管理
         Route::get('manage/system/vehicle/show','Manage\System\Vehicles@show');
 

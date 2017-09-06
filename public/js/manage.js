@@ -3479,6 +3479,83 @@ function search_aidDispatch(t, c){
     });
 }
 
+//法律援助事项分类管理
+function aidTypeMethod(t){
+    var key = t.data('key');
+    var method = t.data('method');
+    var url = '/manage/service/aidType/'+method;
+    if(method == 'delete'){
+        var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        data: 'key='+key,
+        success: function(re){
+            if(re.status == 'succ'){
+                if(method == 'delete'){
+                    alert('删除成功！！！');
+                }
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function editAidType(){
+    var url = '/manage/service/aidType/edit';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#editAidTypeForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("修改成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#editAidTypeNotice'));
+            }
+        }
+    });
+}
+
+function addAidType(){
+    var url = '/manage/service/aidType/add';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        data: $('#addAidTypeForm').serialize(),
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("添加成功！！！");
+                ajaxResult(re);
+            }
+            else if(re.status == 'failed') {
+                ajaxResult(re,$('#addAidTypeNotice'));
+            }
+        }
+    });
+}
+
 //车辆管理
 function vehicleMethod(t){
     var key = t.data('key');

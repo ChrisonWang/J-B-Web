@@ -114,6 +114,8 @@
                         <!-- 子菜单 -->
                         <ul class="nav nav-second-level">
                             <li>
+                                <a href="javascript:void(0);" data-node="service-aidTypeMng" >法律援助事项分类管理</a>
+                                <a href="javascript:void(0);" data-node="service-aidIntroMng" >法律援助申请流程管理</a>
                                 <a href="javascript:void(0);" data-node="service-aidApplyMng" >群众预约援助管理</a>
                                 <a href="javascript:void(0);" data-node="service-aidDispatchMng" >公检法指派援助管理</a>
                             </li>

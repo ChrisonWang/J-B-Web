@@ -239,6 +239,8 @@ return [
         'service-certificateMng'=> '证书持有人管理',
         'service-expertiseTypeMng'=> '司法鉴定类型管理',
         'service-expertiseApplyMng'=> '司法鉴定申请管理',
+        'service-aidTypeMng'=> '法律援助事项分类管理',
+        'service-aidIntroMng'=> '法律援助申请流程管理',
         'service-aidApplyMng'=> '群众预约援助管理',
         'service-aidDispatchMng'=> '公检法指派援助管理',
         'service-suggestionsMng'=> '征求意见管理',
