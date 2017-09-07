@@ -646,6 +646,47 @@ class MessageSend extends Controller
         }
     }
 
+    public function getManager(Request $request)
+    {
+        $office = $request->input('office');
+        if(is_null($office) || count($office)<1){
+            $managers = DB::table('user_manager')->where('disabled', 'no')->get();
+            if(!is_null($managers)){
+                foreach($managers as $m){
+                    $manager_list[] = array(
+                        'key'=> keys_encrypt($m->id),
+                        'name'=> (isset($m->nickname)&&!empty($m->nickname)) ? $m->nickname : $m->login_name,
+                        'login_name'=> (isset($m->nickname)&&!empty($m->nickname)) ? '('.$m->login_name.')' : '',
+                        'cell_phone'=> $m->cell_phone
+                    );
+                }
+            }
+            json_response(['status'=>'succ','type'=>'notice', 'res'=>$manager_list]);
+        }
+        else{
+            $manager_list = array();
+            foreach($office as $office_id){
+                $managers = DB::table('user_manager')->where('office_id', keys_decrypt($office_id))->where('disabled', 'no')->get();
+                if(!is_null($managers)){
+                    foreach($managers as $m){
+                        $manager_list[] = array(
+                            'key'=> keys_encrypt($m->id),
+                            'name'=> (isset($m->nickname)&&!empty($m->nickname)) ? $m->nickname : $m->login_name,
+                            'login_name'=> (isset($m->nickname)&&!empty($m->nickname)) ? '('.$m->login_name.')' : '',
+                            'cell_phone'=> $m->cell_phone
+                        );
+                    }
+                }
+            }
+        }
+        if(empty($manager_list)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'']);
+        }
+        else{
+            json_response(['status'=>'succ','type'=>'notice', 'res'=>$manager_list]);
+        }
+    }
+
     private function _check_input($inputs)
     {
         if(!isset($inputs['temp_code']) || trim($inputs['temp_code'])=='none'){

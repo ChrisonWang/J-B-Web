@@ -134,6 +134,38 @@
 </div>
 <script>
     $(document).ready(function(){
+	    $('#office_box_r').on('DOMSubtreeModified', function(e){
+		    var office_list = $(e.target).find('li');
+		    var data = new Array();
+		    office_list.each(function () {
+			    data.push($(this).data('key'));
+		    });
+            //加载办公室人员
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                async: false,
+                type: "post",
+                url: '/manage/service/messageSend/getManager',
+                data: {office: data},
+                success: function(re){
+                    if(re.status == 'succ'){
+                        var str = "";
+                        $.each(re.res, function(i,v){
+                        str += '<li data-key="'+ v.key +'" data-phone="'+ v.cell_phone +'" style="list-style: none">'+ v.name +' -> '+ v.cell_phone +'' +
+                            '<input type="hidden" name="member_list" value=""/></li>'
+                        });
+                        $(".box_l_2").html(str);
+                    }
+                    else if(re.status == 'failed'){
+                        $(".box_l_2").html('选择的科室下没有人员！');
+                    }
+                }
+            });
+		});
+
+	    //科室，人员选择器
         $(".box").orso({
             boxl:".box_l",//左边大盒子
             boxr:".box_r",//右边大盒子

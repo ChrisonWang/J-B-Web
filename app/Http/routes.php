@@ -568,6 +568,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/messageSend/searchOffice','Manage\Service\MessageSend@searchOffice');
 
+        Route::post('manage/service/messageSend/getManager','Manage\Service\MessageSend@getManager');
+
         //证书持有人管理
         Route::post('manage/service/certificate/send','Manage\Service\Certificate@sendMessage');
 
