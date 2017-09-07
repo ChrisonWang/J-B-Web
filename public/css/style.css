@@ -2701,3 +2701,15 @@ span.btn_7{
   font-size: 64%;
 }
 }
+
+.user_sort_none{
+    background: url("../images/sort_none.png") 65% 52% no-repeat;
+}
+
+.user_sort_asc{
+    background: url("../images/sort_asc.png") 65% 52% no-repeat;
+}
+
+.user_sort_desc{
+    background: url("../images/sort_desc.png") 65% 52% no-repeat;
+}

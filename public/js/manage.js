@@ -1763,21 +1763,21 @@ function addUser(){
 
 function change_user_sort(t)
 {
-    var sort_icon = t.find('i');
-    if(sort_icon.hasClass('fa-sort')){
+    var sort_icon = t;
+    if(sort_icon.hasClass('user_sort_none')){
         var url = '/manage/cms/usersList/1/ASC';
-        sort_icon.removeClass('fa-sort');
-        sort_icon.addClass('fa-sort-desc');
+        sort_icon.removeClass('user_sort_none');
+        sort_icon.addClass('user_sort_asc');
     }
-    else if(sort_icon.hasClass('fa-sort-desc')){
+    else if(sort_icon.hasClass('user_sort_asc')){
         var url = '/manage/cms/usersList/1/DESC';
-        sort_icon.removeClass('fa-sort-desc');
-        sort_icon.addClass('fa-sort-up');
+        sort_icon.removeClass('user_sort_asc');
+        sort_icon.addClass('user_sort_desc');
     }
-    else if(sort_icon.hasClass('fa-sort-up')){
+    else if(sort_icon.hasClass('user_sort_desc')){
         var url = '/manage/cms/usersList/1/NO';
-        sort_icon.removeClass('fa-sort-up');
-        sort_icon.addClass('fa-sort');
+        sort_icon.removeClass('user_sort_desc');
+        sort_icon.addClass('user_sort_none');
     }
     //排序
     $.ajax({

@@ -292,3 +292,6 @@ Homestead.json
 /resources/views/vendor/UEditor/.gitkeep
 /resources/views/vendor/UEditor/head.blade.php
 /public/uploads
+/public/images/sort_desc.png
+/public/images/sort_none.png
+/public/images/sort_asc.png

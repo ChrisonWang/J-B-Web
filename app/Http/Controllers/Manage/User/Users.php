@@ -67,15 +67,15 @@ class Users extends Controller
         $user_list = array_slice($user_list, $offset, 30);
 	    //用户排序
 	    if($sort == 'ASC'){
-		    $this->page_data['sort_icon'] = 'fa-sort-desc';
+		    $this->page_data['sort_icon'] = 'user_sort_asc';
 		    $user_list = $this->multi_sort($user_list, 'login_name', 'SORT_ASC');
 	    }
 	    elseif($sort == 'DESC'){
-		    $this->page_data['sort_icon'] = 'fa-sort-up';
+		    $this->page_data['sort_icon'] = 'user_sort_desc';
 		    $user_list = $this->multi_sort($user_list, 'login_name', 'SORT_DESC');
 	    }
 	    else{
-		    $this->page_data['sort_icon'] = 'fa-sort';
+		    $this->page_data['sort_icon'] = 'user_sort_none';
 		    $user_list = $this->multi_sort($user_list, '_create_date', 'SORT_DESC');
 	    }
         $pages = array(
