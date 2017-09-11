@@ -10,7 +10,7 @@
     <!-- 左侧菜单 -->
     @include('judicial.web.layout.serviceLeft');
 
-    <div class="zw_right w810">
+    <div class="zw_right w810" style="margin-bottom: 30px">
         <div class="zwr_top">
             <div class="zwr_top">
                 <span onclick="javascript: window.location.href='{{ URL::to('/') }}'">首页&nbsp;&nbsp;>&nbsp;</span>
@@ -163,6 +163,33 @@
                             <input type="checkbox" name="salary_dispute" @if($record_detail['salary_dispute'] == 'yes') checked @endif value="yes" style="width: 20px;"/>
                         </div>
                     </li>
+	                <br/>
+		            <li>
+	                    <span class="wsc_txt" style="width: 120px; margin-left: 20px"><b style="color: red; vertical-align: middle"> * </b>法律援助事项类别</span>
+	                    <div class="cx_inp">
+	                        <select name="aid_type">
+		                        <option value="none" selected>请选择法律援助事项类别</option>
+		                        @if(isset($legal_types) && !empty($legal_types))
+									@foreach($legal_types as $type)
+										<option value="{{ $type['type_id'] }}" @if( $type['aid_type'] == $record_detail['aid_type'] ) selected @endif >
+											{{ $type['type_name'] }}
+										</option>
+									@endforeach
+								@endif
+	                        </select>
+	                    </div>
+	                </li>
+		            <br/>
+		            <li>
+	                    <span class="wsc_txt" style="width: 90px;"><b style="color: red; vertical-align: middle"> * </b>案件分类</span>
+	                    <div class="cx_inp">
+	                        <select name="case_type">
+		                        <option value="none" selected>请选择案件分类</option>
+		                        <option value="xs" @if($record_detail['case_type'] == 'xs') selected @endif>刑事</option>
+	                        <option value="msxz" @if($record_detail['case_type'] == 'msxz') selected @endif>民事或行政</option>
+	                        </select>
+	                    </div>
+	                </li>
                     <li>
                         <span class="wsc_txt"  style="width: 90px"><b style="color: red; vertical-align: middle"> * </b>发生地点</span>
                         <div class="cx_inp">

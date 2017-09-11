@@ -40,7 +40,7 @@
                 受理编号:{{$record_detail['record_code']}}
             </span>
         </div>
-        <div class="text_a post_btn gjf" style="padding-bottom: 40px">
+        <div class="text_a post_btn gjf" style="padding-bottom: 40px; height: 940px">
             <form id="aidDispatchForm">
                 <input type="hidden" name="key" value="{{$record_detail['record_code']}}">
             <ul>
@@ -66,6 +66,32 @@
                     <span class="wsc_txt" style="width: 115px;"><b style="color: red; vertical-align: middle"> * </b>犯罪人身份证号码</span>
                     <div class="cx_inp">
                         <input type="text"value="{{ $record_detail['criminal_id'] }}"  name="criminal_id" placeholder="请输入犯罪人身份证号码" style="width: 200px;" />
+                    </div>
+                </li>
+	            <li>
+                    <span class="wsc_txt" style="width: 120px; margin-left: 20px"><b style="color: red; vertical-align: middle"> * </b>法律援助事项类别</span>
+                    <div class="cx_inp">
+                        <select name="aid_type">
+	                        <option value="none" selected>请选择法律援助事项类别</option>
+	                        @if(isset($legal_types) && !empty($legal_types))
+								@foreach($legal_types as $type)
+									<option value="{{ $type['type_id'] }}" @if( $type['aid_type'] == $record_detail['aid_type'] ) selected @endif >
+										{{ $type['type_name'] }}
+									</option>
+								@endforeach
+							@endif
+                        </select>
+                    </div>
+                </li>
+	            <br/>
+	            <li>
+                    <span class="wsc_txt" style="width: 90px;"><b style="color: red; vertical-align: middle"> * </b>案件分类</span>
+                    <div class="cx_inp">
+                        <select name="case_type">
+	                        <option value="none" selected>请选择案件分类</option>
+	                        <option value="xs" @if($record_detail['case_type'] == 'xs') selected @endif>刑事</option>
+	                        <option value="msxz" @if($record_detail['case_type'] == 'msxz') selected @endif>民事或行政</option>
+                        </select>
                     </div>
                 </li>
                 <li>

@@ -73,6 +73,22 @@ class AidApply extends Controller
 	    }
 	    $this->page_data['intro_content'] = $content;
 
+	    //取出分类
+	    $legal_types = array();
+	    $_types = DB::table('service_legal_types')->get();
+	    if(!is_null($_types) && !empty($_types)){
+		    foreach ($_types as $type){
+			    $legal_types[$type->type_id] = array(
+					'type_id'=> $type->type_id,
+					'type_name'=> $type->type_name,
+					'create_date'=> $type->create_date,
+					'update_date'=> $type->update_date
+			    );
+		    }
+	    }
+	    $this->page_data['legal_types'] = $legal_types;
+	    $this->page_data['case_types'] = ['xs'=> '刑事', 'msxz'=>'民事或行政'];
+
         $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
         $this->page_data['political'] = ['cp'=>'党员', 'cyl'=>'团员', 'citizen'=>'群众'];
         $this->page_data['zwgk_list'] = $zwgk_list;
@@ -180,6 +196,8 @@ class AidApply extends Controller
                 'happened_date' => date('Y-m-d H:i:s', strtotime($inputs['happened_date'])),
                 'case_area_id' => keys_decrypt($inputs['case_area_id']),
                 'type' => $inputs['type'],
+                'aid_type' => $inputs['aid_type'],
+                'case_type' => $inputs['case_type'],
                 'salary_dispute' => isset($inputs['salary_dispute'])&&$inputs['salary_dispute']=='yes' ? 'yes' : 'no',
                 'case_location' => $inputs['case_location'],
                 'dispute_description' => $inputs['dispute_description'],
@@ -207,6 +225,8 @@ class AidApply extends Controller
                 'happened_date' => date('Y-m-d H:i:s', strtotime($inputs['happened_date'])),
                 'case_area_id' => keys_decrypt($inputs['case_area_id']),
                 'type' => $inputs['type'],
+	            'aid_type' => $inputs['aid_type'],
+                'case_type' => $inputs['case_type'],
                 'salary_dispute' => isset($inputs['salary_dispute'])&&$inputs['salary_dispute']=='yes' ? 'yes' : 'no',
                 'case_location' => $inputs['case_location'],
                 'dispute_description' => $inputs['dispute_description'],
@@ -251,6 +271,8 @@ class AidApply extends Controller
                 'salary_dispute' => $record->salary_dispute,
                 'case_location' => $record->case_location,
                 'dispute_description' => $record->dispute_description,
+	            'aid_type'=> $record->aid_type,
+                'case_type'=> $record->case_type,
                 'status' => $record->status,
                 'file' => $record->file,
                 'file_name' => $record->file_name,
@@ -285,6 +307,8 @@ class AidApply extends Controller
                 'salary_dispute' => $record->salary_dispute,
                 'case_location' => $record->case_location,
                 'dispute_description' => $record->dispute_description,
+	            'aid_type'=> $record->aid_type,
+                'case_type'=> $record->case_type,
                 'file' => $record->file,
                 'file_name' => $record->file_name,
             );
@@ -332,6 +356,12 @@ class AidApply extends Controller
         }
         if(!isset($inputs['type']) || trim($inputs['type'])==='' || trim($inputs['type'])=='none'){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择“案件类型”']);
+        }
+	    if(!isset($inputs['aid_type']) || trim($inputs['aid_type'])==='none' ){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的“请选择法律援助事项类别”！']);
+        }
+	    if(!isset($inputs['case_type']) || trim($inputs['case_type'])==='none' || !in_array($inputs['case_type'], array('xs', 'msxz'))){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的“案件分类”！']);
         }
         if(!isset($inputs['case_location']) || trim($inputs['case_location'])==='' || mb_strlen(trim($inputs['case_location']), 'UTF-8') > 200){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“发生地点”应为长度200以内的字符串']);

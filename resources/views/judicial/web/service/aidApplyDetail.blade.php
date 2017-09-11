@@ -10,7 +10,7 @@
     <!-- 左侧菜单 -->
     @include('judicial.web.layout.serviceLeft');
 
-    <div class="zw_right w810">
+    <div class="zw_right w810" style="margin-bottom: 30px">
         <div class="zwr_top">
             <div class="zwr_top">
                 <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
@@ -143,6 +143,20 @@
                             <input disabled type="checkbox" name="salary_dispute" @if($record_detail['salary_dispute'] == 'yes') checked @endif value="yes" style="width: 20px"/>
                         </div>
                     </li>
+	                <br/>
+		            <li>
+	                    <span class="wsc_txt" style="width: 120px; margin-left: 20px"><b style="color: red; vertical-align: middle"> * </b>法律援助事项类别</span>
+	                    <div class="cx_inp">
+		                    <input disabled type="text" value='{{ $legal_types[$record_detail['aid_type']]['type_name'] }}' name="aid_type" placeholder="" />
+	                    </div>
+	                </li>
+		            <br/>
+		            <li>
+	                    <span class="wsc_txt" style="width: 90px;"><b style="color: red; vertical-align: middle"> * </b>案件分类</span>
+	                    <div class="cx_inp">
+		                    <input disabled type="text" value='@if($record_detail['case_type'] == 'xs') 刑事 @else 民事或行政 @endif' name="case_type" placeholder="" />
+	                    </div>
+	                </li>
                     <li>
                         <span class="wsc_txt" style="width: 80px; margin-left: 0">发生地点</span>
                         <div class="cx_inp">

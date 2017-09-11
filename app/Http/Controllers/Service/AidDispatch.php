@@ -66,6 +66,22 @@ class AidDispatch extends Controller
 	    }
 	    $this->page_data['intro_content'] = $content;
 
+	    //取出分类
+	    $legal_types = array();
+	    $_types = DB::table('service_legal_types')->get();
+	    if(!is_null($_types) && !empty($_types)){
+		    foreach ($_types as $type){
+			    $legal_types[$type->type_id] = array(
+					'type_id'=> $type->type_id,
+					'type_name'=> $type->type_name,
+					'create_date'=> $type->create_date,
+					'update_date'=> $type->update_date
+			    );
+		    }
+	    }
+	    $this->page_data['legal_types'] = $legal_types;
+	    $this->page_data['case_types'] = ['xs'=> '刑事', 'msxz'=>'民事或行政'];
+
         $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['wsbs_list'] = $wsbs_list;
@@ -102,6 +118,8 @@ class AidDispatch extends Controller
                 'case_name'=> $record->case_name,
                 'case_description'=> $record->case_description,
                 'detention_location'=> $record->detention_location,
+	            'aid_type'=> $record->aid_type,
+                'case_type'=> $record->case_type,
                 'judge_description'=> $record->judge_description,
                 'status'=> $record->status,
                 'file'=> $record->file,
@@ -129,6 +147,8 @@ class AidDispatch extends Controller
                 'case_name'=> $record->case_name,
                 'case_description'=> $record->case_description,
                 'detention_location'=> $record->detention_location,
+	            'aid_type'=> $record->aid_type,
+                'case_type'=> $record->case_type,
                 'judge_description'=> $record->judge_description,
                 'file'=> $record->file,
                 'file_name'=> $record->file_name,
@@ -188,6 +208,8 @@ class AidDispatch extends Controller
                 'apply_aid_office' => $inputs['apply_aid_office'],
                 'criminal_name' => $inputs['criminal_name'],
                 'criminal_id' => $inputs['criminal_id'],
+	            'aid_type' => $inputs['aid_type'],
+                'case_type' => $inputs['case_type'],
                 'case_name' => $inputs['case_name'],
                 'case_description' => $inputs['case_description'],
                 'detention_location' => $inputs['detention_location'],
@@ -208,6 +230,8 @@ class AidDispatch extends Controller
                 'apply_aid_office' => $inputs['apply_aid_office'],
                 'criminal_name' => $inputs['criminal_name'],
                 'criminal_id' => $inputs['criminal_id'],
+	            'aid_type' => $inputs['aid_type'],
+                'case_type' => $inputs['case_type'],
                 'case_name' => $inputs['case_name'],
                 'case_description' => $inputs['case_description'],
                 'detention_location' => $inputs['detention_location'],
@@ -240,6 +264,12 @@ class AidDispatch extends Controller
         }
         if(!isset($inputs['criminal_id']) || trim($inputs['criminal_id'])==='' || !preg_identity(trim($inputs['criminal_id'])) ){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写真实有效的“犯罪人身份证号码”！']);
+        }
+	    if(!isset($inputs['aid_type']) || trim($inputs['aid_type'])==='none' ){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的“请选择法律援助事项类别”！']);
+        }
+	    if(!isset($inputs['case_type']) || trim($inputs['case_type'])==='none' || !in_array($inputs['case_type'], array('xs', 'msxz'))){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的“案件分类”！']);
         }
         if(!isset($inputs['case_name']) || trim($inputs['case_name'])==='' || mb_strlen(trim($inputs['case_name']), 'UTF-8') > 200){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'“案件名称”不能为空且长度200以内的字符串']);

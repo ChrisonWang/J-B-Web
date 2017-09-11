@@ -40,7 +40,7 @@
                 受理编号:{{$record_detail['record_code']}}
             </span>
         </div>
-        <div class="text_a post_btn gjf" style="padding-bottom: 40px">
+        <div class="text_a post_btn gjf" style="padding-bottom: 40px; height: 940px">
             <form id="aidDispatchForm">
             <ul>
                 <li>
@@ -67,6 +67,20 @@
                         <input type="text"value="{{ $record_detail['criminal_id'] }}"  name="criminal_id" placeholder="请输入犯罪人身份证号码" style="width: 206px" disabled>
                     </div>
                 </li>
+	            <br/>
+		            <li>
+	                    <span class="wsc_txt" style="width: 120px; margin-left: 20px"><b style="color: red; vertical-align: middle"> * </b>法律援助事项类别</span>
+	                    <div class="cx_inp">
+		                    <input disabled type="text" value='{{ $legal_types[$record_detail['aid_type']]['type_name'] }}' name="aid_type" placeholder="" />
+	                    </div>
+	                </li>
+		            <br/>
+		            <li>
+	                    <span class="wsc_txt" style="width: 90px;"><b style="color: red; vertical-align: middle"> * </b>案件分类</span>
+	                    <div class="cx_inp">
+		                    <input disabled type="text" value='@if($record_detail['case_type'] == 'xs') 刑事 @else 民事或行政 @endif' name="case_type" placeholder="" />
+	                    </div>
+	                </li>
                 <li>
                     <span class="wsc_txt" style="width: 80px">案件名称</span>
                     <div class="cx_inp">
