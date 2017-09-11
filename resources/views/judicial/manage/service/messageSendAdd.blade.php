@@ -72,6 +72,12 @@
                             <a href="javascript:" id="right" class="btn btn-default">
                                 <span class="glyphicon glyphicon-arrow-right"></span>
                             </a>
+	                        <a href="javascript:" id="allleft" class="btn btn-default">
+                                <span class="glyphicon glyphicon-backward"></span>
+                            </a>
+	                        <a href="javascript:" id="allright" class="btn btn-default">
+                                <span class="glyphicon glyphicon-forward"></span>
+                            </a>
                         </div>
                         <div class="box_r" id="office_box_r"></div>
                     </div>

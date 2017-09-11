@@ -58,6 +58,14 @@ class AidDispatch extends Controller
                 );
             }
         }
+	    //取出流程说明
+	    $content = '';
+	    $intro = DB::table('service_legal_intro')->where('type', 'dispatch')->first();
+	    if(isset($intro->content) && !empty($intro->content)){
+		    $content = $intro->content;
+	    }
+	    $this->page_data['intro_content'] = $content;
+
         $this->page_data['type_list'] = ['exam'=>'司法考试','lawyer'=>'律师管理','notary'=>'司法公证','expertise'=>'司法鉴定','aid'=>'法律援助','other'=>'其他'];
         $this->page_data['zwgk_list'] = $zwgk_list;
         $this->page_data['wsbs_list'] = $wsbs_list;

@@ -22,13 +22,20 @@
 
         <div class="wsfy_tit">
             <span class="wfb_tit">群众预约援助流程</span>
-            <ul>
+            {{--<ul>
                 <li><i>■</i>申请人填写《法律援助申请表》<a href="{{ URL::to('/').'/uploads/system/files/群众预约援助表.xlsx'}}" target="_blank">点击下载附件</a></li>
                 <li><i>■</i>申请人填写《法律援助申请人经济情况证明表》，需证明单位签章<a href="{{ URL::to('/').'/uploads/system/files/群众预约援助表.xlsx'}}" target="_blank">点击下载附件</a>（民工讨薪无需提供）</li>
                 <li><i>■</i>申请人在本系统提交预约申请，并上传扫描附件。</li>
                 <li><i>■</i>审核通过后，短信提醒申请人，携带相关材料来司法局办理相关手续。</li>
                 <li><i>■</i>如果审批不通过，请按提示重新提交申请。</li>
-            </ul>
+            </ul>--}}
+	        <span class="wfb_content">
+		        @if(isset($intro_content) && !empty($intro_content))
+				{!! $intro_content !!}
+		        @else
+					<li>请先在后台设置群众预约援助流程！</li>
+		        @endif
+	        </span>
         </div>
         <div class="xx_tit" style="padding-left: 150px">
             群众预约援助申请

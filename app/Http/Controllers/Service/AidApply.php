@@ -65,6 +65,14 @@ class AidApply extends Controller
                 );
             }
         }
+	    //取出流程说明
+	    $content = '';
+	    $intro = DB::table('service_legal_intro')->where('type', 'aid')->first();
+	    if(isset($intro->content) && !empty($intro->content)){
+		    $content = $intro->content;
+	    }
+	    $this->page_data['intro_content'] = $content;
+
         $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
         $this->page_data['political'] = ['cp'=>'党员', 'cyl'=>'团员', 'citizen'=>'群众'];
         $this->page_data['zwgk_list'] = $zwgk_list;

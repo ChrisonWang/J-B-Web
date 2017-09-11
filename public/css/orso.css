@@ -8,7 +8,7 @@ ul,li{list-style:none;}
 .box_l li:hover,.box_r li:hover,.box_l li.on,.box_r li.on{background:#3672a0;color:#FFFFFF;}
 .box_l{float:left;}
 .box_m{width:60px;float:left;text-align:center;}
-.box_m a{padding:5px 10px;background:#fff;border:1px solid #ccc;margin:40px auto;display:block;width:40px;}
+.box_m a{padding:5px 10px;background:#fff;border:1px solid #ccc;margin:20px auto;display:block;width:40px;}
 .box_r{float:right;}
 
 .box_2{width:700px;margin:20px auto;}

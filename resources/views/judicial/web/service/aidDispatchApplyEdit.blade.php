@@ -20,12 +20,19 @@
 
         <div class="wsfy_tit">
             <span class="wfb_tit">公检法指派援助流程</span>
-            <ul>
+            {{--<ul>
                 <li><i>■</i>申请人需要准备材料《提供法律援助通知书》和案件材料（起诉书/证据）。</li>
                 <li><i>■</i>申请人在本系统提交预约申请，并上传扫描附件。</li>
                 <li><i>■</i>审核通过后，短信提醒申请人，携带相关材料来司法局办理相关手续。</li>
                 <li><i>■</i>如果审批不通过，请按提示重新提交申请。</li>
-            </ul>
+            </ul>--}}
+	        <span class="wfb_content">
+		        @if(isset($intro_content) && !empty($intro_content))
+				{!! $intro_content !!}
+		        @else
+					<li>请先在后台设置公检法指派援助流程！</li>
+		        @endif
+	        </span>
         </div>
         <div class="xx_tit">
             公检法指派援助申请
