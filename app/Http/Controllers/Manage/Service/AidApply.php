@@ -38,6 +38,23 @@ class AidApply extends Controller
             }
         }
         $this->page_data['area_list'] = $area_list;
+
+	    //取出分类
+	    $legal_types = array();
+	    $_types = DB::table('service_legal_types')->get();
+	    if(!is_null($_types) && !empty($_types)){
+		    foreach ($_types as $type){
+			    $legal_types[$type->type_id] = array(
+					'type_id'=> $type->type_id,
+					'type_name'=> $type->type_name,
+					'create_date'=> $type->create_date,
+					'update_date'=> $type->update_date
+			    );
+		    }
+	    }
+	    $this->page_data['legal_types'] = $legal_types;
+	    $this->page_data['case_types'] = ['xs'=> '刑事', 'msxz'=>'民事或行政'];
+	    
         $this->page_data['thisPageName'] = '群众预约援助管理';
         $this->page_data['political_list'] = ['citizen'=>'群众', 'cp'=>'党员', 'cyl'=>'团员'];
         $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];

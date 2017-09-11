@@ -14,6 +14,18 @@
                      <label for="name" class="control-label" style="text-align: left">{{ $apply_detail['record_code'] }}</label>
                 </div>
             </div>
+	        <div class="form-group">
+                <label for="aid_type" class="col-md-2 control-label">事项分类：</label>
+                <div class="col-md-3">
+                     <label for="name" class="control-label" style="text-align: left">{{ $legal_types[$apply_detail['aid_type']]['type_name'] }}</label>
+                </div>
+            </div>
+	        <div class="form-group">
+                <label for="case_type" class="col-md-2 control-label">案件分类：</label>
+                <div class="col-md-3">
+                     <label for="name" class="control-label" style="text-align: left">{{ $case_types[$apply_detail['case_type']] }}</label>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="record_code" class="col-md-2 control-label">申请人信息</label>
             </div>

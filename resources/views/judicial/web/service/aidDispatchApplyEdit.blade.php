@@ -75,7 +75,7 @@
 	                        <option value="none" selected>请选择法律援助事项类别</option>
 	                        @if(isset($legal_types) && !empty($legal_types))
 								@foreach($legal_types as $type)
-									<option value="{{ $type['type_id'] }}" @if( $type['aid_type'] == $record_detail['aid_type'] ) selected @endif >
+									<option value="{{ $type['type_id'] }}" @if( $type['type_id'] == $record_detail['aid_type'] ) selected @endif >
 										{{ $type['type_name'] }}
 									</option>
 								@endforeach
