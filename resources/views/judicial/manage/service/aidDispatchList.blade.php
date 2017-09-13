@@ -24,8 +24,9 @@
                                 <label for="status">审批状态：</label>
                                 <select class="form-control" name="status" id="status">
                                     <option value="none">不限</option>
-                                    <option value="waiting">待审核</option>
-                                    <option value="pass">通过</option>
+                                    <option value="waiting">待指派</option>
+                                    <option value="pass">已指派</option>
+	                                <option value="archived">结案</option>
                                     <option value="reject">驳回</option>
                                 </select>
                             </div>
@@ -41,6 +42,17 @@
                                 <label for="case_name">案件名称：</label>
                                 <input type="text" class="form-control" id="case_name" name="case_name" placeholder="请输入案件名称">
                             </div>
+	                        <div class="form-group" style="padding: 10px">
+                                <label for="case_name">事项分类：</label>
+                                <select class="form-control" name="aid_type" id="aid_type">
+                                    <option value="none">不限</option>
+	                                @if( isset($legal_types) && !empty($legal_types) )
+										@foreach($legal_types as $l_type)
+                                            <option value="{{ $l_type['type_id'] }}">{{ $l_type['type_name'] }}</option>
+		                                @endforeach
+	                                @endif
+                                </select>
+                            </div>
                             <button id="search" type="button" class="btn btn-info" onclick="search_aidDispatch($(this), $('#this-container'))">搜索</button>
                         </div>
                     </form>
@@ -55,6 +67,7 @@
                     <tr>
                         <th width="15%" class="text-center">操作</th>
                         <th width="10%" class="text-center">申请编号</th>
+                        <th width="10%" class="text-center">事项分类</th>
                         <th width="10%" class="text-center">审批状态</th>
                         <th width="15%" class="text-center">申请单位</th>
                         <th width="20%" class="text-center">申请援助单位</th>
@@ -67,19 +80,26 @@
                     <td>
                         <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-archived_key="{{ isset($archived_key)?$archived_key:'' }}" data-method="show" data-archived="{{ (isset($is_archived)&&$is_archived=='yes') ? 'yes' : 'no' }}" onclick="aidDispatchMethod($(this))">查看</a>
                         @if($apply['status'] == 'waiting' && !isset($is_archived))
-                        &nbsp;&nbsp;
-                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="edit" onclick="aidDispatchMethod($(this))">审批</a>
-                        &nbsp;&nbsp;
+	                        &nbsp;&nbsp;
+	                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="edit" onclick="aidDispatchMethod($(this))">指派</a>
+	                        &nbsp;&nbsp;
+						@elseif($apply['status'] == 'pass' && !isset($is_archived))
+							&nbsp;&nbsp;
+	                        <a href="javascript: void(0) ;" data-r_code="{{ $apply['record_code'] }}" data-key="{{ $apply['key'] }}" data-method="archived" onclick="aidDispatchMethod($(this))">结案</a>
+	                        &nbsp;&nbsp;
                         @endif
                     </td>
                     <td>{{ $apply['record_code'] }}</td>
+                    <td>{{ $legal_types[$apply['aid_type']]['type_name'] }}</td>
                     <td>
                         @if($apply['status'] == 'pass')
-                            <p style="color:green; font-weight: bold">通过</p>
+                            <p style="color:green; font-weight: bold">已指派</p>
                         @elseif($apply['status'] == 'reject')
                             <p style="color:red; font-weight: bold">驳回</p>
+	                    @elseif($apply['status'] == 'archived')
+                            <p style="color:red; font-weight: bold">已结案</p>
                         @else
-                            <p style="color:#FFA500; font-weight: bold">待审核</p>
+                            <p style="color:#FFA500; font-weight: bold">待指派</p>
                         @endif
                     </td>
                     <td>{{ spilt_title($apply['apply_office'], 20) }}</td>

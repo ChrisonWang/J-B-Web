@@ -3420,11 +3420,18 @@ function search_aidApply(t, c){
 function aidDispatchMethod(t){
     var key = t.data('key');
     var method = t.data('method');
-    var archived = t.data('archived');
-    var archived_key = t.data('archived_key');
+    var archived = t.data('archived') || '';
+    var archived_key = t.data('archived_key') || '';
+    var r_code = t.data('r_code') || '';
     var url = '/manage/service/aidDispatch/'+method;
     if(method == 'delete'){
         var c = confirm("确认删除："+ t.data('title')+"？");
+        if(c != true){
+            return false;
+        }
+    }
+    if(method == 'archived'){
+        var c = confirm("确认将记录["+ r_code +"]结案？");
         if(c != true){
             return false;
         }
@@ -3454,13 +3461,19 @@ function aidDispatchMethod(t){
 function editAidDispatch(t){
     var method = t.data('method');
     if(method == 'pass'){
-        var c = confirm("确认通过这条法律援助申请？");
+        var c = confirm("确认指派？");
+        if(c != true){
+            return false;
+        }
+    }
+    if(method == 'archived'){
+        var c = confirm("确认结案？");
         if(c != true){
             return false;
         }
     }
     if(method == 'reject'){
-        var c = confirm("确认驳回这条法律援助申请？");
+        var c = confirm("确认驳回这条申请？");
         if(c != true){
             return false;
         }

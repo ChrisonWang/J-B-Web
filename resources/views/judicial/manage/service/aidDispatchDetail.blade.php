@@ -99,11 +99,13 @@
                 <div class="col-md-3">
                     <label for="name" class="control-label" style="text-align: left">
                         @if($apply_detail['status'] == 'pass')
-                            通过
+                            已指派
                         @elseif($apply_detail['status'] == 'reject')
                             驳回
+						@elseif($apply_detail['status'] == 'archived')
+                            结案
                         @else
-                            待审核
+                            待指派
                         @endif
                     </label>
                 </div>
@@ -132,7 +134,7 @@
                     </label>
                     <div class="col-md-3">
                         <label for="name" class="control-label" style="text-align: left">
-                            待审核
+                            待指派
                         </label>
                     </div>
                 </div>

@@ -597,6 +597,8 @@ class ServiceLoadContent extends Controller
                     'key'=> keys_encrypt($apply->id),
                     'record_code'=> $apply->record_code,
                     'status'=> $apply->status,
+                    'aid_type'=> $apply->aid_type,
+                    'case_type'=> $apply->case_type,
                     'apply_office'=> $apply->apply_office,
                     'apply_aid_office'=> $apply->apply_aid_office,
                     'case_name'=> $apply->case_name,
@@ -612,6 +614,21 @@ class ServiceLoadContent extends Controller
         }
         $this->page_data['pages'] = $pages;
         $this->page_data['apply_list'] = $apply_list;
+	    //取出分类
+	    $legal_types = array();
+	    $_types = DB::table('service_legal_types')->get();
+	    if(!is_null($_types) && !empty($_types)){
+		    foreach ($_types as $type){
+			    $legal_types[$type->type_id] = array(
+					'type_id'=> $type->type_id,
+					'type_name'=> $type->type_name,
+					'create_date'=> $type->create_date,
+					'update_date'=> $type->update_date
+			    );
+		    }
+	    }
+	    $this->page_data['legal_types'] = $legal_types;
+	    $this->page_data['case_types'] = ['xs'=> '刑事', 'msxz'=>'民事或行政'];
         $pageContent = view('judicial.manage.service.aidDispatchList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
     }

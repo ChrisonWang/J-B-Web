@@ -707,9 +707,15 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/aidDispatch/pass','Manage\Service\AidDispatch@doPass');
 
+        Route::GET('manage/service/aidDispatch/archived','Manage\Service\AidDispatch@doArchived');
+
+        Route::post('manage/service/aidDispatch/archived','Manage\Service\AidDispatch@doArchived');
+
         Route::post('manage/service/aidDispatch/reject','Manage\Service\AidDispatch@doReject');
 
         Route::post('manage/service/aidDispatch/search','Manage\Service\AidDispatch@search');
+
+        Route::get('manage/service/aidDispatch/getLawyer/{id}','Manage\Service\AidDispatch@getLawyer');
 
         Route::post('manage/service/aidDispatchList/{page?}','Manage\Service\AidDispatch@index');
 
