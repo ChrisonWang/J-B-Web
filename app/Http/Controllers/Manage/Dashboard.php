@@ -128,6 +128,39 @@ class Dashboard extends Controller
         }
         else{
             $managerInfo = $this->_getManagerInfo($managerCode);
+            //待办事项
+            $notice_list = array();
+            $consultions = DB::table('service_consultions')
+                ->leftJoin('service_consultion_types', 'service_consultions.type_id', '=', 'service_consultion_types.type_id')
+                ->where('service_consultion_types.manager_code', $managerCode)
+                ->where('service_consultions.status', 'waiting')->get();
+            $suggestions = DB::table('service_suggestions')
+                ->leftJoin('service_suggestion_types', 'service_suggestions.type_id', '=', 'service_suggestion_types.type_id')
+                ->where('service_suggestion_types.manager_code', $managerCode)
+                ->where('service_suggestions.status', 'waiting')->get();
+            if(!is_null($consultions)){
+                foreach($consultions as $c){
+                    $notice_list[] = array(
+                        'type'=> 'consultions',
+                        'record_code'=> $c->record_code,
+                        'key'=> keys_encrypt($c->id),
+	                    'method'=> 'consultionsMethod($(this))'
+                    );
+                }
+            }
+            if(!is_null($suggestions)){
+                foreach($suggestions as $s){
+                    $notice_list[] = array(
+                        'type'=> 'suggestions',
+                        'record_code'=> $s->record_code,
+	                    'key'=> keys_encrypt($s->id),
+	                    'method'=> 'suggestionsMethod($(this))'
+                    );
+                }
+            }
+            $this->page_data['notice_list'] = $notice_list;
+            $this->page_data['notice_type'] = ['consultions'=>'问题咨询', 'suggestions'=> '征求意见', 'aid'=> '群众预约援助申请', 'dispatch'=> '公检法指派援助申请'];
+
             //传递值到模板
             $this->page_data['managerInfo'] = $managerInfo;
             $pageContent = view('judicial.manage.layout.managerInfo',$this->page_data)->render();

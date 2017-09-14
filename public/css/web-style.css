@@ -326,7 +326,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .wslb_m_right{width: 75%; text-align: left; float: left}
 
 /*群众预约*/
-.wsfy_tit{background-color: #F9F9F9; margin-top: 20px; width: 810px; height: 200px;}
+.wsfy_tit{background-color: #F9F9F9; margin-top: 20px; width: 810px; min-height: 200px; padding-bottom: 10px}
 .wfb_tit{font-family: MicrosoftYaHei; font-size: 18px; color: #222222; letter-spacing: 0; font-weight: bold; display: block; text-align: center; padding-top: 20px; padding-bottom: 10px;}
 .wfb_content{font-family: MicrosoftYaHei; display: block; padding: 10px 30px; }
 .wsfy_tit li{margin-left: 20px; margin-bottom: 10px; color: #222222;}

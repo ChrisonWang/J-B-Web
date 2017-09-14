@@ -4000,7 +4000,7 @@ function confirmSetting() {
                 $('#setting_modal').modal('hide');
             }
             else if(re.status == 'failed') {
-                alert("设置失败！" + rs.res);
+                alert("设置失败！" + re.res);
             }
         }
     });
@@ -4008,24 +4008,35 @@ function confirmSetting() {
 
 function changeCycle(t) {
     var cycle = t.val();
-    var url = '';
     var url = '/manage/system/backup/getDatetime/' + cycle;
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        async: false,
-        type: "GET",
-        url: url,
-        success: function(re){
-            if(re.status == 'succ'){
-                $('#cycle_date').val(re.res.date);
-                $('#date').val(re.res.date);
-                $('#cycle_time').val(re.res.time);
-                $('#time').val(re.res.time);
+    if(cycle == 'no'){
+        $('#date').removeAttr('disabled');
+        $('#date').val('');
+        $('#time').removeAttr('disabled');
+        $('#time').val('');
+        return false;
+    }
+    else {
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            type: "GET",
+            url: url,
+            success: function(re){
+                if(re.status == 'succ'){
+                    $('#cycle_date').val(re.res.date);
+                    $('#date').val(re.res.date);
+                    $('#cycle_time').val(re.res.time);
+                    $('#time').val(re.res.time);
+
+                    $('#date').attr('disabled', 'disabled');
+                    $('#time').attr('disabled', 'disabled');
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 function addBackup(){

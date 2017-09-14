@@ -1,3 +1,4 @@
+@include('judicial.manage.layout.notice')
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">个人信息

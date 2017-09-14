@@ -72,7 +72,7 @@
                 <thead>
                     <tr>
                         <th width="20%" class="text-center">操作</th>
-                        <th class="text-center {{ isset($sort_icon) ? $sort_icon : 'user_sort_none' }}" style='cursor : pointer;' onclick="change_user_sort($(this))">
+                        <th width="15%" class="text-center {{ isset($sort_icon) ? $sort_icon : 'user_sort_none' }}" style='cursor : pointer;' onclick="change_user_sort($(this))">
                             账号&nbsp;&nbsp;
                         </th>
                         <th class="text-center">姓名</th>

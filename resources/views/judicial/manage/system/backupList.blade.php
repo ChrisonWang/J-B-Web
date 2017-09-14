@@ -21,11 +21,11 @@
 	                            <div class="form-group">
                                     <label for="to_message" class="col-md-3 control-label">下次备份时间：</label>
                                     <div class="col-md-4">
-	                                    <input disabled type="text" class="form-control" id="date" name="date" placeholder="请选择周期" value="{{ $next_info['date'] }}">
+	                                    <input @if($next_info['cycle_type'] != 'no') disabled @endif  type="text" class="form-control" id="date" name="date" placeholder="请选择周期" value="{{ $next_info['date'] }}">
 	                                    <input type="hidden" class="form-control" id="cycle_date" name="cycle_date" value="{{ $next_info['date'] }}">
                                     </div>
 		                            <div class="col-md-3">
-	                                    <input disabled type="text" class="form-control" id="time" name="time" placeholder="请选择周期" value="{{ $next_info['time'] }}">
+	                                    <input @if($next_info['cycle_type'] != 'no') disabled @endif type="text" class="form-control" id="time" name="time" placeholder="请选择周期" value="{{ $next_info['time'] }}">
 	                                    <input type="hidden" class="form-control" id="cycle_time" name="cycle_time" value="{{ $next_info['time'] }}">
                                     </div>
                                 </div>
@@ -91,3 +91,33 @@
         @endif
     </div>
 </div>
+
+<script type="text/javascript">
+    $.datetimepicker.setLocale('zh');
+    var logic = function( currentDateTime ){
+        if (currentDateTime && currentDateTime.getDay() == 6){
+            this.setOptions({
+                minTime:'11:00'
+            });
+        }else
+            this.setOptions({
+                minTime:'8:00'
+            });
+    };
+    $('#date').datetimepicker({
+        lang: 'zh',
+        format: "Y-m-d",
+        formatDate: "Y-m-d",
+        todayButton: false,
+        timepicker:false,
+	    setLocale: "{{ $next_info['date'] }}"
+    });
+	$('#time').datetimepicker({
+        lang: 'zh',
+        format: "H:i",
+        formatDate: "H:i",
+        todayButton: false,
+        datepicker:false,
+		setLocale: "{{ empty($next_info['time']) ? '00:00' : $next_info['time'] }}"
+    });
+</script>

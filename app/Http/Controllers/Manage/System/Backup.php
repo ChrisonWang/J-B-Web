@@ -177,13 +177,22 @@ class Backup extends Controller
 	        $time = $inputs['cycle_time'];
 	    }
 	    else{
+            $date = $inputs['date'];
+	        $time = empty($inputs['time']) ? '00:00:00' : $inputs['time'];
+            if(empty($date)){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=> '请选择正确的备份日期！']);
+            }
+            $next_date = strtotime($date.' '.$time);
+            if($next_date <= time()){
+                json_response(['status'=>'failed','type'=>'notice', 'res'=> '备份时间不能早于当前时间！']);
+            }
 		    $next = DB::table('system_backup_auto')->first();
-		    $res = DB::table('system_backup_auto')->where('id', $next->id)->update(['is_cycle'=> 'no', 'cycle_type'=> 'no']);
+		    $res = DB::table('system_backup_auto')->where('id', $next->id)->update(['is_cycle'=> 'no', 'cycle_type'=> 'no', 'next_date'=> $next_date, 'update_date'=> date('Y-m-d H:i:s', time())]);
 		    if($res === false){
 		        json_response(['status'=>'failed','type'=>'notice', 'res'=> '更新设置失败！']);
 		    }
 		    else{
-			    $datetime = date('Y-m-d H:i', $next->next_date);
+			    $datetime = date('Y-m-d H:i', $next_date);
 		        json_response(['status'=>'succ','type'=>'notice', 'res'=> $datetime]);
 		    }
 	    }

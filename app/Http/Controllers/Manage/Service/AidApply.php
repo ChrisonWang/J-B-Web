@@ -299,6 +299,8 @@ class AidApply extends Controller
                 'approval_opinion' => $apply->approval_opinion,
                 'approval_date' => $apply->approval_date,
                 'apply_date' => $apply->apply_date,
+                'lawyer_office_id' => $apply->lawyer_office_id,
+                'lawyer_id' => $apply->lawyer_id,
             );
         }
         $this->page_data['is_check'] = ($apply_detail['manager_code']==$this->manager_code) ? 'yes' : 'no';
@@ -717,6 +719,8 @@ class AidApply extends Controller
                 'approval_opinion' => $apply->approval_opinion,
                 'approval_date' => $apply->approval_date,
                 'apply_date' => $apply->apply_date,
+                'lawyer_office_id' => $apply->lawyer_office_id,
+                'lawyer_id' => $apply->lawyer_id,
             );
 	        }
 	        //取出律师事务所和律师
