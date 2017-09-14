@@ -94,51 +94,56 @@
                 </div>
             </div>
             <hr/>
-            <div class="form-group">
-                <label for="name" class="col-md-2 control-label">审批结果：</label>
+
+	        <div class="form-group">
+                <label for="name" class="col-md-2 control-label">申请状态：</label>
                 <div class="col-md-3">
                     <label for="name" class="control-label" style="text-align: left">
                         @if($apply_detail['status'] == 'pass')
-                            已指派
-                        @elseif($apply_detail['status'] == 'reject')
-                            驳回
+                            已指派/待结案
+	                    @elseif($apply_detail['status'] == 'reject')
+	                        驳回
 						@elseif($apply_detail['status'] == 'archived')
-                            结案
-                        @else
-                            待指派
-                        @endif
+	                        已结案
+	                    @else
+		                    待指派
+	                    @endif
                     </label>
                 </div>
-            </div>
-            @if(isset($apply_detail['approval']) && $apply_detail['approval'] == 'yes')
-                <div class="form-group">
-                    <label for="name" class="col-md-2 control-label">
-                        最近一次审批意见：
+	        </div>
+	        <div class="form-group">
+                <label for="name" class="col-md-2 control-label">审批意见：</label>
+                <div class="col-md-5">
+                    <label for="name" class="control-label" style="text-align: left">
+                        {!! empty($apply_detail['approval_opinion']) ? '-' : $apply_detail['approval_opinion'] !!}
                     </label>
-                    <div class="col-md-3">
-                        <label for="name" class="control-label" style="text-align: left">{{ empty($apply_detail['approval_opinion']) ? '未填写，默认无异议' : $apply_detail['approval_opinion'] }}</label>
-                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="name" class="col-md-2 control-label">最近一次审批时间：</label>
+	        </div>
+            {{--如果是已指派状态--}}
+            @if(isset($apply_detail['status']) && ($apply_detail['status'] == 'pass' || $apply_detail['status'] == 'archived'))
+	            <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">指派事务所：</label>
                     <div class="col-md-3">
                         <label for="name" class="control-label" style="text-align: left">
-                            {{ $apply_detail['approval_date'] }}
+                            {{ $lawyer_office_list[$apply_detail['lawyer_office_id']]['name'] }}
                         </label>
                     </div>
                 </div>
-            @else
-                <div class="form-group">
-                    <label for="name" class="col-md-2 control-label">
-                        审批意见：
-                    </label>
+	            <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">指派律师：</label>
                     <div class="col-md-3">
                         <label for="name" class="control-label" style="text-align: left">
-                            待指派
+                            {{ $lawyer_list[$apply_detail['lawyer_id']]['name'] }}
                         </label>
                     </div>
+                </div>
+                <div class="form-group">
+	                <div class="col-md-offset-1 col-md-10">
+	                    <p class="text-left hidden" id="editAidDispatchNotice" style="color: red"></p>
+	                </div>
                 </div>
             @endif
+
             <div class="form-group">
                 <hr/>
                 <div class="col-md-offset-1 col-md-2">

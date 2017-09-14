@@ -3328,11 +3328,12 @@ function search_consultions(t, c){
 function aidApplyMethod(t){
     var key = t.data('key');
     var method = t.data('method');
-    var archived = t.data('archived');
-    var archived_key = t.data('archived_key');
+    var archived = t.data('archived') || '';
+    var archived_key = t.data('archived_key') || '';
+    var r_code = t.data('r_code') || '';
     var url = '/manage/service/aidApply/'+method;
-    if(method == 'delete'){
-        var c = confirm("确认删除："+ t.data('title')+"？");
+    if(method == 'archived'){
+        var c = confirm("确认将记录["+ r_code +"]结案？");
         if(c != true){
             return false;
         }
@@ -3416,6 +3417,94 @@ function search_aidApply(t, c){
     });
 }
 
+function checkFlow() {
+    var url = '/manage/service/aidApply/checkFlow';
+    $("#check_flow_form").ajaxSubmit({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "POST",
+        url: url,
+        success: function(re){
+            if(re.status == 'succ'){
+                alert("保存成功！");
+                $('#checkFlow_modal').modal('hide');
+            }
+            else if(re.status == 'failed'){
+                alert(re.res);
+            }
+        }
+    });
+}
+
+function del_check_row(t) {
+    var count = parseInt($('#check_flow_body').find("tr").length);
+    if(count <= 1){
+        t.attr('disabled', 'disabled')
+        alert("至少保留一级！");
+        return false;
+    }
+    else {
+        if(count - parseInt(1) <= 1){
+            var button = '<button disabled type="button" class="btn btn-default btn-block" onclick="del_check_row($(this))">删除</button>';
+        }
+        else {
+            var button = '<button type="button" class="btn btn-default btn-block" onclick="del_check_row($(this))">删除</button>';
+        }
+        $('#check_flow_body').find("tr").eq(-1).remove();
+        $('#check_flow_body').find("tr").eq(-1).find("td").eq(-1).html(button);
+    }
+}
+
+function add_check_row() {
+    var office = $('#check_flow_body').find("tr").eq(-1).find('select[name="office[]"]').val();
+    var manager = $('#check_flow_body').find("tr").eq(-1).find('select[name="manager[]"]').val();
+    var no = $('#check_flow_body').find("tr").eq(-1).find("b").html();
+    if(office=='none' || manager=='none'){
+        alert("请先设置正确的“" + no + "”审核科室及审核人");
+        return false;
+    }
+    else {
+        var html = $("#row_tmp").html();
+        var count = parseInt($('#check_flow_body').find("tr").length) + parseInt(1);
+        //移除最后一个删除按钮，并增加一行
+        $('#check_flow_body').find("tr").eq(-1).find("button").remove();
+        $('#check_flow_body').append($("#row_tmp").html());
+        $('#check_flow_body').find("tr").eq(-1).find("button").attr('disabled', false);
+        //修改级数
+        $('#check_flow_body').find("tr").eq(-1).find("b").html("第 " + count + " 级");
+    }
+}
+
+function loadManager(t) {
+    var office_id = t.val();
+    var managers = t.parents('tr').find('select[name="manager[]"]');
+    var url = '/manage/service/aidApply/loadManager/'+office_id;
+    var options = '<option value="none" selected>该科室未找到成员</option>';
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        async: false,
+        type: "GET",
+        url: url,
+        success: function(re){
+            if(re.status == 'succ'){
+                var list = re.res;
+                var options = '';
+                $.each(list, function(i,sub){
+                    options += '<option value="'+sub.manager_code+'">'+sub.name+'</option>';
+                });
+                managers.html(options);
+            }
+            else if(re.status == 'failed'){
+                managers.html(options);
+            }
+        }
+    });
+}
+
 //公检法指派管理
 function aidDispatchMethod(t){
     var key = t.data('key');
@@ -3424,12 +3513,6 @@ function aidDispatchMethod(t){
     var archived_key = t.data('archived_key') || '';
     var r_code = t.data('r_code') || '';
     var url = '/manage/service/aidDispatch/'+method;
-    if(method == 'delete'){
-        var c = confirm("确认删除："+ t.data('title')+"？");
-        if(c != true){
-            return false;
-        }
-    }
     if(method == 'archived'){
         var c = confirm("确认将记录["+ r_code +"]结案？");
         if(c != true){

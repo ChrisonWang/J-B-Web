@@ -12,6 +12,17 @@ use App\Http\Controllers\Controller;
 
 class ServiceLoadContent extends Controller
 {
+	private $manager_code = '';
+
+	private $page_data = array();
+
+	public function __construct()
+	{
+		//取出当前的manager_code
+	    $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+        $this->manager_code = session($login_name);
+	    $this->page_data['manager_code'] = $this->manager_code;
+	}
 
     public function loadContent(Request $request)
     {
@@ -554,9 +565,9 @@ class ServiceLoadContent extends Controller
         $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = 30;
-        $applys = DB::table('service_legal_aid_apply')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
-        if(count($applys) > 0){
-            foreach($applys as $apply){
+        $apply_info = DB::table('service_legal_aid_apply')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+        if(count($apply_info) > 0){
+            foreach($apply_info as $apply){
                 $apply_list[] = array(
                     'key'=> keys_encrypt($apply->id),
                     'record_code'=> $apply->record_code,
@@ -564,6 +575,9 @@ class ServiceLoadContent extends Controller
                     'apply_name'=> $apply->apply_name,
                     'apply_phone'=> $apply->apply_phone,
                     'type'=> $apply->type,
+                    'aid_type'=> $apply->aid_type,
+                    'case_type'=> $apply->case_type,
+                    'manager_code'=> $apply->manager_code,
                     'salary_dispute'=> $apply->salary_dispute=='yes' ? 'yes' : 'no',
                     'apply_date'=> date('Y-m-d',strtotime($apply->apply_date)),
                 );
@@ -576,6 +590,57 @@ class ServiceLoadContent extends Controller
             );
         }
         $this->page_data['pages'] = $pages;
+
+        //取出分类
+	    $legal_types = array();
+	    $_types = DB::table('service_legal_types')->get();
+	    if(!is_null($_types) && !empty($_types)){
+		    foreach ($_types as $type){
+			    $legal_types[$type->type_id] = array(
+					'type_id'=> $type->type_id,
+					'type_name'=> $type->type_name,
+					'create_date'=> $type->create_date,
+					'update_date'=> $type->update_date
+			    );
+		    }
+	    }
+	    $this->page_data['legal_types'] = $legal_types;
+	    $this->page_data['case_types'] = ['xs'=> '刑事', 'msxz'=>'民事或行政'];
+
+        //取出科室
+        $office_list = array();
+        $office = DB::table('user_office')->get();
+	    if(!is_null($office) && !empty($office)){
+		    foreach ($office as $o){
+			    $office_list[$o->id] = array(
+					'id'=> $o->id,
+					'office_name'=> $o->office_name,
+					'create_date'=> $o->create_date,
+					'update_date'=> $o->update_date 
+			    );
+		    }
+	    }
+        $this->page_data['office_list'] = $office_list;
+
+	    //取出流程
+	    $flow_list = array();
+	    $flow = DB::table('service_check_flow')->first();
+	    if(isset($flow->flow) && !empty($flow->flow)){
+			$_flow = json_decode($flow->flow, true);
+		    foreach($_flow as $key=> $f){
+			    $managers = DB::table('user_manager')->where('manager_code', $f['manager_code'])->where('disabled', 'no')->get();
+			    $managers = json_decode(json_encode($managers), true);
+			    $flow_list['list'][$key] = array(
+				    'office_id'=> $f['office_id'],
+				    'manager_code'=> $f['manager_code'],
+				    'sort'=> $f['sort'],
+				    'manager_list'=> $managers
+			    );
+		    }
+		    $flow_list['max'] = count($_flow) - 1;
+	    }
+	    $this->page_data['flow_list'] = $flow_list;
+
         $this->page_data['apply_list'] = $apply_list;
         $pageContent = view('judicial.manage.service.aidApplyList',$this->page_data)->render();
         json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);

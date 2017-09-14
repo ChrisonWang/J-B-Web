@@ -43,7 +43,7 @@
                                 <input type="text" class="form-control" id="case_name" name="case_name" placeholder="请输入案件名称">
                             </div>
 	                        <div class="form-group" style="padding: 10px">
-                                <label for="case_name">事项分类：</label>
+                                <label for="aid_type">事项分类：</label>
                                 <select class="form-control" name="aid_type" id="aid_type">
                                     <option value="none">不限</option>
 	                                @if( isset($legal_types) && !empty($legal_types) )

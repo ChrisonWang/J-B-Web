@@ -75,6 +75,8 @@ class AidDispatch extends Controller
                     'key'=> keys_encrypt($apply->id),
                     'record_code'=> $apply->record_code,
                     'status'=> $apply->status,
+                    'aid_type'=> $apply->aid_type,
+                    'case_type'=> $apply->case_type,
                     'apply_office'=> $apply->apply_office,
                     'apply_aid_office'=> $apply->apply_aid_office,
                     'case_name'=> $apply->case_name,
@@ -130,6 +132,33 @@ class AidDispatch extends Controller
 	            'lawyer_office_id' => $apply->lawyer_office_id
             );
         }
+
+        //取出律师事务所和律师
+	    $lawyer_office_list = array();
+	    $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+        if(!is_null($lawyer_offices)){
+            foreach ($lawyer_offices as $lawyer_office){
+                $lawyer_office_list[$lawyer_office->id] = array(
+                    'id'=> $lawyer_office->id,
+                    'name'=> $lawyer_office->name,
+                    'en_name'=> $lawyer_office->en_name,
+                );
+            }
+        }
+        $lawyer_list = array();
+        $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+        if(!is_null($lawyers)){
+            foreach ($lawyers as $lawyer){
+                $lawyer_list[$lawyer->id] = array(
+                    'id'=> $lawyer->id,
+                    'name'=> $lawyer->name,
+	                'office_phone'=> $lawyer_office->office_phone,
+                );
+            }
+        }
+        $this->page_data['lawyer_list'] = $lawyer_list;
+        $this->page_data['lawyer_office_list'] = $lawyer_office_list;
+
         //页面中显示
         $this->page_data['apply_detail'] = $apply_detail;
         $pageContent = view('judicial.manage.service.aidDispatchDetail',$this->page_data)->render();

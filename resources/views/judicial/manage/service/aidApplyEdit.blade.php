@@ -157,36 +157,69 @@
                     </label>
                 </div>
             </div>
+	        <div class="form-group">
+                <label for="name" class="col-md-2 control-label">审核驳回历史记录：</label>
+		        @if(isset($reject_list) && !empty($reject_list))
+					<div class="col-md-8">
+						<table class="table table-striped table-bordered table-condensed">
+							<thead>
+								<th>审核时间</th>
+								<th>审核人</th>
+								<th>驳回意见</th>
+							</thead>
+							<tbody>
+							@foreach($reject_list as $reject)
+								<tr>
+									<td>{{ $reject['create_date'] }}</td>
+									<td>{{ $reject['manager_name'] }}</td>
+									<td>{{ $reject['approval_opinion'] }}</td>
+								</tr>
+							@endforeach
+							</tbody>
+						</table>
+					</div>
+				@else
+					<div class="col-md-5">
+	                    <label for="name" class="control-label" style="text-align: left">
+	                        暂无驳回历史
+	                    </label>
+                    </div>
+				@endif
+            </div>
+
             <hr/>
-            @if(isset($apply_detail['approval']) && $apply_detail['approval'] == 'yes')
-                <div class="form-group">
-                    <label for="name" class="col-md-2 control-label">最近一次审批意见：</label>
-                    <div class="col-md-3">
-                        <label for="name" class="control-label" style="text-align: left">
-                            {{ $apply_detail['approval_opinion'] }}
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="name" class="col-md-2 control-label">最近一次审批时间：</label>
-                    <div class="col-md-3">
-                        <label for="name" class="control-label" style="text-align: left">
-                            {{ $apply_detail['approval_date'] }}
-                        </label>
-                    </div>
-                </div>
-            @else
-                <div class="form-group">
-                    <label for="name" class="col-md-2 control-label">
-                        审批意见：
-                    </label>
-                    <div class="col-md-3">
-                        <label for="name" class="control-label" style="text-align: left">
-                            待审核
-                        </label>
-                    </div>
-                </div>
-            @endif
+	        <div class="form-group">
+		        <label for="name" class="col-md-2 control-label">审批记录：</label>
+	            @if(isset($pass_list) && !empty($pass_list))
+					<div class="col-md-8">
+						<table class="table table-striped table-bordered table-condensed">
+							<thead>
+								<th>审核层级</th>
+								<th>审核时间</th>
+								<th>审核人</th>
+								<th>审核意见</th>
+							</thead>
+							<tbody>
+							@foreach($pass_list as $pass)
+								<tr>
+									<td>{{ "第 ".$pass['sort']." 层" }}</td>
+									<td>{{ $pass['create_date'] }}</td>
+									<td>{{ $pass['manager_name'] }}</td>
+									<td>{{ $pass['approval_opinion'] }}</td>
+								</tr>
+							@endforeach
+							</tbody>
+						</table>
+					</div>
+				@else
+					<div class="col-md-5">
+		                <label for="name" class="control-label" style="text-align: left">
+	                        暂无审批记录
+	                    </label>
+	                </div>
+				@endif
+            </div>
+
             <div class="form-group">
                 <label for="name" class="col-md-2 control-label">审批意见：</label>
                 <div class="col-md-3">

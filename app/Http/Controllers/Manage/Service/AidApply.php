@@ -18,8 +18,11 @@ use App\Libs\Logs;
 
 class AidApply extends Controller
 {
-    var $page_data = array();
-    var $log_info = array();
+    private $page_data = array();
+
+    private $log_info = array();
+
+    private $manager_code = '';
 
     public function __construct()
     {
@@ -54,7 +57,46 @@ class AidApply extends Controller
 	    }
 	    $this->page_data['legal_types'] = $legal_types;
 	    $this->page_data['case_types'] = ['xs'=> '刑事', 'msxz'=>'民事或行政'];
-	    
+
+	    //取出科室
+        $office_list = array();
+        $office = DB::table('user_office')->get();
+	    if(!is_null($office) && !empty($office)){
+		    foreach ($office as $o){
+			    $office_list[$o->id] = array(
+					'id'=> $o->id,
+					'office_name'=> $o->office_name,
+					'create_date'=> $o->create_date,
+					'update_date'=> $o->update_date
+			    );
+		    }
+	    }
+        $this->page_data['office_list'] = $office_list;
+
+	    //取出流程
+	    $flow_list = array();
+	    $flow = DB::table('service_check_flow')->first();
+	    if(isset($flow->flow) && !empty($flow->flow)){
+			$_flow = json_decode($flow->flow, true);
+		    foreach($_flow as $key=> $f){
+			    $managers = DB::table('user_manager')->where('manager_code', $f['manager_code'])->where('disabled', 'no')->get();
+			    $managers = json_decode(json_encode($managers), true);
+			    $flow_list['list'][$key] = array(
+				    'office_id'=> $f['office_id'],
+				    'manager_code'=> $f['manager_code'],
+				    'sort'=> $f['sort'],
+				    'manager_list'=> $managers
+			    );
+		    }
+		    $flow_list['max'] = count($_flow) - 1;
+	    }
+	    $this->page_data['flow_list'] = $flow_list;
+
+	    //取出当前的manager_code
+	    $login_name = isset($_COOKIE['s']) ? $_COOKIE['s'] : '';
+        $this->manager_code = session($login_name);
+	    $this->page_data['manager_code'] = $this->manager_code;
+
         $this->page_data['thisPageName'] = '群众预约援助管理';
         $this->page_data['political_list'] = ['citizen'=>'群众', 'cp'=>'党员', 'cyl'=>'团员'];
         $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
@@ -68,9 +110,9 @@ class AidApply extends Controller
         $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
         $count_page = ($count > 30)? ceil($count/30)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 30;
-        $applys = DB::table('service_legal_aid_apply')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip($offset)->take(30)->get();
-        if(count($applys) > 0){
-            foreach($applys as $apply){
+        $apply_info = DB::table('service_legal_aid_apply')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip($offset)->take(30)->get();
+        if(count($apply_info) > 0){
+            foreach($apply_info as $apply){
                 $apply_list[] = array(
                     'key'=> keys_encrypt($apply->id),
                     'record_code'=> $apply->record_code,
@@ -78,6 +120,9 @@ class AidApply extends Controller
                     'apply_name'=> $apply->apply_name,
                     'apply_phone'=> $apply->apply_phone,
                     'type'=> $apply->type,
+                    'aid_type'=> $apply->aid_type,
+                    'case_type'=> $apply->case_type,
+                    'manager_code'=> $apply->manager_code,
                     'salary_dispute'=> $apply->salary_dispute=='yes' ? 'yes' : 'no',
                     'apply_date'=> date('Y-m-d',strtotime($apply->apply_date)),
                 );
@@ -127,6 +172,7 @@ class AidApply extends Controller
                 'dispute_description' => $apply->dispute_description,
 	            'aid_type'=> $apply->aid_type,
                 'case_type'=> $apply->case_type,
+	            'manager_code'=> $apply->manager_code,
                 'file' => $apply->file,
                 'file_name' => $apply->file_name,
                 'status' => $apply->status,
@@ -137,6 +183,43 @@ class AidApply extends Controller
                 'apply_date' => $apply->apply_date,
             );
         }
+	    //取出审批列表和驳回列表
+	    $pass_list = array();
+	    $reject_list = array();
+	    $check_list = DB::table('service_legal_flow')->where('record_code', $apply_detail['record_code'])->orderBy('sort')->get();
+	    if(!is_null($check_list) && !empty($check_list)){
+		    foreach($check_list as $check){
+                $manager = DB::table('user_manager')->where('manager_code', $check->manager_code)->where('disabled', 'no')->first();
+                $manager_name = '-';
+                if(isset($manager->nickname) || isset($manager->login_name)){
+                    $manager_name = (empty($manager->nickname)) ? $manager->login_name : $manager->nickname;
+                }
+			    if($check->type == 'pass'){
+					$pass_list[] = array(
+						'id'=> $check->id,
+						'record_code'=> $check->record_code,
+						'sort'=> $check->sort,
+						'manager_code'=> $check->manager_code,
+						'manager_name'=> $manager_name,
+						'approval_opinion'=> $check->approval_opinion,
+						'create_date'=> $check->create_date,
+					);
+			    }
+			    else{
+				    $reject_list[] = array(
+					    'id'=> $check->id,
+						'record_code'=> $check->record_code,
+						'sort'=> $check->sort,
+						'manager_code'=> $check->manager_code,
+                        'manager_name'=> $manager_name,
+						'approval_opinion'=> $check->approval_opinion,
+                        'create_date'=> $check->create_date,
+				    );
+			    }
+		    }
+	    }
+	    $this->page_data['pass_list'] = $pass_list;
+	    $this->page_data['reject_list'] = $reject_list;
         //页面中显示
         $this->page_data['apply_detail'] = $apply_detail;
         $pageContent = view('judicial.manage.service.aidApplyDetail',$this->page_data)->render();
@@ -177,6 +260,7 @@ class AidApply extends Controller
                 'dispute_description' => $apply->dispute_description,
 	            'aid_type'=> $apply->aid_type,
                 'case_type'=> $apply->case_type,
+	            'manager_code'=> $apply->manager_code,
                 'file' => $apply->file,
                 'file_name' => $apply->file_name,
                 'status' => $apply->status,
@@ -187,6 +271,44 @@ class AidApply extends Controller
                 'apply_date' => $apply->apply_date,
             );
         }
+	    //取出审批列表和驳回列表以及最高层级
+	    $pass_list = array();
+	    $reject_list = array();
+	    $check_list = DB::table('service_legal_flow')->where('record_code', $apply_detail['record_code'])->get();
+	    if(!is_null($check_list) && !empty($check_list)){
+		    foreach($check_list as $check){
+                $manager = DB::table('user_manager')->where('manager_code', $check->manager_code)->where('disabled', 'no')->first();
+                $manager_name = '-';
+                if(isset($manager->nickname) || isset($manager->login_name)){
+                    $manager_name = (empty($manager->nickname)) ? $manager->login_name : $manager->nickname;
+                }
+			    if($check->type == 'pass'){
+					$pass_list[] = array(
+						'id'=> $check->id,
+						'record_code'=> $check->record_code,
+						'sort'=> $check->sort,
+						'manager_code'=> $check->manager_code,
+						'manager_name'=> $manager_name,
+						'approval_opinion'=> $check->approval_opinion,
+						'create_date'=> $check->create_date,
+					);
+			    }
+			    else{
+				    $reject_list[] = array(
+					    'id'=> $check->id,
+						'record_code'=> $check->record_code,
+						'sort'=> $check->sort,
+						'manager_code'=> $check->manager_code,
+                        'manager_name'=> $manager_name,
+						'approval_opinion'=> $check->approval_opinion,
+                        'create_date'=> $check->create_date,
+				    );
+			    }
+		    }
+	    }
+	    $this->page_data['pass_list'] = $pass_list;
+	    $this->page_data['reject_list'] = $reject_list;
+
         //页面中显示
         $this->page_data['apply_detail'] = $apply_detail;
         $pageContent = view('judicial.manage.service.aidApplyEdit',$this->page_data)->render();
@@ -197,18 +319,186 @@ class AidApply extends Controller
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
+	    $data = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+	    $flow = DB::table('service_check_flow')->first();
+	    $flow_list = array();
+	    if(isset($flow->flow) && !empty($flow->flow)){
+			$_flow = json_decode($flow->flow, true);
+		    foreach($_flow as $key=> $f){
+			    $flow_list[$f['sort']] = $f['manager_code'];
+		    }
+	    }
         $save_data = array(
             'approval_opinion'=> trim($inputs['approval_opinion']),
-            'status'=> 'pass',
             'approval'=> 'yes',
+            'status'=> ($data->check_sort >= $flow->count) ? 'pass' : 'waiting',
+            'check_sort'=> ($data->check_sort >= $flow->count) ? $data->check_sort : $data->check_sort+1,
+            'manager_code'=> isset($flow_list[$data->check_sort + 1]) ? $flow_list[$data->check_sort + 1] : $data->manager_code,
             'approval_date'=> date('Y-m-d H:i:s', time()),
         );
+	    $_save_data = array(
+		    'record_code'=> $data->record_code,
+		    'sort' => $data->check_sort,
+		    'manager_code' => $flow_list[$data->check_sort],
+		    'approval_opinion' => trim($inputs['approval_opinion']),
+		    'type' => 'pass',
+		    'create_date'=> date('Y-m-d H:i:s', time()),
+	    );
+        //如果下一级还有审核人员
+        $phone_no = '';
+        if($data->check_sort < $flow->count)
+        {
+            if(isset($flow_list[$data->check_sort + 1])){
+                $next_manager = DB::table('user_manager')->where('manager_code', $flow_list[$data->check_sort + 1])->where('disabled', 'no')->first();
+                $phone_no = isset($next_manager->cell_phone)&&!empty($next_manager->cell_phone) ? $next_manager->cell_phone : '';
+            }
+        }
+	    //以事务的方式修改
+        DB::beginTransaction();
         $rs = DB::table('service_legal_aid_apply')->where('id',$id)->update($save_data);
         if($rs === false){
+            DB::rollback();
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
         }
-        else{
-            //日志
+        $id = DB::table('service_legal_flow')->insertGetId($_save_data);
+        if($id === false){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
+        }
+        DB::commit();
+	    if($rs!==false && $id!==false){
+		    //日志
+            $this->log_info['type'] = 'edit';
+            $this->log_info['before'] = "审批状态：待审批";
+            $this->log_info['after'] = "审批状态：通过    审批意见：".$save_data['approval_opinion'];
+            $this->log_info['log_type'] = 'str';
+            $this->log_info['resource_id'] = $id;
+            Logs::manage_log($this->log_info);
+            //发短信
+            if(!empty($phone_no)){
+                Message::send($phone_no,'群众预约援助申请编号“'.$data->record_code.'”已提交，请及时审批！');
+            }
+            else{
+                $phone = array();
+                $member_code = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+                if(isset($member_code->member_code) && !empty($member_code->member_code)){
+                    $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
+                }
+                if(isset($phone->cell_phone)){
+                    Message::send($phone_no,'您提交的群众预约援助，申请编号“'.$phone_no->record_code.'”已通过审批！');
+                }
+            }
+            //审核成功，加载列表数据
+            $apply_list = array();
+            $pages = '';
+            $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
+            $count_page = ($count > 30)? ceil($count/30)  : 1;
+            $offset = 30;
+            $apply_info = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($apply_info) > 0){
+                foreach($apply_info as $apply){
+                    $apply_list[] = array(
+                        'key'=> keys_encrypt($apply->id),
+                        'record_code'=> $apply->record_code,
+                        'status'=> $apply->status,
+                        'apply_name'=> $apply->apply_name,
+                        'apply_phone'=> $apply->apply_phone,
+                        'type'=> $apply->type,
+                        'aid_type'=> $apply->aid_type,
+                        'case_type'=> $apply->case_type,
+	                    'manager_code'=> $apply->manager_code,
+                        'salary_dispute'=> $apply->salary_dispute=='yes' ? 'yes' : 'no',
+                        'apply_date'=> date('Y-m-d',strtotime($apply->apply_date)),
+                    );
+                }
+                $pages = array(
+                    'count' => $count,
+                    'count_page' => $count_page,
+                    'now_page' => 1,
+                    'type' => 'aidApply',
+                );
+            }
+            $this->page_data['pages'] = $pages;
+            $this->page_data['apply_list'] = $apply_list;
+
+	        //取出律师事务所和律师
+		    $lawyer_office_list = array();
+		    $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+	        if(!is_null($lawyer_offices)){
+	            foreach ($lawyer_offices as $lawyer_office){
+	                $lawyer_office_list[$lawyer_office->id] = array(
+	                    'id'=> $lawyer_office->id,
+	                    'name'=> $lawyer_office->name,
+	                    'en_name'=> $lawyer_office->en_name,
+	                );
+	            }
+	        }
+	        $lawyer_list = array();
+	        $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+	        if(!is_null($lawyers)){
+	            foreach ($lawyers as $lawyer){
+	                $lawyer_list[$lawyer->id] = array(
+	                    'id'=> $lawyer->id,
+	                    'name'=> $lawyer->name,
+		                'office_phone'=> $lawyer_office->office_phone,
+	                );
+	            }
+	        }
+	        $this->page_data['lawyer_list'] = $lawyer_list;
+	        $this->page_data['lawyer_office_list'] = $lawyer_office_list;
+
+            $pageContent = view('judicial.manage.service.aidApplyList',$this->page_data)->render();
+            json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+	    }
+    }
+
+    public function doReject(Request $request)
+    {
+        $inputs = $request->input();
+        $id = keys_decrypt($inputs['key']);
+        if(trim($inputs['approval_opinion']) === ''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批意见不能为空！']);
+        }
+	    $data = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+	    $flow = DB::table('service_check_flow')->first();
+	    $flow_list = array();
+	    if(isset($flow->flow) && !empty($flow->flow)){
+			$_flow = json_decode($flow->flow, true);
+		    foreach($_flow as $key=> $f){
+			    $flow_list[$f['sort']] = $f['manager_code'];
+		    }
+	    }
+        $save_data = array(
+            'approval_opinion'=> trim($inputs['approval_opinion']),
+            'approval'=> 'yes',
+	        'status'=> 'reject',
+            'check_sort'=> 1,
+            'manager_code'=> isset($flow_list[$data->check_sort + 1]) ? $flow_list[$data->check_sort + 1] : '',
+            'approval_date'=> date('Y-m-d H:i:s', time()),
+        );
+	    $_save_data = array(
+		    'record_code'=> $data->record_code,
+		    'sort' => $data->check_sort + 1,
+		    'manager_code' => $flow_list[$data->check_sort],
+		    'approval_opinion' => trim($inputs['approval_opinion']),
+		    'type' => 'reject',
+		    'create_date'=> date('Y-m-d H:i:s', time()),
+	    );
+        //以事务的方式修改
+        DB::beginTransaction();
+        $rs = DB::table('service_legal_aid_apply')->where('id',$id)->update($save_data);
+        if($rs === false){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
+        }
+        $id = DB::table('service_legal_flow')->insertGetId($_save_data);
+        if($id === false){
+            DB::rollback();
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
+        }
+        DB::commit();
+        if($rs!==false && $id!==false){
+		    //日志
             $this->log_info['type'] = 'edit';
             $this->log_info['before'] = "审批状态：待审批";
             $this->log_info['after'] = "审批状态：通过    审批意见：".$save_data['approval_opinion'];
@@ -230,9 +520,9 @@ class AidApply extends Controller
             $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $applys = DB::table('service_legal_aid_apply')->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
-            if(count($applys) > 0){
-                foreach($applys as $apply){
+            $apply_info = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($apply_info) > 0){
+                foreach($apply_info as $apply){
                     $apply_list[] = array(
                         'key'=> keys_encrypt($apply->id),
                         'record_code'=> $apply->record_code,
@@ -240,6 +530,9 @@ class AidApply extends Controller
                         'apply_name'=> $apply->apply_name,
                         'apply_phone'=> $apply->apply_phone,
                         'type'=> $apply->type,
+                        'aid_type'=> $apply->aid_type,
+                        'case_type'=> $apply->case_type,
+	                    'manager_code'=> $apply->manager_code,
                         'salary_dispute'=> $apply->salary_dispute=='yes' ? 'yes' : 'no',
                         'apply_date'=> date('Y-m-d',strtotime($apply->apply_date)),
                     );
@@ -253,23 +546,44 @@ class AidApply extends Controller
             }
             $this->page_data['pages'] = $pages;
             $this->page_data['apply_list'] = $apply_list;
+
+	        //取出律师事务所和律师
+		    $lawyer_office_list = array();
+		    $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+	        if(!is_null($lawyer_offices)){
+	            foreach ($lawyer_offices as $lawyer_office){
+	                $lawyer_office_list[$lawyer_office->id] = array(
+	                    'id'=> $lawyer_office->id,
+	                    'name'=> $lawyer_office->name,
+	                    'en_name'=> $lawyer_office->en_name,
+	                );
+	            }
+	        }
+	        $lawyer_list = array();
+	        $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+	        if(!is_null($lawyers)){
+	            foreach ($lawyers as $lawyer){
+	                $lawyer_list[$lawyer->id] = array(
+	                    'id'=> $lawyer->id,
+	                    'name'=> $lawyer->name,
+		                'office_phone'=> $lawyer_office->office_phone,
+	                );
+	            }
+	        }
+	        $this->page_data['lawyer_list'] = $lawyer_list;
+	        $this->page_data['lawyer_office_list'] = $lawyer_office_list;
+
             $pageContent = view('judicial.manage.service.aidApplyList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
-        }
+	    }
     }
 
-    public function doReject(Request $request)
+    public function doArchived(Request $request)
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        if(trim($inputs['approval_opinion']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批意见不能为空！']);
-        }
         $save_data = array(
-            'approval_opinion'=> trim($inputs['approval_opinion']),
-            'status'=> 'reject',
-            'approval'=> 'yes',
-            'approval_date'=> date('Y-m-d H:i:s', time()),
+            'status'=> 'archived',
         );
         $rs = DB::table('service_legal_aid_apply')->where('id',$id)->update($save_data);
         if($rs === false){
@@ -278,29 +592,20 @@ class AidApply extends Controller
         else{
             //日志
             $this->log_info['type'] = 'edit';
-            $this->log_info['before'] = "审批状态：待审批";
-            $this->log_info['after'] = "审批状态：拒绝    审批意见：".$save_data['approval_opinion'];
+            $this->log_info['before'] = "审批状态：待结案";
+            $this->log_info['after'] = "审批状态：结案";
             $this->log_info['log_type'] = 'str';
             $this->log_info['resource_id'] = $id;
             Logs::manage_log($this->log_info);
-            //发短信
-            $phone = array();
-            $member_code = DB::table('service_legal_aid_apply')->where('id',$id)->first();
-            if(isset($member_code->member_code) && !empty($member_code->member_code)){
-                $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
-            }
-            if(isset($phone->cell_phone)){
-                Message::send($phone->cell_phone,'管理员驳回了您编号为“'.$member_code->record_code.'”的法律援助申请，请登录PC官网查看原因！');
-            }
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';
             $count = DB::table('service_legal_aid_apply')->where('archived', 'no')->count();
             $count_page = ($count > 30)? ceil($count/30)  : 1;
             $offset = 30;
-            $applys = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
-            if(count($applys) > 0){
-                foreach($applys as $apply){
+            $apply_info = DB::table('service_legal_aid_apply')->orderBy('apply_date', 'desc')->skip(0)->take($offset)->get();
+            if(count($apply_info) > 0){
+                foreach($apply_info as $apply){
                     $apply_list[] = array(
                         'key'=> keys_encrypt($apply->id),
                         'record_code'=> $apply->record_code,
@@ -308,6 +613,9 @@ class AidApply extends Controller
                         'apply_name'=> $apply->apply_name,
                         'apply_phone'=> $apply->apply_phone,
                         'type'=> $apply->type,
+                        'aid_type'=> $apply->aid_type,
+                        'case_type'=> $apply->case_type,
+	                    'manager_code'=> $apply->manager_code,
                         'salary_dispute'=> $apply->salary_dispute=='yes' ? 'yes' : 'no',
                         'apply_date'=> date('Y-m-d',strtotime($apply->apply_date)),
                     );
@@ -321,9 +629,100 @@ class AidApply extends Controller
             }
             $this->page_data['pages'] = $pages;
             $this->page_data['apply_list'] = $apply_list;
+
+	        //取出律师事务所和律师
+		    $lawyer_office_list = array();
+		    $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+	        if(!is_null($lawyer_offices)){
+	            foreach ($lawyer_offices as $lawyer_office){
+	                $lawyer_office_list[$lawyer_office->id] = array(
+	                    'id'=> $lawyer_office->id,
+	                    'name'=> $lawyer_office->name,
+	                    'en_name'=> $lawyer_office->en_name,
+	                );
+	            }
+	        }
+	        $lawyer_list = array();
+	        $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+	        if(!is_null($lawyers)){
+	            foreach ($lawyers as $lawyer){
+	                $lawyer_list[$lawyer->id] = array(
+	                    'id'=> $lawyer->id,
+	                    'name'=> $lawyer->name,
+		                'office_phone'=> $lawyer_office->office_phone,
+	                );
+	            }
+	        }
+	        $this->page_data['lawyer_list'] = $lawyer_list;
+	        $this->page_data['lawyer_office_list'] = $lawyer_office_list;
+
             $pageContent = view('judicial.manage.service.aidApplyList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }
+    }
+
+    public function loadManager($office_id)
+    {
+        $manager_list = array();
+        $managers = DB::table('user_manager')->where('office_id', $office_id)->where('disabled', 'no')->get();
+        if(!is_null($managers) && !empty($managers)){
+            foreach ($managers as $manager){
+                $manager_list[] = array(
+                    'manager_code'=> $manager->manager_code,
+                    'name'=> empty($manager->nickname) ? $manager->login_name : $manager->nickname,
+                );
+            }
+            json_response(['status'=>'succ','type'=>'data', 'res'=>$manager_list]);
+        }
+        else{
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'']);
+        }
+    }
+
+    public function checkFlow(Request $request)
+    {
+        $inputs = $request->input();
+	    $office_list = $inputs['office'];
+	    $manager_list = $inputs['manager'];
+	    $flow = array();
+	    if( empty($office_list) || empty($manager_list) || (count($office_list) != count($manager_list)) ){
+		    json_response(['status'=>'failed','type'=>'alert', 'res'=>'请选择正确的科室和人员！']);
+	    }
+	    else{
+		    foreach($manager_list as $key=> $m){
+			    if($office_list[$key] == 'none' || $m == 'none'){
+				    json_response(['status'=>'failed','type'=>'alert', 'res'=>'请选择正确的科室和人员！']);
+			    }
+			    $flow[] = array(
+				    'sort'=> $key + 1,
+				    'office_id'=> $office_list[$key],
+				    'manager_code'=> $m,
+			    );
+		    }
+	    }
+	    //存入
+	    $save_data = array(
+			    'flow'=> json_encode($flow),
+			    'count'=> count($flow),
+			    'create_date'=> date('Y-m-d H:i:s', time()),
+			    'update_date'=> date('Y-m-d H:i:s', time())
+	        );
+
+	    //查看是否存在
+	    $data = DB::table('service_check_flow')->first();
+	    if(is_null($data) || empty($data)){
+		    $rs = DB::table('service_check_flow')->insertGetId($save_data);
+	    }
+	    else{
+		    $rs = DB::table('service_check_flow')->where('id', $data->id)->update($save_data);
+	    }
+
+	    if($rs === false){
+		    json_response(['status'=>'failed','type'=>'alert', 'res'=>'保存失败']);
+	    }
+	    else{
+			json_response(['status'=>'succ','type'=>'notice', 'res'=>'']);
+	    }
     }
 
     public function search(Request $request){
@@ -344,6 +743,9 @@ class AidApply extends Controller
         if(isset($inputs['status']) &&($inputs['status'])!='none'){
             $where .= ' `status` = "'.$inputs['status'].'" AND ';
         }
+        if(isset($inputs['aid_type']) &&($inputs['aid_type'])!='none'){
+            $where .= ' `aid_type` = "'.$inputs['aid_type'].'" AND ';
+        }
         //去掉已经归档的
         $where .= '`archived` = "no" AND ';
         $sql = 'SELECT * FROM `service_legal_aid_apply` '.$where.'1 ORDER BY `apply_date` DESC';
@@ -358,11 +760,41 @@ class AidApply extends Controller
                     'apply_name'=> $apply->apply_name,
                     'apply_phone'=> $apply->apply_phone,
                     'type'=> $apply->type,
+	                'aid_type'=> $apply->aid_type,
+	                'case_type'=> $apply->case_type,
+	                'manager_code'=> $apply->manager_code,
                     'salary_dispute'=> $apply->salary_dispute=='yes' ? 'yes' : 'no',
                     'apply_date'=> date('Y-m-d',strtotime($apply->apply_date)),
                 );
             }
             $this->page_data['apply_list'] = $apply_list;
+
+	        //取出律师事务所和律师
+		    $lawyer_office_list = array();
+		    $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+	        if(!is_null($lawyer_offices)){
+	            foreach ($lawyer_offices as $lawyer_office){
+	                $lawyer_office_list[$lawyer_office->id] = array(
+	                    'id'=> $lawyer_office->id,
+	                    'name'=> $lawyer_office->name,
+	                    'en_name'=> $lawyer_office->en_name,
+	                );
+	            }
+	        }
+	        $lawyer_list = array();
+	        $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+	        if(!is_null($lawyers)){
+	            foreach ($lawyers as $lawyer){
+	                $lawyer_list[$lawyer->id] = array(
+	                    'id'=> $lawyer->id,
+	                    'name'=> $lawyer->name,
+		                'office_phone'=> $lawyer_office->office_phone,
+	                );
+	            }
+	        }
+	        $this->page_data['lawyer_list'] = $lawyer_list;
+	        $this->page_data['lawyer_office_list'] = $lawyer_office_list;
+
             $pageContent = view('judicial.manage.service.ajaxSearch.aidApplySearchList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
         }

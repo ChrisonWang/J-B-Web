@@ -692,9 +692,15 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/aidApply/pass','Manage\Service\AidApply@doPass');
 
+        Route::GET('manage/service/aidApply/archived','Manage\Service\AidApply@doArchived');
+
         Route::post('manage/service/aidApply/reject','Manage\Service\AidApply@doReject');
 
         Route::post('manage/service/aidApply/search','Manage\Service\AidApply@search');
+
+        Route::post('manage/service/aidApply/checkFlow','Manage\Service\AidApply@checkFlow');
+
+        Route::get('manage/service/aidApply/loadManager/{page}','Manage\Service\AidApply@loadManager');
 
         Route::post('manage/service/aidApplyList/{page?}','Manage\Service\AidApply@index');
 
