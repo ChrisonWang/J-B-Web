@@ -20,7 +20,11 @@
 	                        &nbsp;&nbsp;
 	                        <a href="javascript: void(0) ;" data-key="{{ $apply['key'] }}" data-method="edit" onclick="aidApplyMethod($(this))">审批</a>
 	                        &nbsp;&nbsp;
-						@elseif($apply['status'] == 'pass' && !isset($is_archived) && ($apply['manager_code'] == $manager_code))
+	                    @elseif($apply['status'] == 'pass' && !isset($is_archived) && ($apply['manager_code'] == $manager_code))
+							&nbsp;&nbsp;
+	                        <a href="javascript: void(0) ;" data-r_code="{{ $apply['record_code'] }}" data-key="{{ $apply['key'] }}" data-method="edit" onclick="aidApplyMethod($(this))">指派</a>
+	                        &nbsp;&nbsp;
+						@elseif($apply['status'] == 'dispatch' && !isset($is_archived) && ($apply['manager_code'] == $manager_code))
 							&nbsp;&nbsp;
 	                        <a href="javascript: void(0) ;" data-r_code="{{ $apply['record_code'] }}" data-key="{{ $apply['key'] }}" data-method="archived" onclick="aidApplyMethod($(this))">结案</a>
 	                        &nbsp;&nbsp;
@@ -30,9 +34,11 @@
                     <td>{{ $legal_types[$apply['aid_type']]['type_name'] }}</td>
                     <td>
                         @if($apply['status'] == 'pass')
-                            <p style="color:green; font-weight: bold">待结案</p>
+                            <p style="color:#1E90FF; font-weight: bold">待指派</p>
                         @elseif($apply['status'] == 'reject')
                             <p style="color:red; font-weight: bold">驳回</p>
+	                    @elseif($apply['status'] == 'dispatch')
+                            <p style="color:green; font-weight: bold">已指派</p>
 	                    @elseif($apply['status'] == 'archived')
                             <p style="color:red; font-weight: bold">已结案</p>
                         @else

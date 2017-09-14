@@ -99,6 +99,7 @@ class AidApply extends Controller
 
         $this->page_data['thisPageName'] = '群众预约援助管理';
         $this->page_data['political_list'] = ['citizen'=>'群众', 'cp'=>'党员', 'cyl'=>'团员'];
+        $this->page_data['status_list'] = ['waiting'=>'待审批', 'pass'=>'待指派', 'dispatch'=>'已指派', 'archived'=>'已结案', 'reject'=>'拒绝'];
         $this->page_data['type_list'] = ['personality'=>'人格纠纷','marriage'=>'婚姻家庭纠纷','inherit'=>'继承纠纷','possession'=>'不动产登记纠纷','other'=>'其他'];
     }
 
@@ -181,6 +182,8 @@ class AidApply extends Controller
                 'approval_opinion' => $apply->approval_opinion,
                 'approval_date' => $apply->approval_date,
                 'apply_date' => $apply->apply_date,
+                'lawyer_office_id' => $apply->lawyer_office_id,
+                'lawyer_id' => $apply->lawyer_id,
             );
         }
 	    //取出审批列表和驳回列表
@@ -220,6 +223,33 @@ class AidApply extends Controller
 	    }
 	    $this->page_data['pass_list'] = $pass_list;
 	    $this->page_data['reject_list'] = $reject_list;
+
+        //取出律师事务所和律师
+	    $lawyer_office_list = array();
+	    $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+        if(!is_null($lawyer_offices)){
+            foreach ($lawyer_offices as $lawyer_office){
+                $lawyer_office_list[$lawyer_office->id] = array(
+                    'id'=> $lawyer_office->id,
+                    'name'=> $lawyer_office->name,
+                    'en_name'=> $lawyer_office->en_name,
+                );
+            }
+        }
+        $lawyer_list = array();
+        $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+        if(!is_null($lawyers)){
+            foreach ($lawyers as $lawyer){
+                $lawyer_list[$lawyer->id] = array(
+                    'id'=> $lawyer->id,
+                    'name'=> $lawyer->name,
+	                'office_phone'=> $lawyer_office->office_phone,
+                );
+            }
+        }
+        $this->page_data['lawyer_list'] = $lawyer_list;
+        $this->page_data['lawyer_office_list'] = $lawyer_office_list;
+
         //页面中显示
         $this->page_data['apply_detail'] = $apply_detail;
         $pageContent = view('judicial.manage.service.aidApplyDetail',$this->page_data)->render();
@@ -271,6 +301,7 @@ class AidApply extends Controller
                 'apply_date' => $apply->apply_date,
             );
         }
+        $this->page_data['is_check'] = ($apply_detail['manager_code']==$this->manager_code) ? 'yes' : 'no';
 	    //取出审批列表和驳回列表以及最高层级
 	    $pass_list = array();
 	    $reject_list = array();
@@ -308,6 +339,32 @@ class AidApply extends Controller
 	    }
 	    $this->page_data['pass_list'] = $pass_list;
 	    $this->page_data['reject_list'] = $reject_list;
+
+        //取出律师事务所和律师
+	    $lawyer_office_list = array();
+	    $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+        if(!is_null($lawyer_offices)){
+            foreach ($lawyer_offices as $lawyer_office){
+                $lawyer_office_list[$lawyer_office->id] = array(
+                    'id'=> $lawyer_office->id,
+                    'name'=> $lawyer_office->name,
+                    'en_name'=> $lawyer_office->en_name,
+                );
+            }
+        }
+        $lawyer_list = array();
+        $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+        if(!is_null($lawyers)){
+            foreach ($lawyers as $lawyer){
+                $lawyer_list[$lawyer->id] = array(
+                    'id'=> $lawyer->id,
+                    'name'=> $lawyer->name,
+	                'office_phone'=> $lawyer_office->office_phone,
+                );
+            }
+        }
+        $this->page_data['lawyer_list'] = $lawyer_list;
+        $this->page_data['lawyer_office_list'] = $lawyer_office_list;
 
         //页面中显示
         $this->page_data['apply_detail'] = $apply_detail;
@@ -576,6 +633,123 @@ class AidApply extends Controller
             $pageContent = view('judicial.manage.service.aidApplyList',$this->page_data)->render();
             json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
 	    }
+    }
+
+    public function doDispatch(Request $request)
+    {
+        $inputs = $request->input();
+        $id = keys_decrypt($inputs['key']);
+	    if(trim($inputs['lawyer']) == 'none' || trim($inputs['lawyer_office']) == 'none'){
+		    json_response(['status'=>'failed','type'=>'notice', 'res'=>'请选择正确的律所和律师！']);
+	    }
+        $lawyer = explode('|', trim($inputs['lawyer']));
+        $save_data = array(
+            'lawyer_office_id'=> trim($inputs['lawyer_office']),
+            'lawyer_id'=> $lawyer[0],
+            'status'=> 'dispatch',
+            'approval'=> 'yes',
+            'approval_date'=> date('Y-m-d H:i:s', time()),
+        );
+        $rs = DB::table('service_legal_aid_apply')->where('id',$id)->update($save_data);
+        if($rs === false){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'指派失败']);
+        }
+        else{
+            //日志
+            $this->log_info['type'] = 'edit';
+            $this->log_info['before'] = "审批状态：待指派";
+            $this->log_info['after'] = "审批状态：已指派";
+            $this->log_info['log_type'] = 'str';
+            $this->log_info['resource_id'] = $id;
+            Logs::manage_log($this->log_info);
+            //发短信
+            $phone = array();
+            $member_code = DB::table('service_legal_aid_apply')->where('id',$id)->first();
+            if(isset($member_code->member_code) && !empty($member_code->member_code)){
+                $phone = DB::table('user_members')
+	                ->leftJoin('user_member_info', 'user_members.member_code', '=', 'user_member_info.member_code')
+	                ->where('user_members.member_code', $member_code->member_code)
+	                ->where('user_member_info.member_code', $member_code->member_code)
+	                ->first();
+            }
+	        $name = empty($phone->citizen_name) ? "未设置" : $phone->citizen_name;
+            if(isset($phone->cell_phone) && preg_phone($phone->cell_phone)){
+                Message::send($phone->cell_phone,'您申请的群众预约援助援助编号“'.$member_code->record_code.'”，已指派律师：'. $lawyer[2] .'，联系电话：'.$lawyer[1].'，请及时与律师联系！');
+	            if(preg_phone($lawyer[1])){
+                    Message::send($lawyer[1],'群众预约援助援助编号“'.$member_code->record_code.'”，已指派给你，请及时与申请人：'. $name .' 联系，联系电话：'.$phone->cell_phone.' ！');
+                }
+            }
+            //审核成功，转到结案页面
+            $apply_detail = array();
+	        $id = keys_decrypt($request->input('key'));
+	        $apply = DB::table('service_legal_aid_apply')->where('id', $id)->first();
+	        if(is_null($apply)){
+	            json_response(['status'=>'failed','type'=>'redirect', 'res'=>URL::to('manage')]);
+	        }
+	        else{
+                $apply_detail = array(
+                'key' => keys_encrypt($apply->id),
+                'record_code' => $apply->record_code,
+                'apply_name' => $apply->apply_name,
+                'political' => $apply->political,
+                'sex' => $apply->sex,
+                'apply_phone' => $apply->apply_phone,
+                'apply_identity_no' => $apply->apply_identity_no,
+                'apply_address' => $apply->apply_address,
+                'defendant_name' => $apply->defendant_name,
+                'defendant_phone' => $apply->defendant_phone,
+                'defendant_company' => $apply->defendant_company,
+                'defendant_addr' => $apply->defendant_addr,
+                'happened_date' => date('Y-m-d', strtotime($apply->happened_date)),
+                'case_area_id' => keys_encrypt($apply->case_area_id),
+                'type' => $apply->type,
+                'salary_dispute' => $apply->salary_dispute=='yes' ? 'yes' : 'no',
+                'case_location' => $apply->case_location,
+                'dispute_description' => $apply->dispute_description,
+	            'aid_type'=> $apply->aid_type,
+                'case_type'=> $apply->case_type,
+	            'manager_code'=> $apply->manager_code,
+                'file' => $apply->file,
+                'file_name' => $apply->file_name,
+                'status' => $apply->status,
+                'approval_count' => $apply->approval_count,
+                'approval' => $apply->approval,
+                'approval_opinion' => $apply->approval_opinion,
+                'approval_date' => $apply->approval_date,
+                'apply_date' => $apply->apply_date,
+            );
+	        }
+	        //取出律师事务所和律师
+	        $lawyer_office_list = array();
+	        $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+	        if(!is_null($lawyer_offices)){
+	            foreach ($lawyer_offices as $lawyer_office){
+	                $lawyer_office_list[$lawyer_office->id] = array(
+	                    'id'=> $lawyer_office->id,
+	                    'name'=> $lawyer_office->name,
+	                    'en_name'=> $lawyer_office->en_name,
+	                );
+	            }
+	        }
+	        $lawyer_list = array();
+	        $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+	        if(!is_null($lawyers)){
+	            foreach ($lawyers as $lawyer){
+	                $lawyer_list[$lawyer->id] = array(
+	                    'id'=> $lawyer->id,
+	                    'name'=> $lawyer->name,
+		                'office_phone'=> $lawyer_office->office_phone,
+	                );
+	            }
+	        }
+	        $this->page_data['lawyer_list'] = $lawyer_list;
+	        $this->page_data['lawyer_office_list'] = $lawyer_office_list;
+
+	        //页面中显示
+	        $this->page_data['apply_detail'] = $apply_detail;
+	        $pageContent = view('judicial.manage.service.aidApplyEdit',$this->page_data)->render();
+	        json_response(['status'=>'succ','type'=>'page', 'res'=>$pageContent]);
+        }
     }
 
     public function doArchived(Request $request)

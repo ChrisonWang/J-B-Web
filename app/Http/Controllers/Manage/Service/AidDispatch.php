@@ -346,26 +346,40 @@ class AidDispatch extends Controller
         }
     }
 
-	public function doArchived(Request $request)
+    public function doReject(Request $request)
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
+        if(trim($inputs['approval_opinion']) === ''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批意见不能为空！']);
+        }
         $save_data = array(
-            'status'=> 'archived',
+            'approval_opinion'=> trim($inputs['approval_opinion']),
+            'status'=> 'reject',
+            'approval'=> 'yes',
+            'approval_date'=> date('Y-m-d H:i:s', time()),
         );
         $rs = DB::table('service_legal_aid_dispatch')->where('id',$id)->update($save_data);
         if($rs === false){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'操作失败']);
         }
         else{
             //日志
             $this->log_info['type'] = 'edit';
-            $this->log_info['before'] = "审批状态：已指派";
-            $this->log_info['after'] = "审批状态：已结案";
+            $this->log_info['before'] = "审批状态：待审批";
+            $this->log_info['after'] = "审批状态：拒绝    审批意见：".$save_data['approval_opinion'];
             $this->log_info['log_type'] = 'str';
             $this->log_info['resource_id'] = $id;
             Logs::manage_log($this->log_info);
-
+            //发短信
+            $phone = array();
+            $member_code = DB::table('service_legal_aid_dispatch')->where('id',$id)->first();
+            if(isset($member_code->member_code) && !empty($member_code->member_code)){
+                $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
+            }
+            if(isset($phone->cell_phone)){
+                Message::send($phone->cell_phone,'管理员驳回了您编号为“'.$member_code->record_code.'”的公检法指派申请，请登录PC官网查看原因！');
+            }
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';
@@ -414,40 +428,26 @@ class AidDispatch extends Controller
         }
     }
 
-    public function doReject(Request $request)
+    public function doArchived(Request $request)
     {
         $inputs = $request->input();
         $id = keys_decrypt($inputs['key']);
-        if(trim($inputs['approval_opinion']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批意见不能为空！']);
-        }
         $save_data = array(
-            'approval_opinion'=> trim($inputs['approval_opinion']),
-            'status'=> 'reject',
-            'approval'=> 'yes',
-            'approval_date'=> date('Y-m-d H:i:s', time()),
+            'status'=> 'archived',
         );
         $rs = DB::table('service_legal_aid_dispatch')->where('id',$id)->update($save_data);
         if($rs === false){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'审批失败']);
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'结案操作失败！']);
         }
         else{
             //日志
             $this->log_info['type'] = 'edit';
-            $this->log_info['before'] = "审批状态：待审批";
-            $this->log_info['after'] = "审批状态：拒绝    审批意见：".$save_data['approval_opinion'];
+            $this->log_info['before'] = "审批状态：已指派";
+            $this->log_info['after'] = "审批状态：已结案";
             $this->log_info['log_type'] = 'str';
             $this->log_info['resource_id'] = $id;
             Logs::manage_log($this->log_info);
-            //发短信
-            $phone = array();
-            $member_code = DB::table('service_legal_aid_dispatch')->where('id',$id)->first();
-            if(isset($member_code->member_code) && !empty($member_code->member_code)){
-                $phone = DB::table('user_members')->where('member_code', $member_code->member_code)->first();
-            }
-            if(isset($phone->cell_phone)){
-                Message::send($phone->cell_phone,'管理员驳回了您编号为“'.$member_code->record_code.'”的公检法指派申请，请登录PC官网查看原因！');
-            }
+
             //审核成功，加载列表数据
             $apply_list = array();
             $pages = '';

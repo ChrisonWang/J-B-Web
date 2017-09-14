@@ -692,6 +692,8 @@ Route::group(['middleware' => ['web']], function () {
 
         Route::post('manage/service/aidApply/pass','Manage\Service\AidApply@doPass');
 
+        Route::post('manage/service/aidApply/dispatch','Manage\Service\AidApply@doDispatch');
+
         Route::GET('manage/service/aidApply/archived','Manage\Service\AidApply@doArchived');
 
         Route::post('manage/service/aidApply/reject','Manage\Service\AidApply@doReject');

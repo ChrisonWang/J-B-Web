@@ -217,6 +217,32 @@
 	                </div>
 				@endif
             </div>
+	        <div class="form-group">
+                <label for="name" class="col-md-2 control-label">审批状态：</label>
+                <div class="col-md-5">
+                    <label for="name" class="control-label" style="text-align: left">
+                        {{ $status_list[$apply_detail['status']] }}
+                    </label>
+                </div>
+            </div>
+	        @if( $apply_detail['status']=='archived' )
+				<div class="form-group">
+                    <label for="name" class="col-md-2 control-label">指派事务所：</label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            {{ $lawyer_office_list[$apply_detail['lawyer_office_id']]['name'] }}
+                        </label>
+                    </div>
+                </div>
+	            <div class="form-group">
+                    <label for="name" class="col-md-2 control-label">指派律师：</label>
+                    <div class="col-md-3">
+                        <label for="name" class="control-label" style="text-align: left">
+                            {{ $lawyer_list[$apply_detail['lawyer_id']]['name'] }}
+                        </label>
+                    </div>
+                </div>
+			@endif
 
             <div class="form-group">
                 <hr/>

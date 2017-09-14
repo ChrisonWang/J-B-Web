@@ -16,6 +16,8 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 
+use App\Libs\Message;
+
 class AidApply extends Controller
 {
     public $page_data = array();
@@ -147,6 +149,17 @@ class AidApply extends Controller
         else{
             $record_code = $this->get_record_code('GZ');
         }
+        //一级审核人
+        $first_flow = '';
+        $flow = DB::table('service_check_flow')->first();
+        if(isset($flow->flow) && !empty($flow->flow)){
+            $_flow = json_decode($flow->flow, true);
+            $first_flow = isset($_flow[0]['manager_code']) ? $_flow[0]['manager_code'] : '';
+        }
+        if(empty($first_flow)){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'未设置正确的审批人']);
+        }
+
         //处理附件
         $file_path = '';
         $filename = '';
@@ -184,6 +197,7 @@ class AidApply extends Controller
             $save_data = array(
                 'approval_count' => isset($approval_count->approval_count)? intval($approval_count->approval_count) + 1 : 1,
                 'apply_name' => $inputs['apply_name'],
+                'record_code' => $inputs['key'],
                 'political' => $inputs['political'],
                 'sex' => $inputs['sex']=='female' ? 'famale' : 'male',
                 'apply_phone' => $inputs['apply_phone'],
@@ -205,6 +219,8 @@ class AidApply extends Controller
                 'file_name' => $filename,
                 'status' => 'waiting',
                 'member_code' => $member_code,
+                'manager_code' => $first_flow,
+                'check_sort' => 1,
                 'apply_date' => date('Y-m-d H:i:s', time()),
             );
             $re = DB::table('service_legal_aid_apply')->where('record_code',$inputs['key'])->update($save_data);
@@ -234,6 +250,8 @@ class AidApply extends Controller
                 'file_name' => $filename,
                 'status' => 'waiting',
                 'member_code' => $member_code,
+                'manager_code' => $first_flow,
+                'check_sort' => 1,
                 'apply_date' => date('Y-m-d H:i:s', time()),
             );
             $re = DB::table('service_legal_aid_apply')->insertGetId($save_data);
@@ -242,6 +260,10 @@ class AidApply extends Controller
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'申请失败！请联系管理员']);
         }
         else{
+            $phone = DB::table('user_manager')->where('manager_code', $first_flow)->where('disabled', 'no')->first();
+            if(isset($phone->cell_phone) && !empty($phone->cell_phone)){
+                Message::send($phone->cell_phone,'群众预约援助申请编号“'.$save_data['record_code'].'”已提交，请及时审批！');
+            }
             json_response(['status'=>'succ','type'=>'notice', 'res'=>'提交成功！请等待管理员答复！', 'link'=>URL::to('service/aid/list')]);
         }
     }
