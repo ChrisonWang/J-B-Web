@@ -159,9 +159,9 @@ class SystemLoadContent extends Controller
 	    //下次备份
 	    $next = DB::table('system_backup_auto')->first();
 	    $next_info = array(
-		    'date' => date('Y-m-d', $next->next_date),
-		    'time' => date('H:i', $next->next_date),
-		    'cycle_type' => $next->cycle_type
+		    'date' => isset($next->next_date) ? date('Y-m-d', $next->next_date) : date('Y-m-d', time()),
+		    'time' => isset($next->next_date) ? date('H:i', $next->next_date) : date('H:i', time()),
+		    'cycle_type' => isset($next->cycle_type) ? $next->cycle_type : 'no',
 	    );
 	    $this->page_data['next_info'] = $next_info;
 	    
