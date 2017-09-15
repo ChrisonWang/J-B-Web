@@ -116,6 +116,7 @@ class MessageSend extends Controller
         $inputs = $request->input();
         $this->_check_input($inputs);
 
+        $id = (isset($inputs['key'])) ? keys_decrypt(trim($inputs['key'])) : '';
         $phone_list = array();
         $office_list = isset($inputs['office_list']) ? json_decode($inputs['office_list'], true) : '';
         $member_list = isset($inputs['member_list']) ? json_decode($inputs['member_list'], true) : '';
@@ -270,8 +271,13 @@ class MessageSend extends Controller
             'create_date'=> $now,
             'update_date'=> $now
         );
-        $id = DB::table('service_message_list')->insertGetId($save_date);
-        if($id === false){
+        if(isset($id) && !empty($id)){
+            $rs = DB::table('service_message_list')->where('id', $id)->update($save_date);
+        }
+        else{
+            $rs = DB::table('service_message_list')->insertGetId($save_date);
+        }
+        if($rs === false){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'创建失败']);
         }
         else{

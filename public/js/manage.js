@@ -2293,7 +2293,7 @@ function messageSendMethod(t){
 }
 
 function editMessageSend(){
-    var url = '/manage/service/messageSend/edit';
+    var url = '/manage/service/messageSend/add';
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -44,4 +44,16 @@ class Logs
         return true;
     }
 
+    public static function cron_log($info)
+    {
+        $save_date = array(
+            'succ' => (isset($info['succ']) && $info['succ']=='yes') ? 'yes' : 'no',
+            'message' => (isset($info['message']) && !empty($info['message'])) ? json_encode($info['message']) : '',
+            'type' => $info['type'],
+            'create_date' => date('Y-m-d H:i:s', time()),
+        );
+        DB::table('system_cron_log')->insertGetId($save_date);
+        return true;
+    }
+
 }
