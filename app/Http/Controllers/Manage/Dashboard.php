@@ -966,7 +966,7 @@ class Dashboard extends Controller
                 $user_list[$key]['key'] = $manager->manager_code;
                 $user_list[$key]['login_name'] = $manager->login_name;
                 $user_list[$key]['type_id'] = $manager->type_id;
-                $user_list[$key]['nickname'] = empty($managers->nickname) ? '未设置' : $managers->nickname;
+                $user_list[$key]['nickname'] = empty(trim($manager->nickname)) ? '未设置' : $manager->nickname;
                 $user_list[$key]['cell_phone'] = $manager->cell_phone;
                 $user_list[$key]['disabled'] = $manager->disabled;
                 $user_list[$key]['create_date'] = $manager->create_date;
@@ -984,7 +984,7 @@ class Dashboard extends Controller
                 'key'=> $member->member_code,
                 'login_name'=> $member->login_name,
                 'type_id'=> $member->user_type,
-                'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
+                'nickname'=> empty(trim($member->citizen_name)) ? '未设置' : $member->citizen_name,
                 'cell_phone'=> $member->cell_phone,
                 'disabled'=> $member->disabled,
                 'create_date'=> $member->create_date,

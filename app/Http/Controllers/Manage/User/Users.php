@@ -29,15 +29,15 @@ class Users extends Controller
 	    else{
 		    $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
 	    }
-        foreach($managers as $key=> $managers){
-            $user_list[$key]['key'] = $managers->manager_code;
-            $user_list[$key]['login_name'] = $managers->login_name;
-            $user_list[$key]['type_id'] = $managers->type_id;
-            $user_list[$key]['nickname'] = empty($managers->nickname) ? '未设置' : $managers->nickname;
-            $user_list[$key]['cell_phone'] = $managers->cell_phone;
-            $user_list[$key]['disabled'] = $managers->disabled;
-            $user_list[$key]['create_date'] = $managers->create_date;
-            $user_list[$key]['_create_date'] = strtotime($managers->create_date);
+        foreach($managers as $key=> $manager){
+            $user_list[$key]['key'] = $manager->manager_code;
+            $user_list[$key]['login_name'] = $manager->login_name;
+            $user_list[$key]['type_id'] = $manager->type_id;
+            $user_list[$key]['nickname'] = empty(trim($manager->nickname)) ? '未设置' : $manager->nickname;
+            $user_list[$key]['cell_phone'] = $manager->cell_phone;
+            $user_list[$key]['disabled'] = $manager->disabled;
+            $user_list[$key]['create_date'] = $manager->create_date;
+            $user_list[$key]['_create_date'] = strtotime($manager->create_date);
         }
         //取出用户
 	    if($sort == 'ASC'){
@@ -54,7 +54,7 @@ class Users extends Controller
                 'key'=> $member->member_code,
                 'login_name'=> $member->login_name,
                 'type_id'=> $member->user_type,
-                'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
+                'nickname'=> empty(trim($member->citizen_name)) ? '未设置' : $member->citizen_name,
                 'cell_phone'=> $member->cell_phone,
                 'disabled'=> $member->disabled,
                 'create_date'=> $member->create_date,
@@ -237,14 +237,14 @@ class Users extends Controller
         //插入数据成功取出管理员
         $user_list = array();
         $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
-        foreach($managers as $key=> $managers){
-            $user_list[$key]['key'] = $managers->manager_code;
-            $user_list[$key]['login_name'] = $managers->login_name;
-            $user_list[$key]['type_id'] = $managers->type_id;
-            $user_list[$key]['nickname'] = $managers->nickname;
-            $user_list[$key]['cell_phone'] = $managers->cell_phone;
-            $user_list[$key]['disabled'] = $managers->disabled;
-            $user_list[$key]['create_date'] = $managers->create_date;
+        foreach($managers as $key=> $manager){
+            $user_list[$key]['key'] = $manager->manager_code;
+            $user_list[$key]['login_name'] = $manager->login_name;
+            $user_list[$key]['type_id'] = $manager->type_id;
+            $user_list[$key]['nickname'] = empty(trim($manager->nickname)) ? '未设置' : $manager->nickname;
+            $user_list[$key]['cell_phone'] = $manager->cell_phone;
+            $user_list[$key]['disabled'] = $manager->disabled;
+            $user_list[$key]['create_date'] = $manager->create_date;
         }
         //取出用户
         $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_member_info.create_date', 'desc')->get();
@@ -257,7 +257,7 @@ class Users extends Controller
                 'key'=> $member->member_code,
                 'login_name'=> $member->login_name,
                 'type_id'=> $member->user_type,
-                'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
+                'nickname'=> empty(trim($member->citizen_name)) ? '未设置' : $member->citizen_name,
                 'cell_phone'=> $member->cell_phone,
                 'disabled'=> $member->disabled,
                 'create_date'=> $member->create_date,
@@ -608,14 +608,14 @@ class Users extends Controller
         //修改成功则回调页面,取出数据
         $user_list = array();
         $managers = DB::table('user_manager')->orderBy('create_date', 'desc')->get();
-        foreach($managers as $key=> $managers){
-            $user_list[$key]['key'] = $managers->manager_code;
-            $user_list[$key]['login_name'] = $managers->login_name;
-            $user_list[$key]['type_id'] = $managers->type_id;
-            $user_list[$key]['nickname'] = $managers->nickname;
-            $user_list[$key]['cell_phone'] = $managers->cell_phone;
-            $user_list[$key]['disabled'] = $managers->disabled;
-            $user_list[$key]['create_date'] = $managers->create_date;
+        foreach($managers as $key=> $manager){
+            $user_list[$key]['key'] = $manager->manager_code;
+            $user_list[$key]['login_name'] = $manager->login_name;
+            $user_list[$key]['type_id'] = $manager->type_id;
+            $user_list[$key]['nickname'] = empty(trim($manager->nickname)) ? '未设置' : $manager->nickname;
+            $user_list[$key]['cell_phone'] = $manager->cell_phone;
+            $user_list[$key]['disabled'] = $manager->disabled;
+            $user_list[$key]['create_date'] = $manager->create_date;
         }
         //取出用户
         $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->orderBy('user_member_info.create_date', 'desc')->get();
@@ -628,7 +628,7 @@ class Users extends Controller
                 'key'=> $member->member_code,
                 'login_name'=> $member->login_name,
                 'type_id'=> $member->user_type,
-                'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
+                'nickname'=> empty(trim($member->citizen_name)) ? '未设置' : $member->citizen_name,
                 'cell_phone'=> $member->cell_phone,
                 'disabled'=> $member->disabled,
                 'create_date'=> $member->create_date,
@@ -699,14 +699,14 @@ class Users extends Controller
         if( $row > 0 ){
             $user_list = array();
             $managers = DB::table('user_manager')->get();
-            foreach($managers as $key=> $managers){
-                $user_list[$key]['key'] = $managers->manager_code;
-                $user_list[$key]['login_name'] = $managers->login_name;
-                $user_list[$key]['type_id'] = $managers->type_id;
-                $user_list[$key]['nickname'] = $managers->nickname;
-                $user_list[$key]['cell_phone'] = $managers->cell_phone;
-                $user_list[$key]['disabled'] = $managers->disabled;
-                $user_list[$key]['create_date'] = $managers->create_date;
+            foreach($managers as $key=> $manager){
+                $user_list[$key]['key'] = $manager->manager_code;
+                $user_list[$key]['login_name'] = $manager->login_name;
+                $user_list[$key]['type_id'] = $manager->type_id;
+                $user_list[$key]['nickname'] = empty(trim($manager->nickname)) ? '未设置' : $manager->nickname;
+                $user_list[$key]['cell_phone'] = $manager->cell_phone;
+                $user_list[$key]['disabled'] = $manager->disabled;
+                $user_list[$key]['create_date'] = $manager->create_date;
             }
             //取出用户
             $members = DB::table('user_members')->join('user_member_info','user_members.member_code','=','user_member_info.member_code')->get();
@@ -719,7 +719,7 @@ class Users extends Controller
                     'key'=> $member->member_code,
                     'login_name'=> $member->login_name,
                     'type_id'=> $member->user_type,
-                    'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
+                    'nickname'=> empty(trim($member->citizen_name)) ? '未设置' : $member->citizen_name,
                     'cell_phone'=> $member->cell_phone,
                     'disabled'=> $member->disabled,
                     'create_date'=> $member->create_date,
@@ -884,7 +884,7 @@ class Users extends Controller
                     'key'=> $member->member_code,
                     'login_name'=> $member->login_name,
                     'type_id'=> $member->user_type,
-                    'nickname'=> empty($member->citizen_name) ? '未设置' : $member->citizen_name,
+                    'nickname'=> empty(trim($member->citizen_name)) ? '未设置' : $member->citizen_name,
                     'cell_phone'=> $member->cell_phone,
                     'disabled'=> $member->disabled,
                     'create_date'=> $member->create_date,
@@ -898,7 +898,7 @@ class Users extends Controller
                     'key'=> $manager->manager_code,
                     'login_name'=> $manager->login_name,
                     'type_id'=> $manager->type_id,
-                    'nickname'=> empty($manager->nickname) ? '未设置' : $manager->nickname,
+                    'nickname'=> empty(trim($manager->nickname)) ? '未设置' : $manager->nickname,
                     'cell_phone'=> $manager->cell_phone,
                     'disabled'=> $manager->disabled,
                     'create_date'=> $manager->create_date,
