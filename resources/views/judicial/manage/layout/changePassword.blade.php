@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <hr/>
-                <div class="col-md-offset-1 col-md-10">
+                <div class="col-md-offset-1 col-md-5">
                     <button type="button" class="btn btn-info btn-block" onclick="toChangePassword()">确认</button>
                 </div>
             </div>

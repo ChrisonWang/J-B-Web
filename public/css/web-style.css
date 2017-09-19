@@ -338,7 +338,7 @@ tr {display: table-row;vertical-align: inherit;border-color: inherit;}
 .text_a ul{overflow: hidden; padding-top: 50px;}
 .text_a .wsc_txt{text-align: right; margin-right: 5px;}
 .text_a .cx_inp{width: auto!important;}
-.post_btn{height: 530px;}
+.post_btn{height: 630px;}
 .ws_ckd{width: 17px!important; height: 18px; background: url("../images/checkboxIcons.png") no-repeat 0 -52px;; background-size: 100%; display: inline-block; zoom: 1; -webkit-appearance: none; border: none!important; vertical-align: middle;}
 .ws_ckd:checked{background-position: 0 -1px;}
 .cx_inp textarea{padding: 7px 0; border-radius: 2px; text-indent: 10px; border: 1px solid #ECECEC; color: #222222; font-size: 13px; min-height: 100px;}

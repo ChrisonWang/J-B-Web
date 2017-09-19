@@ -4,7 +4,8 @@
         <h3 class="panel-title">个人信息
         </h3>
         <div class="pull-right">
-            <i class="fa fa-check-square-o fa-2"></i>
+            <a href="javascript:void(0);" data-node="user-editManagerInfo" onclick="loadContent($(this))">修改密码</a>
+	        &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="javascript:void(0);" onclick="javascript: $('#changeInfo_modal').modal('show');">编辑</a>
         </div>
     </div>

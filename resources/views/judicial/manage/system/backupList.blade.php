@@ -6,7 +6,7 @@
     </div>
     <div class="panel-body">
         <div class="container-fluid">
-            <a type="button" data-key='none' data-method="add" onclick="backupMethod($(this))" class="btn btn-primary">新增</a>
+            {{--<a type="button" data-key='none' data-method="add" onclick="backupMethod($(this))" class="btn btn-primary">新增</a>--}}
             <a type="button" data-key='none' onclick="javascript: $('#setting_modal').modal('show');" class="btn btn-primary">设置</a>
 	        <!--自动备份设置模态框-->
             <div class="modal fade" tabindex="-1" role="dialog" id="setting_modal" aria-labelledby="gridSystemModalLabel">

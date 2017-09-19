@@ -5,7 +5,7 @@
                 <a href="javascript:void(0);" data-node="user-managerInfo">
                     <i class="fa fa-user-circle-o nav_icon"></i>个人信息
                 </a>
-                <a href="javascript:void(0);" onclick="javascript: $('#changeInfo_modal').modal('show');">修改信息</a>
+                {{--<a href="javascript:void(0);" onclick="javascript: $('#changeInfo_modal').modal('show');">修改信息</a>--}}
             </li>
             <!-- 权限管理 -->
             @if($left_tree != "ROOT" && is_array($left_tree))

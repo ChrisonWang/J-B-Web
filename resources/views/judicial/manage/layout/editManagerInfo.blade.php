@@ -38,6 +38,9 @@
                 <div class="col-md-offset-1 col-md-2">
                     <button type="button" class="btn btn-info btn-block" onclick="managerPassword()">确认</button>
                 </div>
+	            <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-block" data-node="user-managerInfo" onclick="loadContent($(this))">返回</button>
+                </div>
             </div>
         </form>
     </div>
