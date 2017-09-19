@@ -80,7 +80,12 @@
 
 	//加载右侧内容
 	function loadContent(t){
-		var node_id = t.data("node").split('-');
+		if(t.data("node") == undefined){
+			var node_id = '';
+		}
+		else{
+			var node_id = t.data("node").split('-');
+		}
 		var url ='/manage/'+node_id[0]+'LoadContent';
 		var container = $("#page-wrapper");
 

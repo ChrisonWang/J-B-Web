@@ -112,6 +112,17 @@
                     <a href="{{ $record_detail['file'] }}" target="_blank" style="color: #4990E2; margin-left: 10px;">{{ $record_detail['file_name'] }}</a>
                 </div>
             </div>
+
+            <!--指派律师情况-->
+            @if(($record_detail['status'] == 'dispatch' || $record_detail['status'] == 'archived') && isset($lawyer_office_list[$record_detail['lawyer_office_id']]) && $lawyer_list[$record_detail['lawyer_id']])
+	            <hr/>
+                <div class="mt_btn">
+                    <span class="wsc_txt" style="width: 100%; text-align: left; font-weight: bolder; font-size: 14px; padding-left: 30px">
+	                    此案状态为【{{ $status_list[$record_detail['status']] }}】，已指派给【{{ $lawyer_office_list[$record_detail['lawyer_office_id']]['name'] }}】 {{$lawyer_list[$record_detail['lawyer_id']]['name']}} 律师，联系电话：{{  $lawyer_list[$record_detail['lawyer_id']]['office_phone'] }}
+                    </span>
+                </div>
+            @endif
+
             <div class=mt_last>
                 <span class="wsc_txt" style="width:80px; float: left; display: inline-block">温馨提示</span>
                 <div class="mt_ul" style="float: left; display: inline-block">

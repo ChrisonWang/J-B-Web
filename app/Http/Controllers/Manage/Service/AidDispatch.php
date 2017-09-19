@@ -152,7 +152,7 @@ class AidDispatch extends Controller
                 $lawyer_list[$lawyer->id] = array(
                     'id'=> $lawyer->id,
                     'name'=> $lawyer->name,
-	                'office_phone'=> $lawyer_office->office_phone,
+	                'office_phone'=> $lawyer->office_phone,
                 );
             }
         }
@@ -222,7 +222,7 @@ class AidDispatch extends Controller
                 $lawyer_list[$lawyer->id] = array(
                     'id'=> $lawyer->id,
                     'name'=> $lawyer->name,
-	                'office_phone'=> $lawyer_office->office_phone,
+	                'office_phone'=> $lawyer->office_phone,
                 );
             }
         }
@@ -332,7 +332,7 @@ class AidDispatch extends Controller
 	                $lawyer_list[$lawyer->id] = array(
 	                    'id'=> $lawyer->id,
 	                    'name'=> $lawyer->name,
-		                'office_phone'=> $lawyer_office->office_phone,
+		                'office_phone'=> $lawyer->office_phone,
 	                );
 	            }
 	        }

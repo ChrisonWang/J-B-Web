@@ -22,8 +22,12 @@
                     <td style="vertical-align: middle">{{ $apply->record_code }}</td>
                     <td style="vertical-align: middle">{{ isset($apply_type[$apply->type]) ? $apply_type[$apply->type] : '-' }}</td>
                     <td style="vertical-align: middle">
-                        @if($apply->status == 'pass')
-                            <div class="shtg" style="color: #4684CD;">审核通过</div>
+	                    @if($apply->status == 'archived')
+                            <div class="shtg" style="color: #4684CD;">已结案</div>
+                        @elseif($apply->status == 'pass')
+		                    <div class="dsh" style="color: #7DA750;">待指派</div>
+	                    @elseif($apply->status == 'dispatch')
+		                    <div class="shtg" style="color: #4684CD;">已指派</div>
                         @elseif($apply->status == 'reject')
                             <div class="btg" style="color: #222222;">审核不通过/
                                 <a href="#" data-key="{{ $apply->record_code }}" data-type="service_legal_aid_apply" onclick="show_opinion($(this))" style="color: #DD3938">查看原因</a>

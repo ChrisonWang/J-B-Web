@@ -99,6 +99,7 @@ class AidApply extends Controller
         $this->page_data['channel_list'] = $this->get_left_list();
         $this->page_data['_now'] = 'wsbs';
         $this->page_data['now_title'] = '法律援助';
+        $this->page_data['status_list'] = ['waiting'=>'待审批', 'pass'=>'待指派', 'dispatch'=>'已指派', 'archived'=>'已结案', 'reject'=>'拒绝'];
         $this->get_left_sub();
     }
 
@@ -298,7 +299,34 @@ class AidApply extends Controller
                 'status' => $record->status,
                 'file' => $record->file,
                 'file_name' => $record->file_name,
+                'lawyer_office_id'=> $record->lawyer_office_id,
+                'lawyer_id'=> $record->lawyer_id,
             );
+            //取出律师事务所和律师
+            $lawyer_office_list = array();
+            $lawyer_offices = DB::table('service_lawyer_office')->where('status', 'normal')->get();
+            if(!is_null($lawyer_offices)){
+                foreach ($lawyer_offices as $lawyer_office){
+                    $lawyer_office_list[$lawyer_office->id] = array(
+                        'id'=> $lawyer_office->id,
+                        'name'=> $lawyer_office->name,
+                        'en_name'=> $lawyer_office->en_name,
+                    );
+                }
+            }
+            $lawyer_list = array();
+            $lawyers = DB::table('service_lawyer')->where('status', 'normal')->get();
+            if(!is_null($lawyers)){
+                foreach ($lawyers as $lawyer){
+                    $lawyer_list[$lawyer->id] = array(
+                        'id'=> $lawyer->id,
+                        'name'=> $lawyer->name,
+                        'office_phone'=> $lawyer->office_phone,
+                    );
+                }
+            }
+            $this->page_data['lawyer_list'] = $lawyer_list;
+            $this->page_data['lawyer_office_list'] = $lawyer_office_list;
         }
         $this->page_data['record_detail'] = $record_detail;
         return view('judicial.web.service.aidApplyDetail', $this->page_data);

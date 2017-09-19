@@ -47,8 +47,12 @@
                     <td>{{ $apply->record_code }}</td>
                     <td>{{ isset($apply_type[$apply->type]) ? $apply_type[$apply->type] : '-' }}</td>
                     <td>
-                        @if($apply->status == 'pass')
-                            <div class="shtg" style="color: #4684CD;">审核通过</div>
+	                    @if($apply->status == 'archived')
+                            <div class="shtg" style="color: #4684CD;">已结案</div>
+                        @elseif($apply->status == 'pass')
+		                    <div class="dsh" style="color: #7DA750;">待指派</div>
+	                    @elseif($apply->status == 'dispatch')
+		                    <div class="shtg" style="color: #4684CD;">已指派</div>
                         @elseif($apply->status == 'reject')
                             <div class="btg">审核不通过/
                                 <a href="#" data-key="{{ $apply->record_code }}" style="color: #E23939;" data-type="service_legal_aid_apply" onclick="show_opinion($(this))">查看原因</a>
@@ -96,8 +100,12 @@
                             <td>{{ $dispatch->record_code }}</td>
                             <td>{{ $dispatch->apply_office }}</td>
                             <td>
-                                @if($dispatch->status == 'pass')
-                                    <div class="shtg" style="color: #4684CD;">审核通过</div>
+	                            @if($dispatch->status == 'archived')
+                                    <div class="shtg" style="color: #4684CD;">已结案</div>
+                                @elseif($dispatch->status == 'pass')
+                                    <div class="dsh" style="color: #7DA750;">待指派</div>
+								@elseif($dispatch->status == 'dispatch')
+                                    <div class="shtg" style="color: #4684CD;">已指派</div>
                                 @elseif($dispatch->status == 'reject')
                                     <div class="btg">审核不通过/
                                         <a href="#" data-key="{{ $dispatch->record_code }}" style="color: #E23939;" data-type="service_legal_aid_dispatch" onclick="show_opinion($(this))">查看原因</a>

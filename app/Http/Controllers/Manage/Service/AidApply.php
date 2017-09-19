@@ -243,7 +243,7 @@ class AidApply extends Controller
                 $lawyer_list[$lawyer->id] = array(
                     'id'=> $lawyer->id,
                     'name'=> $lawyer->name,
-	                'office_phone'=> $lawyer_office->office_phone,
+	                'office_phone'=> $lawyer->office_phone,
                 );
             }
         }
@@ -361,7 +361,7 @@ class AidApply extends Controller
                 $lawyer_list[$lawyer->id] = array(
                     'id'=> $lawyer->id,
                     'name'=> $lawyer->name,
-	                'office_phone'=> $lawyer_office->office_phone,
+	                'office_phone'=> $lawyer->office_phone,
                 );
             }
         }
@@ -499,7 +499,7 @@ class AidApply extends Controller
 	                $lawyer_list[$lawyer->id] = array(
 	                    'id'=> $lawyer->id,
 	                    'name'=> $lawyer->name,
-		                'office_phone'=> $lawyer_office->office_phone,
+		                'office_phone'=> $lawyer->office_phone,
 	                );
 	            }
 	        }
@@ -625,7 +625,7 @@ class AidApply extends Controller
 	                $lawyer_list[$lawyer->id] = array(
 	                    'id'=> $lawyer->id,
 	                    'name'=> $lawyer->name,
-		                'office_phone'=> $lawyer_office->office_phone,
+		                'office_phone'=> $lawyer->office_phone,
 	                );
 	            }
 	        }
@@ -742,7 +742,7 @@ class AidApply extends Controller
 	                $lawyer_list[$lawyer->id] = array(
 	                    'id'=> $lawyer->id,
 	                    'name'=> $lawyer->name,
-		                'office_phone'=> $lawyer_office->office_phone,
+		                'office_phone'=> $lawyer->office_phone,
 	                );
 	            }
 	        }
@@ -827,7 +827,7 @@ class AidApply extends Controller
 	                $lawyer_list[$lawyer->id] = array(
 	                    'id'=> $lawyer->id,
 	                    'name'=> $lawyer->name,
-		                'office_phone'=> $lawyer_office->office_phone,
+		                'office_phone'=> $lawyer->office_phone,
 	                );
 	            }
 	        }
@@ -863,6 +863,7 @@ class AidApply extends Controller
 	    $office_list = $inputs['office'];
 	    $manager_list = $inputs['manager'];
 	    $flow = array();
+        $sorts = array();
 	    if( empty($office_list) || empty($manager_list) || (count($office_list) != count($manager_list)) ){
 		    json_response(['status'=>'failed','type'=>'alert', 'res'=>'请选择正确的科室和人员！']);
 	    }
@@ -876,8 +877,17 @@ class AidApply extends Controller
 				    'office_id'=> $office_list[$key],
 				    'manager_code'=> $m,
 			    );
+                $sorts[$key + 1] = $m;
 		    }
 	    }
+
+        //判断是否能删除层级
+        $sql = 'SELECT MAX(`check_sort`) AS `max_sort` FROM `service_legal_aid_apply` WHERE `status` = "waiting"';
+        $res = DB::select($sql);
+        if ( !isset($res[0]->max_sort) || (count($office_list) < $res[0]->max_sort)){
+            json_response(['status'=>'failed','type'=>'alert', 'res'=>'无法删除层级！因为层级中尚有未审核过的申请']);
+        }
+
 	    //存入
 	    $save_data = array(
 			    'flow'=> json_encode($flow),
@@ -894,6 +904,11 @@ class AidApply extends Controller
 	    else{
 		    $rs = DB::table('service_check_flow')->where('id', $data->id)->update($save_data);
 	    }
+
+        //修改以保存的层级
+        foreach ($sorts as $s=> $m){
+            DB::table('service_legal_aid_apply')->where('check_sort', $s)->update(['manager_code'=> $m]);
+        }
 
 	    if($rs === false){
 		    json_response(['status'=>'failed','type'=>'alert', 'res'=>'保存失败']);
@@ -966,7 +981,7 @@ class AidApply extends Controller
 	                $lawyer_list[$lawyer->id] = array(
 	                    'id'=> $lawyer->id,
 	                    'name'=> $lawyer->name,
-		                'office_phone'=> $lawyer_office->office_phone,
+		                'office_phone'=> $lawyer->office_phone,
 	                );
 	            }
 	        }
