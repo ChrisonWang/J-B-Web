@@ -135,10 +135,14 @@
                 @if($record_detail['status'] == 'reject')
                     审核驳回
                 @elseif($record_detail['status'] == 'pass')
-                    审核通过
-                @else
-                    待审核
-                @endif
+		            待指派
+	            @elseif($record_detail['status'] == 'dispatch')
+		            已指派
+	            @elseif($record_detail['status'] == 'archived')
+		            已结案
+	            @else
+		            待审核
+	            @endif
             </div>
             </form>
         </div>
