@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="citizen_code" class="col-md-2 control-label"><strong style="color: red">*</strong> 证件号：</label>
+                <label for="citizen_code" class="col-md-2 control-label">证件号：</label>
                 <div class="col-md-3">
                     <input disabled type="text" class="form-control" value="{{ $certificate_detail['citizen_code'] }}" id="citizen_code" name="citizen_code" placeholder="请输入证件号" />
                 </div>
@@ -33,13 +33,13 @@
             <div class="form-group">
                 <label for="exam_date" class="col-md-2 control-label">司法考试参加时间：</label>
                 <div class="col-md-3">
-                    <label for="create_date" class="control-label">{{ $certificate_detail['exam_date'] }}</label>
+                    <label for="create_date" class="control-label">{{ $certificate_detail['exam_date']=='1970-01' ? '未填写' : $certificate_detail['exam_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="certificate_date" class="col-md-2 control-label">取得证书时间：</label>
                 <div class="col-md-3">
-                    <label for="create_date" class="control-label">{{ $certificate_detail['certificate_date'] }}</label>
+                    <label for="create_date" class="control-label">{{ $certificate_detail['certificate_date']=='1970-01' ? '未填写' : $certificate_detail['certificate_date'] }}</label>
                 </div>
             </div>
             <div class="form-group">

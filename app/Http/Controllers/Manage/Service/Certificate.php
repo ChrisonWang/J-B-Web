@@ -42,7 +42,7 @@ class Certificate extends Controller
                     'name'=> $certificate->name,
                     'citizen_code'=> $certificate->citizen_code,
                     'certi_code'=> $certificate->certi_code,
-                    'certificate_date'=> date('Y-m-d', strtotime($certificate->certificate_date)),
+                    'certificate_date'=> date('Y-m', strtotime($certificate->certificate_date)),
                     'phone'=> $certificate->phone,
                     'last_status'=> $certificate->last_status,
                     'create_date'=> $certificate->create_date,
@@ -93,8 +93,8 @@ class Certificate extends Controller
         elseif(trim($inputs['phone']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系方式不能为空！']);
         }
-        elseif(trim($inputs['citizen_code']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'证件号码不能为空！']);
+        elseif(trim($inputs['certi_code']) === ''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'证书编号不能为空！']);
         }
 
         $register_year = $inputs['register-year'];
@@ -121,8 +121,8 @@ class Certificate extends Controller
             'name'=> $inputs['name'],
             'citizen_code'=> $inputs['citizen_code'],
             'certi_code'=> $inputs['certi_code'],
-            'exam_date'=> $inputs['exam_date'],
-            'certificate_date'=> $inputs['certificate_date'],
+            'exam_date'=> date('Y-m-d', strtotime($inputs['exam_date'])),
+            'certificate_date'=> date('Y-m-d', strtotime($inputs['certificate_date'])),
             'phone'=> $inputs['phone'],
             'register_log'=> $register_log,
             'create_date'=> $now,
@@ -148,7 +148,7 @@ class Certificate extends Controller
                         'name'=> $certificate->name,
                         'citizen_code'=> $certificate->citizen_code,
                         'certi_code'=> $certificate->certi_code,
-                        'certificate_date'=> date('Y-m-d', strtotime($certificate->certificate_date)),
+                        'certificate_date'=> date('Y-m', strtotime($certificate->certificate_date)),
                         'phone'=> $certificate->phone,
                         'last_status'=> $certificate->last_status,
                         'create_date'=> $certificate->create_date,
@@ -195,9 +195,9 @@ class Certificate extends Controller
                 'name'=> $certi->name,
                 'citizen_code'=> $certi->citizen_code,
                 'certi_code'=> $certi->certi_code,
-                'exam_date'=> $certi->exam_date,
+                'exam_date'=> date('Y-m', strtotime($certi->exam_date)),
                 'phone'=> $certi->phone,
-                'certificate_date'=> $certi->certificate_date,
+                'certificate_date'=> date('Y-m', strtotime($certi->certificate_date)),
                 'create_date'=> $certi->create_date,
             );
             //处理注册记录
@@ -239,9 +239,9 @@ class Certificate extends Controller
                 'name'=> $certi->name,
                 'citizen_code'=> $certi->citizen_code,
                 'certi_code'=> $certi->certi_code,
-                'exam_date'=> $certi->exam_date,
+                'exam_date'=> date('Y-m', strtotime($certi->exam_date))=='1970-01' ? '' : date('Y-m', strtotime($certi->exam_date)),
                 'phone'=> $certi->phone,
-                'certificate_date'=> $certi->certificate_date,
+                'certificate_date'=> date('Y-m', strtotime($certi->certificate_date))=='1970-01' ? '' : date('Y-m', strtotime($certi->certificate_date)),
                 'create_date'=> $certi->create_date,
             );
             //处理注册记录
@@ -276,8 +276,8 @@ class Certificate extends Controller
         elseif(trim($inputs['phone']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'联系方式不能为空！']);
         }
-        elseif(trim($inputs['citizen_code']) === ''){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'证件号码不能为空！']);
+        elseif(trim($inputs['certi_code']) === ''){
+            json_response(['status'=>'failed','type'=>'notice', 'res'=>'证书编号不能为空！']);
         }
 
         $register_year = $inputs['register-year'];
@@ -303,8 +303,8 @@ class Certificate extends Controller
             'name'=> $inputs['name'],
             'citizen_code'=> $inputs['citizen_code'],
             'certi_code'=> $inputs['certi_code'],
-            'exam_date'=> $inputs['exam_date'],
-            'certificate_date'=> $inputs['certificate_date'],
+            'exam_date'=> date('Y-m-d', strtotime($inputs['exam_date'])),
+            'certificate_date'=> date('Y-m-d', strtotime($inputs['certificate_date'])),
             'phone'=> $inputs['phone'],
             'register_log'=> $register_log,
             'update_date'=> date('Y-m-d H:i:s', time())
@@ -329,7 +329,7 @@ class Certificate extends Controller
                         'name'=> $certificate->name,
                         'citizen_code'=> $certificate->citizen_code,
                         'certi_code'=> $certificate->certi_code,
-                        'certificate_date'=> date('Y-m-d', strtotime($certificate->certificate_date)),
+                        'certificate_date'=> date('Y-m', strtotime($certificate->certificate_date)),
                         'phone'=> $certificate->phone,
                         'last_status'=> $certificate->last_status,
                         'create_date'=> $certificate->create_date,
@@ -387,7 +387,7 @@ class Certificate extends Controller
                         'name'=> $certificate->name,
                         'citizen_code'=> $certificate->citizen_code,
                         'certi_code'=> $certificate->certi_code,
-                        'certificate_date'=> date('Y-m-d', strtotime($certificate->certificate_date)),
+                        'certificate_date'=> date('Y-m', strtotime($certificate->certificate_date)),
                         'phone'=> $certificate->phone,
                         'last_status'=> $certificate->last_status,
                         'create_date'=> $certificate->create_date,
@@ -452,7 +452,7 @@ class Certificate extends Controller
                     'name'=> $certificate->name,
                     'citizen_code'=> $certificate->citizen_code,
                     'certi_code'=> $certificate->certi_code,
-                    'certificate_date'=> date('Y-m-d', strtotime($certificate->certificate_date)),
+                    'certificate_date'=> date('Y-m', strtotime($certificate->certificate_date)),
                     'phone'=> $certificate->phone,
                     'last_status'=> $certificate->last_status,
                     'create_date'=> $certificate->create_date,
@@ -507,8 +507,14 @@ class Certificate extends Controller
             $save_date = array();
             foreach($data_list as $data){
                 foreach($data as $i=> $d){
-                    if(trim($d) === '' && $i != 5){
-                        json_response(['status'=>'failed','type'=>'alert', 'res'=>'必填项为空！']);
+                    if(trim($d) === '' && $i == 0){
+                        json_response(['status'=>'failed','type'=>'alert', 'res'=>'持证人姓名不能为空！']);
+                    }
+                    if(trim($d) === '' && $i == 1){
+                        json_response(['status'=>'failed','type'=>'alert', 'res'=>'持证人电话不能为空！']);
+                    }
+                    if(trim($d) === '' && $i == 2){
+                        json_response(['status'=>'failed','type'=>'alert', 'res'=>'证书编号！']);
                     }
                 }
                 $register_log = array();
@@ -528,14 +534,15 @@ class Certificate extends Controller
                     }
                 }
                 $save_date[] = array(
-                    'name'=>$data[0],
-                    'phone'=>$data[1],
-                    'certi_code'=>$data[2],
-                    'citizen_code'=>$data[3],
-                    'exam_date'=>$data[4],
-                    'certificate_date'=>$data[5],
+                    'name'=> $data[0],
+                    'phone'=> $data[1],
+                    'certi_code'=> $data[2],
+                    'citizen_code'=> $data[3],
+                    'exam_date'=> date('Y-m-d', strtotime($data[4])),
+                    'certificate_date'=> date('Y-m-d', strtotime($data[5])),
                     'register_log' => empty($register_log)? '' : json_encode($register_log),
-                    'update_date'=> date('Y-m-d H:i:s', time())
+                    'create_date' => date('Y-m-d H:i:s', time()),
+                    'update_date' => date('Y-m-d H:i:s', time())
                 );
             }
             DB::beginTransaction();
@@ -557,7 +564,7 @@ class Certificate extends Controller
                 }
             }
             DB::commit();
-            json_response(['status'=>'succ','type'=>'alert', 'res'=>'导入成功！']);
+            json_response(['status'=>'succ','type'=>'alert', 'res'=>'导入成功']);
         }
     }
 

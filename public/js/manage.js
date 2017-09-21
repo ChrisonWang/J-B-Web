@@ -2746,6 +2746,7 @@ function search_certificate(t, c){
 function batchImport(){
     var url = '/manage/service/certificate/import';
     $('#import_modal').modal('show');
+    $('#import_notic').text('持证人资料导入中...');
     $('#batch-form').ajaxSubmit({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -183,7 +183,7 @@ class ServiceLoadContent extends Controller
                     'name'=> $certificate->name,
                     'citizen_code'=> $certificate->citizen_code,
                     'certi_code'=> $certificate->certi_code,
-                    'certificate_date'=> date('Y-m-d', strtotime($certificate->certificate_date)),
+                    'certificate_date'=> date('Y-m', strtotime($certificate->certificate_date)),
                     'phone'=> $certificate->phone,
                     'last_status'=> $certificate->last_status,
                     'create_date'=> $certificate->create_date,

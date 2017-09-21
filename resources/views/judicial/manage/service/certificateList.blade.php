@@ -165,9 +165,9 @@
                         <a href="javascript: void(0) ;" data-key="{{ $certificate['key'] }}" data-method="delete" data-title="{{ $certificate['name'] }}" onclick="certificateMethod($(this))">删除</a>
                     </td>
                     <td>{{ $certificate['name'] }}</td>
-                    <td>{{ $certificate['citizen_code'] }}</td>
+                    <td>{{ empty($certificate['citizen_code']) ? '未填写' : $certificate['citizen_code'] }}</td>
                     <td>{{ $certificate['certi_code'] }}</td>
-                    <td>{{ $certificate['certificate_date'] }}</td>
+                    <td>{{ ($certificate['certificate_date'] == '1970-01') ? '未填写' : $certificate['certificate_date'] }}</td>
                     <td>{{ $certificate['phone'] }}</td>
                     <td>@if($certificate['last_status']=='waiting') 未发送 @else 发送成功！@endif</td>
                 </tr>
@@ -181,3 +181,13 @@
         @endif
     </div>
 </div>
+
+<script>
+	$(function () {
+		$("#import_modal").on('hide.bs.modal',function () {
+			if($("#import_notic").text() == '导入成功'){
+				$('[data-node="service-certificateMng"]').click();
+			}
+		});
+	});
+</script>

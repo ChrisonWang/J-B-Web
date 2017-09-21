@@ -109,6 +109,9 @@ class User extends Controller
             if($action == 'signup'){
                 $this->page_data['action'] = 'signup';
             }
+            else{
+                $this->page_data['action'] = 'signin';
+            }
             return view('judicial.web.user.login',$this->page_data);
         }
         else{

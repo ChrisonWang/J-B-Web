@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="citizen_code" class="col-md-2 control-label"><strong style="color: red">*</strong> 证件号：</label>
+                <label for="citizen_code" class="col-md-2 control-label">证件号：</label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" value="{{ $certificate_detail['citizen_code'] }}" id="citizen_code" name="citizen_code" placeholder="请输入证件号" />
                 </div>
@@ -205,35 +205,23 @@
     </div>
 </div>
 <script type="text/javascript">
-    var logic = function( currentDateTime ){
-        if (currentDateTime && currentDateTime.getDay() == 6){
-            this.setOptions({
-                minTime:'11:00'
-            });
-        }else
-            this.setOptions({
-                minTime:'8:00'
-            });
-    };
-    $('#exam_date').datetimepicker({
-        value:'{{ $certificate_detail['exam_date'] }}',
-        lang: 'zh',
-        format: "Y-m-d",
-        formatDate: "Y-m-d",
-        todayButton: true,
-        timepicker:false,
-        onChangeDateTime: logic,
-        onShow: logic
-    });
-
-    $('#certificate_date').datetimepicker({
-        value:'{{ $certificate_detail['certificate_date'] }}',
-        lang: 'zh',
-        format: "Y-m-d",
-        formatDate: "Y-m-d",
-        todayButton: true,
-        timepicker:false,
-        onChangeDateTime: logic,
-        onShow: logic
-    });
+	$(function () {
+		$.datetimepicker.setLocale('ch');
+	    $('#exam_date').datetimepicker({
+	        value:'{{ $certificate_detail['exam_date'] }}',
+	        lang: 'ch',
+	        format: "Y-m-d",
+	        formatDate: "Y-m-d",
+	        todayButton: true,
+	        timepicker:false
+	    });
+	    $('#certificate_date').datetimepicker({
+	        value:'{{ $certificate_detail['certificate_date'] }}',
+	        lang: 'ch',
+	        format: "Y-m-d",
+	        formatDate: "Y-m-d",
+	        todayButton: true,
+	        timepicker:false
+	    });
+	});
 </script>
