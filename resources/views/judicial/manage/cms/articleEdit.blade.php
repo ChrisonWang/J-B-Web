@@ -120,16 +120,16 @@
             </div>
             @if( isset($article_detail['thumb']) && $article_detail['thumb'] != "none" )
                 <div class="form-group" id="image-thumbnail">
+	                <input type="hidden" name="have_photo" value="yes"/>
                     <label for="image-holder" class="col-md-2 col-sm-3 control-label">预览：</label>
                     <div class="col-md-8" id="image-holder">
-                        <input type="hidden" name="have_photo" value="yes"/>
                         <img src="{{ $article_detail['thumb'] }}" class="img-thumbnail img-responsive">
                     </div>
                 </div>
             @else
                 <div class="form-group hidden" id="image-thumbnail">
+	                <input type="hidden" name="have_photo" value="no"/>
                     <label for="leader_photo" class="col-md-2 col-sm-3 control-label">预览：</label>
-                    <input type="hidden" name="have_photo" value="no"/>
                     <div class="col-md-3" id="image-holder"></div>
                 </div>
             @endif

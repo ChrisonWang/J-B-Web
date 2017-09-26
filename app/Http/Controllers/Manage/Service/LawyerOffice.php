@@ -96,10 +96,10 @@ class LawyerOffice extends Controller
         if(trim($inputs['name']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'事务所名称不能为空！']);
         }
-        if(trim($inputs['usc_code']) === ''){
+        /*if(trim($inputs['usc_code']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不能为空！']);
-        }
-        if(!preg_usc($inputs['usc_code'])){
+        }*/
+        if(trim($inputs['usc_code']) !== '' && !preg_usc($inputs['usc_code'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不合法，请参照GB_32100-2015标准！']);
         }
         if(trim($inputs['area']) === '' || trim($inputs['area'])=='none'){
@@ -110,10 +110,12 @@ class LawyerOffice extends Controller
         if(count($id) != 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['name'].'的事务所']);
         }
-        $id = DB::table('service_lawyer_office')->select('id')->where('usc_code',$inputs['usc_code'])->get();
-        if(count($id) != 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在统一社会信用代码的：'.$inputs['usc_code'].'的事务所']);
-        }
+	    if(trim($inputs['usc_code']) !== ''){
+		    $id = DB::table('service_lawyer_office')->select('id')->where('usc_code',$inputs['usc_code'])->get();
+	        if(count($id) != 0){
+	            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在统一社会信用代码的：'.$inputs['usc_code'].'的事务所']);
+	        }
+	    }
         //执行插入数据操作
         $now = date('Y-m-d H:i:s', time());
         $save_data = array(
@@ -123,8 +125,8 @@ class LawyerOffice extends Controller
             'zip_code'=> $inputs['zip_code'],
             'area_id'=> keys_decrypt($inputs['area']),
             'justice_bureau'=> $inputs['justice_bureau'],
-            'usc_code'=> $inputs['usc_code'],
-            'certificate_date'=> $inputs['certificate_date'],
+            'usc_code'=> empty($inputs['usc_code']) ? '' : $inputs['usc_code'],
+            'certificate_date'=> empty($inputs['certificate_date']) ? '1970-01-01 00:00:00' : $inputs['certificate_date'],
             'director'=> $inputs['director'],
             'type'=> $inputs['type'],
             'group_type'=> $inputs['group_type'],
@@ -221,7 +223,7 @@ class LawyerOffice extends Controller
                 'area_id'=> keys_encrypt($office->area_id),
                 'justice_bureau'=> empty($office->justice_bureau) ? '未设置' : $office->justice_bureau,
                 'usc_code'=> empty($office->usc_code) ? '未设置' : $office->usc_code,
-                'certificate_date'=> date('Y-m-d',strtotime($office->certificate_date)),
+                'certificate_date'=> (date('Y-m-d',strtotime($office->certificate_date)) == '1970-01-01') ? '未填写' : date('Y-m-d',strtotime($office->certificate_date)),
                 'director'=> empty($office->director) ? '未设置' : $office->director,
                 'type'=> $office->type,
                 'group_type'=> empty($office->group_type) ? '未设置' : $office->group_type,
@@ -278,7 +280,7 @@ class LawyerOffice extends Controller
                 'area_id'=> keys_encrypt($office->area_id),
                 'justice_bureau'=> $office->justice_bureau,
                 'usc_code'=> $office->usc_code,
-                'certificate_date'=> date('Y-m-d',strtotime($office->certificate_date)),
+                'certificate_date'=> (date('Y-m-d',strtotime($office->certificate_date)) == '1970-01-01') ? '' : date('Y-m-d',strtotime($office->certificate_date)),
                 'director'=> $office->director,
                 'type'=> $office->type,
                 'group_type'=> $office->group_type,
@@ -312,10 +314,10 @@ class LawyerOffice extends Controller
         if(trim($inputs['name']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'请填写事务所名称！']);
         }
-        if(trim($inputs['usc_code']) === ''){
+        /*if(trim($inputs['usc_code']) === ''){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不能为空！']);
-        }
-        if(!preg_usc($inputs['usc_code'])){
+        }*/
+        if(trim($inputs['usc_code']) !== '' && !preg_usc($inputs['usc_code'])){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'统一社会信用代码不合法，请参照GB_32100-2015标准！']);
         }
         if(trim($inputs['area']) === '' || trim($inputs['area'])=='none'){
@@ -326,11 +328,13 @@ class LawyerOffice extends Controller
         if(count($rs) > 0){
             json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在名称为：'.$inputs['name'].'的事务所！']);
         }
-        $sql = 'SELECT `id` FROM `service_lawyer_office` WHERE `usc_code` = "'.$inputs['usc_code'].'" AND `id` != "'.$id.'"';
-        $rs = DB::select($sql);
-        if(count($rs) > 0){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在统一社会信用代码为：'.$inputs['usc_code'].'的事务所！']);
-        }
+	    if(trim($inputs['usc_code']) !== ''){
+		    $sql = 'SELECT `id` FROM `service_lawyer_office` WHERE `usc_code` = "'.$inputs['usc_code'].'" AND `usc_code` !="" AND `id` != "'.$id.'"';
+	        $rs = DB::select($sql);
+	        if(count($rs) > 0){
+	            json_response(['status'=>'failed','type'=>'notice', 'res'=>'已存在统一社会信用代码为：'.$inputs['usc_code'].'的事务所！']);
+	        }
+	    }
         //执行修改数据操作
         $save_data = array(
             'name'=> $inputs['name'],
@@ -339,8 +343,8 @@ class LawyerOffice extends Controller
             'zip_code'=> $inputs['zip_code'],
             'area_id'=> keys_decrypt($inputs['area']),
             'justice_bureau'=> $inputs['justice_bureau'],
-            'usc_code'=> $inputs['usc_code'],
-            'certificate_date'=> $inputs['certificate_date'],
+            'usc_code'=> empty($inputs['usc_code']) ? '' : $inputs['usc_code'],
+            'certificate_date'=> empty($inputs['certificate_date']) ? '1970-01-01 00:00:00' : $inputs['certificate_date'],
             'director'=> $inputs['director'],
             'type'=> $inputs['type'],
             'group_type'=> $inputs['group_type'],
