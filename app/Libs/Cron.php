@@ -51,15 +51,15 @@ class Cron
             //储存备份数据
             switch ($next->cycle_type){
                 case 'day':
-                    $next_date = strtotime($next->next_date) - 3600*24;
+                    $next_date = strtotime($next->next_date) + 3600*24;
                     break;
 
                 case 'week':
-                    $next_date = strtotime($next->next_date) - 3600*7;
+                    $next_date = strtotime($next->next_date) + 3600*7;
                     break;
 
                 case 'month':
-                    $next_date = strtotime($next->next_date) - 3600*30;
+                    $next_date = strtotime($next->next_date) + 3600*30;
                     break;
 
                 default:

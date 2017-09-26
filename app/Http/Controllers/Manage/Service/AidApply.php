@@ -884,7 +884,7 @@ class AidApply extends Controller
         //判断是否能删除层级
         $sql = 'SELECT MAX(`check_sort`) AS `max_sort` FROM `service_legal_aid_apply` WHERE `status` = "waiting"';
         $res = DB::select($sql);
-        if ( !isset($res[0]->max_sort) || (count($office_list) < $res[0]->max_sort)){
+        if ( isset($res[0]->max_sort) && (count($office_list) < $res[0]->max_sort)){
             json_response(['status'=>'failed','type'=>'alert', 'res'=>'无法删除层级！因为层级中尚有未审核过的申请']);
         }
 

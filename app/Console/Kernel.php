@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        App\Console\Commands\Inspire::class,
+        //App\Console\Commands\Inspire::class,
     ];
 
     /**
@@ -25,8 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
+        /*$schedule->call(function () {
             Cron::autoBackup();
-        })->everyMinute();
+        })->everyMinute();*/
     }
 }
