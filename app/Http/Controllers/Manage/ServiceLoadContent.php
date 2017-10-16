@@ -437,7 +437,7 @@ class ServiceLoadContent extends Controller
                 $consultionType_list[] = array(
                     'key' => keys_encrypt($type->type_id),
                     'type_name' => $type->type_name,
-                    'manager_name' => $type->login_name.'['.$type->cell_phone.']',
+                    'manager_name' => !empty($type->nickname) ? $type->nickname.' ['.$type->cell_phone.']' : $type->login_name.' ['.$type->cell_phone.']',
                     'create_date' => date('Y-m-d H:i', strtotime($type->create_date)),
                 );
             }

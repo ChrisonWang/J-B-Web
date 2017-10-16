@@ -32,7 +32,7 @@
             <ul class="wsn_item">
                 @if(is_array($area_list) && count($area_list)>0)
                     @foreach($area_list as $k=> $v)
-                        <li><a href="{{ URL::to('service/lawyerOffice/area').'/'.$k }}">{{ $v }}</a></li>
+                        <li><a href="{{ URL::to('service/lawyerOffice/area').'/'.$k }}" @if( strlen($v)>=24) style="font-size: 10px" @endif > {{ $v }} </a></li>
                     @endforeach
                 @endif
             </ul>

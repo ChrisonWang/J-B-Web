@@ -34,8 +34,6 @@
                             @foreach($zwgk_list as $zwgk)
                                 <span><a href="{{ URL::to('list').'/'.$zwgk['key'].'/1' }}">{{ mb_spilt_title($zwgk['channel_title'], 7, false) }}</a></span>
                             @endforeach
-                        @else
-                            <span><a href="javascript:void(0)">请先添加子频道</a></span>
                         @endif
                     </div>
                 </li>
@@ -50,8 +48,6 @@
                             @foreach($wsbs_list as $wsbs)
                                 <span><a href="{{ URL::to('service/list').'/'.$wsbs['key'].'/1' }}">{{ mb_spilt_title($wsbs['channel_title'], 7, false) }}</a></span>
                             @endforeach
-                        @else
-                            <span><a href="javascript:void(0)">请先添加子频道</a></span>
                         @endif
                     </div>
                 </li>

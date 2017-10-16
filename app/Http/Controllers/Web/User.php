@@ -660,16 +660,16 @@ class User extends Controller
             'count_page'=>($expertise_count<=10) ? 1 : ceil($expertise_count/10),
         );
         //问题咨询
-        $consultions_list = DB::table('service_consultions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
-        $consultions_count = DB::table('service_consultions')->where('member_code', $member_code)->count();
+        $consultions_list = DB::table('service_consultions')->where('member_code', $member_code)->where('is_hidden', 'no')->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
+        $consultions_count = DB::table('service_consultions')->where('member_code', $member_code)->where('is_hidden', 'no')->count();
         $consultions_pages = array(
             'now_page'=>1,
             'count'=>$consultions_count,
             'count_page'=>($consultions_count<=10) ? 1 : ceil($consultions_count/10),
         );
         //征求意见
-        $suggestions_list = DB::table('service_suggestions')->where('member_code', $member_code)->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
-        $suggestions_count = DB::table('service_suggestions')->where('member_code', $member_code)->count();
+        $suggestions_list = DB::table('service_suggestions')->where('member_code', $member_code)->where('is_hidden', 'no')->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
+        $suggestions_count = DB::table('service_suggestions')->where('member_code', $member_code)->where('is_hidden', 'no')->count();
         $suggestions_pages = array(
             'now_page'=>1,
             'count'=>$suggestions_count,

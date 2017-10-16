@@ -20,6 +20,7 @@ $conn = new PDO("mysql:host=127.0.0.1;dbname=sanmenxia", "root", "Sanmenxia@2017
 //取出下次备份时间
 foreach($conn->query('SELECT * FROM `system_backup_auto`') as $row) {
     $next_date = $row['next_date'];
+    $last_date = $row['next_date'];
     $cycle_type = $row['cycle_type'];
 }
 
@@ -56,7 +57,7 @@ if(isset($next_date) && !empty($next_date) && $next_date<= time()){
             break;
     }
 
-    $update_sql = 'UPDATE `system_backup_auto` SET `next_date` = "'. $next_date .'", `update_date` = "'.$now.'", `last_date` = "'.$now .'" WHERE id = 1';
+    $update_sql = 'UPDATE `system_backup_auto` SET `next_date` = "'. $next_date .'", `update_date` = "'.$now.'", `last_date` = "'.$last_date .'" WHERE id = 1';
     $conn->exec($update_sql);
     $insert_sql = 'INSERT INTO `system_backup` SET `backup_date` = "'. $now .'", `create_date` = "'. $now.'", `type` = "auto", `file_name` = "'. $file_name .'", `file_path` = "'. $file_path .'", `file_url` = "'. $file_url .'"';
     $conn->exec($insert_sql);
