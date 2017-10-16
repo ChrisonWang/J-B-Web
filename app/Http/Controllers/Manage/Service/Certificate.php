@@ -241,7 +241,7 @@ class Certificate extends Controller
                 'certi_code'=> $certi->certi_code,
                 'exam_date'=> date('Y-m', strtotime($certi->exam_date))=='1970-01' ? '' : date('Y-m', strtotime($certi->exam_date)),
                 'phone'=> $certi->phone,
-                'certificate_date'=> date('Y-m', strtotime($certi->certificate_date))=='1970-01' ? '' : date('Y-m', strtotime($certi->certificate_date)),
+                'certificate_date'=> date('Y-m', strtotime($certi->certificate_date))=='1970-01' ? '' : date('Y-m-d', strtotime($certi->certificate_date)),
                 'create_date'=> $certi->create_date,
             );
             //处理注册记录

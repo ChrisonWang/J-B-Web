@@ -59,7 +59,7 @@
             <div class="form-group">
                 <label for="certificate_date" class="col-md-2 control-label">取得证书时间：</label>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" id="certificate_date" name="certificate_date"/>
+                    <input type="text" class="form-control" id="certificate_date" name="certificate_date" value="{{ $certificate_detail['certificate_date'] }}"/>
                 </div>
             </div>
             <div class="form-group">
@@ -216,7 +216,6 @@
 	        timepicker:false
 	    });
 	    $('#certificate_date').datetimepicker({
-	        value:'{{ $certificate_detail['certificate_date'] }}',
 	        lang: 'ch',
 	        format: "Y-m-d",
 	        formatDate: "Y-m-d",

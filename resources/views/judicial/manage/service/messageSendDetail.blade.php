@@ -44,7 +44,7 @@
                     <label for="create_date" class="control-label">
                         @if($send_detail['receiver_type'] == 'member')
                             前台用户
-                        @elseif($send_detail['receiver_type'] == 'member')
+                        @elseif($send_detail['receiver_type'] == 'manager')
                             后台用户
                         @else
                             司法证书持有人
