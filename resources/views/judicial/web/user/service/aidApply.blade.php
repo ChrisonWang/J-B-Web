@@ -33,7 +33,7 @@
                                 <a href="#" data-key="{{ $apply->record_code }}" data-type="service_legal_aid_apply" onclick="show_opinion($(this))" style="color: #DD3938">查看原因</a>
                             </div>
                         @else
-                            <div class="dsh" style="color: #7DA750">待审核</div>
+                            <div class="dsh" style="color: #7DA750">待审批</div>
                         @endif
                     </td>
                     <td style="vertical-align: middle">

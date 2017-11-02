@@ -36,8 +36,8 @@ class Aid extends Controller
         $count = array();
 
         //群众预约援助
-        $count['apply'] = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->count();
-        $applys = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->skip(0)->take(12)->get();
+        $count['apply'] = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->where('archived', 'no')->count();
+        $applys = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->where('archived', 'no')->skip(0)->take(12)->get();
         if(count($applys)){
             foreach($applys as $apply){
                 $apply_list[] = array(
@@ -49,8 +49,8 @@ class Aid extends Controller
         }
 
         //司法指派援助
-        $count['dispatch'] = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->count();
-        $dispatches = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->skip(0)->take(12)->get();
+        $count['dispatch'] = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->where('archived', 'no')->count();
+        $dispatches = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->where('archived', 'no')->skip(0)->take(12)->get();
         if(count($dispatches)){
             foreach($dispatches as $dispatch){
                 $dispatch_list[] = array(
@@ -70,7 +70,7 @@ class Aid extends Controller
     public function applyReason(Request $request)
     {
         $record_code = $request->input('key');
-        $record = DB::table('service_legal_aid_apply')->where('record_code', $record_code)->first();
+        $record = DB::table('service_legal_aid_apply')->where('record_code', $record_code)->where('archived', 'no')->first();
         if(isset($record->approval_opinion)){
             json_response(['status'=>'succ','type'=>'notice', 'res'=>$record->approval_opinion]);
         }
@@ -82,7 +82,7 @@ class Aid extends Controller
     public function DispatchReason(Request $request)
     {
         $record_code = $request->input('key');
-        $record = DB::table('service_legal_aid_dispatch')->where('record_code', $record_code)->first();
+        $record = DB::table('service_legal_aid_dispatch')->where('record_code', $record_code)->where('archived', 'no')->first();
         if(isset($record->approval_opinion)){
             json_response(['status'=>'succ','type'=>'notice', 'res'=>$record->approval_opinion]);
         }
@@ -109,7 +109,7 @@ class Aid extends Controller
         $apply_list = array();
         $dispatch_list = array();
         if($type == 'apply'){
-            $applys = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->skip($offset)->take(12)->get();
+            $applys = DB::table('service_legal_aid_apply')->where('member_code', $this->_member_code)->where('archived', 'no')->skip($offset)->take(12)->get();
             if(count($applys)>0){
                 foreach($applys as $apply){
                     $apply_list[] = array(
@@ -128,7 +128,7 @@ class Aid extends Controller
         }
         else{
             //司法指派援助
-            $dispatches = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->skip($offset)->take(12)->get();
+            $dispatches = DB::table('service_legal_aid_dispatch')->where('member_code', $this->_member_code)->where('archived', 'no')->skip($offset)->take(12)->get();
             if(count($dispatches)>0){
                 foreach($dispatches as $dispatch){
                     $dispatch_list[] = array(

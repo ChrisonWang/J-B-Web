@@ -163,7 +163,7 @@ class Index extends Controller
         }
         //政务公开
         $zwgk_article_list = 'none';
-        $zwgk = DB::table('cms_channel')->where('zwgk', 'yes')->where('wsbs','no')->where('pid',0)->orderBy('channel_id', 'desc')->skip(0)->take(6)->get();
+        $zwgk = DB::table('cms_channel')->where('zwgk', 'yes')->where('wsbs','no')->where('pid',0)->orderBy('sort', 'desc')->skip(0)->take(6)->get();
         $m_zwgk_list = array();
         if(count($zwgk) > 0) {
             foreach ($zwgk as $zw) {

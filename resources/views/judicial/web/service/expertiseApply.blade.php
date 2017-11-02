@@ -76,6 +76,7 @@
                     <span class="wsc_txt" style="width: 75px; float: left; color: #E23939; font-size: 12px">温馨提示：</span>
                     <div class="mt_ul" style="float: left">
                         <span style="font-size: 12px; margin-left: 0px">如果有多个文件可放入文件夹压缩后再上传压缩文件。</span>
+                        <span style="font-size: 12px; margin-left: 0px">目前只接受公安局、法援指派鉴定，不接受个人用户申请。</span>
                     </div>
                 </div>
                 <div class="clear"></div>

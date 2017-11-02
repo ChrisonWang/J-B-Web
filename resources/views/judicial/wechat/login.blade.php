@@ -32,7 +32,7 @@
     <div class="col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8">
         <h5 class="text-left">
             <small>
-                温馨提示：三门峡市司法局微信公众号目前仅支持法律援助查询和律师服务查询。如需注册账号或申请法律援助请在PC端登录：<em>www.smxssfj.com</em> 进行操作
+                温馨提示：三门峡市司法局微信公众号目前仅支持法律援助查询和律师服务查询。如需注册账号或申请法律援助请在PC端登录：<em>www.smxsfj.gov.cn</em> 进行操作
             </small>
         </h5>
     </div>

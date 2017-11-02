@@ -24,8 +24,9 @@
                                 <label for="status">审批状态：</label>
                                 <select class="form-control" name="status" id="status">
                                     <option value="none">不限</option>
-                                    <option value="waiting">待指派</option>
-                                    <option value="pass">已指派</option>
+                                    <option value="waiting">待审批</option>
+                                    <option value="pass">待指派</option>
+                                    <option value="dispatch">已指派</option>
 	                                <option value="archived">结案</option>
                                     <option value="reject">驳回</option>
                                 </select>

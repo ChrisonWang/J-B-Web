@@ -111,9 +111,9 @@ class AidApply extends Controller
         $count_page = ($count > 5)? ceil($count/5)  : 1;
         $offset = $page > $count_page ? 0 : ($page - 1) * 5;
         //法律援助
-        $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->get();
+        $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->where('archived', 'no')->orderBy('apply_date', 'desc')->get();
         //公检法指派
-        $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->get();
+        $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->where('archived', 'no')->orderBy('apply_date', 'desc')->get();
 
         $pages = array(
             'count' => $count,
@@ -166,7 +166,9 @@ class AidApply extends Controller
         $filename = '';
         $file = $request->file('file');
         if(is_null($file) || !$file->isValid()){
-            json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的附件（word/excel/图片/压缩文件,大小不超过10M）！']);
+            if($inputs['salary_dispute']=='no') {
+                json_response(['status'=>'failed','type'=>'notice', 'res'=>'请上传正确的附件（word/excel/图片/压缩文件,大小不超过10M）！']);
+            }
         }
         else{
             $destPath = realpath(public_path('uploads/system/aidApply'));

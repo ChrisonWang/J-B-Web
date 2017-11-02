@@ -104,7 +104,7 @@
                 <li class="ico_2" onclick="javascript: window.open('http://www.64365.com/lawtxt/'); " style="cursor: pointer">
                     <span>常用法律文书格式</span>
                 </li>
-                    <li class="ico_3" onclick="javascript: window.open('http://search.chinalaw.gov.cn/search.html'); " style="cursor: pointer">
+                    <li class="ico_3" onclick="javascript: window.open('http://search.chinalaw.gov.cn/'); " style="cursor: pointer">
                     <span>法律法规查询</span>
                 </li>
                 <li class="ico_4" onclick="javascript: window.open('http://www.sfjz.com.cn/'); " style="cursor: pointer">
@@ -171,7 +171,7 @@
             </li>
             <li class="ico_btn" id="ico_2_sub" style="display: none">
                 <div class="ib_top" onclick="javascript: window.location.href='{{URL::to('service/aidApply/apply')}}';" style="cursor: pointer">群众预约援助</div>
-                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('service/aidDispatch/apply')}}';" style="cursor: pointer">公检法指派援助</div>
+                <div class="ib_down" onclick="javascript: window.location.href='{{URL::to('service/aidDispatch/apply')}}';" style="cursor: pointer">刑事案件法律援助</div>
             </li>
 
             <li class="ico_3"  id="ico_3">

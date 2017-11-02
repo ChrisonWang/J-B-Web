@@ -11,7 +11,7 @@
                 </li>
                 <li role="presentation" class="col-xs-6 text-center">
                     <a href="#dispatch" id="dispatch-tab" data-toggle="tab" role="tab" aria-controls="dispatch" aria-expanded="false">
-                        司法指派援助申请<span class="badge">{{ $count['dispatch'] }}</span>
+                        刑事案件法律援助申请<span class="badge">{{ $count['dispatch'] }}</span>
                     </a>
                 </li>
             </ul>

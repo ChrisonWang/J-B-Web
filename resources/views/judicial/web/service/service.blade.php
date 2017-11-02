@@ -81,7 +81,7 @@
                 <li><a href="{{ URL::to('service/aidApply/apply') }}">群众预约援助</a></li>
                 <li><a href="{{ URL::to('consultions/list/1') }}">咨询问题</a></li>
                 <li><a href="{{ URL::to('service/expertise/apply') }}">司法鉴定申请</a></li>
-                <li><a href="{{ URL::to('service/aidDispatch/apply') }}">公检法指派援助</a></li>
+                <li><a href="{{ URL::to('service/aidDispatch/apply') }}">刑事案件法律援助</a></li>
                 <li><a href="{{ URL::to('suggestions/list/1') }}">征求意见</a></li>
             </ul>
         </div>

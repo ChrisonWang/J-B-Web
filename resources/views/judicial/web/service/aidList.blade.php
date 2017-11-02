@@ -58,7 +58,7 @@
                                 <a href="#" data-key="{{ $apply->record_code }}" style="color: #E23939;" data-type="service_legal_aid_apply" onclick="show_opinion($(this))">查看原因</a>
                             </div>
                         @else
-                            <div class="dsh" style="color: #7DA750;">待审核</div>
+                            <div class="dsh" style="color: #7DA750;">待审批</div>
                         @endif
                     </td>
                     <td>
@@ -111,7 +111,7 @@
                                         <a href="#" data-key="{{ $dispatch->record_code }}" style="color: #E23939;" data-type="service_legal_aid_dispatch" onclick="show_opinion($(this))">查看原因</a>
                                     </div>
                                 @else
-                                    <div class="dsh" style="color: #7DA750;">待审核</div>
+                                    <div class="dsh" style="color: #7DA750;">待审批</div>
                                 @endif
                             </td>
                             <td>

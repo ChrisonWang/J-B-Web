@@ -15,11 +15,11 @@
             <span><a href="{{ URL::to('/') }}" style="color: #222222">首页&nbsp;&nbsp;>&nbsp;</a></span>
             <span><a href="/service" style="color: #222222">网上办事</a>&nbsp;&nbsp;>&nbsp;</span>
             <span><a href="/service/aidApply/apply" style="color: #222222">法律援助</a>&nbsp;&nbsp;>&nbsp;</span>
-            <span style="color: #929292;">公检法指派援助</span>
+            <span style="color: #929292;">刑事案件法律援助</span>
         </div>
 
         <div class="wsfy_tit">
-            <span class="wfb_tit">公检法指派援助流程</span>
+            <span class="wfb_tit">刑事案件法律援助流程</span>
             {{--<ul>
                 <li><i>■</i>申请人需要准备材料《提供法律援助通知书》和案件材料（起诉书/证据）。</li>
                 <li><i>■</i>申请人在本系统提交预约申请，并上传扫描附件。</li>
@@ -30,12 +30,12 @@
 		        @if(isset($intro_content) && !empty($intro_content))
 				{!! $intro_content !!}
 		        @else
-					<li>请先在后台设置公检法指派援助流程！</li>
+					<li>请先在后台设置刑事案件法律援助流程！</li>
 		        @endif
 	        </span>
         </div>
         <div class="xx_tit">
-            公检法指派援助申请
+            刑事案件法律援助申请
             <span style="font-family: MicrosoftYaHei;font-size: 12px;color: #929292;letter-spacing: 0; float: right">
                 受理编号:{{$record_detail['record_code']}}
             </span>

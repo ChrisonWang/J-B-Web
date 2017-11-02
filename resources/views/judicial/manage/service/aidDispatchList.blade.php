@@ -24,8 +24,9 @@
                                 <label for="status">审批状态：</label>
                                 <select class="form-control" name="status" id="status">
                                     <option value="none">不限</option>
-                                    <option value="waiting">待指派</option>
-                                    <option value="pass">已指派</option>
+                                    <option value="waiting">待审批</option>
+                                    <option value="pass">待指派</option>
+                                    <option value="dispatch">已指派</option>
 	                                <option value="archived">结案</option>
                                     <option value="reject">驳回</option>
                                 </select>
@@ -93,13 +94,15 @@
                     <td>{{ $legal_types[$apply['aid_type']]['type_name'] }}</td>
                     <td>
                         @if($apply['status'] == 'pass')
-                            <p style="color:green; font-weight: bold">已指派</p>
+                            <p style="color:green; font-weight: bold">待指派</p>
+						@elseif($apply['status'] == 'dispatch')
+		                    <div class="shtg" style="color: #4684CD;">已指派</div>
                         @elseif($apply['status'] == 'reject')
                             <p style="color:red; font-weight: bold">驳回</p>
 	                    @elseif($apply['status'] == 'archived')
                             <p style="color:red; font-weight: bold">已结案</p>
                         @else
-                            <p style="color:#FFA500; font-weight: bold">待指派</p>
+                            <p style="color:#FFA500; font-weight: bold">待审批</p>
                         @endif
                     </td>
                     <td>{{ spilt_title($apply['apply_office'], 20) }}</td>

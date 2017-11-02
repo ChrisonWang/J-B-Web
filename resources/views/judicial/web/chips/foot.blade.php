@@ -12,7 +12,7 @@
         </div>
         <div class="ft_down">
             <span>三门峡市司法局 版权所有  Copyright © 2008-2014</span>
-            <span> ICP备案号： 豫ICP备14021913号</span>
+            <span> ICP备案号： 豫ICP备17040429号</span>
         </div>
     </div>
 </div>

@@ -25,8 +25,8 @@
                 @endif
             </div>
         </li>
-        <li @if(isset($now_title) && $now_title == '司法考试') class="lb_select" @endif>
-            <div>司法考试<i class="r_awry"></i></div>
+        <li @if(isset($now_title) && $now_title == '普法学习') class="lb_select" @endif>
+            <div>普法学习<i class="r_awry"></i></div>
             <div class="law_body">
                 @if(isset($s_sfks) && is_array($s_sfks) && count($s_sfks)>0)
                     @foreach($s_sfks as $sfks)
@@ -77,9 +77,9 @@
                         群众预约援助
                     </a>
                 </span>
-                <span @if(isset($now_key) && $now_key == '公检法指派援助') class="law_hover_b" @endif>
+                <span @if(isset($now_key) && $now_key == '刑事案件法律援助') class="law_hover_b" @endif>
                     <a href="{{URL::to('service/aidDispatch/apply')}}">
-                        公检法指派援助
+                        刑事案件法律援助
                     </a>
                 </span>
                 <span @if(isset($now_key) && $now_key == '办理进度查询') class="law_hover_b" @endif>

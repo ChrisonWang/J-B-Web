@@ -25,7 +25,7 @@ foreach($conn->query('SELECT * FROM `system_backup_auto`') as $row) {
 }
 
 //执行符合条件的备份
-if(isset($next_date) && !empty($next_date) && $next_date<= time()){
+if(isset($next_date) && !empty($next_date) && $next_date <= time()){
     $file_name = 'backup_'.date('YmdHis').rand('111','999').'.sql';
     $file_path = '/www/5260/public/backup/'.$file_name;
     $file_url = 'http://125.45.181.13/backup/'.$file_name;
@@ -41,27 +41,26 @@ if(isset($next_date) && !empty($next_date) && $next_date<= time()){
     system($cmd, $i);
 
     //储存备份数据
-    $now = date('Y-m-d H:i:s', time());
+    $now = strtotime(date('Y-m-d', time()));
     switch ($cycle_type){
         case 'day':
-            $next_date = $next_date + 3600*24;
+            $next_date = $now + 3600 * 26;
             break;
         case 'week':
-            $next_date = $next_date + 3600*7;
+            $next_date = $now + 3600 * 7 * 26;
             break;
         case 'month':
-            $next_date = $next_date + 3600*30;
+            $next_date = $now + 3600 * 30 * 26;
             break;
         default:
             $next_date = '';
             break;
     }
-
-    $update_sql = 'UPDATE `system_backup_auto` SET `next_date` = "'. $next_date .'", `update_date` = "'.$now.'", `last_date` = "'.$last_date .'" WHERE id = 1';
+    echo ('$next_date:'.$next_date);
+    $update_sql = 'UPDATE `system_backup_auto` SET `next_date` = "'. $next_date .'", `update_date` = "'.date('Y-m-d H:i:s', time()).'", `last_date` = "'.$last_date .'" WHERE id = 1';
     $conn->exec($update_sql);
-    $insert_sql = 'INSERT INTO `system_backup` SET `backup_date` = "'. $now .'", `create_date` = "'. $now.'", `type` = "auto", `file_name` = "'. $file_name .'", `file_path` = "'. $file_path .'", `file_url` = "'. $file_url .'"';
-    $conn->exec($insert_sql);
-    echo ('已经保存');
+    $insert_sql = 'INSERT INTO `system_backup` SET `backup_date` = "'. date('Y-m-d H:i:s',$last_date) .'", `create_date` = "'. date('Y-m-d H:i:s', time()).'", `type` = "auto", `file_name` = "'. $file_name .'", `file_path` = "'. $file_path .'", `file_url` = "'. $file_url .'"';
+    $row = $conn->exec($insert_sql);
 }
 else{
     echo ('没到时间，当前：'.time().'，下次：'.$next_date);

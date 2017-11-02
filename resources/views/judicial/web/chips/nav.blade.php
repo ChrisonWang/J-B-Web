@@ -41,7 +41,7 @@
                     <a href="{{ URL::to('service') }}" @if(isset($_now) && $_now == 'wsbs') style="color: #E23939!important;" @endif>网上办事</a>
                     <div class="hd_lv3" style="font-size: 12px; color: #676767">
                         <span><a href="{{ URL::to('service/lawyer/1') }}">律师服务</a></span>
-                        <span><a href="{{ URL::to('service') }}">司法考试</a></span>
+                        <span><a href="{{ URL::to('service') }}">普法学习</a></span>
                         <span><a href="{{ URL::to('service/expertise/list/1') }}">司法鉴定</a></span>
                         <span><a href="{{ URL::to('service/aid/list/1') }}">法律援助</a></span>
                         @if($wsbs_list != 'none' && is_array($wsbs_list))

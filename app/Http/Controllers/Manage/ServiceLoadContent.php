@@ -429,7 +429,7 @@ class ServiceLoadContent extends Controller
         $offset = 30;
         $suggestionTypes = DB::table('service_consultion_types')
             ->leftJoin('user_manager', 'service_consultion_types.manager_code', '=', 'user_manager.manager_code')
-            ->select('service_consultion_types.*', 'user_manager.office_id', 'user_manager.login_name', 'user_manager.cell_phone')
+            ->select('service_consultion_types.*', 'user_manager.office_id', 'user_manager.login_name', 'user_manager.cell_phone', 'user_manager.nickname')
             ->orderBy('service_consultion_types.create_date', 'asc')
             ->skip(0)->take($offset)->get();
         if(count($suggestionTypes) > 0){

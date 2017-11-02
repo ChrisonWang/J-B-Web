@@ -117,7 +117,7 @@
                                 <a href="javascript:void(0);" data-node="service-aidTypeMng" >法律援助事项分类管理</a>
                                 <a href="javascript:void(0);" data-node="service-aidIntroMng" >法律援助申请流程管理</a>
                                 <a href="javascript:void(0);" data-node="service-aidApplyMng" >群众预约援助管理</a>
-                                <a href="javascript:void(0);" data-node="service-aidDispatchMng" >公检法指派援助管理</a>
+                                <a href="javascript:void(0);" data-node="service-aidDispatchMng" >刑事案件法律援助管理</a>
                             </li>
                         </ul><!-- 子菜单End -->
                     </li><!-- 法律援助信息管理End -->
