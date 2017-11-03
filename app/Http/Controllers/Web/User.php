@@ -645,8 +645,8 @@ class User extends Controller
     private function getServiceList($member_code){
         $expertise_type = array();
         //司法鉴定
-        $expertise_list = DB::table('service_judicial_expertise')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
-        $expertise_count = DB::table('service_judicial_expertise')->where('member_code', $member_code)->count();
+        $expertise_list = DB::table('service_judicial_expertise')->where('member_code', $member_code)->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
+        $expertise_count = DB::table('service_judicial_expertise')->where('member_code', $member_code)->where('archived', 'no')->count();
         $types = DB::table('service_judicial_expertise_type')->get();
         if(count($types)>0){
             $expertise_type = array();
@@ -660,32 +660,32 @@ class User extends Controller
             'count_page'=>($expertise_count<=10) ? 1 : ceil($expertise_count/10),
         );
         //问题咨询
-        $consultions_list = DB::table('service_consultions')->where('member_code', $member_code)->where('is_hidden', 'no')->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
-        $consultions_count = DB::table('service_consultions')->where('member_code', $member_code)->where('is_hidden', 'no')->count();
+        $consultions_list = DB::table('service_consultions')->where('member_code', $member_code)->where('is_hidden', 'no')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
+        $consultions_count = DB::table('service_consultions')->where('member_code', $member_code)->where('is_hidden', 'no')->where('archived', 'no')->count();
         $consultions_pages = array(
             'now_page'=>1,
             'count'=>$consultions_count,
             'count_page'=>($consultions_count<=10) ? 1 : ceil($consultions_count/10),
         );
         //征求意见
-        $suggestions_list = DB::table('service_suggestions')->where('member_code', $member_code)->where('is_hidden', 'no')->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
-        $suggestions_count = DB::table('service_suggestions')->where('member_code', $member_code)->where('is_hidden', 'no')->count();
+        $suggestions_list = DB::table('service_suggestions')->where('member_code', $member_code)->where('is_hidden', 'no')->where('archived', 'no')->orderBy('create_date', 'desc')->skip(0)->take(10)->get();
+        $suggestions_count = DB::table('service_suggestions')->where('member_code', $member_code)->where('is_hidden', 'no')->where('archived', 'no')->count();
         $suggestions_pages = array(
             'now_page'=>1,
             'count'=>$suggestions_count,
             'count_page'=>($suggestions_count<=10) ? 1 : ceil($suggestions_count/10),
         );
         //法律援助
-        $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
-        $apply_count = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->count();
+        $apply_list = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->where('archived', 'no')->skip(0)->take(10)->get();
+        $apply_count = DB::table('service_legal_aid_apply')->where('member_code', $member_code)->where('archived', 'no')->count();
         $apply_pages = array(
             'now_page'=>1,
             'count'=>$apply_count,
             'count_page'=>($apply_count<=10) ? 1 : ceil($apply_count/10),
         );
         //公检法指派
-        $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
-        $dispatch_count = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->count();
+        $dispatch_list = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->where('archived', 'no')->orderBy('apply_date', 'desc')->skip(0)->take(10)->get();
+        $dispatch_count = DB::table('service_legal_aid_dispatch')->where('member_code', $member_code)->where('archived', 'no')->count();
         $dispatch_pages = array(
             'now_page'=>1,
             'count'=>$dispatch_count,

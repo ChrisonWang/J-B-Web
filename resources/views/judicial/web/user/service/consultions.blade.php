@@ -1,4 +1,4 @@
-<div class="panel-member-body" id="s_consultions" hidden>
+<div class="panel-member-body" id="s_consultions" @if($consultions_count == 0 || $dispatch_count >0) hidden @endif>
     @if(isset($consultions_list) && count($consultions_list)>0)
         <table class="table">
             <thead>

@@ -1,4 +1,4 @@
-<div class="panel-member-body" id="s_dispatch" hidden>
+<div class="panel-member-body" id="s_dispatch" @if($dispatch_count == 0 || $apply_count > 0) hidden @endif>
     <div class="container-fluid" style="padding-left: 0; background: #F9F9F9">
         <div class="left_title" style="margin-top: 10px">
             <span>我的公检法指派记录</span>

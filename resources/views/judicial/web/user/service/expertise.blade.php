@@ -1,4 +1,4 @@
-<div class="panel-member-body" id="s_expertise">
+<div class="panel-member-body" id="s_expertise" @if($expertise_count == 0) hidden @endif>
     @if(isset($expertise_list) && count($expertise_list)>0)
         <table class="table">
             <thead>

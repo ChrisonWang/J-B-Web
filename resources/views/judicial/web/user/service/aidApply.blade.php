@@ -1,4 +1,4 @@
-<div class="panel-member-body a" id="s_apply" hidden>
+<div class="panel-member-body a" id="s_apply" @if($apply_count == 0 || $expertise_count > 0) hidden @endif>
     <div class="container-fluid" style="padding-left: 0; background: #F9F9F9">
         <div class="left_title" style="margin-top: 10px">
             <span>我的法律援助记录</span>

@@ -77,7 +77,9 @@
     </div>
     <div class="container" style="border-bottom: 1px solid #A9A9A9">
         <div class="col-xs-4"><h5 class="text-left ">律所简介：</h5></div>
-        <div class="col-xs-8"><h5 class="text-right " style="font-weight: bold">{{ $office_detail['description'] }}</h5></div>
+    </div>
+	<div class="container" style="border-bottom: 1px solid #A9A9A9">
+        <div class="col-xs-12"><h5 class="text-left " style="font-weight: bold">{{ $office_detail['description'] }}</h5></div>
     </div>
 </div>
 

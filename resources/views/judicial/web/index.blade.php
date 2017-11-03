@@ -114,11 +114,11 @@
     </div>
 
     <div class="vd_right">
-        <span class="vd_tit">官方微信</span>
-        <img src="images/ew.png" width="160">
-        <span class="vr_sp">扫一扫</span>
+        <span class="vd_tit">官方号</span>
+        <img src="images/weibo.jpg" width="80" style="margin: 0 auto">
+        <span class="vr_sp">关注「三门峡司法局」微博</span>
+	    <img src="images/wechat.jpg" width="80" style="margin: 20px auto">
         <span class="vr_sp">关注「三门峡司法局」公众号</span>
-        <span class="vr_sp">查询事务更方便！</span>
     </div>
 </div>
 <!--新闻-->

@@ -29,7 +29,8 @@
             </div>
             <div class="wz_txt">
                 <div class="wz_mg" id="content" style="text-align: center">
-                    <embed src='{!! $video_detail['link'] !!}' allowFullScreen='true' quality='high' width='680' height='450' align='middle' allowScriptAccess='always' type='application/x-shockwave-flash'></embed>
+	                <video src="{{ $video_detail['link'] }}"  controls="controls" width="640" height="450" style="margin: auto"></video>
+                    {{--<embed src='{!! $video_detail['link'] !!}' allowFullScreen='true' quality='high' width='680' height='450' align='middle' allowScriptAccess='always' type='application/x-shockwave-flash'></embed>--}}
                 </div>
             </div>
         </div>

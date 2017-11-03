@@ -94,15 +94,13 @@
                     <td>{{ $legal_types[$apply['aid_type']]['type_name'] }}</td>
                     <td>
                         @if($apply['status'] == 'pass')
-                            <p style="color:green; font-weight: bold">待指派</p>
-						@elseif($apply['status'] == 'dispatch')
-		                    <div class="shtg" style="color: #4684CD;">已指派</div>
+                            <p style="color:green; font-weight: bold">已指派</p>
                         @elseif($apply['status'] == 'reject')
-                            <p style="color:red; font-weight: bold">驳回</p>
+                            <p style="color:red; font-weight: bold">审核不通过</p>
 	                    @elseif($apply['status'] == 'archived')
                             <p style="color:red; font-weight: bold">已结案</p>
                         @else
-                            <p style="color:#FFA500; font-weight: bold">待审批</p>
+                            <p style="color:#FFA500; font-weight: bold">待指派</p>
                         @endif
                     </td>
                     <td>{{ spilt_title($apply['apply_office'], 20) }}</td>

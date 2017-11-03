@@ -81,7 +81,7 @@
         <!--我的公检法指派记录-->
         <div style="width: 805px; height: 40px; margin-top:20px; border-left: 5px solid #DD3938; background: #F9F9F9">
             <span style="font-family: MicrosoftYaHei;font-size: 14px;color: #DD3938;letter-spacing: 0; line-height: 40px; padding-left: 10px";>
-                我的公检法指派记录
+                我的刑事案件法律援助记录
             </span>
             </div>
             @if(isset($dispatch_list) && count($dispatch_list)>0)
@@ -100,18 +100,16 @@
                             <td>{{ $dispatch->record_code }}</td>
                             <td>{{ $dispatch->apply_office }}</td>
                             <td>
-	                            @if($dispatch->status == 'archived')
-                                    <div class="shtg" style="color: #4684CD;">已结案</div>
-                                @elseif($dispatch->status == 'pass')
-                                    <div class="dsh" style="color: #7DA750;">待指派</div>
-								@elseif($dispatch->status == 'dispatch')
+	                            @if($dispatch->status == 'pass')
                                     <div class="shtg" style="color: #4684CD;">已指派</div>
                                 @elseif($dispatch->status == 'reject')
                                     <div class="btg">审核不通过/
                                         <a href="#" data-key="{{ $dispatch->record_code }}" style="color: #E23939;" data-type="service_legal_aid_dispatch" onclick="show_opinion($(this))">查看原因</a>
                                     </div>
+								@elseif($dispatch->status == 'archived')
+                                    <div class="shtg" style="color: #4684CD;">已结案</div>
                                 @else
-                                    <div class="dsh" style="color: #7DA750;">待审批</div>
+                                    <div class="dsh" style="color: #7DA750;">待指派</div>
                                 @endif
                             </td>
                             <td>
