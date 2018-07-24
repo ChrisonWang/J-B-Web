@@ -58,7 +58,8 @@ class Backup extends Controller
 	    $next_info = array(
 		    'date' => date('Y-m-d', $next->next_date),
 		    'time' => date('H:i', $next->next_date),
-		    'cycle_type' => $next->cycle_type
+		    'cycle_type' => $next->cycle_type,
+		    'last_date' => $next->last_date
 	    );
 	    $this->page_data['next_info'] = $next_info;
 

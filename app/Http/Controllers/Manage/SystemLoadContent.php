@@ -162,6 +162,7 @@ class SystemLoadContent extends Controller
 		    'date' => isset($next->next_date) ? date('Y-m-d', $next->next_date) : date('Y-m-d', time()),
 		    'time' => isset($next->next_date) ? date('H:i', $next->next_date) : date('H:i', time()),
 		    'cycle_type' => isset($next->cycle_type) ? $next->cycle_type : 'no',
+            'last_date' => $next->last_date
 	    );
 	    $this->page_data['next_info'] = $next_info;
 	    

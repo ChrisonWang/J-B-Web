@@ -19,7 +19,7 @@
                         <div class="modal-body">
                             <form class="form-horizontal" id="setting_form">
 	                            <div class="form-group">
-                                    <label for="to_message" class="col-md-3 control-label">下次备份时间：</label>
+                                    <label for="to_message" class="col-md-4 control-label">下次备份时间：</label>
                                     <div class="col-md-4">
 	                                    <input @if($next_info['cycle_type'] != 'no') disabled @endif  type="text" class="form-control" id="date" name="date" placeholder="请选择周期" value="{{ $next_info['date'] }}">
 	                                    <input type="hidden" class="form-control" id="cycle_date" name="cycle_date" value="{{ $next_info['date'] }}">
@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="to_message" class="col-md-3 control-label">备份周期：</label>
+                                    <label for="to_message" class="col-md-4 control-label">备份周期：</label>
                                     <div class="col-md-7">
                                         <select name="cycle" id="cycle" class="form-control" onchange="changeCycle($(this))">
                                             <option value="no" @if($next_info['cycle_type'] == 'no') selected @endif >无</option>
@@ -38,6 +38,12 @@
                                             <option value="week" @if($next_info['cycle_type'] == 'week') selected @endif>每七天</option>
                                             <option value="month" @if($next_info['cycle_type'] == 'month') selected @endif>每月</option>
                                         </select>
+                                    </div>
+                                </div>
+	                            <div class="form-group">
+                                    <label for="to_message" class="col-md-4 control-label">最近一次备份时间：</label>
+                                    <div class="col-md-7">
+	                                    <input disabled type="text" class="form-control" name="date" value="{{ $next_info['last_date'] }}">
                                     </div>
                                 </div>
                             </form>
